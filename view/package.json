@@ -1,0 +1,57 @@
+{
+  "name": "thinkphp6-vue-admin",
+  "version": "1.0.0",
+  "description": "基于Thinkphp6后台框架、elementUI、Vue搭建的前后端分离的后台管理系统",
+  "author": "Cheng <1256699215@qq.com>",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "lint": "vue-cli-service lint",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "clipboard": "^2.0.8",
+    "core-js": "^3.6.5",
+    "echarts": "^4.8.0",
+    "element-ui": "2.15.6",
+    "fuse.js": "3.4.4",
+    "js-cookie": "3.0.1",
+    "moment": "2.29.1",
+    "normalize.css": "7.0.0",
+    "nprogress": "0.2.0",
+    "path-to-regexp": "^6.2.0",
+    "pinyin": "^2.10.2",
+    "screenfull": "4.2.0",
+    "socket.io-client": "^4.4.0",
+    "vue": "2.6.14",
+    "vue-count-to": "1.0.13",
+    "vue-i18n": "^7.3.2",
+    "vue-router": "3.0.2",
+    "vue-socket.io": "^3.0.10",
+    "vuedraggable": "^2.24.3",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "4.5.15",
+    "@vue/cli-plugin-eslint": "4.5.15",
+    "@vue/cli-service": "4.5.15",
+    "@vue/test-utils": "1.2.2",
+    "babel-eslint": "10.1.0",
+    "compression-webpack-plugin": "^5.0.1",
+    "eslint": "6.7.2",
+    "eslint-plugin-vue": "6.2.2",
+    "sass": "1.26.2",
+    "sass-loader": "8.0.2",
+    "svg-sprite-loader": "6.0.11",
+    "vue-template-compiler": "2.6.14",
+    "webpack-bundle-analyzer": "^4.8.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "engines": {
+    "node": ">=8.9",
+    "npm": ">= 3.0.0"
+  }
+}

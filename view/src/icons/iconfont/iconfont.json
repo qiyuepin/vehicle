@@ -1,0 +1,16 @@
+{
+  "id": "3765539",
+  "name": "tp6vue",
+  "font_family": "iconfont",
+  "css_prefix_text": "el-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "479382",
+      "name": "QQ",
+      "font_class": "qq",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    }
+  ]
+}

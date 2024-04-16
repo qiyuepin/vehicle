@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "moment": "^2.29.1",
+    "vue-pdf": "^4.3.0"
+  }
+}
