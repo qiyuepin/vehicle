@@ -80,9 +80,10 @@ Route::group('/',function(){
         Route::post('addregulation','Driver/addregulation');//创建违章信息
         Route::post('editregulation','Driver/editregulation');//修改违章信息
         Route::post('delregulation','Driver/delregulation');//删除违章信息
-        Route::get('getaccident','Driver/getaccident');//违章信息
-        Route::post('addaccident','Driver/addaccident');//创建违章信息
-        Route::post('editaccident','Driver/editaccident');//修改违章信息
+        Route::get('getaccident','Driver/getaccident');//事故信息
+        Route::post('addaccident','Driver/addaccident');//创建事故信息
+        Route::post('editaccident','Driver/editaccident');//修改事故信息
+        Route::post('delaccident','Driver/delaccident');//删除事故信息
         Route::get('test','Driver/test');//修改违章信息
     })->middleware(['adminAuth']);
     ###角色###
@@ -118,20 +119,21 @@ Route::group('/',function(){
 
 
     Route::group('info',function(){
-        Route::get('carhead','Info/carhead');//违章信息
-        Route::get('getcarhead','Info/getcarhead');//违章信息
-        Route::get('getcarheadInfo','Info/getcarheadInfo');//违章信息详情
-        Route::post('addcarhead','Info/addcarhead');//创建违章信息
-        Route::post('editcarhead','Info/editcarhead');//修改违章信息
-        Route::post('delcarhead','Info/delcarhead');//删除违章信息
-        Route::get('escort','Info/escort');//违章信息
-        Route::get('getescort','Info/getescort');//删除违章信息
-        Route::post('addescort','Info/addescort');//创建违章信息
-        Route::post('editescort','Info/editescort');//修改违章信息
-        Route::post('delrescort','Info/delescort');//删除违章信息
-        Route::get('gettrailer','Info/gettrailer');//违章信息
-        Route::post('addtrailer','Info/addaccident');//创建违章信息
-        Route::post('edittrailer','Info/edittrailer');//修改违章信息
+        Route::get('carhead','Info/carhead');//车头信息
+        Route::get('getcarhead','Info/getcarhead');//车头信息
+        Route::get('getcarheadInfo','Info/getcarheadInfo');//车头信息详情
+        Route::post('addcarhead','Info/addcarhead');//创建车头信息
+        Route::post('editcarhead','Info/editcarhead');//修改车头信息
+        Route::post('delcarhead','Info/delcarhead');//删除车头信息
+        Route::get('escort','Info/escort');//押运员信息
+        Route::get('getescort','Info/getescort');//删除押运员信息
+        Route::post('addescort','Info/addescort');//创建押运员信息
+        Route::post('editescort','Info/editescort');//修改押运员信息
+        Route::post('delrescort','Info/delescort');//删除押运员信息
+        Route::get('getcartrailer','Info/getcartrailer');//挂车信息
+        Route::post('addcartrailer','Info/addcartrailer');//创建挂车信息
+        Route::post('editcartrailer','Info/editcartrailer');//修改挂车信息
+        Route::get('getcartrailerInfo','Info/getcartrailerInfo');//挂车信息详情
         Route::get('getcarscope','Info/getcarscope');//获取经营范围
     })->middleware(['adminAuth']);
 });

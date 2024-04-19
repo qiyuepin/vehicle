@@ -42,7 +42,13 @@ return [
         'admin/info/getcarscope',
         'admin/info/getcarhead',
         'admin/info/addcarhead',
+        'admin/info/editcarhead',
         'admin/info/getcarheadInfo',
+        'admin/info/getcarscope',
+        'admin/info/getcartrailer',
+        'admin/info/addcartrailer',
+        'admin/info/editcartrailer',
+        'admin/info/getcartrailerInfo',
         'admin/auth/freshToken'
     ],//白名单
 ];
