@@ -16,7 +16,7 @@ export function isExternal(path) {
  * @returns {*|boolean}
  */
 export function validUsername(str) {
-  const reg = /^.{2,10}$/; //必须是2-10个字符
+  const reg = /^[\u4e00-\u9fa5a-zA-Z0-9]{2,10}$/; //必须是2-10个字符
   return reg.test(str);
 }
 
@@ -25,10 +25,10 @@ export function validUsername(str) {
  * @param str
  * @returns {*|boolean}
  */
-export function validNickname(str) {
-  const reg = /^[\u4e00-\u9fa5]{0,20}$/; //必须是20个以内中文字符
-  return reg.test(str);
-}
+// export function validNickname(str) {
+//   const reg = /^[\u4e00-\u9fa5]{0,20}$/; //必须是20个以内中文字符
+//   return reg.test(str);
+// }
 
 /**
  * 验证手机号

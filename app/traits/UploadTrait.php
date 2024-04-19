@@ -24,6 +24,7 @@ trait UploadTrait
      * @time 2021/11/4 10:51
      */
     public function upload($file,$type,$config=[]){
+        // dump($file);die;
         try{
             if($file->isValid()){
                 $driver = config('filesystem.default');
@@ -48,6 +49,7 @@ trait UploadTrait
                 if($uploadData){
                     return ['code'=>200,'msg'=>'上传成功','data'=>['url'=>$uploadData['pathurl']]];
                 }
+                
                 if($driver=='local'||$driver=='public'){
                     //上传本地
                     $realPath = Filesystem::disk('public')->putFile($fileDir,$file);

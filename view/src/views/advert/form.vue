@@ -135,10 +135,10 @@ export default {
               this.formData.thumb = response.thumb
               this.$refs.Image.imgUrl = response.thumb
               this.formData.images = [
-                  "http://localhost:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
+                  "http://192.168.28.229:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
               ]
               this.$refs.Images.init([
-                  "http://localhost:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
+                  "http://192.168.28.229:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
               ])
           }
       })

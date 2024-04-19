@@ -19,15 +19,15 @@
                     <el-tab-pane label="基本信息">
                         <el-form-item label="选择角色" prop="group">
                             <el-checkbox-group v-model="formData.group">
-                                <el-checkbox v-for="item in roles" :key="item.id" :label="item.id">{{item.title}}</el-checkbox>
+                                <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-if="item.type == 1">{{item.title}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="用户名" prop="username">
                             <el-input v-model="formData.username" clearable placeholder="请输入2-10个字符"></el-input>
                         </el-form-item>
-                        <el-form-item label="昵称" prop="nickname">
+                        <!-- <el-form-item label="昵称" prop="nickname">
                             <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="手机号" prop="phone">
                             <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
                         </el-form-item>
@@ -135,6 +135,7 @@ export default {
         email: '',
         password: '',
         avatar: '',
+        type: '',
         autograph: ''
       },
     }
@@ -177,7 +178,7 @@ export default {
               this.title = '编辑管理员'
               this.formData.id = response.id
               this.formData.username = response.username
-              this.formData.nickname = response.nickname
+              // this.formData.nickname = response.nickname
               this.formData.phone = response.phone
               this.formData.email = response.email
               this.formData.autograph = response.sign

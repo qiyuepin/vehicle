@@ -47,7 +47,7 @@
                 @selection-change="handleSelectionChange">
             <el-table-column
                     type="selection"
-                    width="55"
+                    width="40"
                     :selectable="isSelected">
             </el-table-column>
             <el-table-column
@@ -63,12 +63,12 @@
                     align="center"
                     width="120">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="nickname"
                     label="昵称"
                     align="center"
                     width="120">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                     prop="phone"
                     label="手机号"
@@ -89,7 +89,7 @@
             </el-table-column>
             <el-table-column
                     prop="id_card_num"
-                    label="cert_card_num"
+                    label="从业资格证号"
                     align="center"
                     width="200">
             </el-table-column>

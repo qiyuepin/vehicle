@@ -12,7 +12,7 @@
     >
         <div class="demo-drawer__content" style="padding: 10px">
             <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
-            <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
+            <el-form ref="saveForm" :model="formData"  size="small" label-position="right"
                      label-width="90px"
                      style="width: 100%;">
                 <el-tabs style="height: 200px;">
@@ -50,7 +50,7 @@
 
 <script>
 
-import { addregulation, editregulation,getregulation } from '@/api/admin.js'
+import { addregulation, editregulation,getregulationInfo } from '@/api/admin.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone} from '@/utils/validate'
 
@@ -94,6 +94,7 @@ export default {
         regulation_code: '',
         regulation_deal: '',
         regulation_remark: '',
+        driver_id: this.$route.query.id,
         type: 1
       },
     }
@@ -119,10 +120,10 @@ export default {
       this.formData.regulation_deal = ''
       this.formData.regulation_remark = ''
     },
-    getregulation(id){
-      getregulation({id:id}).then(response=>{
+    getregulationInfo(id){
+      getregulationInfo({id:id}).then(response=>{
           if(response !== undefined){
-              this.title = '编辑管理员'
+              this.title = '编辑管违章'
               this.formData.id = response.id
               this.formData.regulation_time = response.regulation_time
               this.formData.regulation_place = response.regulation_place

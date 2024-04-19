@@ -61,6 +61,7 @@ const actions = {
         if (item.menu === 1) {
           const access = {}
           access.path = item.path
+          access.show = item.show
           if(item.always_show){
             access.name = item.name
             access.meta = { 'icon': item.icon, 'title': item.title }
@@ -83,6 +84,7 @@ const actions = {
                 child_access.name = child.name
                 child_access.meta = { 'icon': child.icon, 'title': child.title }
                 child_access.alwaysShow = child.always_show
+                child_access.show = child.show
                 if(child_access.redirect){
                   child_access.redirect = child.redirect
                 }
@@ -94,13 +96,15 @@ const actions = {
                 if (child.children) {
                   const childList1 = []
                   child.children.map(function (children) {
+                    
                     if (children.menu === 1) {
-                      console.log(children)
+                
                       const children_access = {}
                       children_access.path = children.path
                       children_access.name = children.name
                       children_access.meta = { 'icon': children.icon, 'title': children.title }
                       children_access.alwaysShow = children.always_show
+                      children_access.show = children.show
                       if(children_access.redirect){
                         children_access.redirect = children.redirect
                       }
@@ -119,6 +123,8 @@ const actions = {
                             }
                             buttons_access.component = loadView(buttons.component);
                             childList2.push(buttons_access)
+                            console.log("--childList2--")
+                            console.log(childList2)
                           }else{
                             accessedButtons.push(buttons.name)
                           }
@@ -127,6 +133,7 @@ const actions = {
                           children_access.children = childList2
                         }
                       }
+                      
                       childList1.push(children_access)
                     }else{
                       accessedButtons.push(children.name)
@@ -136,9 +143,11 @@ const actions = {
                     child_access.children = childList1
                   }
                 }
-                console.log(child_access)
+                // console.log(child_access)
                 childList.push(child_access)
+                accessedButtons.push(child.name)
               }else{
+                
                 accessedButtons.push(child.name)
               }
             })
@@ -149,7 +158,6 @@ const actions = {
           accessedRouters.push(access)
         }
       })
-      console.log(accessedRouters);
       accessedRouters.push({ path: '*', redirect: '/404', hidden: true })
       commit('SET_ROUTES', accessedRouters)
       commit('SET_BUTTONS',accessedButtons)//按钮权限

@@ -31,10 +31,18 @@ return [
         'admin/admin/getdriverInfo',
         'admin/admin/editdriverAdmin',
         'admin/driver/getregulation',
+        'admin/driver/getregulationinfo',
         'admin/driver/addregulation',
+        'admin/driver/editregulation',
+        'admin/driver/delregulation',
         'admin/driver/getaccident',
         'admin/driver/addaccident',
         'admin/driver/test',
+        'admin/user/logout',
+        'admin/info/getcarscope',
+        'admin/info/getcarhead',
+        'admin/info/addcarhead',
+        'admin/info/getcarheadInfo',
         'admin/auth/freshToken'
     ],//白名单
 ];

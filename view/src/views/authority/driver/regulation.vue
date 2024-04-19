@@ -2,15 +2,15 @@
     <div class="app-container">
         <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
             <el-form-item label="关键字">
-                <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>
+                <el-input v-model="query.keywords" placeholder="违章地点|违法事实" clearable></el-input>
             </el-form-item>
-            <el-form-item label="状态">
+            <!-- <el-form-item label="状态">
                 <el-select v-model="query.status" placeholder="选择状态" clearable>
                     <el-option label="全部" value="0"/>
                     <el-option label="启用" value="2"></el-option>
                     <el-option label="禁用" value="1"></el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
                 <el-button type="warning" icon="el-icon-refresh-left" @click="handleReload">重置</el-button>
@@ -42,23 +42,23 @@
                 @selection-change="handleSelectionChange">
             <el-table-column
                     type="selection"
-                    width="55"
+                    width="40"
                     :selectable="isSelected">
             </el-table-column>
             <el-table-column
                     prop="id"
                     label="ID"
                     align="center"
-                    width="80">
+                    width="50">
             </el-table-column>
             <el-table-column
                     prop="regulation_time"
-                    label="时间"
+                    label="违章时间"
                     align="center"
-                    width="200">
+                    width="150">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.时间"></span>
+                    <span style="margin-left: 10px" v-text="scope.row.regulation_time"></span>
                 </template>
             </el-table-column>
             <!-- <el-table-column
@@ -69,15 +69,15 @@
             </el-table-column> -->
             <el-table-column
                     prop="regulation_place"
-                    label="地点"
+                    label="违章地点"
                     align="center"
-                    width="120">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="regulation_truth"
                     label="违法事实"
                     align="center"
-                    width="120">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="regulation_code"
@@ -123,22 +123,14 @@
                     fixed="right"
                     label="操作"
                     align="center"
-                    min-width="200">
+                    min-width="100">
                 <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.admin.edit'" icon="el-icon-edit-outline" circle
+                        <el-button size="mini" type="primary" v-permission="'admin.driver.editregulation'" icon="el-icon-edit-outline" circle
                                    @click="handleEdit(scope.row)"></el-button>
                     </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
-                        <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" icon="el-icon-circle-check" circle
-                                   @click="handleStatus(scope.$index,scope.row.id,scope.row.status)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
-                        <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" icon="el-icon-circle-close" circle
-                                   @click="handleStatus(scope.$index,scope.row.id,scope.row.status)"></el-button>
-                    </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
+                        <el-button size="mini" type="danger"  v-permission="'admin.driver.delregulation'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
                                    circle @click="handleDelete([scope.row.id])"></el-button>
                     </el-tooltip>
                 </template>
@@ -164,7 +156,7 @@
 
 <script>
 
-import { getregulation, changeStatus,deleteAdmin } from '@/api/admin.js'
+import { getregulation, getregulationinfo,editregulation, delregulation } from '@/api/admin.js'
 import myForm from './regulationform.vue'
 import { getArrByKey } from '@/utils'
 
@@ -172,9 +164,6 @@ export default {
   name: 'Regulation',
   components: {
     myForm
-  },
-  mounted() {
-    console.log(this.$route.query.id); // 输出传递的参数值
   },
   data() {
     return {
@@ -201,7 +190,7 @@ export default {
     getregulation() {
       this.loading = true
       getregulation(this.query).then(response => {
-        console.log(response);
+        // console.log(response);
           if(response !== undefined){
               this.tableData = response.data
               this.total = response.total
@@ -263,17 +252,19 @@ export default {
     },
     //编辑
     handleEdit(raw){
-      this.$refs.myAttr.getdriverInfo(raw.id)
+      console.log('--raw.id--')
+      console.log(raw.id)
+      this.$refs.myAttr.getregulationInfo(raw.id)
       this.$refs.myAttr.showForm()
     },
     //删除
     handleDelete(ids){
-      this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+      this.$confirm('您确定要删除该条违章吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteAdmin({ ids: ids }).then(response => {
+        delregulation({ ids: ids }).then(response => {
           this.getregulation()
           this.$message({
             type: 'success',

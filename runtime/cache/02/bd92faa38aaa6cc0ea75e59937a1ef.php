@@ -1,4 +1,0 @@
-<?php
-//000000003600
- exit();?>
-a:18:{s:2:"id";i:1;s:4:"name";s:12:"观海听潮";s:6:"avatar";s:92:"https://img1.baidu.com/it/u=2927610883,3845649985&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400";s:5:"email";s:17:"1256699215@qq.com";s:5:"phone";s:11:"15063337229";s:2:"qq";s:10:"1256699215";s:7:"address";s:26:"中国-山东省-青岛市";s:8:"position";s:18:"PHP开发工程师";s:10:"speciality";s:30:"PHP、Go、Mysql、Redis、Vue";s:5:"label";a:4:{i:0;s:6:"内向";i:1;s:6:"闷骚";i:2;s:6:"乐观";i:3;s:12:"最强王者";}s:8:"birthday";s:10:"1994-01-07";s:4:"link";s:27:"https://www.chengzhigang.cn";s:9:"signature";s:33:"吃得苦中苦，方为人上人";s:7:"company";s:19:"互联网-开发部";s:12:"introduction";s:66:"平凡人生塑造不平凡的我，心有沟壑便一往无前！";s:6:"gender";i:1;s:11:"create_time";s:19:"2024-04-11 09:32:32";s:11:"update_time";s:19:"2024-04-11 09:32:32";}

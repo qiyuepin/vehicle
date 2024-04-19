@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-export function captcha() {
-  return request({
-    url: '/getCaptcha',
-    method: 'get'
-  })
-}
+// export function captcha() {
+//   return request({
+//     url: '/getCaptcha',
+//     method: 'get'
+//   })
+// }
 
 export function login(data) {
   return request({

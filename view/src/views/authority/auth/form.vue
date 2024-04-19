@@ -73,13 +73,13 @@ import { validNickname } from '@/utils/validate.js'
 export default {
   name: "RoleForm",
   data() {
-    const validateTitle = (rule, value, callback) => {
-      if (!validNickname(value)) {
-        callback(new Error('权限名称必须是20个以内的中文字符'))
-      } else {
-        callback()
-      }
-    }
+    // const validateTitle = (rule, value, callback) => {
+    //   if (!validNickname(value)) {
+    //     callback(new Error('权限名称必须是20个以内的中文字符'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       title:'',
       dialog: false,

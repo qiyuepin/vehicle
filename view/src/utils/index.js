@@ -372,10 +372,8 @@ export function getSignParam(param) {
             sign += params[ki] + '=' + param[params[ki]] + '&'
         }
     }
-    console.log(sign);
     sign += 'salt=' + defaultSettings.appSecret
     param['sign'] = md5(sign).toLowerCase()
-    console.log(param['sign']);
     return param
 }
 

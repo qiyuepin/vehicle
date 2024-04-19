@@ -11,7 +11,7 @@
       <right-panel v-if="showSettings">
         <settings />
       </right-panel>
-      <hover-btn />
+      <!-- <hover-btn /> -->
       <footer-bar class="footer"/>
     </div>
   </div>

@@ -21,12 +21,38 @@ class Driver extends Base
         return $this->responseData($data);
        
     }
+    public function getregulationinfo(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
+
+        if(!$validate->scene('getregulationinfo')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> getregulationinfo($param);
+        return $this->responseData($data);
+       
+    }
     public function addregulation(Request $request,AdminValidate $validate,AdminService $service){
         $param = $request->param();
         if(!$validate->scene('addregulation')->check($param)){
             return $this->fail(400,$validate->getError());
         }
         $data = $service -> addregulation($param);
+        return $this->responseData($data);
+    }
+    public function editregulation(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
+        if(!$validate->scene('editregulation')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> editregulation($param);
+        return $this->responseData($data);
+    }
+    public function delregulation(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
+        if(!$validate->scene('delregulation')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> delregulation($param);
         return $this->responseData($data);
     }
     public function getaccident(Request $request,AdminValidate $validate,AdminService $service){

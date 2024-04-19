@@ -76,8 +76,10 @@ Route::group('/',function(){
 
     Route::group('driver',function(){
         Route::get('getregulation','Driver/getregulation');//违章信息
+        Route::get('getregulationinfo','Driver/getregulationinfo');//删除违章信息
         Route::post('addregulation','Driver/addregulation');//创建违章信息
         Route::post('editregulation','Driver/editregulation');//修改违章信息
+        Route::post('delregulation','Driver/delregulation');//删除违章信息
         Route::get('getaccident','Driver/getaccident');//违章信息
         Route::post('addaccident','Driver/addaccident');//创建违章信息
         Route::post('editaccident','Driver/editaccident');//修改违章信息
@@ -112,6 +114,25 @@ Route::group('/',function(){
         Route::get('getFriendList','Chat/getFriendList');//获取好友列表
         Route::get('getHistoryMsg','Chat/getHistoryMsg');//获取历史消息
         Route::get('getSessionList','Chat/getSessionList');//获取会话消息
+    })->middleware(['adminAuth']);
+
+
+    Route::group('info',function(){
+        Route::get('carhead','Info/carhead');//违章信息
+        Route::get('getcarhead','Info/getcarhead');//违章信息
+        Route::get('getcarheadInfo','Info/getcarheadInfo');//违章信息详情
+        Route::post('addcarhead','Info/addcarhead');//创建违章信息
+        Route::post('editcarhead','Info/editcarhead');//修改违章信息
+        Route::post('delcarhead','Info/delcarhead');//删除违章信息
+        Route::get('escort','Info/escort');//违章信息
+        Route::get('getescort','Info/getescort');//删除违章信息
+        Route::post('addescort','Info/addescort');//创建违章信息
+        Route::post('editescort','Info/editescort');//修改违章信息
+        Route::post('delrescort','Info/delescort');//删除违章信息
+        Route::get('gettrailer','Info/gettrailer');//违章信息
+        Route::post('addtrailer','Info/addaccident');//创建违章信息
+        Route::post('edittrailer','Info/edittrailer');//修改违章信息
+        Route::get('getcarscope','Info/getcarscope');//获取经营范围
     })->middleware(['adminAuth']);
 });
 

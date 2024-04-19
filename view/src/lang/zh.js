@@ -22,7 +22,11 @@ export default {
     auth_admin_driver: '驾驶员列表',
     driver: '驾驶员信息',
     admin_driver_regulation: '违章列表',
-    admin_driver_accident: '事故列表'
+    admin_driver_accident: '事故列表',
+    info: '人员/车辆管理',
+    admin_info_carhead: '车头信息管理',
+    admin_info_escort: '押运员管理',
+    admin_info_trailer: '挂车信息管理'
   },
   navbar: {
     dashboard: '首页',

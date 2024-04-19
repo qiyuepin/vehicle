@@ -31,6 +31,7 @@ class Base extends BaseController
 
     public function uploadImage(Request $request){
         $image = $request -> file('image');
+        
         if(empty($image)){
             return $this->error('图片不存在');
         }

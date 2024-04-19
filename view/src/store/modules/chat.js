@@ -40,7 +40,7 @@ const actions = {
     if(!isHas){
       let chat = {
         id:value.id,
-        nickname:value.remark || value.nickname,
+        // nickname:value.remark || value.nickname,
         username:value.username,
         avatar:value.avatar,
         type:1,

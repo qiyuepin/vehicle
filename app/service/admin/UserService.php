@@ -29,6 +29,7 @@ class UserService extends BaseService
      * @time 2021/10/29 17:17
      */
     public function info($id){
+        
         try{
             $data = Cache::get('adminInfo:'.$id);
             if(empty($data)){
@@ -36,8 +37,10 @@ class UserService extends BaseService
                 $data = $data->toArray();
                 $data['rule'] = $this->getRule($id);
                 $data['roles'] = AuthGroupAccess::where('uid',$id)->column('group_id');
+                
                 Cache::set('adminInfo:'.$id,$data,3600);
             }
+            // dump($data);
             return $this->success($data);
         }catch (\Exception $exception){
             $this->recordLog($exception);
@@ -92,7 +95,7 @@ class UserService extends BaseService
         $ruleIds = array_column($access,'rules');
         $ruleIds = array_unique(explode(',',implode(',',$ruleIds)));//去除重复项
         $rules = AuthRule::whereIn('id',$ruleIds)->where('status',1)
-            ->field(['id','name','title','path','icon','pid','menu','component','always_show','redirect'])
+            ->field(['id','name','title','path','icon','pid','menu','component','always_show','redirect','show'])
             ->order(['pid'=>'asc','sort'=>'desc'])->select()->toArray();
         $tree = $this->tree(array_column($rules,Null,'id'));
         return $tree;
@@ -149,6 +152,7 @@ class UserService extends BaseService
                 'avatar' => $param['avatar'],
                 'sign' => $param['signature']
             ],['id'=>$id]);
+            
             if($res){
                 Cache::delete('adminInfo:'.$id);
                 return $this->success([],'保存成功');

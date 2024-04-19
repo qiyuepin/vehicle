@@ -1,0 +1,35 @@
+[2024-04-19T09:04:06+08:00][sql] CONNECT:[ UseTime:0.028427s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T09:04:06+08:00][sql] SHOW FULL COLUMNS FROM `app` [ RunTime:0.029191s ]
+[2024-04-19T09:04:06+08:00][sql] SELECT `app_secret` FROM `app` WHERE  `app_id` = 'ty9fd2848a039ab554' LIMIT 1 [ RunTime:0.000953s ]
+[2024-04-19T09:04:07+08:00][sql] SHOW FULL COLUMNS FROM `admin` [ RunTime:0.035048s ]
+[2024-04-19T09:04:07+08:00][sql] SELECT `id`,`username`,`nickname`,`email`,`phone`,`avatar`,`password`,`halt`,`status` FROM `admin` WHERE  `username` = 'admin' LIMIT 1 [ RunTime:0.000438s ]
+[2024-04-19T09:04:07+08:00][sql] SHOW FULL COLUMNS FROM `auth_group_access` [ RunTime:0.033293s ]
+[2024-04-19T09:04:07+08:00][sql] SELECT `auth_group_access`.`uid`,`auth_group_access`.`group_id`,`auth_group`.`title`,`auth_group`.`rules` FROM `auth_group_access` LEFT JOIN `auth_group` ON `auth_group_access`.`group_id`=`auth_group`.`id` WHERE  ( auth_group_access.uid='1' and auth_group.status='1' ) [ RunTime:0.023830s ]
+[2024-04-19T09:04:07+08:00][sql] UPDATE `admin`  SET `login_time` = '2024-04-19 09:04:07' , `login_ip` = '192.168.28.229' , `update_time` = '2024-04-19 09:04:07.354508'  WHERE  `id` = 1 [ RunTime:0.000638s ]
+[2024-04-19T09:04:07+08:00][sql] SHOW FULL COLUMNS FROM `admin_login_log` [ RunTime:0.011933s ]
+[2024-04-19T09:04:07+08:00][sql] INSERT INTO `admin_login_log` SET `uid` = 1 , `login_time` = '2024-04-19 09:04:07' , `login_ip` = '192.168.28.229' [ RunTime:0.000383s ]
+[2024-04-19T09:04:07+08:00][sql] CONNECT:[ UseTime:0.012968s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T09:04:07+08:00][sql] SHOW FULL COLUMNS FROM `admin` [ RunTime:0.001418s ]
+[2024-04-19T09:04:07+08:00][sql] SELECT `id`,`username`,`nickname`,`phone`,`email`,`avatar`,`sign` FROM `admin` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000425s ]
+[2024-04-19T09:04:07+08:00][sql] SHOW FULL COLUMNS FROM `auth_group_access` [ RunTime:0.001283s ]
+[2024-04-19T09:04:07+08:00][sql] SELECT `auth_group_access`.`uid`,`auth_group_access`.`group_id`,`auth_group`.`title`,`auth_group`.`rules` FROM `auth_group_access` LEFT JOIN `auth_group` ON `auth_group_access`.`group_id`=`auth_group`.`id` WHERE  ( auth_group_access.uid='1' and auth_group.status='1' ) [ RunTime:0.001167s ]
+[2024-04-19T09:04:07+08:00][sql] SHOW FULL COLUMNS FROM `auth_rule` [ RunTime:0.015078s ]
+[2024-04-19T09:04:07+08:00][sql] SELECT `id`,`name`,`title`,`path`,`icon`,`pid`,`menu`,`component`,`always_show`,`redirect`,`show` FROM `auth_rule` WHERE  `id` IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,33,34,35,36,54,16,17,18,25,31,32,40,48,49,50,51,52,53,55,56,46,47,57,58,59,60,61,62,63,64,65,66,67)  AND `status` = 1 ORDER BY `pid` ASC,`sort` DESC [ RunTime:0.000717s ]
+[2024-04-19T09:04:07+08:00][sql] SELECT `group_id` FROM `auth_group_access` WHERE  `uid` = 1 [ RunTime:0.000595s ]
+[2024-04-19T09:04:23+08:00][sql] CONNECT:[ UseTime:0.001044s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T09:04:23+08:00][sql] SHOW FULL COLUMNS FROM `admin` [ RunTime:0.002201s ]
+[2024-04-19T09:04:23+08:00][sql] SELECT COUNT(*) AS think_count FROM `admin` WHERE  `type` = '2' LIMIT 1 [ RunTime:0.000515s ]
+[2024-04-19T09:04:23+08:00][sql] SELECT `id`,`username`,`phone`,`card_front`,`card_back`,`driver_card_front`,`driver_card_back`,`cert_front`,`cert_back`,`id_card_num`,`dirver_card_num`,`cert_card_num`,`employ_time`,`status`,`login_ip`,`login_time`,`create_time` FROM `admin` WHERE  `type` = '2' ORDER BY `create_time` DESC LIMIT 0,10 [ RunTime:0.000547s ]
+[2024-04-19T09:04:23+08:00][sql] CONNECT:[ UseTime:0.000826s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T09:04:23+08:00][sql] SHOW FULL COLUMNS FROM `auth_group` [ RunTime:0.002235s ]
+[2024-04-19T09:04:23+08:00][sql] SELECT `id`,`title`,`type` FROM `auth_group` WHERE  `status` = 1 [ RunTime:0.000790s ]
+[2024-04-19T09:04:23+08:00][sql] CONNECT:[ UseTime:0.011643s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T09:04:23+08:00][sql] SHOW FULL COLUMNS FROM `admin_carhead` [ RunTime:0.081760s ]
+[2024-04-19T09:04:23+08:00][sql] SELECT COUNT(*) AS think_count FROM `admin_carhead` LIMIT 1 [ RunTime:0.000462s ]
+[2024-04-19T09:04:23+08:00][sql] SELECT * FROM `admin_carhead` ORDER BY `create_time` DESC LIMIT 0,10 [ RunTime:0.000489s ]
+[2024-04-19T09:04:23+08:00][sql] CONNECT:[ UseTime:0.000688s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T09:04:23+08:00][sql] SHOW FULL COLUMNS FROM `admin_carscope` [ RunTime:0.031843s ]
+[2024-04-19T09:04:23+08:00][sql] SELECT `id`,`name`,`type` FROM `admin_carscope` [ RunTime:0.000498s ]
+[2024-04-19T10:05:27+08:00][sql] CONNECT:[ UseTime:0.022850s ] mysql:host=127.0.0.1;port=3308;dbname=jade;charset=utf8mb4
+[2024-04-19T10:05:27+08:00][sql] SHOW FULL COLUMNS FROM `admin_carhead` [ RunTime:0.004449s ]
+[2024-04-19T10:05:27+08:00][sql] SELECT * FROM `admin_carhead` WHERE  `id` = 11 LIMIT 1 [ RunTime:0.000951s ]

@@ -13,7 +13,7 @@ const getDefaultState = () => {
     avatar: '',
     phone: '',
     username: '',
-    email: '',
+    // email: '',
     signature: '',
     roles:[]
   }
@@ -40,9 +40,9 @@ const mutations = {
   SET_PHONE: (state, phone) => {
     Vue.set(state,'phone',phone)
   },
-  SET_EMAIL: (state, email) => {
-    Vue.set(state,'email',email)
-  },
+  // SET_EMAIL: (state, email) => {
+  //   Vue.set(state,'email',email)
+  // },
   SET_USERNAME: (state, username) => {
     Vue.set(state,'username',username)
   },
@@ -79,13 +79,14 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log("----"+response)
           if(response !== undefined){
               commit('SET_UID', response.id)
               commit('SET_NAME', response.nickname)
               commit('SET_AVATAR', response.avatar)
               commit('SET_PHONE',response.phone)
               commit('SET_USERNAME',response.username)
-              commit('SET_EMAIL',response.email)
+              // commit('SET_EMAIL',response.email)
               commit('SET_ROLES',response.roles)
               commit('SET_SIGNATURE',response.sign)
               resolve(response)
@@ -101,7 +102,7 @@ const actions = {
     commit('SET_NAME', data.nickname)
     commit('SET_AVATAR', data.avatar)
     commit('SET_PHONE',data.phone)
-    commit('SET_EMAIL',data.email)
+    // commit('SET_EMAIL',data.email)
     commit('SET_SIGNATURE',data.signature)
   },
 

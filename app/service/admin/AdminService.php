@@ -76,7 +76,7 @@ class AdminService extends BaseService
      */
     public function getRole(){
         try{
-            $data = AuthGroup::where('status',1)->field(['id','title'])->select()->toArray();
+            $data = AuthGroup::where('status',1)->field(['id','title','type'])->select()->toArray();
             return $this->success(['data'=>$data]);
         }catch (\Exception $exception){
             $this->recordLog($exception);
@@ -97,7 +97,10 @@ class AdminService extends BaseService
             Db::startTrans();
             $param['halt'] = getNonceStr();
             $param['password'] = md5($param['halt'].$param['password'].$param['halt']);
+            // dump($param);die;
+            $param['type'] = 1;
             $param['sign'] = $param['autograph'];
+            $param['nickname'] = $param['username'];
             unset($param['id']);
             $res = Admin::create($param);
             if(!$res){
@@ -186,6 +189,7 @@ class AdminService extends BaseService
      * @time 2021/11/4 17:04
      */
     public function editAdmin($param=[]){
+        
         try{
             Db::startTrans();
             $admin = Admin::where('id',$param['id'])->find();
@@ -198,6 +202,7 @@ class AdminService extends BaseService
                 unset($param['password']);
             }
             $param['sign'] = $param['autograph'];
+            $param['nickname'] = $param['username'];
             $res = Admin::update($param,['id'=>$param['id']]);
             if(!$res){
                 throw new \Exception('新增管理员失败');
@@ -344,7 +349,7 @@ class AdminService extends BaseService
      */
     public function getdriverInfo($param=[]){
         try{
-            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','phone','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time'])->find();
+            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','avatar','phone','type','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','driver_status'])->find();
             if(empty($info)){
                 return $this->error('管理员不存在');
             }
@@ -401,32 +406,12 @@ class AdminService extends BaseService
     }
 
     public function getregulation($param=[]){
-        // dump($param);die;
-        // try{
-        //     $info = Driver::where('driver_id',$param['id'])->select();
-
-        //     if(empty($info)){
-        //         return $this->error('违章不存在');
-        //     }
-        //     // dump($info);
-        //     return $this->success($info->toArray());
-        // }catch (\Exception $exception){
-        //     $this->recordLog($exception);
-        //     return $this->error();
-        // }
-
 
         try{
             $where = [];
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['regulation_time|regulation_place','like','%'.$param['keywords'].'%'];
+                $where[] = ['regulation_truth|regulation_place','like','%'.$param['keywords'].'%'];
             }
-            // if(isset($param['status'])&&$param['status']){
-            //     $where[] = ['status','=',$param['status']];
-            // }
-            // dump($param['id']);die;
-            // $data = Driver::where($where)->field(['id','regulation_time','regulation_place','regulation_truth','regulation_code','regulation_deal','regulation_remark','create_time'])
-            //     ->where(['driver_id'=>$param['id']])->where(['type'=>1])->order(['create_time'=>'desc'])->select();dump($data);die;
             $data = Driver::where($where)->field(['id','regulation_time','regulation_place','regulation_truth','regulation_code','regulation_deal','regulation_remark','create_time'])
                 ->where(['driver_id'=>$param['id']])
                 ->where(['type'=>1])
@@ -439,13 +424,24 @@ class AdminService extends BaseService
             return $this->error();
         }
     }
+    public function getregulationInfo($param=[]){
+        // dump($param);die;
+        try{
+            $info = Driver::where('id',$param['id'])->field(['id','regulation_time','regulation_place','regulation_truth','regulation_code','regulation_deal','regulation_remark','create_time'])->find();
+            if(empty($info)){
+                return $this->error('违章不存在');
+            }
+            return $this->success($info->toArray());
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
     public function addregulation($param=[]){
         
         try{
             Db::startTrans();
-            // dump($param);
-            // $info = Driver::where('driver_id',$param['driver_id'])->find();
-            // dump($info);
+
             $param['type'] = 1;
             $res = Driver::create($param);
             // dump($res);
@@ -463,6 +459,46 @@ class AdminService extends BaseService
             return $this->error();
         }
     }
+
+    public function editregulation($param=[]){
+        try{
+            Db::startTrans();
+            $regulation = Driver::where('id',$param['id'])->find();
+            if(empty($regulation)){
+                throw new \Exception('违章不存在');
+            }
+
+            $res = Driver::update($param,['id'=>$param['id']]);
+            if(!$res){
+                throw new \Exception('失败');
+            }
+
+            Db::commit();
+            return $this->success([],'编辑成功');
+        }catch (\Exception $exception){
+            Db::rollback();
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    public function delregulation($param=[]){
+        try{
+            Db::startTrans();
+            // dump(Driver::whereIn('id',$param['ids'])->find());die;
+            $res = Driver::whereIn('id',$param['ids'])->delete();
+            if(!$res){
+                throw new \Exception('删除违章失败');
+            }
+
+            Db::commit();
+            return $this->success([],'删除成功');
+        }catch (\Exception $exception){
+            Db::rollback();
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+
     public function getaccident($param=[]){
         try{
             $info = Driver::where('driver_id',$param['id'])->find();
@@ -499,5 +535,21 @@ class AdminService extends BaseService
             return $this->error();
         }
     }
+    public function delaccident($param=[]){
+        try{
+            Db::startTrans();
 
+            $res = Driver::whereIn('id',$param['ids'])->delete();
+            if(!$res){
+                throw new \Exception('删除事故失败');
+            }
+
+            Db::commit();
+            return $this->success([],'删除成功');
+        }catch (\Exception $exception){
+            Db::rollback();
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
 }

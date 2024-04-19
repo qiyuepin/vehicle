@@ -24,6 +24,7 @@ class User extends Base
      * @time 2021/10/29 17:17
      */
     public function info(Request $request,UserService $service){
+        // dump($request -> uid);
         $id = $request -> uid;
         $data = $service -> info($id);
         return $this->responseData($data);

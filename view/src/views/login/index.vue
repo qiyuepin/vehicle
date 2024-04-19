@@ -38,10 +38,22 @@
                             name="password"
                             tabindex="2"
                             autocomplete="on"
-                            @keyup.native="checkCapslock"
                             @blur="capsTooltip = false"
                             @keyup.enter.native="handleLogin"
                     />
+                    <!-- <el-input
+                            :key="passwordType"
+                            ref="password"
+                            v-model="loginForm.password"
+                            :type="passwordType"
+                            placeholder="密码"
+                            name="password"
+                            tabindex="2"
+                            autocomplete="on"
+                            @keyup.native="checkCapslock"
+                            @blur="capsTooltip = false"
+                            @keyup.enter.native="handleLogin"
+                    /> -->
                     <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
           </span>
@@ -126,9 +138,9 @@ export default {
       immediate: true
     }
   },
-  created() {
-    this.getCaptcha()
-  },
+  // created() {
+  //   this.getCaptcha()
+  // },
   mounted() {
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
@@ -173,7 +185,10 @@ export default {
                 message: '欢迎您登录后台管理系统',
                 type: 'success'
               })
+              console.log(this.redirect)
+              console.log(this.otherQuery)
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              // this.$router.push({ path: this.redirect })
               this.loading = false
               this.$socket.emit('login', {
                 'token': getToken()
