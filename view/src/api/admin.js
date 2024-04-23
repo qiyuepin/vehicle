@@ -57,6 +57,20 @@ export function delregulation(data) {
     data
   })
 }
+export function addaccident(data) {
+    return request({
+        url:'/driver/addaccident',
+        method:'post',
+        data
+    })
+}
+export function editaccident(data) {
+    return request({
+        url:'/driver/editaccident',
+        method:'post',
+        data
+    })
+}
 export function getaccident(query) {
   return request({
     url:'/driver/getaccident',
@@ -64,6 +78,23 @@ export function getaccident(query) {
     params:query
   })
 }
+
+export function getaccidentInfo(query) {
+    return request({
+        url:'/driver/getaccidentInfo',
+        method:'get',
+        params:query
+    })
+}
+
+export function delaccident(data) {
+    return request({
+        url:'/driver/delaccident',
+        method:'post',
+        data
+    })
+}
+
 export function changeStatus(data) {
   return request({
     url:'/admin/changeStatus',

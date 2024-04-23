@@ -501,7 +501,37 @@ class AdminService extends BaseService
 
     public function getaccident($param=[]){
         try{
+            $where = [];
+            if(isset($param['keywords'])&&$param['keywords']){
+                $where[] = ['accident_place|accident_respons','like','%'.$param['keywords'].'%'];
+            }
+            $data = Driver::where($where)->field(['id','accident_time','accident_place','accident_des','accident_respons','accident_kind','accident_loss','accident_remark'])
+                ->where(['driver_id'=>$param['id']])
+                ->where(['type'=>2])
+                ->order(['create_time'=>'desc'])
+                ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+
+            return $this->success($data);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+
+        /*try{
             $info = Driver::where('driver_id',$param['id'])->find();
+            if(empty($info)){
+                return $this->error('事故不存在');
+            }
+            return $this->success($info->toArray());
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }*/
+    }
+    public function getaccidentInfo($param=[]){
+        // dump($param);die;
+        try{
+            $info = Driver::where('id',$param['id'])->field(['id','accident_time','accident_place','accident_des','accident_respons','accident_kind','accident_loss','accident_remark'])->find();
             if(empty($info)){
                 return $this->error('事故不存在');
             }
@@ -522,7 +552,7 @@ class AdminService extends BaseService
             $res = Driver::create($param);
             // dump($res);
             if(!$res){
-                throw new \Exception('新增违章失败');
+                throw new \Exception('新增事故失败');
             }
      
             Db::commit();
@@ -535,10 +565,31 @@ class AdminService extends BaseService
             return $this->error();
         }
     }
+    public function editaccident($param=[]){
+        try{
+            Db::startTrans();
+            $regulation = Driver::where('id',$param['id'])->find();
+            if(empty($regulation)){
+                throw new \Exception('事故不存在');
+            }
+
+            $res = Driver::update($param,['id'=>$param['id']]);
+            if(!$res){
+                throw new \Exception('失败');
+            }
+
+            Db::commit();
+            return $this->success([],'编辑成功');
+        }catch (\Exception $exception){
+            Db::rollback();
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
     public function delaccident($param=[]){
         try{
             Db::startTrans();
-
+//            dump($param);
             $res = Driver::whereIn('id',$param['ids'])->delete();
             if(!$res){
                 throw new \Exception('删除事故失败');
