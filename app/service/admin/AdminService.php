@@ -529,7 +529,7 @@ class AdminService extends BaseService
         }*/
     }
     public function getaccidentInfo($param=[]){
-        // dump($param);die;
+
         try{
             $info = Driver::where('id',$param['id'])->field(['id','accident_time','accident_place','accident_des','accident_respons','accident_kind','accident_loss','accident_remark'])->find();
             if(empty($info)){
