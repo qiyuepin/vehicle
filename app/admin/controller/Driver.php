@@ -55,6 +55,7 @@ class Driver extends Base
         $data = $service -> delregulation($param);
         return $this->responseData($data);
     }
+
     public function addaccident(Request $request,AdminValidate $validate,AdminService $service){
         $param = $request->param();
         if(!$validate->scene('addaccident')->check($param)){
