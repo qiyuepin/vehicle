@@ -81,6 +81,7 @@ Route::group('/',function(){
         Route::post('editregulation','Driver/editregulation');//修改违章信息
         Route::post('delregulation','Driver/delregulation');//删除违章信息
         Route::get('getaccident','Driver/getaccident');//事故信息
+        Route::get('getaccidentinfo','Driver/getaccidentinfo');//删除事故信息
         Route::post('addaccident','Driver/addaccident');//创建事故信息
         Route::post('editaccident','Driver/editaccident');//修改事故信息
         Route::post('delaccident','Driver/delaccident');//删除事故信息

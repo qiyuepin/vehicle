@@ -55,16 +55,50 @@ class Driver extends Base
         $data = $service -> delregulation($param);
         return $this->responseData($data);
     }
+
+    public function addaccident(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
+        if(!$validate->scene('addaccident')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> addaccident($param);
+        return $this->responseData($data);
+    }
+    public function editaccident(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
+        if(!$validate->scene('editaccident')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> editaccident($param);
+        return $this->responseData($data);
+    }
     public function getaccident(Request $request,AdminValidate $validate,AdminService $service){
         $param = $request->param();
-        // dump($param);die;
+         //dump($param);die;
         if(!$validate->scene('getaccident')->check($param)){
             return $this->fail(400,$validate->getError());
         }
         $data = $service -> getaccident($param);
         return $this->responseData($data);
     }
+    public function getaccidentinfo(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
 
+        if(!$validate->scene('getaccidentinfo')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> getaccidentinfo($param);
+        return $this->responseData($data);
+
+    }
+    public function delaccident(Request $request,AdminValidate $validate,AdminService $service){
+        $param = $request->param();
+        if(!$validate->scene('delaccident')->check($param)){
+            return $this->fail(400,$validate->getError());
+        }
+        $data = $service -> delaccident($param);
+        return $this->responseData($data);
+    }
     public function test(Request $request,AdminValidate $validate,AdminService $service){
         $param = $request->param();
         // dump($param);die;

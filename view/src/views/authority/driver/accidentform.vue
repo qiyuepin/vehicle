@@ -17,61 +17,65 @@
                      style="width: 100%;">
                 <el-tabs style="height: 200px;">
                     <el-tab-pane label="基本信息">
-                        <el-form-item label="选择角色" prop="group">
-                            <el-checkbox-group v-model="formData.group">
-                                <el-checkbox v-for="item in roles" :key="item.id" :label="item.id">{{item.title}}</el-checkbox>
-                            </el-checkbox-group>
+                        <el-form-item label="事故时间">
+                            <el-input v-model="formData.accident_time" type="date" placeholder="选择日期"></el-input>
                         </el-form-item>
-                        <el-form-item label="用户名" prop="username">
-                            <el-input v-model="formData.username" clearable placeholder="请输入2-10个字符"></el-input>
+                        <el-form-item label="事故地点" prop="accident_place">
+                            <el-input v-model="formData.accident_place" clearable placeholder="事故地点"></el-input>
                         </el-form-item>
-                        <el-form-item label="昵称" prop="nickname">
-                            <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
+                        <el-form-item label="事故描述" prop="accident_des">
+                            <el-input v-model="formData.accident_des" clearable placeholder="事故描述"></el-input>
                         </el-form-item>
-                        <el-form-item label="手机号" prop="phone">
-                            <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
+                        <el-form-item label="事故责任" prop="accident_respons">
+                            <!--<el-input v-model="formData.accident_respons" clearable placeholder="事故责任"></el-input>-->
+                            <el-select
+                                v-model="formData.accident_respons"
+                                clearable
+                                placeholder="选择事故责任"
+                                style="width: 240px"
+                            >
+                                <el-option
+                                    v-for="item in responsoptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                />
+                            </el-select>
                         </el-form-item>
-                        <el-form-item label="邮箱" prop="email">
-                            <el-input v-model="formData.email" clearable
-                                      placeholder="请输入正确的邮箱"></el-input>
+                        <el-form-item label="事故类别" prop="accident_kind">
+                            <!--<el-input v-model="formData.accident_kind" clearable placeholder="事故类别"></el-input>-->
+                            <el-select
+                                v-model="formData.accident_kind"
+                                clearable
+                                placeholder="选择事故类别"
+                                style="width: 240px"
+                            >
+                                <el-option
+                                    v-for="item in kindoptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                />
+                            </el-select>
                         </el-form-item>
-                        <el-form-item label="登录密码" prop="password" :rules="formData.id===0?saveRules.password:[{require:false}]">
-                            <el-input v-model="formData.password" clearable show-password
-                                      autocomplete="new-password"
-                                      placeholder="请输入6-18个字母和数字下划线"></el-input>
+                        <el-form-item label="损失情况" prop="accident_loss">
+                            <!--<el-input v-model="formData.accident_loss" clearable placeholder="损失情况"></el-input>-->
+                            <el-select
+                                v-model="formData.accident_loss"
+                                clearable
+                                placeholder="选择损失情况"
+                                style="width: 240px"
+                            >
+                                <el-option
+                                    v-for="item in lossoptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                />
+                            </el-select>
                         </el-form-item>
-                        <el-form-item label="身份证">
-                            <el-input v-model="formData.id_card_num" clearable
-                                      placeholder="请输入身份证"></el-input>
-                        </el-form-item>
-                        <el-form-item label="驾驶证号">
-                            <el-input v-model="formData.dirver_card_num" clearable
-                                      placeholder="请输入驾驶证号"></el-input>
-                        </el-form-item>
-                        <el-form-item label="从业资格证号">
-                            <el-input v-model="formData.cert_card_num" clearable
-                                      placeholder="请输入从业资格证号"></el-input>
-                        </el-form-item>
-                        <el-form-item label="入职时间">
-                          <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
-                        </el-form-item>
-                        <el-form-item label="身份证正面" prop="card_front">
-                            <UploadImage ref="Image_card_front" v-model="formData.card_front"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="身份证反面" prop="card_back">
-                            <UploadImage ref="Image_card_back"" v-model="formData.card_back"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="驾驶证正面" prop="driver_card_front">
-                            <UploadImage ref="Image_driver_card_front" v-model="formData.driver_card_front"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="驾驶证反面" prop="driver_card_back">
-                            <UploadImage ref="Image_driver_card_back" v-model="formData.driver_card_back"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="从业资格证正面" prop="cert_front">
-                            <UploadImage ref="Image_cert_front" v-model="formData.cert_front"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="从业资格证反面" prop="cert_back">
-                            <UploadImage ref="Image_cert_back" v-model="formData.cert_back"></UploadImage>
+                        <el-form-item label="备注">
+                            <el-input v-model="formData.accident_remark" clearable placeholder="事故备注"></el-input>
                         </el-form-item>
                     </el-tab-pane>
                 </el-tabs>
@@ -87,12 +91,19 @@
 
 <script>
 
-import { getRole, adddriverAdmin, editdriverAdmin,getdriverInfo } from '@/api/admin.js'
+import { addaccident, editaccident, getaccidentInfo } from '@/api/admin.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import { validUsername, validNickname, validPhone, validEmail, validPassword } from '@/utils/validate'
+//import { validUsername, validNickname, validPhone, validEmail, validPassword } from '@/utils/validate'
+import { ref } from 'vue'
+import item from "../../../layout/components/Sidebar/Item.vue";
 
 export default {
   name: "AdminForm",
+    computed: {
+        item() {
+            return item
+        }
+    },
   components: {
     UploadImage
   },
@@ -139,137 +150,116 @@ export default {
         callback()
       }
     }
-    return {
-      title:'',
-      dialog: false,
-      roles: [],
-      drawerShow:false,
-      saveRules: {
-        group: [{ required: true, trigger: 'blur',validator: validateGroup }],
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        // nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-        // email: [{ required: true, trigger: 'blur', validator: validateEmail }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      },
-      formData: {
-        id: 0,
-        username: '',
-        group: [],
-        nickname: '',
-        phone: '',
-        email: '',
-        password: '',
-        card_front: '',
-        card_back: '',
-        driver_card_front: '',
-        driver_card_back: '',
-        cert_back: '',
-        id_card_num: '',
-        card_badirver_card_numck: '',
-        cert_card_num: '',
-        employ_time: '',
-        type: 2
-      },
-    }
+      return {
+          title:'',
+          dialog: false,
+          drawerShow:false,
+          formData: {
+              id: 0,
+              accident_time: '',
+              accident_place: '',
+              accident_des: '',
+              accident_respons: '',
+              accident_kind: '',
+              accident_loss: '',
+              accident_remark: '',
+              driver_id: this.$route.query.id,
+              type: 1
+          },
+          responsoptions: [
+              { value: '全责', text: '全责' },
+              { value: '主责', text: '主责' },
+              { value: '同责', text: '同责' },
+              { value: '次责', text: '次责' },
+              { value: '无责', text: '无责' }
+          ],
+          kindoptions: [
+              { value: '一般', text: '一般' },
+              { value: '较大', text: '较大' },
+              { value: '重大', text: '重大' },
+              { value: '特大', text: '特大' }
+          ],
+          lossoptions: [
+              { value: '人员伤亡', text: '人员伤亡' },
+              { value: '经济损失', text: '经济损失' },
+              { value: '环境影响', text: '环境影响' }
+          ],
+      }
   },
-  created() {
-    this.getRole()
-  },
+
   methods: {
-    getRole() {
-      getRole().then(response => {
-          if(response !== undefined){
-              this.roles = response.data
-          }
-      })
-    },
-    handleClose() {
-      this.dialog = false
-      this.drawerShow = false
-    },
-    showForm() {
-      this.dialog = true
-      this.drawerShow = true
-      this.title = '新增管理员'
-      this.resetData()
-    },
-    resetData(){
-      this.formData.id = 0
-      this.formData.username = ''
-      this.formData.nickname = ''
-      this.formData.phone = ''
-      this.formData.email = ''
-      this.formData.avatar = ''
-      this.formData.password = ''
-      this.formData.autograph = ''
-      this.formData.group = []
-    },
-    getdriverInfo(id){
-      getdriverInfo({id:id}).then(response=>{
-          if(response !== undefined){
-              this.title = '编辑管理员'
-              this.formData.id = response.id
-              this.formData.username = response.username
-              this.formData.nickname = response.nickname
-              this.formData.phone = response.phone
-              this.formData.email = response.email
-              this.formData.id_card_num = response.id_card_num
-              this.formData.dirver_card_num = response.dirver_card_num
-              this.formData.cert_card_num = response.cert_card_num
-              this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)
-              this.formData.card_front = response.card_front
-              this.$refs.Image_card_front.imgUrl = response.card_front
-              this.formData.card_back = response.card_back
-              this.$refs.Image_card_back.imgUrl = response.card_back
-              this.formData.driver_card_front = response.driver_card_front
-              this.$refs.Image_driver_card_front.imgUrl = response.driver_card_front
-              this.formData.driver_card_back = response.driver_card_back
-              this.$refs.Image_driver_card_back.imgUrl = response.driver_card_back
-              this.formData.cert_front = response.cert_front
-              this.$refs.Image_cert_front.imgUrl = response.cert_front
-              this.formData.cert_back = response.cert_back
-              this.$refs.Image_cert_back.imgUrl = response.cert_back
-              response.roles.forEach((item,_) => {
-                  this.formData.group.push(item.id)
-              })
-          }
-      })
-    },
-    saveData() {
-      this.$confirm('您确定要提交吗？', '温馨提示')
-        .then(_ => {
-          this.$refs.saveForm.validate(valid => {
-            if (valid) {
-              if(this.formData.id){
-                editdriverAdmin(this.formData).then(_ => {
-                  this.$message({
-                    message: '编辑成功',
-                    type: 'success',
-                    duration: 5 * 1000
-                  })
-                  this.$emit('updateRow')
-                  this.dialog = false
-                })
-              }else{
-                adddriverAdmin(this.formData).then(_ => {
-                  this.$message({
-                    message: '新增成功',
-                    type: 'success',
-                    duration: 5 * 1000
-                  })
-                  this.$emit('updateRow')
-                  this.dialog = false
-                })
+      handleClose() {
+          this.dialog = false
+          this.drawerShow = false
+      },
+      showForm() {
+          this.dialog = true
+          this.drawerShow = true
+          this.title = '新增事故记录'
+          this.resetData()
+      },
+      resetData(){
+          this.formData.id = 0
+          this.formData.accident_time = ''
+          this.formData.accident_place = ''
+          this.formData.accident_des = ''
+          this.formData.accident_respons = ''
+          this.formData.accident_kind = ''
+          this.formData.accident_loss = ''
+          this.formData.accident_remark = ''
+          this.formData.responsselected = ''
+      },
+      getaccidentInfo(id){
+          getaccidentInfo({id:id}).then(response=>{
+              if(response !== undefined){
+                  this.title = '编辑事故'
+                  this.formData.id = response.id
+                  this.formData.accident_time = response.accident_time
+                  this.formData.accident_place = response.accident_place
+                  this.formData.accident_des = response.accident_des
+                  this.formData.accident_respons = response.accident_respons
+                  this.formData.accident_kind = response.accident_kind
+                  this.formData.accident_loss = response.accident_loss
+                  this.formData.accident_remark = response.accident_remark
+                  this.formData.type = 2
               }
-            }
           })
-        })
-        .catch(_ => {
-        })
-    }
+      },
+      saveData() {
+          this.$confirm('您确定要提交吗？', '温馨提示')
+              .then(_ => {
+                  this.$refs.saveForm.validate(valid => {
+                      if (valid) {
+                          if(this.formData.id){
+                              editaccident(this.formData).then(_ => {
+                                  this.$message({
+                                      message: '编辑成功',
+                                      type: 'success',
+                                      duration: 5 * 1000
+                                  })
+                                  this.$emit('updateRow')
+                                  this.dialog = false
+                              })
+                          }else{
+                              addaccident(this.formData).then(_ => {
+                                  this.$message({
+                                      message: '新增成功',
+                                      type: 'success',
+                                      duration: 5 * 1000
+                                  })
+                                  this.$emit('updateRow')
+                                  this.dialog = false
+                              })
+                          }
+                      }
+                  })
+              })
+              .catch(_ => {
+              })
+      }
   }
 }
+
 </script>
 
 <style scoped lang="scss">
