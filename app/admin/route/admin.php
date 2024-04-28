@@ -81,7 +81,6 @@ Route::group('/',function(){
         Route::post('editregulation','Driver/editregulation');//修改违章信息
         Route::post('delregulation','Driver/delregulation');//删除违章信息
         Route::get('getaccident','Driver/getaccident');//事故信息
-        Route::get('getaccidentinfo','Driver/getaccidentinfo');//删除事故信息
         Route::post('addaccident','Driver/addaccident');//创建事故信息
         Route::post('editaccident','Driver/editaccident');//修改事故信息
         Route::post('delaccident','Driver/delaccident');//删除事故信息
@@ -126,8 +125,8 @@ Route::group('/',function(){
         Route::post('addcarhead','Info/addcarhead');//创建车头信息
         Route::post('editcarhead','Info/editcarhead');//修改车头信息
         Route::post('delcarhead','Info/delcarhead');//删除车头信息
-        Route::get('escort','Info/escort');//押运员信息
-        Route::get('getescort','Info/getescort');//删除押运员信息
+        Route::get('getescortInfo','Info/getescortInfo');//押运员信息
+        Route::get('getescort','Info/getescort');//押运员信息
         Route::post('addescort','Info/addescort');//创建押运员信息
         Route::post('editescort','Info/editescort');//修改押运员信息
         Route::post('delrescort','Info/delescort');//删除押运员信息
@@ -135,7 +134,30 @@ Route::group('/',function(){
         Route::post('addcartrailer','Info/addcartrailer');//创建挂车信息
         Route::post('editcartrailer','Info/editcartrailer');//修改挂车信息
         Route::get('getcartrailerInfo','Info/getcartrailerInfo');//挂车信息详情
+        Route::get('getinfolist','Info/getinfolist');//匹配信息
+        Route::post('addinfo','Info/addinfo');//创建匹配信息
+        Route::post('editinfo','Info/editinfo');//修改匹配信息
+        Route::post('delinfo','Info/delinfo');//删除押运员信息
+        Route::get('getinfo','Info/getinfo');//匹配信息详情
+        Route::get('getcarlist','Info/getcarlist');//信息详情
         Route::get('getcarscope','Info/getcarscope');//获取经营范围
+    })->middleware(['adminAuth']);
+
+    Route::group('plan',function(){
+        Route::get('normal','Plan/normal');//车头信息
+        Route::get('getnormal','Plan/getnormal');//车头信息
+        Route::get('getnormalInfo','Plan/getnormalInfo');//车头信息详情
+        Route::post('addnormal','Plan/addnormal');//创建车头信息
+        Route::post('editnormal','Plan/editnormal');//修改车头信息
+        Route::post('delnormal','Plan/delnormal');//删除车头信息
+        Route::get('gettemporaryInfo','Plan/gettemporaryInfo');//押运员信息
+        Route::get('gettemporary','Plan/gettemporary');//押运员信息
+        Route::post('addtemporary','Plan/addtemporary');//创建押运员信息
+        Route::post('edittemporary','Plan/edittemporary');//修改押运员信息
+        Route::post('deltemporary','Plan/deltemporary');//删除押运员信息
+        Route::get('getplaninfo','Plan/getplaninfo');//挂车信息
+        Route::get('driver_normal','Plan/driver_normal');//挂车信息
+        Route::post('driver_sumitnormal','Plan/driver_sumitnormal');//驾驶员提交信息
     })->middleware(['adminAuth']);
 });
 

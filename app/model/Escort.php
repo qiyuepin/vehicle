@@ -7,15 +7,12 @@ use think\facade\Cache;
 use think\Model;
 
 
-class Carhead extends Model
+class Escort extends Model
 {
     // 设置数据表（不含前缀）
-    protected $name = 'admin_carhead';
+    protected $name = 'admin_carescort';
     protected $autoWriteTimestamp = 'datetime';
 
 
-    public function info()
-    {
-        return $this->hasMany('Info', 'head_id');
-    }
+
 }
