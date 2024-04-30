@@ -1,187 +1,221 @@
 <template>
-    <el-drawer
-            v-if="drawerShow"
-            :before-close="handleClose"
-            :with-header="false"
-            :wrapperClosable="false"
-            :visible.sync="dialog"
-            size="50%"
-            direction="rtl"
-            custom-class="demo-drawer"
-            ref="drawer"
-    >
-        <div class="demo-drawer__content" style="padding: 10px">
-            <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
-            <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
-                     label-width="90px"
-                     style="width: 100%;">
-                <el-tabs style="height: 200px;">
-                    <el-tab-pane label="基本信息">
-                        <el-form-item label="广告位" prop="position">
-                            <el-select v-model="formData.position" style="width: 100%" placeholder="请选择广告位">
-                                <el-option
-                                        v-for="item in positions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
+  <el-drawer
+          v-if="drawerShow"
+          :before-close="handleClose"
+          :with-header="false"
+          :wrapperClosable="false"
+          :visible.sync="dialog"
+          size="50%"
+          direction="rtl"
+          custom-class="demo-drawer"
+          ref="drawer"
+  >
+      <div class="demo-drawer__content" style="padding: 10px">
+          <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
+          <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
+                   label-width="110px"
+                   style="width: 100%;">
+              <el-tabs style="height: 200px;">
+                  <el-tab-pane label="基本信息">
+                
+                      <el-form-item label="姓名" prop="name">
+                          <el-input v-model="formData.name" clearable placeholder="请输入姓名"></el-input>
+                      </el-form-item>
+
+                      <el-form-item label="手机号" prop="phone">
+                          <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
+                      </el-form-item>
+ 
+     
+                      <el-form-item label="身份证号" prop="id_card">
+                          <el-input v-model="formData.id_card" clearable
+                                    placeholder="请输入正确的身份证号"></el-input>
+                      </el-form-item>
+
+                      <el-form-item label="从业资格证号">
+                          <el-input v-model="formData.cert_card_num" clearable
+                                    placeholder="请输入从业资格证号"></el-input>
+                      </el-form-item>
+                      <el-form-item label="是否离职" prop="escort_status">
+                            <el-radio-group v-model="formData.escort_status">
+                              <el-radio v-model="formData.escort_status" label="2">是</el-radio>
+                              <el-radio v-model="formData.escort_status" label="0">否</el-radio>
+                            </el-radio-group>
                         </el-form-item>
-                        <el-form-item label="标题" prop="title">
-                            <el-input v-model="formData.title" maxlength="20" clearable placeholder="请输入广告标题"></el-input>
-                        </el-form-item>
-                        <el-form-item label="排序" prop="sort">
-                            <el-input v-model="formData.sort" type="number" min="0" clearable placeholder="请输入排序，数字越大越靠前"></el-input>
-                        </el-form-item>
-                        <el-form-item label="广告图片" prop="thumb">
-                            <UploadImage ref="Image" v-model="formData.thumb"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="PDF文件" prop="pdf">
-                            <UploadPdf ref="Pdf" v-model="formData.pdf"></UploadPdf>
-                        </el-form-item>
-                        <el-form-item label="多图上传" prop="images">
-                            <MultiImage ref="Images" v-model="formData.images"></MultiImage>
-                        </el-form-item>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-form>
-            <div class="demo-drawer__footer" style="position:fixed;top:15px;right:30px;">
-                <el-button size="mini" @click="$refs.drawer.closeDrawer()">取 消</el-button>
-                <el-button size="mini" type="primary" @click="saveData()">确 定
-                </el-button>
-            </div>
-        </div>
-    </el-drawer>
+                      <el-form-item label="入职时间">
+                        <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
+                      </el-form-item>
+                      <el-form-item label="身份证正面" prop="card_front">
+                          <UploadImage ref="Image_card_front" v-model="formData.card_front"></UploadImage>
+                      </el-form-item>
+                      <el-form-item label="身份证反面" prop="card_back">
+                          <UploadImage ref="Image_card_back"" v-model="formData.card_back"></UploadImage>
+                      </el-form-item>
+
+                      <el-form-item label="从业资格证正面" prop="cert_front">
+                          <UploadImage ref="Image_cert_front" v-model="formData.cert_front"></UploadImage>
+                      </el-form-item>
+                      <el-form-item label="从业资格证反面" prop="cert_back">
+                          <UploadImage ref="Image_cert_back" v-model="formData.cert_back"></UploadImage>
+                      </el-form-item>
+                  </el-tab-pane>
+              </el-tabs>
+          </el-form>
+          <div class="demo-drawer__footer" style="position:fixed;top:15px;right:30px;">
+              <el-button size="mini" @click="$refs.drawer.closeDrawer()">取 消</el-button>
+              <el-button size="mini" type="primary" @click="saveData()">确 定
+              </el-button>
+          </div>
+      </div>
+  </el-drawer>
 </template>
 
 <script>
 
-import { addAdvert, editAdvert,getInfo } from '@/api/advert.js'
+import { addescort, editescort,getescortInfo } from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import UploadPdf from '@/components/Upload/SinglePdf'
-import MultiImage from '@/components/Upload/MultiImage'
+import { validPhone,validIDcard } from '@/utils/validate'
 
 export default {
-  name: "AdminForm",
-  components: {
-    UploadImage,
-    UploadPdf,
-    MultiImage
-  },
-  data() {
-    const validatePosition = (rule,value,callback)=>{
-      if(value.lenght==0){
-        callback(new Error('请选择广告位'))
-      }else{
-        callback()
-      }
-    }
-    return {
-      title:'',
-      dialog: false,
-      drawerShow:false,
-      saveRules: {
-        position: [{ required: true, trigger: 'blur',validator: validatePosition }],
-        title: [{ required: true, length:20, trigger: 'blur', message:'请输入20个以内的字符' }],
-        sort: [{ required: true, trigger: 'blur', message:'请输入排序' }],
-        thumb: [{ required: true, trigger: 'blur', message: '请上传图片' }],
-      },
-      positions:[{
-        value: 1,
-        label: '首页'
-      }],
-      formData: {
-        position:1,
-        id: 0,
-        title: '',
-        sort: 0,
-        thumb: '',
-        pdf: '',
-        images: []
-      },
-    }
-  },
-  methods: {
-    handleClose() {
-      this.dialog = false
-      this.drawerShow = false
-    },
-    showForm() {
-      this.dialog = true
-      this.drawerShow = true
-      this.title = '新增广告'
-      this.resetData()
-      this.$nextTick(() => {
-        this.$refs.Pdf.initPdf('https://qiniu.chengzhigang.cn/%E7%A8%8B%E5%BF%97%E5%88%9A-PHP-%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86.pdf')
-      })
-    },
-    resetData(){
-      this.formData.id = 0
-      this.formData.position = 1
-      this.formData.title = ''
-      this.formData.sort = 0
-      this.formData.thumb = ''
-      this.formData.pdf = ''
-      this.formData.images = []
-    },
-    getInfo(id){
-      getInfo({id:id}).then(response=>{
-          if(response !== undefined){
-              this.title = '编辑广告'
-              this.formData.id = response.id
-              this.formData.position = 1
-              this.formData.title = response.title
-              this.formData.sort = response.sort
-              this.formData.thumb = response.thumb
-              this.$refs.Image.imgUrl = response.thumb
-              this.formData.images = [
-                  "http://192.168.28.229:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
-              ]
-              this.$refs.Images.init([
-                  "http://192.168.28.229:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
-              ])
-          }
-      })
-    },
-    saveData() {
-      this.$confirm('您确定要提交吗？', '温馨提示')
-        .then(_ => {
-          this.$refs.saveForm.validate(valid => {
-            if (valid) {
-              if(this.formData.id){
-                editAdvert(this.formData).then(_ => {
-                  this.$message({
-                    message: '编辑成功',
-                    type: 'success',
-                    duration: 5 * 1000
-                  })
-                  this.$emit('updateRow')
-                  this.dialog = false
-                })
-              }else{
-                addAdvert(this.formData).then(_ => {
-                  this.$message({
-                    message: '新增成功',
-                    type: 'success',
-                    duration: 5 * 1000
-                  })
-                  this.$emit('updateRow')
-                  this.dialog = false
-                })
-              }
-            }
-          })
-        })
-        .catch(_ => {
-        })
+name: "myForm",
+components: {
+  UploadImage
+},
+data() {
+
+
+  const validatePhone = (rule, value, callback) => {
+    if (!validPhone(value)) {
+      callback(new Error('请输入正确的手机号'))
+    } else {
+      callback()
     }
   }
+  const validid_card = (rule, value, callback) => {
+    if (!validIDcard(value)) {
+      callback(new Error('请输入正确的身份证号'))
+    } else {
+      callback()
+    }
+  }
+
+  return {
+    title:'',
+    dialog: false,
+    roles: [],
+    drawerShow:false,
+    saveRules: {
+
+      name: [{ required: true, trigger: 'blur'}],
+      id_card: [{ required: true, trigger: 'blur', validator: validid_card }],
+      phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+
+    },
+    formData: {
+      id: 0,
+      name: '',
+      phone: '',
+      id_card: '',
+      card_front: '',
+      card_back: '',
+      driver_card_front: '',
+      driver_card_back: '',
+      cert_back: '',
+      id_card_num: '',
+      card_badirver_card_numck: '',
+      cert_card_num: '',
+      employ_time: '',
+      escort_status: ''
+    },
+  }
+},
+
+methods: {
+  handleClose() {
+    this.dialog = false
+    this.drawerShow = false
+  },
+  showForm() {
+    this.dialog = true
+    this.drawerShow = true
+    this.title = '新增押运员'
+    this.resetData()
+  },
+  resetData(){
+    this.formData.id = 0
+    this.formData.name = ''
+    this.formData.nickname = ''
+    this.formData.phone = ''
+    this.formData.id_card = ''
+    this.formData.cert_card_num = ''
+    this.formData.employ_time = ''
+    this.formData.card_front = ''
+    this.formData.card_back = ''
+    this.formData.card_front = ''
+    this.formData.card_back = ''
+    this.formData.escort_status = ''
+  },
+  getescortInfo(id){
+    getescortInfo({id:id}).then(response=>{
+        if(response !== undefined){
+            this.title = '编辑押运员'
+            this.formData.id = response.id
+            this.formData.name = response.name
+            this.formData.phone = response.phone
+            this.formData.id_card = response.id_card
+            this.formData.cert_card_num = response.cert_card_num
+            this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)
+            this.formData.escort_status = response.escort_status
+            this.formData.card_front = response.card_front
+            this.$refs.Image_card_front.imgUrl = response.card_front
+            this.formData.card_back = response.card_back
+            this.$refs.Image_card_back.imgUrl = response.card_back
+            this.formData.cert_front = response.cert_front
+            this.$refs.Image_cert_front.imgUrl = response.cert_front
+            this.formData.cert_back = response.cert_back
+            this.$refs.Image_cert_back.imgUrl = response.cert_back
+        }
+    })
+  },
+  saveData() {
+    this.$confirm('您确定要提交吗？', '温馨提示')
+      .then(_ => {
+        this.$refs.saveForm.validate(valid => {
+          if (valid) {
+            if(this.formData.id){
+              editescort(this.formData).then(_ => {
+                this.$message({
+                  message: '编辑成功',
+                  type: 'success',
+                  duration: 5 * 1000
+                })
+                this.$emit('updateRow')
+                this.dialog = false
+              })
+            }else{
+              addescort(this.formData).then(_ => {
+                this.$message({
+                  message: '新增成功',
+                  type: 'success',
+                  duration: 5 * 1000
+                })
+                this.$emit('updateRow')
+                this.dialog = false
+              })
+            }
+          }
+        })
+      })
+      .catch(_ => {
+      })
+  }
+}
 }
 </script>
 
 <style scoped lang="scss">
-    ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
+  ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
 </style>

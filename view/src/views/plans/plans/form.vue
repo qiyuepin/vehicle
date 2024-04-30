@@ -18,7 +18,7 @@
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="基本信息">
                 
-                      <el-form-item label="车辆/人员" prop="info_id">
+                      <!-- <el-form-item label="车辆/人员" prop="info_id">
                           <el-select v-model="formData.info_id" filterable  placeholder="请选择车辆/人员" @change="infoChanged">
                             <el-option
                               v-for="item in infolist"
@@ -39,7 +39,7 @@
                       </el-form-item>
                       <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
-                      </el-form-item>
+                      </el-form-item> -->
                       <el-form-item label="货品名称" prop="product_name">
                           <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
                       </el-form-item>
@@ -65,10 +65,6 @@
                       <el-form-item label="装货地址" prop="load_address">
                           <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="装货地址" prop="load_address">
-                          
-                        <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
-                      </el-form-item>
                       <el-form-item label="卸货厂家" prop="unload_factory">
                           <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
                             <el-option
@@ -85,10 +81,17 @@
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
+                      <el-form-item label="任务类别" prop="plan_type" >
+                          <el-radio-group v-model="formData.plan_type" @change="handlePlanTypeChange">
+                            <el-radio :label=0>运输任务</el-radio>
+                            <el-radio :label=1>装车任务</el-radio>
+                            <el-radio :label=2>卸车任务</el-radio>
+                          </el-radio-group>
+                      </el-form-item>
                       <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
-                            <el-radio :label=1>是</el-radio>
-                            <el-radio :label=0>否</el-radio>
+                            <el-radio :label=1 :disabled="formData.plan_type !== 0">是</el-radio>
+                            <el-radio :label=0 :disabled="formData.plan_type !== 0">否</el-radio>
                           </el-radio-group>
                       </el-form-item>
                       <!-- <el-form-item label="结束计费周期" prop="end_periodic">
@@ -110,7 +113,7 @@
 
 <script>
 
-import { addnormal, editnormal, getnormalinfo, getplaninfo } from '@/api/plan.js'
+import { addplan, editplan, getplansinfo, getplaninfo } from '@/api/plan.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
@@ -124,21 +127,13 @@ components: {
 },
 data() {
 
-
-  const validatePhone = (rule, value, callback) => {
-    if (!validPhone(value)) {
-      callback(new Error('请输入正确的手机号'))
-    } else {
-      callback()
+  const validateUsername = (rule, value, callback) => {
+      if (!validUsername(value)) {
+        callback(new Error('用户名称长度2-10位'))
+      } else {
+        callback()
+      }
     }
-  }
-  const validid_card = (rule, value, callback) => {
-    if (!validIDcard(value)) {
-      callback(new Error('请输入正确的身份证号'))
-    } else {
-      callback()
-    }
-  }
 
   return {
     title:'',
@@ -151,12 +146,11 @@ data() {
     drawerShow:false,
     map: null,
     saveRules: {
-
-      info_id: [{ required: true, trigger: 'blur'}],
-      product_name: [{ required: true, trigger: 'blur'}],
-      product_quantity: [{ required: true, trigger: 'blur'}],
-      load_factory: [{ required: true, trigger: 'blur'}],
-      unload_factory: [{ required: true, trigger: 'blur'}],
+      product_name: [{ required: true, message: '货品名称不能为空',trigger: 'blur'}],
+      product_quantity: [{ required: true, message: '货品数量不能为空',trigger: 'blur'}],
+      plan_type: [{ required: true, message: '请选择任务类别', trigger: 'change' }],
+      // load_factory: [{ required: true, message: '装货厂家不能为空', trigger: 'blur'}],
+      // unload_factory: [{ required: true, message: '卸货厂家不能为空',trigger: 'blur'}],
 
     },
     formData: {
@@ -172,9 +166,12 @@ data() {
       trailer_num: '',
       driver_name: '',
       escort_name: '',
+      plan_type: '',
       start_periodic: '',
       end_periodic: '',
-      platform: 'pc'
+      platform: 'pc',
+      load_location: '',
+      unload_location: ''
     },
   }
 },
@@ -187,6 +184,22 @@ destroyed () {
     }
   },
 methods: {
+  handlePlanTypeChange(value) {
+    console.log(value)
+    if (value === 0) {
+      // 如果选择了运输任务，则设置新计费周期为必填
+      this.$set(this.saveRules, 'start_periodic', [{ required: true, message: '请填写新计费周期', trigger: 'blur' }]);
+    } else {
+      // 如果选择了装车任务或者卸车任务，则取消新计费周期的必填状态
+      this.$delete(this.saveRules, 'start_periodic');
+      if (this.$refs.formData) {
+        this.$nextTick(() => {
+          this.$refs.formData.resetFields(['start_periodic']); // 清空已填写的值
+        });
+      }
+      this.formData.start_periodic = ''; // 清空已填写的值
+    }
+  },
   getplaninfo() {
     getplaninfo().then(response => {
         if(response !== undefined){
@@ -217,8 +230,10 @@ methods: {
     if (selectedFactory) {
       console.log(selectedFactory)
       this.formData.load_address = selectedFactory.address;
+      this.formData.load_location = selectedFactory.location;
     } else {
       this.formData.load_address = '';
+      this.formData.load_location = '';
     }
     // this.load_address = this.load_factory.factory;
   },
@@ -227,8 +242,10 @@ methods: {
     if (selectedFactory) {
       console.log(selectedFactory)
       this.formData.unload_address = selectedFactory.address;
+      this.formData.unload_location = selectedFactory.location;
     } else {
       this.formData.unload_address = '';
+      this.formData.unload_location = '';
     }
     // this.load_address = this.load_factory.factory;
   },
@@ -254,12 +271,14 @@ methods: {
     this.formData.head_num = ''
     this.formData.trailer_num = ''
     this.formData.driver_name = ''
-    this.formData.escort_name = ''
+    this.formData.plan_type = ''
     this.formData.start_periodic = ''
     this.formData.end_periodic = ''
+    this.formData.load_location = ''
+    this.formData.unload_location = ''
   },
-  getnormalinfo(id){
-    getnormalinfo({id:id}).then(response=>{
+  getplansinfo(id){
+    getplansinfo({id:id}).then(response=>{
         if(response !== undefined){
           console.log('response.start_periodic---'+response.start_periodic)
             this.title = '编辑'
@@ -274,21 +293,23 @@ methods: {
             this.formData.head_num = response.head_num
             this.formData.trailer_num = response.trailer_num
             this.formData.driver_name = response.driver_name
-            this.formData.escort_name = response.escort_name
-        
+            this.formData.plan_type = response.plan_type
+            this.formData.load_location = response.load_location
+            this.formData.unload_location = response.unload_location
             this.formData.start_periodic = response.start_periodic
-     
             this.formData.end_periodic = response.end_periodic
+            
         }
     })
   },
   saveData() {
+    console.log(this.formData)
     this.$confirm('您确定要提交吗？', '温馨提示')
       .then(_ => {
         this.$refs.saveForm.validate(valid => {
           if (valid) {
             if(this.formData.id){
-              editnormal(this.formData).then(_ => {
+              editplan(this.formData).then(_ => {
                 this.$message({
                   message: '编辑成功',
                   type: 'success',
@@ -298,7 +319,7 @@ methods: {
                 this.dialog = false
               })
             }else{
-              addnormal(this.formData).then(_ => {
+              addplan(this.formData).then(_ => {
                 this.$message({
                   message: '新增成功',
                   type: 'success',

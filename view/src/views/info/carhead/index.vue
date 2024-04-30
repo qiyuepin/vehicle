@@ -4,13 +4,6 @@
             <el-form-item label="关键字">
                 <el-input v-model="query.keywords" placeholder="车牌号|品牌" clearable></el-input>
             </el-form-item>
-            <!-- <el-form-item label="状态">
-                <el-select v-model="query.status" placeholder="选择状态" clearable>
-                    <el-option label="全部" value="0"/>
-                    <el-option label="启用" value="2"></el-option>
-                    <el-option label="禁用" value="1"></el-option>
-                </el-select>
-            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
                 <el-button type="warning" icon="el-icon-refresh-left" @click="handleReload">重置</el-button>
@@ -51,11 +44,24 @@
                     width="80">
             </el-table-column>
             
-            <el-table-column
+            <!-- <el-table-column
                     prop="carhead_plate"
                     label="车（牌）号"
                     align="center"
                     width="120">
+                    <el-button size="mini" type="primary" @click="scope.row && handledetail(scope.row)"></el-button>
+                    
+            </el-table-column> -->
+            <el-table-column
+                prop="carhead_plate"
+                label="车（牌）号"
+                align="center"
+                width="120">
+                <template slot-scope="scope">
+                    <el-button size="mini"  @click="handleDetail(scope.row)">
+                        {{ scope.row.carhead_plate }}
+                    </el-button>
+                </template>
             </el-table-column>
             <!-- <el-table-column
                     prop="nickname"
@@ -145,10 +151,25 @@
                     width="150">
                 <el-image
                         style="width: 40px; height: 40px"
-                        :src="scope.row.driving_license"
-                        :preview-src-list="[scope.row.driving_license]"
+                        :src="scope.row.driving_licenses[0].url"
+                        :preview-src-list="[scope.row.driving_licenses[0].url]"
                         slot-scope="scope">
                 </el-image>
+                <!-- <el-image
+                  v-for="(image, index) in imageList"
+                  :key="index"
+                  :src="image.url"
+                  style="width: 40px; height: 40px; margin-right: 10px;"
+                >
+                </el-image> -->
+                 <!-- <el-image
+                    v-for="(image, index) in scope.row.driving_licenses"
+                    :key="index"
+                        style="width: 40px; height: 40px"
+                        :src="image.url"
+                        :preview-src-list="[image.url]"
+                        slot-scope="scope">
+                </el-image> -->
             </el-table-column>
             <el-table-column
                     prop="transport_license"
@@ -212,10 +233,10 @@
                     <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
                         <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
                     </el-tooltip> -->
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                    <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
                                    circle @click="handleDelete([scope.row.id])"></el-button>
-                    </el-tooltip>
+                    </el-tooltip> -->
                     <!-- <el-tooltip class="item" effect="dark" content="违章信息" placement="top">
                         <el-button size="mini" type="danger" v-permission="'admin.driver.regulation'"  icon="el-icon-warning-outline" circle @click="handleRegulation([scope.row.id])"></el-button>
                     </el-tooltip>
@@ -240,6 +261,7 @@
         </div>
         <!--表单-->
         <myForm ref="myAttr" @updateRow="handleReload"/>
+        <detail ref="myAttrdetail" @updateRow="handleReload"/>
     </div>
 </template>
 
@@ -247,17 +269,20 @@
 
 import { getcarhead, delcarhead } from '@/api/Info.js'
 import myForm from './form.vue'
+import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
 
 export default {
   name: 'Admin',
   components: {
-    myForm
+    myForm,
+    detail
   },
   data() {
     return {
       buttonDisabled: true,
       tableData: [],
+      imageList: [],
       multipleSelection: null,
       loading: true,
       searchShow: false,
@@ -279,6 +304,7 @@ export default {
       this.loading = true
       getcarhead(this.query).then(response => {
           if(response !== undefined){
+            console.log(response.data)
               this.tableData = response.data
               this.total = response.total
           }
@@ -343,6 +369,11 @@ export default {
 
         return false
       }
+    },
+    handleDetail(raw){
+      console.log("handleDetail"+raw.id);
+      this.$refs.myAttrdetail.getcarheadInfo(raw.id)
+      this.$refs.myAttrdetail.showDetail()
     },
     //编辑
     handleEdit(raw){

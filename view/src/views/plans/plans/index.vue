@@ -29,6 +29,9 @@
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
               <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
           </el-tooltip>
+          <!-- <el-tooltip class="item" effect="dark" content="map" placement="top">
+              <el-button type="success"  size="mini" @click="handlemap">map</el-button>
+          </el-tooltip> -->
       </el-row>
       <el-table
               ref="multipleTable"
@@ -50,127 +53,95 @@
                   align="center"
                   width="80">
           </el-table-column>
-          <!-- <el-table-column
-                  prop="escort_status"
-                  label="状态"
-                  align="center"
-                  width="100">
+
+          
+          <el-table-column
+              prop="plan_type"
+              label="任务类别"
+              align="center"
+              width="110">
               <template slot-scope="scope">
-                  <el-tag :type="scope.row.escort_status==1?'danger':'success'" v-text="scope.row.escort_status==1?'禁用':'启用'"></el-tag>
+                <el-tag v-if="scope.row.plan_type === 0">运输任务</el-tag>
+                <el-tag v-else-if="scope.row.plan_type === 1" type="warning">装货任务</el-tag>
+                <el-tag v-else-if="scope.row.plan_type === 2" type="danger">卸货任务</el-tag>
               </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column
               prop="escort_status"
               label="状态"
               align="center"
-              width="100">
+              width="110">
               <template slot-scope="scope">
-                <el-tag type="success"  v-if="scope.row.escort_status === '0'" >空闲</el-tag>
-                <el-tag type="warning" v-else-if="scope.row.escort_status === '1'">出车</el-tag>
-                <el-tag type="info" v-else >离职</el-tag>
-                  <!-- <el-button 
-                      v-if="scope.row.escort_status === '0'" 
-                      type="success"  size="mini" plain>
-                      空闲
-                  </el-button> -->
-                  
-                  <!-- <el-button 
-                      v-else-if="scope.row.escort_status === '1'" 
-                      type="warning"  size="mini" plain>
-                      出车
-                  </el-button>
-                  <el-button 
-                      v-else 
-                      size="mini" round>
-                      离职
-                  </el-button> -->
+                <span style="color: #909399;" v-if="scope.row.status === 0" >未完成</span>
+                <span style="color: #67C23A;" v-else-if="scope.row.status === 1" >已完成</span>
+                <!-- <el-button  v-if="scope.row.status === 0"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">未完成</el-button>
+                <el-button  v-else-if="scope.row.status === 1"  type="success"  size="mini" plain @click="handleDetail(scope.row)"> 已完成</el-button> -->
               </template>
           </el-table-column>
-          <el-table-column
-                  prop="name"
-                  label="姓名"
+          <!-- <el-table-column
+                  prop="head_num"
+                  label="车头"
                   align="center"
                   width="120">
           </el-table-column>
           <el-table-column
-                  prop="phone"
-                  label="手机号"
+                  prop="trailer_num"
+                  label="挂车"
                   align="center"
                   width="120">
           </el-table-column>
           <el-table-column
-                  prop="id_card"
-                  label="身份证号"
+                  prop="driver_name"
+                  label="驾驶员"
+                  align="center"
+                  width="150">
+          </el-table-column>
+          <el-table-column
+                  prop="escort_name"
+                  label="押运员"
+                  align="center"
+                  width="150">
+          </el-table-column> -->
+          <el-table-column
+                  prop="product_name"
+                  label="货品名称"
                   align="center"
                   width="200">
           </el-table-column>
           <el-table-column
-                  prop="cert_card_num"
-                  label="从业资格证号"
-                  align="center"
-                  width="200">
-          </el-table-column>
-
-          <el-table-column
-                  prop="employ_time"
-                  label="入职时间"
-                  align="center"
-                  width="200">
-              <template slot-scope="scope">
-                  <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px" v-text="scope.row.employ_time"></span>
-              </template>
-          </el-table-column>
-          <el-table-column
-                  prop="card_front"
-                  label="身份证正面"
+                  prop="product_quantity"
+                  label="货品数量"
                   align="center"
                   width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.card_front"
-                      :preview-src-list="[scope.row.card_front]"
-                      slot-scope="scope">
-              </el-image>
           </el-table-column>
           <el-table-column
-                  prop="card_back"
-                  label="身份证反面"
+                  prop="load_factory"
+                  label="装货厂家"
                   align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.card_back"
-                      :preview-src-list="[scope.row.card_back]"
-                      slot-scope="scope">
-              </el-image>
-          </el-table-column>
-         
-          <el-table-column
-                  prop="cert_front"
-                  label="从业资格证正面"
-                  align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.cert_front"
-                      :preview-src-list="[scope.row.cert_front]"
-                      slot-scope="scope">
-              </el-image>
+                  width="200"
+                  show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-                  prop="cert_back"
-                  label="从业资格证反面"
+                  prop="load_address"
+                  label="装货厂家地址"
                   align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.cert_back"
-                      :preview-src-list="[scope.row.cert_back]"
-                      slot-scope="scope">
-              </el-image>
+                  width="200"
+                  show-overflow-tooltip>
           </el-table-column>
-          
+          <el-table-column
+                  prop="unload_factory"
+                  label="卸货厂家"
+                  align="center"
+                  width="200"
+                  show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+                  prop="unload_address"
+                  label="卸货厂家地址"
+                  align="center"
+                  width="200"
+                  show-overflow-tooltip>
+          </el-table-column>
           
           
           
@@ -190,9 +161,13 @@
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                      <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  </el-tooltip>
+                  <!-- <el-tooltip class="item" effect="dark" content="编辑" placement="top"> -->
+                      <el-button size="mini" type="primary" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <!-- </el-tooltip> -->
+                  <!-- <el-tooltip class="item" effect="dark" content="分配" placement="top">
+                      <el-button size="mini" type="warning" v-permission="'admin.plans.editplan'"  @click="handleDist(scope.row)">分配</el-button>
+                  </el-tooltip> -->
+                  <el-button size="mini" type="warning" v-permission="'admin.plans.editplan'"  @click="handleDist(scope.row)">分配</el-button>
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -227,19 +202,25 @@
       </div>
       <!--表单-->
       <myForm ref="myAttr" @updateRow="handleReload"/>
+      <detail ref="myAttrdetail" @updateRow="handleReload"/>
+      <planDist ref="myAttrDist" @updateRow="handleReload"/>
   </div>
 </template>
 
 <script>
 
-import { getescort,delescort } from '@/api/Info.js'
+import { getplans, delplan, getplansinfo } from '@/api/plan.js'
 import myForm from './form.vue'
+import detail from './detail.vue'
+import planDist from './dist.vue'
 import { getArrByKey } from '@/utils'
 
 export default {
-name: 'Admin',
+name: 'plans',
 components: {
-  myForm
+  myForm,
+  detail,
+  planDist
 },
 data() {
   return {
@@ -258,13 +239,13 @@ data() {
   }
 },
 created() {
-  this.getescort();
+  this.getplans();
 },
 methods: {
   //查询列表
-  getescort() {
+  getplans() {
     this.loading = true
-    getescort(this.query).then(response => {
+    getplans(this.query).then(response => {
         if(response !== undefined){
             this.tableData = response.data
             this.total = response.total
@@ -275,14 +256,14 @@ methods: {
   //搜索
   handleSearch() {
     this.query.page = 1
-    this.getescort()
+    this.getplans()
   },
   //刷新重置
   handleReload() {
     this.query.page = 1
     this.query.keywords = ''
     this.query.status = ''
-    this.getescort()
+    this.getplans()
   },
   handleRegulation(raw) {
     this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
@@ -297,15 +278,19 @@ methods: {
   handleAdd() {
     this.$refs.myAttr.showForm()
   },
+  handlemap() {
+    this.$refs.myAttrtest.showForm()
+    this.$refs.myAttrtest.initAMap()
+  },
   //分页更改页数
   handleSizeChange(limit) {
     this.query.limit = limit
-    this.getescort()
+    this.getplans()
   },
   //分页更改当前页
   handleCurrentChange(page) {
     this.query.page = page
-    this.getescort()
+    this.getplans()
   },
   //复选框事件
   handleSelectionChange(val) {
@@ -336,8 +321,17 @@ methods: {
   //编辑
   handleEdit(raw){
     console.log("edit"+raw.id);
-    this.$refs.myAttr.getescortInfo(raw.id)
+    this.$refs.myAttr.getplansinfo(raw.id)
     this.$refs.myAttr.showForm()
+  },
+  handleDist(raw){
+    // console.log("edit"+raw.id);
+    this.$refs.myAttrDist.getplansinfo(raw.id)
+    this.$refs.myAttrDist.showForm()
+  },
+  handleDetail(raw){
+    this.$refs.myAttrdetail.getplansinfo(raw.id)
+    this.$refs.myAttrdetail.showDetail()
   },
   //删除
   handleDelete(ids){
@@ -347,7 +341,7 @@ methods: {
       type: 'warning'
     }).then(() => {
       delescort({ ids: ids }).then(response => {
-        this.getescort()
+        this.getplans()
         this.$message({
           type: 'success',
           message: '删除成功!'

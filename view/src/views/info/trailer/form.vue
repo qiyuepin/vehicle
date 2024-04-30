@@ -17,62 +17,81 @@
                      style="width: 100%;">
                 <el-tabs style="height: 200px;">
                     <el-tab-pane label="基本信息">
-                        <el-form-item label="选择角色" prop="group">
-                            <el-checkbox-group v-model="formData.group">
-                                <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-if="item.type == 2">{{item.title}}</el-checkbox>
+
+                        <el-form-item label="车牌号" prop="trailer_plate">
+                            <el-input v-model="formData.trailer_plate" clearable placeholder="请输入车牌号"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="品牌" prop="trailer_brand">
+                            <el-input v-model="formData.trailer_brand" clearable placeholder="品牌"></el-input>
+                        </el-form-item>
+                        <el-form-item label="材质" prop="trailer_material">
+                            <el-input v-model="formData.trailer_material" clearable placeholder="请输入材质"></el-input>
+                        </el-form-item>
+                        <el-form-item label="自重" prop="trailer_weight">
+                            <el-input v-model="formData.trailer_weight" clearable placeholder="请输入自重"></el-input>
+                        </el-form-item>
+                        <el-form-item label="容积" prop="trailer_volume">
+                            <el-input v-model="formData.trailer_volume" clearable placeholder="请输入容积"></el-input>
+                        </el-form-item>
+                        <!-- <el-form-item label="压力" prop="trailer_pressure">
+                            <el-input v-model="formData.trailer_pressure" clearable placeholder="请输入压力"></el-input>
+                        </el-form-item> -->
+                        <el-form-item label="压力等级" prop="trailer_pressure">
+                          <el-radio-group v-model="formData.trailer_pressure">
+                            <el-radio label="常压"></el-radio>
+                            <el-radio label="低压"></el-radio>
+                            <el-radio label="高压"></el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="是否为框架罐" prop="frame_tank">
+                            <!-- <el-input v-model="formData.frame_tank" clearable placeholder="请输入框架罐"></el-input> -->
+                            <el-radio-group v-model="formData.frame_tank">
+                              <el-radio label="是"></el-radio>
+                              <el-radio label="否"></el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+
+
+
+
+                        <el-form-item label="道路运输证号">
+                            <el-input v-model="formData.transport_cert" clearable placeholder="请输入道路运输证号"></el-input>
+                        </el-form-item>
+                        <el-form-item label="经营范围" prop="trailer_scope">
+                            <el-checkbox-group v-model="formData.trailer_scope">
+                                <el-checkbox v-for="item in trailer_scope" :key="item.id" :label="item.id">{{item.name}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="用户名" prop="username">
-                            <el-input v-model="formData.username" clearable placeholder="请输入2-10个字符"></el-input>
+                        <el-form-item label="注册日期">
+                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
                         </el-form-item>
-                        <!-- <el-form-item label="昵称" prop="nickname">
-                            <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
-                        </el-form-item> -->
-                        <el-form-item label="手机号" prop="phone">
-                            <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
+                        <el-form-item label="强制报废日期">
+                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" prop="email">
-                            <el-input v-model="formData.email" clearable
-                                      placeholder="请输入正确的邮箱"></el-input>
+                        <el-form-item label="检验有效期">
+                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期"></el-input>
                         </el-form-item>
-                        <el-form-item label="登录密码" prop="password" :rules="formData.id===0?saveRules.password:[{require:false}]">
-                            <el-input v-model="formData.password" clearable show-password
-                                      autocomplete="new-password"
-                                      placeholder="请输入6-18个字母和数字下划线"></el-input>
+                        <el-form-item label="审验有效期">
+                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期"></el-input>
                         </el-form-item>
-                        <el-form-item label="身份证">
-                            <el-input v-model="formData.id_card_num" clearable
-                                      placeholder="请输入身份证"></el-input>
+                        <el-form-item label="罐检报告有效期">
+                          <el-input v-model="formData.frame_time" type="date" clearable placeholder="选择罐检报告有效期"></el-input>
                         </el-form-item>
-                        <el-form-item label="驾驶证号">
-                            <el-input v-model="formData.dirver_card_num" clearable
-                                      placeholder="请输入驾驶证号"></el-input>
+                        <el-form-item label="行驶证" prop="driving_license">
+                            <!-- <MultiImage ref="Image_driving_license" v-model="formData.driving_license"></MultiImage> -->
+                            <MultiImage ref="Image_driving_license":images="formData.driving_license" clearable v-model="formData.driving_license"></MultiImage>
                         </el-form-item>
-                        <el-form-item label="从业资格证号">
-                            <el-input v-model="formData.cert_card_num" clearable
-                                      placeholder="请输入从业资格证号"></el-input>
+                        <el-form-item label="道路运输证" prop="transport_license">
+                            <UploadImage ref="Image_transport_license" clearable v-model="formData.transport_license"></UploadImage>
                         </el-form-item>
-                        <el-form-item label="入职时间">
-                          <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
+                        <el-form-item label="罐检报告" prop="pot_report">
+                            <UploadImage ref="Image_pot_report" clearable v-model="formData.pot_report"></UploadImage>
                         </el-form-item>
-                        <el-form-item label="身份证正面" prop="card_front">
-                            <UploadImage ref="Image_card_front" v-model="formData.card_front"></UploadImage>
+                        <el-form-item label="货检保单" prop="cargo_insurance">
+                            <UploadImage ref="Image_cargo_insurance" clearable v-model="formData.cargo_insurance"></UploadImage>
                         </el-form-item>
-                        <el-form-item label="身份证反面" prop="card_back">
-                            <UploadImage ref="Image_card_back"" v-model="formData.card_back"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="驾驶证正面" prop="driver_card_front">
-                            <UploadImage ref="Image_driver_card_front" v-model="formData.driver_card_front"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="驾驶证反面" prop="driver_card_back">
-                            <UploadImage ref="Image_driver_card_back" v-model="formData.driver_card_back"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="从业资格证正面" prop="cert_front">
-                            <UploadImage ref="Image_cert_front" v-model="formData.cert_front"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="从业资格证反面" prop="cert_back">
-                            <UploadImage ref="Image_cert_back" v-model="formData.cert_back"></UploadImage>
-                        </el-form-item>
+
                     </el-tab-pane>
                 </el-tabs>
             </el-form>
@@ -87,100 +106,60 @@
 
 <script>
 
-import { getRole, adddriverAdmin, editdriverAdmin,getdriverInfo } from '@/api/admin.js'
+import { addcartrailer, editcartrailer, getcartrailerInfo, getcarscope} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import { validUsername, validNickname, validPhone, validEmail, validPassword } from '@/utils/validate'
+import MultiImage from '@/components/Upload/MultiImage'
+
+
 
 export default {
   name: "AdminForm",
   components: {
-    UploadImage
+    UploadImage,
+    MultiImage
   },
   data() {
-    const validateGroup = (rule,value,callback)=>{
-      if(value.lenght==0){
-        callback(new Error('请选择角色'))
-      }else{
-        callback()
-      }
-    }
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('用户名称长度2-10位'))
-      } else {
-        callback()
-      }
-    }
-    // const validateNickname = (rule, value, callback) => {
-    //   if (!validNickname(value)) {
-    //     callback(new Error('昵称必须是20个以内的中文字符'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    const validatePhone = (rule, value, callback) => {
-      if (!validPhone(value)) {
-        callback(new Error('请输入正确的手机号'))
-      } else {
-        callback()
-      }
-    }
-    // const validateEmail = (rule, value, callback) => {
-    //   if (!validEmail(value)) {
-    //     callback(new Error('请输入正确的邮箱地址'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    const validatePassword = (rule, value, callback) => {
-      if (!validPassword(value)) {
-        callback(new Error('登录密码必须是字母、数字、下划线组合，且长度6-18位'))
-      } else {
-        callback()
-      }
-    }
     return {
       title:'',
       dialog: false,
-      roles: [],
+      trailer_scope: [],
       drawerShow:false,
       saveRules: {
-        group: [{ required: true, trigger: 'blur',validator: validateGroup }],
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        // nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-        // email: [{ required: true, trigger: 'blur', validator: validateEmail }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        trailer_plate: [{ required: true, trigger: 'blur'}],
+        transport_cert: [{ required: true, trigger: 'blur'}]
       },
       formData: {
         id: 0,
-        username: '',
-        group: [],
-        nickname: '',
-        phone: '',
-        email: '',
-        password: '',
-        card_front: '',
-        card_back: '',
-        driver_card_front: '',
-        driver_card_back: '',
-        cert_back: '',
-        id_card_num: '',
-        card_badirver_card_numck: '',
-        cert_card_num: '',
-        employ_time: '',
-        type: 2
+        trailer_plate: '',
+        trailer_brand: '',
+        trailer_material: '',
+        trailer_weight: '',
+        trailer_volume: '',
+        trailer_pressure: '',
+        frame_tank: '',
+        transport_cert: '',
+        trailer_scope: [],
+        regist_time: '',
+        scrapp_time: '',
+        inspection_time: '',
+        validity_time: '',
+        frame_time: '',
+        driving_license: [],
+        transport_license: '',
+        pot_report: '',
+        cargo_insurance: ''
       },
     }
   },
   created() {
-    this.getRole()
+    this.getcarscope()
   },
   methods: {
-    getRole() {
-      getRole().then(response => {
+    getcarscope(){
+      getcarscope().then(response=>{
           if(response !== undefined){
-              this.roles = response.data
+            console.log(response.data)
+            this.trailer_scope = response.data;
           }
       })
     },
@@ -191,58 +170,84 @@ export default {
     showForm() {
       this.dialog = true
       this.drawerShow = true
-      this.title = '新增驾驶员'
+      this.title = '新增车头信息'
       this.resetData()
     },
     resetData(){
       this.formData.id = 0
-      this.formData.username = ''
-      this.formData.nickname = ''
-      this.formData.phone = ''
-      this.formData.email = ''
-      this.formData.avatar = ''
-      this.formData.password = ''
-      this.formData.autograph = ''
-      this.formData.group = []
+      this.formData.trailer_plate = ''
+      this.formData.trailer_brand = ''
+      this.formData.trailer_material = ''
+      this.formData.trailer_weight = ''
+      this.formData.trailer_volume = ''
+      this.formData.trailer_pressure = ''
+      this.formData.frame_tank = ''
+      this.formData.transport_cert = ''
+      this.formData.trailer_scope = []
+      this.formData.regist_time = ''
+      this.formData.scrapp_time = ''
+      this.formData.inspection_time = ''
+      this.formData.validity_time = ''
+      this.formData.frame_time = ''
+      this.formData.driving_license = []
+      this.formData.transport_license = ''
+      this.formData.pot_report = ''
+      this.formData.cargo_insurance = ''
+      this.$refs.Image_driving_license.uploadFileList=[]
+      this.$refs.Image_driving_license.uploadFiles=''
     },
-    getdriverInfo(id){
-      getdriverInfo({id:id}).then(response=>{
+    getcartrailerInfo(id){
+      getcartrailerInfo({id:id}).then(response=>{
+        console.log(response.transport_license)
           if(response !== undefined){
-              this.title = '编辑管理员'
+              this.title = '编辑车头信息'
               this.formData.id = response.id
-              this.formData.username = response.username
-              this.formData.nickname = response.nickname
-              this.formData.phone = response.phone
-              this.formData.email = response.email
-              this.formData.id_card_num = response.id_card_num
-              this.formData.dirver_card_num = response.dirver_card_num
-              this.formData.cert_card_num = response.cert_card_num
-              this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)
-              this.formData.card_front = response.card_front
-              this.$refs.Image_card_front.imgUrl = response.card_front
-              this.formData.card_back = response.card_back
-              this.$refs.Image_card_back.imgUrl = response.card_back
-              this.formData.driver_card_front = response.driver_card_front
-              this.$refs.Image_driver_card_front.imgUrl = response.driver_card_front
-              this.formData.driver_card_back = response.driver_card_back
-              this.$refs.Image_driver_card_back.imgUrl = response.driver_card_back
-              this.formData.cert_front = response.cert_front
-              this.$refs.Image_cert_front.imgUrl = response.cert_front
-              this.formData.cert_back = response.cert_back
-              this.$refs.Image_cert_back.imgUrl = response.cert_back
-              response.roles.forEach((item,_) => {
-                  this.formData.group.push(item.id)
-              })
+              this.formData.trailer_plate = response.trailer_plate
+              this.formData.trailer_brand = response.trailer_brand
+              this.formData.trailer_material = response.trailer_material
+              this.formData.trailer_weight = response.trailer_weight
+              this.formData.trailer_volume = response.trailer_volume
+              this.formData.trailer_pressure = response.trailer_pressure
+              this.formData.frame_tank = response.frame_tank
+              
+              this.formData.transport_cert = response.transport_cert
+
+              this.formData.trailer_scope.push(...response.trailer_scope);
+              this.formData.regist_time = new Date(response.regist_time).toISOString().slice(0,10)
+              this.formData.scrapp_time = new Date(response.scrapp_time).toISOString().slice(0,10)
+              this.formData.inspection_time = new Date(response.inspection_time).toISOString().slice(0,10)
+              this.formData.validity_time = new Date(response.validity_time).toISOString().slice(0,10)
+              this.formData.frame_time = new Date(response.frame_time).toISOString().slice(0,10)
+              // this.formData.driving_license = response.driving_license
+              // this.$refs.Image_driving_license.uploadFileList.push(...response.driving_license);
+              // this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
+              //   console.log(item);
+              //   return item
+              // });
+              this.formData.driving_license = response.driving_licenses
+              this.$refs.Image_driving_license.uploadFileList.push(...response.driving_licenses)
+              this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
+                return item
+              });
+          
+              this.$refs.Image_driving_license.imgUrl = response.driving_licenses
+              this.formData.transport_license = response.transport_license
+              this.$refs.Image_transport_license.imgUrl = response.transport_license
+              this.formData.pot_report = response.pot_report
+              this.$refs.Image_pot_report.imgUrl = response.pot_report
+              this.formData.cargo_insurance = response.cargo_insurance
+              this.$refs.Image_cargo_insurance.imgUrl = response.cargo_insurance
           }
       })
     },
+    
     saveData() {
       this.$confirm('您确定要提交吗？', '温馨提示')
         .then(_ => {
           this.$refs.saveForm.validate(valid => {
             if (valid) {
               if(this.formData.id){
-                editdriverAdmin(this.formData).then(_ => {
+                editcartrailer(this.formData).then(_ => {
                   this.$message({
                     message: '编辑成功',
                     type: 'success',
@@ -252,7 +257,7 @@ export default {
                   this.dialog = false
                 })
               }else{
-                adddriverAdmin(this.formData).then(_ => {
+                addcartrailer(this.formData).then(_ => {
                   this.$message({
                     message: '新增成功',
                     type: 'success',

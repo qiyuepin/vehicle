@@ -86,7 +86,7 @@ export default {
       drawerShow:false,
       saveRules: {
         name: [{ required: true, trigger: 'blur', message:'权限标识不能为空' }],
-        title: [{ required: true, trigger: 'blur', validator: validateTitle }],
+        // title: [{ required: true, trigger: 'blur', validator: validateTitle }],
         icon: [{ required: true, trigger: 'blur', message:'权限图标不能为空' }],
       },
       formData: {

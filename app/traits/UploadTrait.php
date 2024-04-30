@@ -44,11 +44,12 @@ trait UploadTrait
                     // 限制文件后缀，多个后缀以英文逗号分割
                     'fileExt'  => $fileExt
                 ]])->check(['file' => $file]);
+                // dump($md5);die;
                 //验证是否上传过
-                $uploadData = FileUpload::where('md5',$md5)->find();
-                if($uploadData){
-                    return ['code'=>200,'msg'=>'上传成功','data'=>['url'=>$uploadData['pathurl']]];
-                }
+                // $uploadData = FileUpload::where('md5',$md5)->find();
+                // if($uploadData){
+                //     return ['code'=>200,'msg'=>'上传成功','data'=>['url'=>$uploadData['pathurl']]];
+                // }
                 
                 if($driver=='local'||$driver=='public'){
                     //上传本地

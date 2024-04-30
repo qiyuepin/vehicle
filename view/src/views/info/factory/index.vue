@@ -43,185 +43,43 @@
                     align="center"
                     width="80">
             </el-table-column>
-            
-            <!-- <el-table-column
-                    prop="trailer_plate"
-                    label="车（牌）号"
-                    align="center"
-                    width="120">
-                    <el-button size="mini" type="primary" @click="scope.row && handledetail(scope.row)"></el-button>
-                    
-            </el-table-column> -->
+
             <el-table-column
-                prop="trailer_plate"
-                label="车（牌）号"
+                prop="name"
+                label="详情"
                 align="center"
-                width="120">
+                width="150">
                 <template slot-scope="scope">
                     <el-button size="mini"  @click="handleDetail(scope.row)">
-                        {{ scope.row.trailer_plate }}
+                        点击查看详情
                     </el-button>
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="trailer_brand"
-                    label="品牌"
-                    align="center"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="trailer_material"
-                    label="材质"
+                    prop="name"
+                    label="厂家名称"
                     align="center"
                     width="150">
             </el-table-column>
             <el-table-column
-                    prop="trailer_weight"
-                    label="自重"
+                    prop="pname"
+                    label="所属省份"
                     align="center"
                     width="150">
             </el-table-column>
             <el-table-column
-                    prop="trailer_volume"
-                    label="容积"
+                    prop="address"
+                    label="厂家地址"
                     align="center"
-                    width="150">
+                    width="300">
             </el-table-column>
             <el-table-column
-                    prop="trailer_pressure"
-                    label="压力等级"
-                    align="center"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    prop="frame_tank"
-                    label="是否为框架罐"
-                    align="center"
-                    width="150">
-            </el-table-column>
-
-            <el-table-column
-                    prop="transport_cert"
-                    label="道路运输证号"
-                    align="center"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="trailer_scope"
-                    label="经营范围"
+                    prop="location"
+                    label="经纬度"
                     align="center"
                     width="200">
             </el-table-column>
 
-            <el-table-column
-                    prop="regist_time"
-                    label="注册日期"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.regist_time"></span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="scrapp_time"
-                    label="强制报废日期"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.scrapp_time"></span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="inspection_time"
-                    label="检验有效期"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.inspection_time"></span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="validity_time"
-                    label="审验有效期"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.validity_time"></span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="frame_time"
-                    label="交强险有效期"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.frame_time"></span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="driving_license"
-                    label="行驶证"
-                    align="center"
-                    width="150">
-                <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.driving_licenses[0].url"
-                        :preview-src-list="[scope.row.driving_licenses[0].url]"
-                        slot-scope="scope">
-                </el-image>
-            </el-table-column>
-            <el-table-column
-                    prop="transport_license"
-                    label="道路运输证"
-                    align="center"
-                    width="150">
-                <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.transport_license"
-                        :preview-src-list="[scope.row.transport_license]"
-                        slot-scope="scope">
-                </el-image>
-            </el-table-column>
-            <el-table-column
-                    prop="pot_report"
-                    label="交强险保单"
-                    align="center"
-                    width="150">
-                <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.pot_report"
-                        :preview-src-list="[scope.row.pot_report]"
-                        slot-scope="scope">
-                </el-image>
-            </el-table-column>
-            <el-table-column
-                    prop="cargo_insurance"
-                    label="商业险保单"
-                    align="center"
-                    width="150">
-                <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.cargo_insurance"
-                        :preview-src-list="[scope.row.cargo_insurance]"
-                        slot-scope="scope">
-                </el-image>
-            </el-table-column>
-            
-            <el-table-column
-                    prop="create_time"
-                    label="创建时间"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
-                </template>
-            </el-table-column>
             <el-table-column
                     fixed="right"
                     label="操作"
@@ -231,7 +89,22 @@
                     <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                         <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
                     </el-tooltip>
-
+                    <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
+                        <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
+                    </el-tooltip>
+                    <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
+                        <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
+                    </el-tooltip> -->
+                    <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                        <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
+                                   circle @click="handleDelete([scope.row.id])"></el-button>
+                    </el-tooltip> -->
+                    <!-- <el-tooltip class="item" effect="dark" content="违章信息" placement="top">
+                        <el-button size="mini" type="danger" v-permission="'admin.driver.regulation'"  icon="el-icon-warning-outline" circle @click="handleRegulation([scope.row.id])"></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" content="事故信息" placement="top">
+                        <el-button size="mini" type="danger" v-permission="'admin.driver.accident'" icon="el-icon-warning" circle @click="handleAccident([scope.row.id])"></el-button>
+                    </el-tooltip> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -256,13 +129,13 @@
 
 <script>
 
-import { getcartrailer, deltrailer } from '@/api/Info.js'
+import { getfactory, delfactory, getfactoryinfo } from '@/api/Info.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
 
 export default {
-  name: 'Admin',
+  name: 'factory',
   components: {
     myForm,
     detail
@@ -285,15 +158,15 @@ export default {
     }
   },
   created() {
-    this.getcartrailer();
+    this.getfactory();
   },
   methods: {
     //查询列表
-    getcartrailer() {
+    getfactory() {
       this.loading = true
-      getcartrailer(this.query).then(response => {
+      getfactory(this.query).then(response => {
           if(response !== undefined){
-            console.log(response.data)
+            // console.log(response.data)
               this.tableData = response.data
               this.total = response.total
           }
@@ -303,29 +176,30 @@ export default {
     //搜索
     handleSearch() {
       this.query.page = 1
-      this.getcartrailer()
+      this.getfactory()
     },
     //刷新重置
     handleReload() {
       this.query.page = 1
       this.query.keywords = ''
       this.query.status = ''
-      this.getcartrailer()
+      this.getfactory()
     },
 
     //新增
     handleAdd() {
       this.$refs.myAttr.showForm()
+      this.$refs.myAttr.initAMap('121.614786,38.913962')
     },
     //分页更改页数
     handleSizeChange(limit) {
       this.query.limit = limit
-      this.getcartrailer()
+      this.getfactory()
     },
     //分页更改当前页
     handleCurrentChange(page) {
       this.query.page = page
-      this.getcartrailer()
+      this.getfactory()
     },
     //复选框事件
     handleSelectionChange(val) {
@@ -355,15 +229,27 @@ export default {
     },
     handleDetail(raw){
       console.log("handleDetail"+raw.id);
-      this.$refs.myAttrdetail.getcartrailerInfo(raw.id)
+      this.$refs.myAttrdetail.getfactoryinfo(raw.id)
       this.$refs.myAttrdetail.showDetail()
     },
     //编辑
     handleEdit(raw){
       // console.log("edit"+raw.id);
-      this.$refs.myAttr.getcartrailerInfo(raw.id)
+      this.$refs.myAttr.getfactoryinfo(raw.id)
       this.$refs.myAttr.showForm()
+      // this.$refs.myAttr.initAMap()
+      // getfactoryinfo(raw.id)
     },
+    // getfactoryinfo(id){
+    //   getfactoryinfo({id:id}).then(response=>{
+    //       if(response !== undefined){
+    //         console.log("response："+response);
+    //         this.$refs.myAttr.initAMap(response.location)
+    //           // this.formData.location = response.location
+
+    //       }
+    //   })
+    // },
     //删除
     handleDelete(ids){
       this.$confirm('您确定要删除该用户吗?', '温馨提示', {
@@ -371,8 +257,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delcartrailer({ ids: ids }).then(response => {
-          this.getcartrailer()
+        delcarhead({ ids: ids }).then(response => {
+          this.getfactoryList()
           this.$message({
             type: 'success',
             message: '删除成功!'
