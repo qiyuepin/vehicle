@@ -31,7 +31,7 @@ class AuthService extends BaseService
      */
     public function login(array $param=[]){
         try{
-            $admin = Admin::where('username',$param['username'])->field(['id','username','nickname','email','phone','avatar','password','halt','status'])->find();
+            $admin = Admin::where('username',$param['username'])->field(['id','type','username','nickname','email','phone','avatar','password','halt','status'])->find();
             if(empty($admin)){
                 return $this->error('用户名不存在');
             }
