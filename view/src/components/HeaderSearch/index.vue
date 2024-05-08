@@ -37,6 +37,7 @@ export default {
   },
   computed: {
     routes() {
+      console.log(this.$store.getters.permission_routes)
       return this.$store.getters.permission_routes
     },
     lang() {

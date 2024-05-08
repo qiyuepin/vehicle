@@ -77,6 +77,13 @@ export function edittemporary(data) {
     data
   })
 }
+export function gettemporaryinfo(query) {
+  return request({
+    url:'/plan/gettemporaryinfo',
+    method:'get',
+    params:query
+  })
+}
 export function deltemporary(data) {
   return request({
     url:'/plan/deltemporary',

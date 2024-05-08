@@ -59,7 +59,12 @@ class AdminService extends BaseService
      */
     public function changeStatus($param=[]){
         try{
-            Admin::update(['status'=>$param['status']],['id'=>$param['id']]);
+            if($param['status'] == 2){
+                $param['driver_status'] = 0;
+            }else{
+                $param['driver_status'] = 2;
+            }
+            Admin::update($param,['id'=>$param['id']]);
             return $this->success();
         }catch (\Exception $exception){
             $this->recordLog($exception);
@@ -134,6 +139,11 @@ class AdminService extends BaseService
             $param['password'] = md5($param['halt'].$param['password'].$param['halt']);
             // $param['sign'] = $param['autograph'];
             unset($param['id']);
+            // $res = Admin::create($param)->fetchsql();
+            // $query = DB::table('admin')->insert($param);dump($query);die;
+            // $sql = $query->toSql();
+            // dd($sql);
+            // dump($param);die;
             $res = Admin::create($param);
 
             if(!$res){
@@ -327,7 +337,7 @@ class AdminService extends BaseService
             if(isset($param['status'])&&$param['status']){
                 $where[] = ['status','=',$param['status']];
             }
-            $data = Admin::where($where)->field(['id','username','phone','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','status','login_ip','login_time','create_time'])
+            $data = Admin::where($where)->field(['id','driver_status','username','phone','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','status','login_ip','login_time','create_time'])
                 ->where(['type'=>'2'])
                 ->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();

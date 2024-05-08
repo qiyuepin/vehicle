@@ -43,7 +43,19 @@
                     align="center"
                     width="80">
             </el-table-column>
-            
+         
+            <el-table-column
+                prop="trailer_status"
+                label="状态"
+                align="center"
+                width="110">
+                <template slot-scope="scope">
+                  
+                  <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
+                  <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 1" >重车</span>
+                  <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+                </template>
+            </el-table-column>
             <!-- <el-table-column
                     prop="trailer_plate"
                     label="车（牌）号"
@@ -169,7 +181,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.driving_licenses[0].url"
                         :preview-src-list="[scope.row.driving_licenses[0].url]"
                         slot-scope="scope">
@@ -181,7 +193,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.transport_license"
                         :preview-src-list="[scope.row.transport_license]"
                         slot-scope="scope">
@@ -193,7 +205,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.pot_report"
                         :preview-src-list="[scope.row.pot_report]"
                         slot-scope="scope">
@@ -205,7 +217,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.cargo_insurance"
                         :preview-src-list="[scope.row.cargo_insurance]"
                         slot-scope="scope">

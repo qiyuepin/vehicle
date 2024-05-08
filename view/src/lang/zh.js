@@ -29,7 +29,8 @@ export default {
     admin_info_escort: '押运员管理',
     admin_info_trailer: '挂车信息管理',
     admin_info_info: '人员车辆匹配',
-    admin_info_factory: '厂家管理'
+    admin_info_factory: '厂家管理',
+    cost_index: '费用管理'
   },
   navbar: {
     dashboard: '首页',

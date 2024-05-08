@@ -81,6 +81,11 @@ return [
         'admin/plan/getplansinfo',
         'admin/plan/driver_normal',
         'admin/plan/driver_sumitnormal',
+        'admin/cost/getcost',
+        'admin/cost/getinfo',
+        'admin/cost/addcost',
+        'admin/cost/editcost',
+        'admin/cost/delcost',
         'admin/auth/freshToken'
     ],//白名单
 ];

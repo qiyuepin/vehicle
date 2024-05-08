@@ -17,18 +17,10 @@
             </el-form-item>
         </el-form>
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-                <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-            </el-tooltip>
+          <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
+          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+          <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -50,7 +42,21 @@
                     align="center"
                     width="80">
             </el-table-column>
-            
+            <el-table-column
+                prop="driver_status"
+                label="状态"
+                align="center"
+                width="110">
+                <template slot-scope="scope">
+                  <!-- <span style="color: #67C23A;" v-if="scope.row.driver_status === 0" >空闲</span> -->
+                  <el-tag type="success" v-if="scope.row.driver_status === 0">空闲</el-tag>
+                  <el-tag type="danger" v-else-if="scope.row.driver_status === 1">出车</el-tag>
+                  <el-tag type="info" v-else-if="scope.row.driver_status === 2">离职</el-tag>
+                  <!-- <span style="color: #F56C6C;" v-else-if="scope.row.driver_status === 1" >出车</span>
+                  <span style="color: #909399;" v-else-if="scope.row.driver_status === 2" >离职</span> -->
+                  <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+                </template>
+            </el-table-column>
             <el-table-column
                     prop="username"
                     label="用户名"
@@ -112,7 +118,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.card_front"
                         :preview-src-list="[scope.row.card_front]"
                         slot-scope="scope">
@@ -124,7 +130,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.card_back"
                         :preview-src-list="[scope.row.card_back]"
                         slot-scope="scope">
@@ -136,7 +142,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.driver_card_front"
                         :preview-src-list="[scope.row.driver_card_front]"
                         slot-scope="scope">
@@ -148,7 +154,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.driver_card_back"
                         :preview-src-list="[scope.row.driver_card_back]"
                         slot-scope="scope">
@@ -160,7 +166,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.cert_front"
                         :preview-src-list="[scope.row.cert_front]"
                         slot-scope="scope">
@@ -172,7 +178,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.cert_back"
                         :preview-src-list="[scope.row.cert_back]"
                         slot-scope="scope">
@@ -238,15 +244,9 @@
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
-                    </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
-                        <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
-                    </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
-                        <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
-                    </el-tooltip>
+                  <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" v-if="scope.row.status==1" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
+                  <el-button size="mini" v-if="scope.row.status==2" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
                     <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
                                    circle @click="handleDelete([scope.row.id])"></el-button>
@@ -335,8 +335,8 @@ export default {
     handleRegulation(raw) {
       this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
     },
-    handleAccident() {
-      this.$router.push('/driver/accident');
+    handleAccident(raw) {
+      this.$router.push({ path: '/driver/accident', query: { id: raw[0] }});
     },
     handletest() {
       this.$router.push('/driver/test');
@@ -414,15 +414,16 @@ export default {
       this.handleDelete(ids)
     },
     //启用禁用操作
-    handleStatus(index, id, status) {
+    handleStatus(index, id, status, driver_status) {
       let handlerMsg = status === 1 ? '启用' : '禁用';
       this.$confirm('您确定要' + handlerMsg + '该用户吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        changeStatus({ id: id, status: 3 - status }).then(response => {
+        changeStatus({ id: id, status: 3 - status, driver_status }).then(response => {
           this.tableData[index]['status'] = 3 - status
+          this.tableData[index]['driver_status'] = 2
           this.$message({
             type: 'success',
             message: handlerMsg + '成功!'

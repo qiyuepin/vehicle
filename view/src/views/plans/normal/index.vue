@@ -2,13 +2,17 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="驾驶员|厂家名称|挂车号" clearable></el-input>
           </el-form-item>
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
-                  <el-option label="全部" value="0"/>
-                  <el-option label="启用" value="2"></el-option>
-                  <el-option label="禁用" value="1"></el-option>
+                  <el-option label="待接单" value=null></el-option>
+                  <el-option label="回库" value='0'/>
+                  <el-option label="在途" value="1"></el-option>
+                  <el-option label="装货" value="2"></el-option>
+                  <el-option label="装货完成" value="3"></el-option>
+                  <el-option label="卸货" value="4"></el-option>
+                  <el-option label="卸货完成" value="5"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item>
@@ -17,21 +21,13 @@
           </el-form-item>
       </el-form>
       <el-row style="margin-bottom: 10px;">
-          <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-              <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="新增" placement="top">
-              <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-              <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="删除" placement="top">
-              <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="map" placement="top">
+          <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
+          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+          <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+          <!-- <el-tooltip class="item" effect="dark" content="map" placement="top">
               <el-button type="success"  size="mini" @click="handlemap">map</el-button>
-          </el-tooltip>
+          </el-tooltip> -->
       </el-row>
       <el-table
               ref="multipleTable"
@@ -75,13 +71,20 @@
                 <el-tag type="info" v-else-if="scope.row.status === 4">卸货</el-tag>
                 <el-tag type="info" v-else-if="scope.row.status === 5">在途</el-tag>
                 <el-tag type="info" v-else >空闲</el-tag> -->
+                <!-- <el-button  v-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
+                <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
+                <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
+                <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
+                <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
+                <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
+                <span style="color: #F56C6C;"  @click="handleDetail(scope.row)" v-else >待接单</span> -->
                 <el-button  v-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
                 <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
                 <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
-                <el-button  v-else size="mini" @click="handleDetail(scope.row)">待处理</el-button>
+                <el-button  v-else size="mini" @click="handleDetail(scope.row)">待接单</el-button>
               </template>
           </el-table-column>
           <el-table-column
@@ -167,9 +170,8 @@
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                      <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  </el-tooltip>
+                  <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
+                
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>

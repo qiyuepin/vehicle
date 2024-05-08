@@ -65,10 +65,10 @@
                       <el-form-item label="装货地址" prop="load_address">
                           <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="装货地址" prop="load_address">
+                      <!-- <el-form-item label="装货地址" prop="load_address">
                           
                         <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
-                      </el-form-item>
+                      </el-form-item> -->
                       <el-form-item label="卸货厂家" prop="unload_factory">
                           <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
                             <el-option
@@ -85,12 +85,12 @@
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="新计费周期" prop="start_periodic">
+                      <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1>是</el-radio>
                             <el-radio :label=0>否</el-radio>
                           </el-radio-group>
-                      </el-form-item>
+                      </el-form-item> -->
                       <!-- <el-form-item label="结束计费周期" prop="end_periodic">
                           <el-radio-group v-model="formData.end_periodic">
                             <el-radio :label=1>是</el-radio>
@@ -200,10 +200,10 @@ methods: {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
       console.log(selectedinfo)
-      this.formData.head_num = selectedinfo.head_num;
+      // this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
-      this.formData.escort_name = selectedinfo.escort_name;
+      // this.formData.escort_name = selectedinfo.escort_name;
     } else {
       this.formData.head_num = '';
       this.formData.trailer_num = '';

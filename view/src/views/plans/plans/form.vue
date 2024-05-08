@@ -213,15 +213,15 @@ methods: {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
       console.log(selectedinfo)
-      this.formData.head_num = selectedinfo.head_num;
+      // this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
-      this.formData.escort_name = selectedinfo.escort_name;
+      this.formData.trailer_status = selectedinfo.trailer_status;
     } else {
-      this.formData.head_num = '';
+      // this.formData.head_num = '';
       this.formData.trailer_num = '';
       this.formData.driver_name = '';
-      this.formData.escort_name = '';
+      this.formData.trailer_status = '';
     }
     // this.load_address = this.load_factory.factory;
   },
@@ -276,6 +276,7 @@ methods: {
     this.formData.end_periodic = ''
     this.formData.load_location = ''
     this.formData.unload_location = ''
+    this.formData.trailer_status = ''
   },
   getplansinfo(id){
     getplansinfo({id:id}).then(response=>{
@@ -298,7 +299,7 @@ methods: {
             this.formData.unload_location = response.unload_location
             this.formData.start_periodic = response.start_periodic
             this.formData.end_periodic = response.end_periodic
-            
+            this.formData.trailer_status = response.trailer_status
         }
     })
   },

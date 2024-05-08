@@ -32,7 +32,7 @@ class Info extends Model
 
     public static function cartrailer($trailer_id)
     {
-        $trailer_plate = self::alias('i')->join('admin_cartrailer c','c.id=i.trailer_id')->where('i.trailer_id',$trailer_id)->value('trailer_plate');
+        $trailer_plate = self::alias('i')->join('admin_cartrailer c','c.id=i.trailer_id')->where('i.trailer_id',$trailer_id)->field('trailer_plate,trailer_status')->find();
         return $trailer_plate;
     }
 

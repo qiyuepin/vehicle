@@ -82,6 +82,42 @@ class Plan extends Base
         $data = $service -> deltemporary($param);
         return $this->responseData($data);
     }
+    public function getplans(Request $request,PlanService $service){
+        $param = $request->param();
+        $data = $service -> getplans($param);
+        return $this->responseData($data);
+       
+    }
+    public function getplansinfo(Request $request,PlanService $service){
+        $param = $request->param();
+
+        $data = $service -> getplansinfo($param);
+        return $this->responseData($data);
+       
+    }
+    public function addplan(Request $request,PlanService $service){
+        $param = $request->param();
+
+        $data = $service -> addplan($param);
+        return $this->responseData($data);
+    }
+    public function editplan(Request $request,PlanService $service){
+        $param = $request->param();
+     
+        $data = $service -> editplan($param);
+        return $this->responseData($data);
+    }
+    public function distplan(Request $request,PlanService $service){
+        $param = $request->param();
+        $data = $service -> distplan($param);
+        return $this->responseData($data);
+    }
+    public function delplan(Request $request,PlanService $service){
+        $param = $request->param();
+
+        $data = $service -> delplan($param);
+        return $this->responseData($data);
+    }
     public function driver_normal(Request $request,PlanService $service,UserService $userservice){
         $param = $request->param();
         // dump($param);

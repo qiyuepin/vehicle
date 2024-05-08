@@ -16,10 +16,9 @@ use app\model\Plan;
 use app\model\Plans;
 use app\model\Carhead;
 use app\model\Cartrailer;
+use app\model\Escort;
 use app\model\Info;
 use app\model\Factory;
-
-
 
 
 class PlanService extends BaseService
@@ -28,20 +27,25 @@ class PlanService extends BaseService
     public function getplaninfo(){
         // dump('111');die;
         try{
-            $data = Info::where('status','in','0,5,9')->select();
+            // $data = Info::where('status','in','0,5,9')->select();
+            $data = Info::select();
             // dump($data);
             foreach($data as $key => $value){
                 $head = Info::carhead($value['head_id']);
                 $trailer = Info::cartrailer($value['trailer_id']);
                 $driver = Info::cardriver($value['driver_id']);
                 $escort = Info::carescort($value['escort_id']);
+                $trailer_status = Info::cartrailer($value['trailer_status']);
                 // $info = $head.'-'.$trailer.'-'.$driver.'-'.$escort;
-                $info = $trailer.'-'.$driver;
+                $test = Info::cartrailer($value['trailer_status']);
+                // dump($trailer['trailer_status']);die;
+                $info = $trailer['trailer_plate'].'-'.$driver;
                 $data[$key]['info'] = $info;
                 $data[$key]['driver_name'] = $driver;
                 $data[$key]['escort_name'] = $escort;
                 $data[$key]['head_num'] = $head;
-                $data[$key]['trailer_num'] = $trailer;
+                $data[$key]['trailer_num'] = $trailer['trailer_plate'];
+                $data[$key]['trailer_status'] = $trailer['trailer_status'];
             }
             $factory = Factory::where('status',2)->select();
             return $this->success(['data'=>$data,'factory'=>$factory]);
@@ -54,8 +58,19 @@ class PlanService extends BaseService
    
         try{
             $where['plan_type'] = 0;
-            // dump($where);
-            // dump(Plan::where($where)->select());
+            if(isset($param['keywords'])&&$param['keywords']){
+                $where[] = ['driver_name|trailer_num|load_factory|unload_factory','like','%'.$param['keywords'].'%'];
+            }
+            if(isset($param['status'])){
+                
+                if($param['status'] == 'null'){
+                    $where['status'] = null;
+                }elseif($param['status'] != ''){
+                    $where['status'] = $param['status'];
+                }
+
+            }
+
             $data = Plan::where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
             // dump($data);
@@ -245,8 +260,18 @@ class PlanService extends BaseService
             // $where = [];
             $where['plan_type'] = array('1','2');
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['trailer_plate|trailer_brand','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|trailer_num|load_factory|unload_factory','like','%'.$param['keywords'].'%'];
             }
+            if(isset($param['status'])){
+                
+                if($param['status'] == 'null'){
+                    $where['status'] = null;
+                }elseif($param['status'] != ''){
+                    $where['status'] = $param['status'];
+                }
+
+            }
+            // dump($param);die;
             $data = Plan::where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 // dump($data);die;
@@ -421,8 +446,41 @@ class PlanService extends BaseService
    
         try{
             $where = [];
-            $data = Plans::where($where)->order(['create_time'=>'desc'])
-                ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+            
+            if(isset($param['keywords'])&&$param['keywords']){
+                $where[] = ['load_factory|unload_factory','like','%'.$param['keywords'].'%'];
+            }
+            if(isset($param['status'])&&$param['status'] != ''){
+                $where['status'] = $param['status'];
+            }
+            if(isset($param['plan_type'])&&$param['plan_type'] != ''){
+                $where['plan_type'] = $param['plan_type'];
+            }
+            // dump($param);
+            if(isset($param['dist'])&&$param['dist']){
+                if($param['dist'] == 1){
+                    $data = Plans::where($where)->order(['create_time'=>'desc'])->select()->toArray();
+                }else{
+                    // dump($param);
+                    // $where = $param;
+
+                    $data = Plan::where($where)->order(['create_time'=>'desc'])->select()->toArray();
+
+                }
+            }else{
+                // dump("8");
+                // if($param['limit'] == '-1'){
+                //     $data = Plans::where($where)->order(['create_time'=>'desc'])
+                //     ->select()->toArray();
+                // }else{
+                //     $data = Plans::where($where)->order(['create_time'=>'desc'])
+                //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                // }
+                $data = Plans::where($where)->order(['create_time'=>'desc'])
+                    ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+            }
+            
+            
             return $this->success($data);
         }catch (\Exception $exception){
             $this->recordLog($exception);
@@ -511,6 +569,7 @@ class PlanService extends BaseService
     public function editplan($param=[]){
         try{
             Db::startTrans();
+            // dump($param);die;
             $Plan = Plans::where('id',$param['id'])->find();
             if(empty($Plan)){
                 throw new \Exception('信息不存在');
@@ -534,16 +593,12 @@ class PlanService extends BaseService
         // dump($param);die;
         try{
             Db::startTrans();
-            // $where['plan_type']=0;
             $where['driver_name']=$param['driver_name'];
             $Plan = Plan::where($where)->order(['id'=>'desc'])->find();
             // $plans = Plans::where('id',$param['id'])->get()->toArray();
             $plan0 = Plans::find($param['id']);
             $plans = $plan0 ? $plan0->toArray() : null;
-            // dump($plans);die;
-            // if(empty($Plan)){
-            //     throw new \Exception('信息不存在');
-            // }
+
             if(isset($Plan) && $Plan['driver_status'] > 1){
                 $plans['driver_status'] = 1;
                 // $param['status'] = 1;
@@ -563,6 +618,7 @@ class PlanService extends BaseService
             $plans['driver_name'] = $param['driver_name'];
             $plans['trailer_num'] = $param['trailer_num'];
             $plans['plans_id'] = $param['id'];
+            $plans['trailer_status'] = $param['trailer_status'];
             // dump($param);
             // dump($plans);die;
             // $res = Plans::update($param,['id'=>$param['id']]);
@@ -656,8 +712,45 @@ class PlanService extends BaseService
             if(isset($param['status']) && $param['status'] == 5 && $lastplan !== null){
                 $param['driver_status'] = 2;
             }
-            else if(isset($param['status']) && $param['status'] == 6){
+            else if(isset($param['status']) && $param['status'] == 0){
                 $param['driver_status'] = 2;
+            }
+            // dump($param['escort_name']);die;
+            if(isset($param['status'])){
+                $carhead_plate = isset($param['head_num'])?$param['head_num']:$Plan['head_num'];
+                $escort_name = isset($param['escort_name'])?$param['escort_name']:$Plan['escort_name'];
+                // dump($escort_name);die;
+                if($param['status'] == 1 || $param['status'] == 3 || $param['status'] == 5){
+                    $driver['driver_status'] = 1;
+                    $head['head_status'] = 3;
+                    $escort['escort_status'] = 1;
+                    // $trailer['trailer_status'] = 1;
+                }
+                else if($param['status'] == 2){
+                    $driver['driver_status'] = 1;
+                    $head['head_status'] = 1;
+                    $escort['escort_status'] = 1;
+                }
+                else if($param['status'] == 4){
+                    $driver['driver_status'] = 1;
+                    $head['head_status'] = 2;
+                    $escort['escort_status'] = 1;
+                    $trailer['trailer_status'] = 4;
+                }
+                else if($param['status'] == 0){
+                    $driver['driver_status'] = 0;
+                    $head['head_status'] = 0;
+                    $escort['escort_status'] = 0;
+                    
+                }
+                // dump($head);die;
+                $trailer['trailer_status'] = $param['status']-1;
+                // dump($trailer);die;
+                // Plan::update($param,['id'=>$param['id']]);
+                Carhead::update($head,['carhead_plate'=>$carhead_plate]);
+                Cartrailer::update($trailer,['trailer_plate'=>$Plan['trailer_num']]);
+                Escort::update($escort,['name'=>$escort_name]);
+                Admin::update($driver,['username'=>$Plan['driver_name']]);
             }
             // dump($param);die;
             $res = Plan::update($param,['id'=>$param['id']]);

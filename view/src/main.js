@@ -28,6 +28,33 @@ import SocketIO from "socket.io-client"
 import defaultSettings from './settings.js'
 import VueSocketIO from 'vue-socket.io'
 
+// import VueAMap from 'vue-amap'
+// Vue.use(VueAMap);
+
+// VueAMap.initAMapApiLoader({
+//   key: '4cfd1e1cfdc8b0e77e0aaaaade6aee50',
+//   plugin: [
+//       'AMap.Scale',
+//       'AMap.OverView',
+//       'AMap.ToolBar',
+//       'AMap.MapType',
+//       'AMap.PlaceSearch',
+//       'AMap.Geolocation',
+//       'AMap.Geocoder',
+//       'AMap.DrivingPolicy',
+//       'AMap.Driving',
+//       "AMap.Autocomplete",
+//  "AMap.PolyEditor",
+//  "AMap.CircleEditor",
+//   ],
+//   v: '1.4.4',
+//   uiVersion: '1.0',
+// })
+
+// //高德的安全密钥
+// window._AMapSecurityConfig = {
+//   securityJsCode:'b64b7df6be939d822d7380f63fb22f31',
+// }
 Vue.use(new VueSocketIO({
   debug: true,
   connection: SocketIO (process.env.VUE_APP_WS_URL+'?X-Access-Appid='+defaultSettings.appid,{transports: ['websocket']}),
