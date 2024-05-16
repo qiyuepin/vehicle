@@ -606,36 +606,43 @@ class InfoService extends BaseService
             return $this->error();
         }
     }
-    public function getcarlist(){
+    public function getcarlist($param=[]){
+        $period_id = null;
         try{
 
-            $data['driver'] = Db::name('admin')->where(['type' => 2, 'driver_status' => 0])->field('id,username,status,type,driver_status')->select();
-            // $driver = Db::name('admin')->where(['type' => 2, 'driver_status' => 0])->field('id,username,status,type,driver_status')->select();
-            // foreach($driver  as $key => $value ){
-            //     $driver[$key]['period_id'] = null;
-            //     dump($driver[$key]);
-            //     // $data['driver'][$key]['period_id'] = null;
-            //     $plan = Plan::where(['driver_status' => 1, 'plan_type' => 0])
-            //         ->where('driver_name', $value['username'])
-            //         ->order('create_time', 'desc')
-            //         ->find();
-            //     if ($plan) {
-            //         $period_id = $plan->value('period_id');
-            //         // $data['driver'][$key]['period_id'] = $period_id;
-            //     } else {
-            //         $period_id = null;
-            //         // $data['driver'][$key]['period_id'] = null;
-            //     }
-            //     // dump($data['driver'][$key]);dump($period_id);
-            //     // $data['driver'][$key]['period_id'] = $period_id;
-            //     // dump($data['driver'][$key]);
-            //     // $data['driver'][$key]['period_id'] = $period_id;
-            //     // dump($data['driver'][$key]['period_id']);
-            // }
+            $data['driver'] = Db::name('admin')->where(['type' => 2, 'driver_status' => 0])->field('id,username,status,type,driver_status')->select()->toArray();
+            $driver = Db::name('admin')->where(['type' => 2, 'driver_status' => 0])->field('id,username,status,type,driver_status')->select()->toArray();
+            $trailer = [];
+            if(isset($param['trailer']) && $param['trailer']){
+                $trailer['trailer_status'] = $param['trailer'];
+            }
+            // dump($param['trailer']);die;
+            foreach($driver as $key => $value ){
+
+                $plan = Plan::where(['driver_status' => 1, 'plan_type' => 0])
+                    ->where('driver_name', $value['username'])
+                    ->order('create_time', 'desc')
+                    ->find();
+                if ($plan) {
+ 
+                    $period_id = $plan['period_id'];
+                  
+                } else {
+                    
+                    $period_id = null;
+                   
+                }
+          
+                $data['driver'][$key]['period_id'] = $period_id;
+                // dump($driver[$key]);die;
+                // dump($data['driver'][$key]);
+                // $data['driver'][$key]['period_id'] = $period_id;
+                // dump($data['driver'][$key]['period_id']);
+            }
             // return $this->success($data);
-            $data['escort'] = Escort::where(['escort_status' => 0])->field('id,name,escort_status')->select();
-            $data['head'] = Carhead::where(['head_status' => 0])->field('id,carhead_plate,head_status')->select();
-            $data['trailer'] = Cartrailer::where(['trailer_status' => 0])->field('id,trailer_plate,trailer_status')->select();
+            $data['escort'] = Escort::where('escort_status','in',[0,1])->field('id,name,escort_status')->select();
+            $data['head'] = Carhead::where('head_status','in',[0,3])->field('id,carhead_plate,head_status')->select();
+            $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status')->select();
             // $data['admin'] = Escort::where($where)->order(['create_time'=>'desc'])
             //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 // dump($data);die;
@@ -735,4 +742,25 @@ class InfoService extends BaseService
             return $this->error();
         }
     }
+    public function Pouring($param=[]){
+        try{
+            Db::startTrans();
+            // dump(Driver::whereIn('id',$param['ids'])->find());die;
+            Cartrailer::where('trailer_plate',$param['old_trailer'])->update(['trailer_status'=> 0]);
+            $res = Cartrailer::where('trailer_plate',$param['new_trailer'])->update(['trailer_status'=> 1]);
+            // dump($param);die;
+            // $res = Factory::whereIn('id',$param['ids'])->delete();
+            if(!$res){
+                throw new \Exception('失败');
+            }
+
+            Db::commit();
+            return $this->success([],'成功');
+        }catch (\Exception $exception){
+            Db::rollback();
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    
 }
