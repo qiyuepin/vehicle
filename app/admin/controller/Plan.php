@@ -66,8 +66,8 @@ class Plan extends Base
     }
     public function addtemporary(Request $request,PlanService $service){
         $param = $request->param();
-
-        $data = $service -> addtemporary($param);
+        $authorization = $request->header('Authorization');
+        $data = $service -> addtemporary($param,$authorization);
         return $this->responseData($data);
     }
     public function edittemporary(Request $request,PlanService $service){
@@ -97,19 +97,20 @@ class Plan extends Base
     }
     public function addplan(Request $request,PlanService $service){
         $param = $request->param();
-
-        $data = $service -> addplan($param);
+        $authorization = $request->header('Authorization');
+        $data = $service -> addplan($param,$authorization);
         return $this->responseData($data);
     }
     public function editplan(Request $request,PlanService $service){
         $param = $request->param();
-     
-        $data = $service -> editplan($param);
+        $authorization = $request->header('Authorization');
+        $data = $service -> editplan($param,$authorization);
         return $this->responseData($data);
     }
     public function distplan(Request $request,PlanService $service){
         $param = $request->param();
-        $data = $service -> distplan($param);
+        $authorization = $request->header('Authorization');
+        $data = $service -> distplan($param,$authorization);
         return $this->responseData($data);
     }
     public function delplan(Request $request,PlanService $service){
@@ -131,8 +132,24 @@ class Plan extends Base
 
     public function driver_sumitnormal(Request $request,PlanService $service,UserService $userservice){
         $param = $request->param();
-
-        $data = $service -> driver_sumitnormal($param);
+        $authorization = $request->header('Authorization');
+        $data = $service -> driver_sumitnormal($param,$authorization);
         return $this->responseData($data);
+    }
+
+    public function homechart(Request $request,PlanService $service){
+        $param = $request->param();
+
+        $data = $service -> homechart($param);
+        return $this->responseData($data);
+       
+    }
+
+    public function notice(Request $request,PlanService $service){
+        $param = $request->param();
+
+        $data = $service -> notice($param);
+        return $this->responseData($data);
+       
     }
 }

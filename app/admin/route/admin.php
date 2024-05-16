@@ -9,6 +9,8 @@
 use think\facade\Route;
 use app\service\BaseService;
 use app\Request;
+
+Route::get('test/index', 'admin/Test/index');
 Route::group('/',function(){
     ###基础路由###
     Route::get('getCaptcha','Base/getCaptcha');//获取验证码
@@ -25,7 +27,6 @@ Route::group('/',function(){
     Route::group('index',function(){
        Route::get('ceshi','Index/ceshi');
     });
-
     ###登录授权和权限###
     Route::group('auth',function(){
         Route::post('login','Auth/login');//登录
@@ -43,6 +44,7 @@ Route::group('/',function(){
     ###用户###
     Route::group('user',function(){
         Route::get('info','User/info');//获取用户信息
+        Route::get('author','User/author');//获取用户信息
         Route::post('logout','User/logout');//退出登录
         Route::post('saveInfo','User/saveInfo');//修改信息
         Route::post('updatePass','User/updatePass');//修改密码
@@ -104,6 +106,9 @@ Route::group('/',function(){
         Route::post('editcost','Cost/editcost');//编辑费用
         Route::post('change','Cost/change');//更改费用状态
         Route::post('delcost','Cost/delcost');//删除费用
+        Route::get('getcosttype','Cost/getcosttype');//费用类别
+        Route::get('getperiod','Cost/getperiod');
+        Route::get('getcostlist','Cost/getcostlist');
     })->middleware(['adminAuth']);
 
     ###聊天###
@@ -149,6 +154,7 @@ Route::group('/',function(){
     })->middleware(['adminAuth']);
 
     Route::group('plan',function(){
+        Route::get('homechart','Plan/homechart');//车头信息
         Route::get('normal','Plan/normal');//车头信息
         Route::get('getnormal','Plan/getnormal');//车头信息
         Route::get('getnormalInfo','Plan/getnormalInfo');//车头信息详情
@@ -168,6 +174,7 @@ Route::group('/',function(){
         Route::post('distplan','Plan/distplan');//分配任务
         Route::post('delplan','Plan/delplan');//删除任务
         Route::get('driver_normal','Plan/driver_normal');//挂车信息
+        Route::get('notice','Plan/notice');//挂车信息
         Route::post('driver_sumitnormal','Plan/driver_sumitnormal');//驾驶员提交信息
     })->middleware(['adminAuth']);
 });

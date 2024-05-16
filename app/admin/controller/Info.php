@@ -183,4 +183,11 @@ class Info extends Base
         $data = $service -> delfactory($param);
         return $this->responseData($data);
     }
+
+    public function Pouring(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> Pouring($param);
+        return $this->responseData($data);
+    }
+    
 }
