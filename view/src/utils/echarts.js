@@ -13,5 +13,6 @@ require("echarts/lib/chart/radar")
 //引入提示框，标题等组件
 require('echarts/lib/component/tooltip')
 require("echarts/lib/component/legend")
+require("echarts/lib/component/title")
 export default echarts
 

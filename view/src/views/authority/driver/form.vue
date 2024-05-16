@@ -205,6 +205,12 @@ export default {
       this.formData.password = ''
       this.formData.autograph = ''
       this.formData.group = []
+      this.$refs.Image_card_front.imgUrl = ''
+      this.$refs.Image_card_back.imgUrl = ''
+      this.$refs.Image_driver_card_front.imgUrl = ''
+      this.$refs.Image_driver_card_back.imgUrl = ''
+      this.$refs.Image_cert_front.imgUrl = ''
+      this.$refs.Image_cert_back.imgUrl = ''
     },
     getdriverInfo(id){
       getdriverInfo({id:id}).then(response=>{
@@ -254,6 +260,7 @@ export default {
                 })
               }else{
                 adddriverAdmin(this.formData).then(_ => {
+                  this.resetData()
                   this.$message({
                     message: '新增成功',
                     type: 'success',

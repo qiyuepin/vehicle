@@ -1,54 +1,54 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            驾驶员
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val=this.driver_count :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+      <div class="card-panel" @click="handleSetLineChartData('plan_normal_data')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="truck-box" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            运输任务
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val=this.plan_normal_count :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel" @click="handleSetLineChartData('plan_load_data')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon icon-class="truck-arrow-right" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            装货任务
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val=this.plan_load_count :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel" @click="handleSetLineChartData('plan_unload_data')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <svg-icon icon-class="truck-arrow-left" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            卸货任务
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val=this.plan_unload_count :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -57,12 +57,38 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { getChartData } from '@/api/plan.js'
 
 export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      driver_count: 0,
+      plan_normal_count: 0,
+      plan_load_count: 0,
+      plan_unload_count: 0
+    }
+  },
+  created() {
+    this.getChartData();
+  },
   methods: {
+    getChartData() {
+      // this.loading = true
+      getChartData(this.query).then(response => {
+          if(response !== undefined){
+            // console.log(response.data)
+
+              this.driver_count = response.data.driver_count
+              this.plan_normal_count = response.data.plan_normal_count
+              this.plan_load_count = response.data.plan_load_count
+              this.plan_unload_count = response.data.plan_unload_count
+          }
+          // this.loading = false
+      })
+    },
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     }
@@ -72,10 +98,10 @@ export default {
 
 <style lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
+  margin-top: 2px;
 
   .card-panel-col {
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
 
   .card-panel {
@@ -103,11 +129,11 @@ export default {
       }
 
       .icon-money {
-        background: #f4516c;
+        background: #ffba00;
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #ff6d6d
       }
     }
 
@@ -120,11 +146,11 @@ export default {
     }
 
     .icon-money {
-      color: #f4516c;
+      color: #ffba00;
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #ff6d6d
     }
 
     .card-panel-icon-wrapper {

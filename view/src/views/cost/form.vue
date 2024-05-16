@@ -19,11 +19,21 @@
                   <el-tab-pane label="基本信息">
                 
                       <el-form-item label="驾驶员" prop="driver_id">
-                          <el-select v-model="formData.driver_id" filterable  placeholder="请选择驾驶员">
+                          <el-select v-model="formData.driver_id" filterable  placeholder="请选择驾驶员"  @change="driverChanged">
                             <el-option
                               v-for="item in driverlist"
                               :key="item.value"
                               :label="item.username"
+                              :value="item.id">
+                            </el-option>
+                          </el-select>
+                      </el-form-item>
+                      <el-form-item label="计费周期" prop="period_id_driver">
+                          <el-select v-model="formData.period_id_driver" filterable  placeholder="请选择计费周期">
+                            <el-option
+                              v-for="item in period_idlist"
+                              :key="item.value"
+                              :label="item.period_id_driver"
                               :value="item.id">
                             </el-option>
                           </el-select>
@@ -54,7 +64,7 @@
 
 <script>
 
-import { addescort, editescort,getescortInfo } from '@/api/Info.js'
+import { addcost, editcost, getinfo, getperiod } from '@/api/cost.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 import { getcarlist } from '@/api/Info.js'
@@ -88,27 +98,62 @@ data() {
     roles: [],
     drawerShow:false,
     driverlist:[],
+    period_idlist:[],
+    driver:[],
+    saveRules: {
+      driver_id: [{ required: true, trigger: 'blur'}],
+      cost_money: [{ required: true, trigger: 'blur'}]
+    },
     formData: {
       id: 0,
       driver_name: '',
       remark: '',
       cost_img: '',
-      period_id: '',
+      period_id_driver: '',
       cost_money: ''
     },
   }
 },
 created() {
   this.getcarlist()
+  // this.getperiod(this.driver)
 },
 methods: {
+  getperiod(driver) {
+    getperiod({driver_name:driver}).then(response => {
+      console.log(driver)
+        if(response !== undefined){
+          console.log(response)
+          this.period_idlist = response
+        }
+    })
+  },
   getcarlist() {
     getcarlist().then(response => {
         if(response !== undefined){
           console.log(response.data)
           this.driverlist = response.driver
+          // 
         }
     })
+  },
+  driverChanged() {
+    const selectedinfo = this.driverlist.find(item => item.id === this.formData.driver_id);
+    if (selectedinfo) {
+      // console.log(selectedinfo)
+      this.formData.period_id_driver = selectedinfo.period_id;
+      console.log(selectedinfo.username)
+      this.getperiod(selectedinfo.username)
+      // this.formData.trailer_num = selectedinfo.trailer_num;
+      // this.formData.driver_name = selectedinfo.driver_name;
+      // this.formData.trailer_status = selectedinfo.trailer_status;
+    } else {
+      // this.formData.head_num = '';
+      // this.formData.period_id_driver = '';
+      // this.formData.driver_name = '';
+      // this.formData.trailer_status = '';
+    }
+    // this.load_address = this.load_factory.factory;
   },
   handleClose() {
     this.dialog = false
@@ -126,16 +171,16 @@ methods: {
     this.formData.remark = ''
     this.formData.cost_money = ''
     this.formData.cost_img = ''
-    this.formData.period_id = ''
+    this.formData.period_id_driver = ''
   },
-  getescortInfo(id){
-    getescortInfo({id:id}).then(response=>{
+  getinfo(id){
+    getinfo({id:id}).then(response=>{
         if(response !== undefined){
             this.title = '编辑费用'
             this.formData.id = response.id
             this.formData.driver_name = response.driver_name
             this.formData.remark = response.remark
-            this.formData.period_id = response.period_id
+            this.formData.period_id_driver = response.period_id_driver
             this.formData.cost_money = response.cost_money
             this.formData.cost_img = response.cost_img
             this.$refs.Image_cost_img.imgUrl = response.cost_img
@@ -149,7 +194,7 @@ methods: {
         this.$refs.saveForm.validate(valid => {
           if (valid) {
             if(this.formData.id){
-              editescort(this.formData).then(_ => {
+              editcost(this.formData).then(_ => {
                 this.$message({
                   message: '编辑成功',
                   type: 'success',
@@ -159,7 +204,7 @@ methods: {
                 this.dialog = false
               })
             }else{
-              addescort(this.formData).then(_ => {
+              addcost(this.formData).then(_ => {
                 this.$message({
                   message: '新增成功',
                   type: 'success',

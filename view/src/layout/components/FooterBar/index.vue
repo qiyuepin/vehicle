@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="footer">Copyright © tpadmin.chengzhigang.cn All Rights Reserved.</div>
+        <div class="footer">Copyright © </div>
     </div>
 </template>
 

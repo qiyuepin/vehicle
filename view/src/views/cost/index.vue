@@ -21,6 +21,7 @@
           <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+          <el-button @click="exportExcel" type="primary" size="mini">导出所有费用</el-button>
       </el-row>
       <el-table
               ref="multipleTable"
@@ -52,14 +53,26 @@
               </template>
           </el-table-column> -->
           <el-table-column
+                  prop="year"
+                  label="年份"
+                  align="center"
+                  width="80">
+          </el-table-column>
+          <el-table-column
+                  prop="total"
+                  label="总金额"
+                  align="center"
+                  width="100">
+          </el-table-column>
+          <el-table-column
               prop="cost_status"
               label="状态"
               align="center"
               width="100">
               <template slot-scope="scope">
-                <el-tag type="success"  v-if="scope.row.cost_status === '0'" >空闲</el-tag>
-                <el-tag type="warning" v-else-if="scope.row.cost_status === '1'">出车</el-tag>
-                <el-tag type="info" v-else >离职</el-tag>
+                <el-tag type="success"  v-if="scope.row.status === 0" >进行中</el-tag>
+                <el-tag type="warning" v-else-if="scope.row.status === 1">已结束</el-tag>
+                <el-tag type="info" v-else >-</el-tag>
                   <!-- <el-button 
                       v-if="scope.row.cost_status === '0'" 
                       type="success"  size="mini" plain>
@@ -78,92 +91,61 @@
                   </el-button> -->
               </template>
           </el-table-column>
-          <el-table-column
-                  prop="name"
-                  label="姓名"
-                  align="center"
-                  width="120">
-          </el-table-column>
-          <el-table-column
-                  prop="phone"
-                  label="手机号"
-                  align="center"
-                  width="120">
-          </el-table-column>
-          <el-table-column
-                  prop="id_card"
-                  label="身份证号"
+          <!-- <el-table-column
+                  prop="period_id_driver"
+                  label="费用周期"
                   align="center"
                   width="200">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
-                  prop="cert_card_num"
-                  label="从业资格证号"
-                  align="center"
-                  width="200">
-          </el-table-column>
-
-          <el-table-column
-                  prop="employ_time"
-                  label="入职时间"
-                  align="center"
-                  width="200">
+              prop="period_id_driver"
+              label="费用周期"
+              align="center"
+              width="220">
               <template slot-scope="scope">
-                  <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px" v-text="scope.row.employ_time"></span>
+                <el-button size="mini" type="primary" v-permission="'admin.cost.editcost'" plain  @click="costlist(scope.row)">{{ scope.row.period_id_driver }}</el-button>
+ 
               </template>
           </el-table-column>
-          <el-table-column
-                  prop="card_front"
-                  label="身份证正面"
-                  align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.card_front"
-                      :preview-src-list="[scope.row.card_front]"
-                      slot-scope="scope">
-              </el-image>
-          </el-table-column>
-          <el-table-column
-                  prop="card_back"
-                  label="身份证反面"
-                  align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.card_back"
-                      :preview-src-list="[scope.row.card_back]"
-                      slot-scope="scope">
-              </el-image>
-          </el-table-column>
-         
-          <el-table-column
-                  prop="cert_front"
-                  label="从业资格证正面"
-                  align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.cert_front"
-                      :preview-src-list="[scope.row.cert_front]"
-                      slot-scope="scope">
-              </el-image>
-          </el-table-column>
-          <el-table-column
-                  prop="cert_back"
-                  label="从业资格证反面"
-                  align="center"
-                  width="150">
-              <el-image
-                      style="width: 40px; height: 40px"
-                      :src="scope.row.cert_back"
-                      :preview-src-list="[scope.row.cert_back]"
-                      slot-scope="scope">
-              </el-image>
-          </el-table-column>
           
           
+          <el-table-column
+                  prop="initiator"
+                  label="创建人"
+                  align="center"
+                  width="120">
+          </el-table-column>
+          <el-table-column
+                  prop="dispatcher"
+                  label="分配人"
+                  align="center"
+                  width="120">
+          </el-table-column>
+          <el-table-column
+                  prop="driver_name"
+                  label="驾驶员"
+                  align="center"
+                  width="150">
+          </el-table-column>
+          <el-table-column
+                  prop="trailer_num"
+                  label="挂车号"
+                  align="center"
+                  width="150">
+          </el-table-column>
+          <!-- <el-table-column
+                  prop="head_num"
+                  label="车头号"
+                  align="center"
+                  width="200">
+          </el-table-column>
+          <el-table-column
+                  prop="escort_name"
+                  label="押运员"
+                  align="center"
+                  width="200">
+          </el-table-column> -->
+
           
           
           <el-table-column
@@ -182,7 +164,7 @@
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
-                  <el-button size="mini" type="primary" v-permission="'admin.info.editcost'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <!-- <el-button size="mini" type="primary" v-permission="'admin.cost.editcost'"  @click="handleEdit(scope.row)">上传费用</el-button> -->
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -225,11 +207,13 @@
 import { getcost,delcost } from '@/api/cost.js'
 import myForm from './form.vue'
 import { getArrByKey } from '@/utils'
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 
 export default {
 name: 'Admin',
 components: {
-  myForm
+    myForm
 },
 data() {
   return {
@@ -239,10 +223,17 @@ data() {
     loading: true,
     searchShow: false,
     total: 0,
+    excelData:[],
     query: {
       page: 1,
       limit: 10,
+      platform: 'pc',
       keywords: '',
+      status: ''
+    },
+    excelquery: {
+      keywords: '',
+      platform: 'excelall',
       status: ''
     }
   }
@@ -261,6 +252,11 @@ methods: {
         }
         this.loading = false
     })
+    getcost(this.excelquery).then(response => {
+        if(response !== undefined){
+          this.excelData = response
+        }
+    })
   },
   //搜索
   handleSearch() {
@@ -272,6 +268,7 @@ methods: {
     this.query.page = 1
     this.query.keywords = ''
     this.query.status = ''
+    this.query.platform = 'pc'
     this.getcost()
   },
   handleRegulation(raw) {
@@ -324,10 +321,79 @@ methods: {
     }
   },
   //编辑
-  handleEdit(raw){
-    console.log("edit"+raw.id);
-    this.$refs.myAttr.getcostInfo(raw.id)
-    this.$refs.myAttr.showForm()
+  costlist(raw){
+    console.log("raw.id--"+raw.id);
+    // this.$refs.myAttr.costlist(raw[0])
+    this.$router.push({ path: '/costlist/index', query: { period_id: raw.id }});
+    
+    // this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
+  },
+  exportExcel () {
+    const data = this.excelData.map((item) => {
+      // 创建一个新的对象，包含原对象的所有键值对以及新的参数
+      return {
+        id: item.id,
+        "费用周期": item.period_id_driver,
+        "费用类别": item.type_name,
+        "其他类别": item.other_type,
+        "费用金额": item.cost_money,
+        "驾驶员": item.driver_name,
+        "挂车号": item.trailer_num,
+        "费用照片": item.cost_img,
+        "备注": item.remark,
+        "添加人": item.cost_creater
+      };
+    });
+
+    // const data = this.excelData;
+
+    // 构建 Workbook
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(data);
+    // 合并相同费用周期的单元格
+    let prevPeriod = null;
+    let mergeStartIndex = 1;
+    for (let i = 0; i < data.length; i++) {
+      const currentPeriod = data[i]["费用周期"];
+      if (currentPeriod !== prevPeriod) {
+        if (mergeStartIndex !== i) {
+          const mergeEndIndex = i - 1;
+          ws['!merges'].push({ s: { r: mergeStartIndex, c: 1 }, e: { r: mergeEndIndex, c: 1 } }); // 合并 B 列的单元格
+        }
+        mergeStartIndex = i;
+        prevPeriod = currentPeriod;
+      }
+    }
+
+
+
+    // 添加图片
+    data.forEach((item, index) => {
+      const img = new Image();
+      img.src = item.image;
+      const ctx = document.createElement('canvas').getContext('2d');
+      img.onload = () => {
+        ctx.canvas.width = img.width;
+        ctx.canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        const dataURI = ctx.canvas.toDataURL('image/jpeg');
+        XLSX.utils.sheet_addImage(ws, `A${index + 2}`, dataURI, { extension: 'png' });
+      };
+    });
+
+    // 将 Worksheet 添加到 Workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    // 导出 Excel 文件
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    try {
+      FileSaver.saveAs(
+        new Blob([wbout], { type: 'application/octet-stream' }),
+        '费用列表.xlsx'
+      );
+    } catch (e) {
+      console.log(e);
+    }
   },
   //删除
   handleDelete(ids){

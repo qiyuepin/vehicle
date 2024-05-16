@@ -134,3 +134,11 @@ export function delplan(data) {
   })
 }
 
+export function getChartData(query) {
+  return request({
+    url:'/plan/homechart',
+    method:'get',
+    params:query
+  })
+}
+

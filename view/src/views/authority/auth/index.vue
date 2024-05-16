@@ -1,15 +1,13 @@
 <template>
     <div class="app-container">
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button type="warning" icon="el-icon-refresh" circle @click="handleReload"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'auth.auth.add'" icon="el-icon-plus" circle @click="handleAdd"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'auth.auth.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" icon="el-icon-delete" circle></el-button>
-            </el-tooltip>
+
+          <el-button type="warning" size="mini" @click="handleReload">刷新</el-button>
+
+          <el-button type="success" size="mini" v-permission="'auth.auth.add'" @click="handleAdd">新增</el-button>
+
+          <el-button type="danger" size="mini" v-permission="'auth.auth.delete'" :disabled="buttonDisabled" @click="handleDeleteAll">删除</el-button>
+
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -85,14 +83,8 @@
                     align="center"
                     min-width="200">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.auth.edit'" icon="el-icon-edit-outline" circle
-                                   @click="handleEdit(scope.row)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button size="mini" type="danger"  v-permission="'auth.auth.delete'" icon="el-icon-delete"
-                                   circle @click="handleDelete([scope.row.id])"></el-button>
-                    </el-tooltip>
+                    <el-button size="mini" type="primary" v-permission="'auth.auth.edit'" @click="handleEdit(scope.row)">编辑</el-button>
+                    <el-button size="mini" type="danger"  v-permission="'auth.auth.delete'"  @click="handleDelete([scope.row.id])">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

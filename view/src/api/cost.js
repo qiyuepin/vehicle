@@ -49,3 +49,26 @@ export function delcost(data) {
   })
 }
 
+export function getperiod(query) {
+  return request({
+    url:'/cost/getperiod',
+    method:'get',
+    params:query
+  })
+}
+
+export function getcosttype(query) {
+  return request({
+    url:'/cost/getcosttype',
+    method:'get',
+    params:query
+  })
+}
+
+export function getcostlist(query) {
+  return request({
+    url:'/cost/getcostlist',
+    method:'get',
+    params:query
+  })
+}
