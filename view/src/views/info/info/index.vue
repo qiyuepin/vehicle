@@ -59,7 +59,7 @@
                   <el-tag :type="scope.row.escort_status==1?'danger':'success'" v-text="scope.row.escort_status==1?'禁用':'启用'"></el-tag>
               </template>
           </el-table-column> -->
-          <el-table-column
+          <!-- <el-table-column
               prop="head_status"
               label="状态"
               align="center"
@@ -72,7 +72,7 @@
                 <el-tag type="info" v-else >停运</el-tag>
 
               </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
                   prop="head_num"
                   label="车头车牌号"

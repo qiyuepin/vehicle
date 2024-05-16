@@ -151,9 +151,13 @@ methods: {
     this.formData.employ_time = ''
     this.formData.card_front = ''
     this.formData.card_back = ''
-    this.formData.card_front = ''
-    this.formData.card_back = ''
+    this.formData.cert_front = ''
+    this.formData.cert_back = ''
     this.formData.escort_status = ''
+    this.$refs.Image_card_front.imgUrl = ''
+    this.$refs.Image_card_back.imgUrl = ''
+    this.$refs.Image_cert_front.imgUrl = ''
+    this.$refs.Image_cert_back.imgUrl = ''
   },
   getescortInfo(id){
     getescortInfo({id:id}).then(response=>{
@@ -194,6 +198,7 @@ methods: {
               })
             }else{
               addescort(this.formData).then(_ => {
+                resetData();
                 this.$message({
                   message: '新增成功',
                   type: 'success',
