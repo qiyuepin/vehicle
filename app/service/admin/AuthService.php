@@ -9,6 +9,7 @@ use app\model\AuthRule;
 use app\service\BaseService;
 use think\facade\Db;
 use think\facade\Event;
+use think\facade\Cache;
 use think\wenhainan\Auth as Authority;
 use app\traits\TokenTrait;
 
@@ -41,6 +42,7 @@ class AuthService extends BaseService
             if(md5($admin['halt'].$param['password'].$admin['halt'])!=$admin['password']){
                 return $this->error('密码错误');
             }
+
             unset($admin['password']);
             unset($admin['halt']);
             //权限
@@ -49,7 +51,13 @@ class AuthService extends BaseService
             if(empty($groups)){
                 return $this->error('账号没有权限');
             }
-            $updateData = ['login_time'=>date('Y-m-d H:i:s'),'login_ip'=>request()->ip()];
+            if(isset($param['Cid']) && $param['Cid']){
+                // $updateData['user_cid'] = $param['Cid'];
+                $updateData = ['user_cid'=>$param['Cid'],'login_time'=>date('Y-m-d H:i:s'),'login_ip'=>request()->ip()];
+            }else{
+                $updateData = ['login_time'=>date('Y-m-d H:i:s'),'login_ip'=>request()->ip()];
+            }
+            
             $res = Admin::update($updateData,['id'=>$admin['id']]);
             if(!$res){
                 throw new \Exception('更新管理员失败');
@@ -57,6 +65,7 @@ class AuthService extends BaseService
             $data = $this->getToken($admin['id']);
             $data['user'] = $admin;
             Event::trigger('AdminUserLogin',[$admin,$updateData]);
+            Cache::set('userinfo',$admin,3600);
             return $this->success($data);
         }catch (\Exception $exception){
             $this->recordLog($exception);
