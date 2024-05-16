@@ -25,6 +25,7 @@ return [
         'admin/admin/getRole',
         'admin/auth/getRules',
         'admin/user/info',
+        'admin/user/author',
         'admin/admin/getdriverList',
         'admin/admin/adddriverAdmin',
         'admin/admin/addAdmin',
@@ -65,6 +66,7 @@ return [
         'admin/info/editfactory',
         'admin/info/delfactory',
         'admin/info/getcartrailerInfo',
+        'admin/info/Pouring',
         'admin/plan/getnormal',
         'admin/plan/addnormal',
         'admin/plan/editnormal',
@@ -81,11 +83,17 @@ return [
         'admin/plan/getplansinfo',
         'admin/plan/driver_normal',
         'admin/plan/driver_sumitnormal',
+        'admin/plan/homechart',
+        'admin/plan/notice',
         'admin/cost/getcost',
         'admin/cost/getinfo',
         'admin/cost/addcost',
         'admin/cost/editcost',
         'admin/cost/delcost',
-        'admin/auth/freshToken'
+        'admin/cost/getperiod',
+        'admin/cost/getcostlist',
+        'admin/cost/getcosttype',
+        'admin/auth/freshToken',
+        'admin/test/index'
     ],//白名单
 ];
