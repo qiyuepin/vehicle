@@ -71,13 +71,14 @@
                 <el-tag type="info" v-else-if="scope.row.status === 4">卸货</el-tag>
                 <el-tag type="info" v-else-if="scope.row.status === 5">在途</el-tag>
                 <el-tag type="info" v-else >空闲</el-tag> -->
-                <el-button  v-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
+                <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
+                <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
                 <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
                 <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
-                <el-button  v-else size="mini" @click="handleDetail(scope.row)">待接单</el-button>
+                <el-button  v-else size="mini" @click="handleDetail(scope.row)">待确认</el-button>
                 <!-- <span style="color: #67C23A;" v-if="scope.row.status === 0" >回库</span>
                 <span style="color: #409EFF;" v-else-if="scope.row.status === 1" >在途</span>
                 <span style="color: #409EFF;" v-else-if="scope.row.status === 2" >装货</span>
@@ -228,7 +229,7 @@
 
 <script>
 
-import { gettemporary, deltemporary, gettemporaryinfo } from '@/api/plan.js'
+import { gettemporary, deltemporary, gettemporaryinfo, getnormalinfo } from '@/api/plan.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
@@ -365,7 +366,7 @@ methods: {
     this.$refs.myAttr.showForm()
   },
   handleDetail(raw){
-    this.$refs.myAttrdetail.gettemporaryinfo(raw.id)
+    this.$refs.myAttrdetail.getnormalinfo(raw.id)
     this.$refs.myAttrdetail.showDetail()
   },
   //删除

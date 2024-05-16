@@ -59,7 +59,7 @@
               align="center"
               width="110">
               <template slot-scope="scope">
-                <span style="color: #ffba00;" v-if="scope.row.status === 0" >未完成</span>
+                <span style="color: #909399;" v-if="scope.row.status === 0" >未完成</span>
                 <span style="color: #13ce66;" v-else-if="scope.row.status === 1" >已完成</span>
                 <!-- <el-button  v-if="scope.row.status === 0"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">未完成</el-button>
                 <el-button  v-else-if="scope.row.status === 1"  type="success"  size="mini" plain @click="handleDetail(scope.row)"> 已完成</el-button> -->
@@ -73,9 +73,23 @@
               width="110">
               <template slot-scope="scope">
                 
-                <span style="color: #ffba00;" v-if="scope.row.plan_type === 0" >运输任务</span>
-                <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 1" >装货任务</span>
-                <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span>
+                <span style="color: #409EFF;" v-if="scope.row.plan_type === 0" >运输任务</span>
+                <span style="color: #E6A23C;" v-else-if="scope.row.plan_type === 1" >装货任务</span>
+                <span style="color: #F56C6C;" v-else-if="scope.row.plan_type === 2" >卸货任务</span>
+              </template>
+          </el-table-column>
+       
+          <el-table-column
+              prop="start_periodic"
+              label="新周期"
+              align="center"
+              width="110">
+              <template slot-scope="scope">
+             
+                <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
+                <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
+                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
+    
               </template>
           </el-table-column>
           
@@ -163,11 +177,14 @@
                   align="center"
                   min-width="250">
               <template slot-scope="scope">
-                  <el-button size="mini" type="danger" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)">分配</el-button>
+                  <el-button size="mini" type="danger" v-if="scope.row.status==0" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)">分配</el-button>
+                  <el-button size="mini" type="danger" v-if="scope.row.status==1" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)" disabled>分配</el-button>
                   <!-- <el-tooltip class="item" effect="dark" content="编辑" placement="top"> -->
-                  <el-button size="mini" type="primary" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="primary" v-if="scope.row.status==0" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="primary" v-if="scope.row.status==1" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)" disabled>编辑</el-button>
+                  
                   <!-- <el-button size="mini" type="success" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button> -->
-                  <el-button size="mini" type="warning" plain v-if="scope.row.status==0" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">未完成</el-button>
+                  <el-button size="mini" type="info" plain v-if="scope.row.status==0" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">未完成</el-button>
                
                   <el-button size="mini" type="success" plain v-if="scope.row.status==1" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">已完成</el-button>
                

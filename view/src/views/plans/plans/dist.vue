@@ -12,16 +12,27 @@
   >
       <div class="demo-drawer__content" style="padding: 10px">
           <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
-          <el-descriptions class="margin-top" title="" :column="2"  border>
-              <el-descriptions-item><template slot="label">货品名称</template>{{formData.product_name}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">货品数量</template>{{formData.product_quantity}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">装货厂家</template>{{formData.load_factory}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">装货地址</template>{{formData.load_address}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">卸货厂家</template>{{formData.unload_factory}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">卸货地址</template>{{formData.unload_address}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">创建日期</template>{{formData.create_time}}</el-descriptions-item>
+          <!-- <el-descriptions class="margin-top" title="" :column="2"  border>
+            <el-descriptions-item><template slot="label">计费周期</template>{{formData.period_id}}</el-descriptions-item>
 
-            </el-descriptions>
+          </el-descriptions> -->
+          <br>
+          
+          <el-descriptions class="margin-top" :title="'计费周期 ' + formData.period_id" :column="2"  border>
+            <!-- <el-descriptions-item><template slot="label">计费周期</template>{{formData.period_id}}</el-descriptions-item> -->
+            
+
+            <el-descriptions-item><template slot="label">货品名称</template>{{formData.product_name}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">货品数量</template>{{product_quantity}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">装货厂家</template>{{formData.load_factory}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">装货地址</template>{{formData.load_address}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">卸货厂家</template>{{formData.unload_factory}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">卸货地址</template>{{formData.unload_address}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">创建人</template>{{formData.initiator}}</el-descriptions-item>
+            <el-descriptions-item><template slot="label">创建日期</template>{{formData.create_time}}</el-descriptions-item>
+
+          </el-descriptions>
+
           <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
                    label-width="110px"
                    style="width: 100%;">
@@ -46,6 +57,9 @@
                       </el-form-item>
                       <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
+                      </el-form-item>
+                      <el-form-item label="货品数量">
+                          <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
                       </el-form-item>
                       <!-- <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
@@ -145,6 +159,7 @@ data() {
     load_factory: null,
     load_address:'',
     drawerShow:false,
+    product_quantity:'',
     map: null,
     saveRules: {
       product_name: [{ required: true, message: '货品名称不能为空',trigger: 'blur'}],
@@ -163,7 +178,8 @@ data() {
       load_address: '',
       unload_factory: '',
       unload_address: '',
-      head_num: '',
+      initiator: '',
+      create_time: '',
       trailer_num: '',
       driver_name: '',
       trailer_status: '',
@@ -173,7 +189,8 @@ data() {
       platform: 'pc',
       period_id: '',
       load_location: '',
-      unload_location: ''
+      unload_location: '',
+      period_id: ''
     },
   }
 },
@@ -274,12 +291,13 @@ methods: {
     this.formData.end_periodic = ''
     this.formData.load_location = ''
     this.formData.unload_location = ''
+    this.formData.period_id = ''
   },
   getplansinfo(id){
     getplansinfo({id:id}).then(response=>{
         if(response !== undefined){
           console.log('response.start_periodic---'+response.start_periodic)
-            this.title = '分配'
+            this.title = '分配驾驶员'
             this.formData.id = response.id
             this.formData.info_id = response.info_id
             this.formData.product_name = response.product_name
@@ -298,27 +316,36 @@ methods: {
             this.formData.end_periodic = response.end_periodic
             this.formData.load_location = response.load_location
             this.formData.unload_location = response.unload_location
+            this.formData.initiator = response.initiator
+            this.formData.period_id = response.period_id
+            this.formData.create_time = response.create_time
+            this.product_quantity = response.product_quantity
         }
     })
   },
   saveData() {
-    console.log('3333333333');
+
     this.$confirm('您确定要提交吗？', '温馨提示')
       .then(_ => {
         this.$refs.saveForm.validate(valid => {
           if (valid) {
             if(this.formData.id){
-              distplan(this.formData).then(_ => {
+              distplan(this.formData).then(response => {
+                // 获取返回值
+                console.log(response);
+                console.log(response.msg);
                 this.$message({
-                  message: '编辑成功',
+                  message: response.msg,
                   type: 'success',
                   duration: 5 * 1000
                 })
                 this.$emit('updateRow')
                 this.dialog = false
               })
-            }else{
-              addplan(this.formData).then(_ => {
+            } else {
+              addplan(this.formData).then(response => {
+                // 获取返回值
+                console.log(response.data);
                 this.$message({
                   message: '新增成功',
                   type: 'success',
@@ -332,6 +359,7 @@ methods: {
         })
       })
       .catch(_ => {
+        // 处理异常
       })
   }
 }

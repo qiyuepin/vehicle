@@ -13,11 +13,12 @@
         <div class="demo-drawer__content" style="padding: 10px">
             <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
             <!-- <el-tag type="info" style="height: 40px;font-size: 15px;line-height: 40px;">周期编号：{{formData.period_id}}</el-tag> -->
-            <el-descriptions class="margin-top" title="" :column="3" :size="size" border>
+            <br>
+            <el-descriptions class="margin-top":title="'计费周期 ' + formData.period_id" :column="2" :size="size" border>
               <!-- <template slot="extra">
                 {{formData.period_id}}
               </template> -->
-              <el-descriptions-item><template slot="label">周期编号</template>{{formData.period_id}}</el-descriptions-item>
+              <!-- <el-descriptions-item><template slot="label">周期编号</template>{{formData.period_id}}</el-descriptions-item> -->
               <el-descriptions-item><template slot="label">车头</template>{{formData.head_num}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">挂车</template>{{formData.trailer_num}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">驾驶员</template>{{formData.driver_name}}</el-descriptions-item>
@@ -29,19 +30,76 @@
               <el-descriptions-item><template slot="label">货品名称</template>{{formData.product_name}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">货品数量</template>{{formData.product_quantity}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">里程数</template>{{formData.mileage}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">柴油</template>{{formData.diesel_oil}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">里程数</template>{{formData.mileage}}</el-descriptions-item>
+              <el-descriptions-item><template slot="label">里程照片</template>
+                <!-- {{formData.mileage_img}} -->
+                <el-image
+                  v-if="formData.mileage_img != '' && formData.load_weight_inspection != null"
+                  style="width: 60px; height: 60px"
+                  :src="formData.mileage_img"
+                  :preview-src-list="[formData.mileage_img]"
+                    class="event_img" >
+                </el-image>
+              </el-descriptions-item>
+              <el-descriptions-item><template slot="label">柴油量</template>{{formData.diesel_oil}}</el-descriptions-item>
+              
               <el-descriptions-item><template slot="label">装货预计等待时长</template>{{formData.load_waiting_time}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">装货备注</template>{{formData.load_waiting_remark}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">装货检斤单</template>{{formData.load_weight_inspection}}</el-descriptions-item>
+              <!-- <el-descriptions-item><template slot="label">装货检斤单</template>{{formData.load_weight_inspection}}</el-descriptions-item> -->
+              <el-descriptions-item><template slot="label">装货检斤单</template>
+                <!-- {{formData.load_weight_inspection}} -->
+                <!-- <el-image
+                      style="width: 40px; height: 40px"
+                      :src="scope.row.card_front"
+                      :preview-src-list="[scope.row.card_front]"
+                      slot-scope="scope">
+              </el-image> -->
+                <el-image
+                  v-if="formData.load_weight_inspection != '' && formData.load_weight_inspection != null"
+                  style="width: 60px; height: 60px"
+                  :src="formData.load_weight_inspection"
+                  :preview-src-list="[formData.load_weight_inspection]"
+                    class="event_img" >
+                </el-image>
+              </el-descriptions-item>
               <el-descriptions-item><template slot="label">装货数量</template>{{formData.load_product_quantity}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">卸货预计等待时长</template>{{formData.unload_wait_time}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">卸货备注</template>{{formData.unload_wait_remark}}</el-descriptions-item>
-              <el-descriptions-item><template slot="label">卸货检斤单</template>{{formData.unload_weight_inspection}}</el-descriptions-item>
+              <!-- <el-descriptions-item><template slot="label">卸货检斤单5</template>{{formData.unload_weight_inspection}}</el-descriptions-item> -->
+              <el-descriptions-item><template slot="label">卸货检斤单</template>
+                <el-image
+                  v-if="formData.unload_weight_inspection != '' && formData.unload_weight_inspection != null"
+                  style="width: 60px; height: 60px"
+                  :src="formData.unload_weight_inspection"
+                  :preview-src-list="[formData.unload_weight_inspection]"
+                    class="event_img" >
+                </el-image>
+              </el-descriptions-item>
+              <!-- <el-table-column
+                    prop="driving_license"
+                    label="行驶证"
+                    align="center"
+                    width="150">
+                <el-image
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.driving_licenses[0].url"
+                        :preview-src-list="[scope.row.driving_licenses[0].url]"
+                        slot-scope="scope">
+                </el-image>
+            </el-table-column> -->
               <el-descriptions-item><template slot="label">卸货数量</template>{{formData.unload_product_quantity}}</el-descriptions-item>
 
-              <el-descriptions-item><template slot="label">回库里程数</template>{{formData.back_mileage_img}}</el-descriptions-item>
+              <el-descriptions-item><template slot="label">回库里程数照片</template>
+                <el-image
+                  v-if="formData.back_mileage_img != '' && formData.back_mileage_img != null"
+                  style="width: 60px; height: 60px"
+                  :src="formData.back_mileage_img"
+                  :preview-src-list="[formData.back_mileage_img]"
+                    class="event_img" >
+                </el-image>
+              </el-descriptions-item>
               <el-descriptions-item><template slot="label">回库里程数</template>{{formData.back_mileage}}</el-descriptions-item>
+              <el-descriptions-item><template slot="label">创建人</template>{{formData.initiator}}</el-descriptions-item>
+              <el-descriptions-item><template slot="label">分配人</template>{{formData.dispatcher}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">创建日期</template>{{formData.create_time}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">更新日期</template>{{formData.update_time}}</el-descriptions-item>
             </el-descriptions>
@@ -172,6 +230,11 @@ export default {
               this.formData.back_mileage = response.back_mileage
               this.formData.driver_status = response.driver_status
               this.formData.period_id = response.period_id
+              this.formData.initiator = response.initiator
+              this.formData.dispatcher = response.dispatcher
+              this.formData.create_time = response.create_time
+              this.formData.update_time = response.update_time
+              this.formData.back_mileage_img = response.back_mileage_img
           }
       })
     }

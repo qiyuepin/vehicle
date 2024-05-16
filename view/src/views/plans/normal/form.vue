@@ -28,17 +28,18 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      <el-form-item label="车头" prop="head_num">
-                          <el-input v-model="formData.head_num" clearable placeholder="请输入车头"></el-input>
-                      </el-form-item>
+                      
                       <el-form-item label="挂车" prop="trailer_num">
                           <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车"></el-input>
                       </el-form-item>
                       <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
                       </el-form-item>
-                      <el-form-item label="押运员" prop="escort_name">
-                          <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
+                      <el-form-item label="费用周期" prop="period_id">
+                          <el-input v-model="formData.period_id" clearable placeholder="请输入费用周期"></el-input>
+                      </el-form-item>
+                      <el-form-item label="trailer_status" prop="trailer_status" style="display: none;">
+                          <el-input v-model="formData.trailer_status" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item>
                       <el-form-item label="货品名称" prop="product_name">
                           <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
@@ -49,7 +50,7 @@
                       </el-form-item>
 
 
-                      <el-form-item label="装货厂家" prop="load_factory">
+                      <!-- <el-form-item label="装货厂家" prop="load_factory">
                           <el-select v-model="formData.load_factory" filterable  clearable placeholder="请选择装货厂家" @change="loadFactoryChanged">
                             <el-option
                               v-for="item in factorylist"
@@ -58,18 +59,17 @@
                               :value="item.name">
                             </el-option>
                           </el-select>
-                      </el-form-item>
-                      <!-- <el-form-item label="装货厂家名字" prop="load_factory">
-                          <el-input v-model="formData.load_factory" clearable placeholder="装货厂家名字"></el-input>
                       </el-form-item> -->
+                      <el-form-item label="装货厂家" prop="load_factory">
+                          <el-input v-model="formData.load_factory" clearable placeholder="请输入装货厂家"></el-input>
+                      </el-form-item>
                       <el-form-item label="装货地址" prop="load_address">
                           <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item>
-                      <!-- <el-form-item label="装货地址" prop="load_address">
-                          
-                        <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
-                      </el-form-item> -->
                       <el-form-item label="卸货厂家" prop="unload_factory">
+                          <el-input v-model="formData.unload_factory" clearable placeholder="请输入卸货厂家"></el-input>
+                      </el-form-item>
+                      <!-- <el-form-item label="卸货厂家" prop="unload_factory">
                           <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
                             <el-option
                               v-for="item in factorylist"
@@ -78,7 +78,7 @@
                               :value="item.name">
                             </el-option>
                           </el-select>
-                      </el-form-item>
+                      </el-form-item> -->
                       <!-- <el-form-item label="卸货厂家名字" prop="unload_factory">
                           <el-input v-model="formData.unload_factory" clearable placeholder="卸货厂家名字"></el-input>
                       </el-form-item> -->
@@ -110,7 +110,7 @@
 
 <script>
 
-import { addnormal, editnormal, getnormalinfo, getplaninfo } from '@/api/plan.js'
+import { addnormal, editnormal, getnormalinfo, getplaninfo, getplansinfo } from '@/api/plan.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
@@ -151,13 +151,11 @@ data() {
     drawerShow:false,
     map: null,
     saveRules: {
-
-      info_id: [{ required: true, trigger: 'blur'}],
-      product_name: [{ required: true, trigger: 'blur'}],
-      product_quantity: [{ required: true, trigger: 'blur'}],
-      load_factory: [{ required: true, trigger: 'blur'}],
-      unload_factory: [{ required: true, trigger: 'blur'}],
-
+      // info_id: [{ required: true, message: '信息ID不能为空', trigger: 'blur'}],
+      product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur'}],
+      product_quantity: [{ required: true, message: '产品数量不能为空', trigger: 'blur'}],
+      load_factory: [{ required: true, message: '装货厂家不能为空', trigger: 'blur'}],
+      unload_factory: [{ required: true, message: '卸货厂家不能为空', trigger: 'blur'}],
     },
     formData: {
       id: 0,
@@ -174,6 +172,8 @@ data() {
       escort_name: '',
       start_periodic: '',
       end_periodic: '',
+      period_id: '',
+      trailer_status: '',
       platform: 'pc'
     },
   }
@@ -203,12 +203,16 @@ methods: {
       // this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
+      this.formData.period_id = selectedinfo.period_id;
+      this.formData.trailer_status = selectedinfo.trailer_status;
       // this.formData.escort_name = selectedinfo.escort_name;
     } else {
       this.formData.head_num = '';
       this.formData.trailer_num = '';
       this.formData.driver_name = '';
       this.formData.escort_name = '';
+      this.formData.period_id = '';
+      this.formData.trailer_status = '';
     }
     // this.load_address = this.load_factory.factory;
   },
@@ -257,6 +261,8 @@ methods: {
     this.formData.escort_name = ''
     this.formData.start_periodic = ''
     this.formData.end_periodic = ''
+    this.formData.period_id = ''
+    this.formData.trailer_status = ''
   },
   getnormalinfo(id){
     getnormalinfo({id:id}).then(response=>{
@@ -275,10 +281,10 @@ methods: {
             this.formData.trailer_num = response.trailer_num
             this.formData.driver_name = response.driver_name
             this.formData.escort_name = response.escort_name
-        
+            this.formData.period_id = response.period_id
             this.formData.start_periodic = response.start_periodic
-     
             this.formData.end_periodic = response.end_periodic
+            this.formData.trailer_status = response.trailer_status
         }
     })
   },
@@ -288,9 +294,9 @@ methods: {
         this.$refs.saveForm.validate(valid => {
           if (valid) {
             if(this.formData.id){
-              editnormal(this.formData).then(_ => {
+              editnormal(this.formData).then(response => {
                 this.$message({
-                  message: '编辑成功',
+                  message: response.msg,
                   type: 'success',
                   duration: 5 * 1000
                 })
@@ -298,9 +304,9 @@ methods: {
                 this.dialog = false
               })
             }else{
-              addnormal(this.formData).then(_ => {
+              addnormal(this.formData).then(response => {
                 this.$message({
-                  message: '新增成功',
+                  message: response.msg,
                   type: 'success',
                   duration: 5 * 1000
                 })
