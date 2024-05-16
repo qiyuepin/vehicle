@@ -58,8 +58,9 @@ class Cost extends Base
      */
     public function addcost(Request $request,CostService $service){
         $param = $request->param();
-   
-        $data = $service -> addcost($param);
+        $authorization = $request->header('Authorization');
+        // dump($authorization);die;
+        $data = $service -> addcost($param,$authorization);
         return $this->responseData($data);
     }
 
@@ -114,4 +115,24 @@ class Cost extends Base
         return $this->responseData($data);
     }
 
+    public function getcosttype(Request $request,CostService $service){
+        $param = $request->param();
+    
+        $data = $service -> getcosttype($param);
+        return $this->responseData($data);
+    }
+
+    public function getperiod(Request $request,CostService $service){
+        $param = $request->param();
+    
+        $data = $service -> getperiod($param);
+        return $this->responseData($data);
+    }
+
+    public function getcostlist(Request $request,CostService $service){
+        $param = $request->param();
+    
+        $data = $service -> getcostlist($param);
+        return $this->responseData($data);
+    }
 }
