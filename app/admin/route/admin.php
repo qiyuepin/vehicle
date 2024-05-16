@@ -144,6 +144,7 @@ Route::group('/',function(){
         Route::post('editinfo','Info/editinfo');//修改匹配信息
         Route::post('delinfo','Info/delinfo');//删除押运员信息
         Route::get('getinfo','Info/getinfo');//匹配信息详情
+        Route::post('Pouring','Info/Pouring');//调度员倒料
         Route::get('getcarlist','Info/getcarlist');//信息详情
         Route::get('getcarscope','Info/getcarscope');//获取经营范围
         Route::get('getfactory','Info/getfactory');//厂家列表
