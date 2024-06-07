@@ -190,4 +190,21 @@ class Info extends Base
         return $this->responseData($data);
     }
     
+    public function infonotice(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> infonotice($param);
+        return $this->responseData($data);
+    }
+
+    public function bind(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> bind($param);
+        return $this->responseData($data);
+    }
+
+    public function send(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> send($param);
+        return $this->responseData($data);
+    }
 }
