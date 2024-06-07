@@ -83,7 +83,7 @@ export default {
     },
     handleImageSuccess(res, file) {
       if (res.code === 200) {
-        // console.log(res.data)
+        console.log(res.data.url)
         this.imgUrl = res.data.url;
         this.$emit('input', res.data.url);
       } else {

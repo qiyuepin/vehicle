@@ -17,6 +17,7 @@ export default {
     route_second: '路由1-1',
     link_blog: '博客外链',
     plans: '任务管理',
+    plans_plans: '任务列表',
     plans_normal: '常规任务',
     plans_temporary: '临时任务',
     auth_admin_driver: '驾驶员列表',
@@ -26,7 +27,11 @@ export default {
     info: '人员/车辆管理',
     admin_info_carhead: '车头信息管理',
     admin_info_escort: '押运员管理',
-    admin_info_trailer: '挂车信息管理'
+    admin_info_trailer: '挂车信息管理',
+    admin_info_info: '人员车辆匹配',
+    admin_info_factory: '厂家管理',
+    cost_index: '费用管理',
+    costlist_index: '费用列表'
   },
   navbar: {
     dashboard: '首页',

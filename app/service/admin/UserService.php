@@ -51,6 +51,7 @@ class UserService extends BaseService
     public function author(){
         try{
             $data = Cache::get('author');
+            // dump($data);die;
             if(empty($data)){
                 $data = AuthorConfig::where('id',1)->find();
                 $data = $data->toArray();

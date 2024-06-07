@@ -17,18 +17,13 @@
             </el-form-item>
         </el-form>
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button type="warning" icon="el-icon-refresh" circle @click="handleReload"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'auth.role.add'" icon="el-icon-plus" circle @click="handleAdd"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-                <el-button type="primary" icon="el-icon-search" circle @click="searchShow = !searchShow"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'auth.role.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" icon="el-icon-delete" circle></el-button>
-            </el-tooltip>
+ 
+                <el-button type="warning" size="mini" @click="handleReload">刷新</el-button>
+
+                <el-button type="success" size="mini" v-permission="'auth.role.add'" @click="handleAdd">新增</el-button>
+                <el-button type="primary" size="mini"  @click="searchShow = !searchShow">搜索</el-button>
+                <el-button type="danger" size="mini" v-permission="'auth.role.delete'" :disabled="buttonDisabled" @click="handleDeleteAll">删除</el-button>
+
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -81,22 +76,12 @@
                     align="center"
                     min-width="200">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.role.edit'" icon="el-icon-edit-outline" circle
-                                   @click="handleEdit(scope.row)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==0" class="item" effect="dark" content="启用" placement="top">
-                        <el-button size="mini" type="success" v-permission="'auth.role.change'" :disabled="isHandle(scope.row)" icon="el-icon-circle-check" circle
-                                   @click="handleStatus(scope.$index,scope.row.id,scope.row.status)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="禁用" placement="top">
-                        <el-button size="mini" type="warning" v-permission="'auth.role.change'" :disabled="isHandle(scope.row)" icon="el-icon-circle-close" circle
-                                   @click="handleStatus(scope.$index,scope.row.id,scope.row.status)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button size="mini" type="danger"  v-permission="'auth.role.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
-                                   circle @click="handleDelete([scope.row.id])"></el-button>
-                    </el-tooltip>
+                        <el-button size="mini" type="primary" v-permission="'auth.role.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
+                        <el-button size="mini" type="success" v-if="scope.row.status==0" v-permission="'auth.role.change'" :disabled="isHandle(scope.row)"
+                                   @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
+                        <el-button size="mini" type="warning"  v-if="scope.row.status==1" v-permission="'auth.role.change'" :disabled="isHandle(scope.row)"
+                                   @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
+                        <el-button size="mini" type="danger"  v-permission="'auth.role.delete'" :disabled="isHandle(scope.row)" @click="handleDelete([scope.row.id])">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

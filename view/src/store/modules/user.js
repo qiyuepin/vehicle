@@ -79,7 +79,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        console.log("----"+response)
+        // console.log("----"+response)
           if(response !== undefined){
               commit('SET_UID', response.id)
               commit('SET_NAME', response.nickname)

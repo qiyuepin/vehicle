@@ -10,18 +10,10 @@
             </el-form-item>
         </el-form>
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button type="warning" size="mini" @click="handleReload">刷新</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'admin.driver.addaccident'" size="mini"  @click="handleAdd">新增</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-                <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'admin.driver.delaccident'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-            </el-tooltip>
+          <el-button type="warning" size="mini" @click="handleReload">刷新</el-button>
+          <el-button type="success" v-permission="'admin.driver.addaccident'" size="mini"  @click="handleAdd">新增</el-button>
+          <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+          <el-button type="danger" v-permission="'admin.driver.delaccident'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -93,7 +85,6 @@
                     label="事故备注"
                     align="center"
                     width="150">
-                </el-image>
             </el-table-column>
           <!--  <el-table-column
                     prop="create_time"
@@ -111,12 +102,8 @@
                     align="center"
                     min-width="200">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'admin.driver.editaccident'" @click="handleEdit(scope.row)">编辑</el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button size="mini" type="danger"  v-permission="'admin.driver.delaccident'" :disabled="isHandle(scope.row)" @click="handleDelete([scope.row.id])">删除</el-button>
-                    </el-tooltip>
+                  <el-button size="mini" type="primary" v-permission="'admin.driver.editaccident'" @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger"  v-permission="'admin.driver.delaccident'" :disabled="isHandle(scope.row)" @click="handleDelete([scope.row.id])">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -151,18 +138,18 @@ export default {
   },
   data() {
     return {
-        buttonDisabled: true,
-        tableData: [],
-        multipleSelection: null,
-        loading: true,
-        searchShow: false,
-        total: 0,
-        query: {
-            page: 1,
-            limit: 10,
-            keywords: '',
-            id: this.$route.query.id,
-            status: ''
+      buttonDisabled: true,
+      tableData: [],
+      multipleSelection: null,
+      loading: true,
+      searchShow: false,
+      total: 0,
+      query: {
+          page: 1,
+          limit: 10,
+          keywords: '',
+          id: this.$route.query.id,
+          status: ''
       }
     }
   },
@@ -171,17 +158,28 @@ export default {
   },
   methods: {
     //查询列表
-      getaccident() {
+    //   getaccident() {
+    //   this.loading = true
+    //       getaccident(this.query).then(response => {
+    //           console.log(response);
+    //       if(response !== undefined){
+    //           this.tableData = response.data
+    //           this.total = response.total
+    //       }
+    //       this.loading = false
+    //   })
+    //       this.loading = false
+    // },
+    getaccident() {
       this.loading = true
-          getaccident(this.query).then(response => {
-              console.log(response);
+      getaccident(this.query).then(response => {
+        console.log(this.query);
           if(response !== undefined){
               this.tableData = response.data
               this.total = response.total
           }
           this.loading = false
       })
-          this.loading = false
     },
     //搜索
     handleSearch() {

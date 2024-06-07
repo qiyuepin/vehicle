@@ -2,14 +2,7 @@
     <div class="app-container">
         <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
             <el-form-item label="关键字">
-                <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>
-            </el-form-item>
-            <el-form-item label="状态">
-                <el-select v-model="query.status" placeholder="选择状态" clearable>
-                    <el-option label="全部" value="0"/>
-                    <el-option label="启用" value="2"></el-option>
-                    <el-option label="禁用" value="1"></el-option>
-                </el-select>
+                <el-input v-model="query.keywords" placeholder="车牌号|品牌" clearable></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
@@ -50,178 +43,187 @@
                     align="center"
                     width="80">
             </el-table-column>
-            
+         
             <el-table-column
-                    prop="username"
-                    label="用户名"
-                    align="center"
-                    width="120">
+                prop="trailer_status"
+                label="状态"
+                align="center"
+                width="110">
+                <template slot-scope="scope">
+                  
+                  <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
+                  <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 1" >重车</span>
+                  <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+                </template>
             </el-table-column>
             <!-- <el-table-column
-                    prop="nickname"
-                    label="昵称"
+                    prop="trailer_plate"
+                    label="车（牌）号"
                     align="center"
                     width="120">
+                    <el-button size="mini" type="primary" @click="scope.row && handledetail(scope.row)"></el-button>
+                    
             </el-table-column> -->
             <el-table-column
-                    prop="phone"
-                    label="手机号"
+                prop="trailer_plate"
+                label="车（牌）号"
+                align="center"
+                width="120">
+                <template slot-scope="scope">
+                    <el-button size="mini"  @click="handleDetail(scope.row)">
+                        {{ scope.row.trailer_plate }}
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_brand"
+                    label="品牌"
                     align="center"
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="id_card_num"
-                    label="身份证号"
+                    prop="trailer_material"
+                    label="材质"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_weight"
+                    label="自重"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_volume"
+                    label="容积"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_pressure"
+                    label="压力等级"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="frame_tank"
+                    label="是否为框架罐"
+                    align="center"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    prop="transport_cert"
+                    label="道路运输证号"
                     align="center"
                     width="200">
             </el-table-column>
             <el-table-column
-                    prop="dirver_card_num"
-                    label="驾驶证号"
-                    align="center"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="id_card_num"
-                    label="从业资格证号"
+                    prop="trailer_scope"
+                    label="经营范围"
                     align="center"
                     width="200">
             </el-table-column>
 
             <el-table-column
-                    prop="employ_time"
-                    label="入职时间"
+                    prop="regist_time"
+                    label="注册日期"
                     align="center"
                     width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.employ_time"></span>
+                    <span style="margin-left: 10px" v-text="scope.row.regist_time"></span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column
-                    prop="card_front"
-                    label="身份证正面"
-                    align="center"
-                    width="100">
-                <el-avatar :size="40" :src="scope.row.avatar" shape="square" slot-scope="scope">
-                </el-avatar>
-            </el-table-column> -->
             <el-table-column
-                    prop="card_front"
-                    label="身份证正面"
+                    prop="scrapp_time"
+                    label="强制报废日期"
+                    align="center"
+                    width="200">
+                <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span style="margin-left: 10px" v-text="scope.row.scrapp_time"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="inspection_time"
+                    label="检验有效期"
+                    align="center"
+                    width="200">
+                <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span style="margin-left: 10px" v-text="scope.row.inspection_time"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="validity_time"
+                    label="审验有效期"
+                    align="center"
+                    width="200">
+                <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span style="margin-left: 10px" v-text="scope.row.validity_time"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="frame_time"
+                    label="交强险有效期"
+                    align="center"
+                    width="200">
+                <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span style="margin-left: 10px" v-text="scope.row.frame_time"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="driving_license"
+                    label="行驶证"
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.card_front"
-                        :preview-src-list="[scope.row.card_front]"
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.driving_licenses[0].url"
+                        :preview-src-list="[scope.row.driving_licenses[0].url]"
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
             <el-table-column
-                    prop="card_back"
-                    label="身份证反面"
+                    prop="transport_license"
+                    label="道路运输证"
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.card_back"
-                        :preview-src-list="[scope.row.card_back]"
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.transport_license"
+                        :preview-src-list="[scope.row.transport_license]"
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
             <el-table-column
-                    prop="driver_card_front"
-                    label="驾驶证正面"
+                    prop="pot_report"
+                    label="交强险保单"
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.driver_card_front"
-                        :preview-src-list="[scope.row.driver_card_front]"
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.pot_report"
+                        :preview-src-list="[scope.row.pot_report]"
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
             <el-table-column
-                    prop="driver_card_back"
-                    label="驾驶证反面"
+                    prop="cargo_insurance"
+                    label="商业险保单"
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.driver_card_back"
-                        :preview-src-list="[scope.row.driver_card_back]"
-                        slot-scope="scope">
-                </el-image>
-            </el-table-column>
-            <el-table-column
-                    prop="cert_front"
-                    label="从业资格证正面"
-                    align="center"
-                    width="150">
-                <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.cert_front"
-                        :preview-src-list="[scope.row.cert_front]"
-                        slot-scope="scope">
-                </el-image>
-            </el-table-column>
-            <el-table-column
-                    prop="cert_back"
-                    label="从业资格证反面"
-                    align="center"
-                    width="150">
-                <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.cert_back"
-                        :preview-src-list="[scope.row.cert_back]"
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.cargo_insurance"
+                        :preview-src-list="[scope.row.cargo_insurance]"
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
             
-            <el-table-column
-                    prop="status"
-                    label="违章信息"
-                    align="center"
-                    width="150">
-                <template slot-scope="scope">
-                    <el-button size="mini"  @click="handleRegulation([scope.row.id])">点击查看违章信息</el-button>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="status"
-                    label="事故信息"
-                    align="center"
-                    width="150">
-                <template slot-scope="scope">
-                    <el-button size="mini"  @click="handleAccident([scope.row.id])">点击查看事故信息</el-button>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="status"
-                    label="状态"
-                    align="center"
-                    width="100">
-                <template slot-scope="scope">
-                    <el-tag :type="scope.row.status==1?'danger':'success'" v-text="scope.row.status==1?'禁用':'启用'"></el-tag>
-                </template>
-            </el-table-column>
-            <!-- <el-table-column
-                    prop="login_ip"
-                    label="登录IP"
-                    align="center"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    prop="login_time"
-                    label="登录时间"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope" v-if="scope.row.login_time">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.login_time"></span>
-                </template>
-            </el-table-column> -->
             <el-table-column
                     prop="create_time"
                     label="创建时间"
@@ -241,22 +243,7 @@
                     <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                         <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
                     </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
-                        <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
-                    </el-tooltip>
-                    <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
-                        <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
-                    </el-tooltip>
-                    <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
-                                   circle @click="handleDelete([scope.row.id])"></el-button>
-                    </el-tooltip> -->
-                    <!-- <el-tooltip class="item" effect="dark" content="违章信息" placement="top">
-                        <el-button size="mini" type="danger" v-permission="'admin.driver.regulation'"  icon="el-icon-warning-outline" circle @click="handleRegulation([scope.row.id])"></el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="事故信息" placement="top">
-                        <el-button size="mini" type="danger" v-permission="'admin.driver.accident'" icon="el-icon-warning" circle @click="handleAccident([scope.row.id])"></el-button>
-                    </el-tooltip> -->
+
                 </template>
             </el-table-column>
         </el-table>
@@ -275,24 +262,28 @@
         </div>
         <!--表单-->
         <myForm ref="myAttr" @updateRow="handleReload"/>
+        <detail ref="myAttrdetail" @updateRow="handleReload"/>
     </div>
 </template>
 
 <script>
 
-import { getdriverList, changeStatus,deleteAdmin } from '@/api/admin.js'
+import { getcartrailer, deltrailer } from '@/api/Info.js'
 import myForm from './form.vue'
+import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
 
 export default {
   name: 'Admin',
   components: {
-    myForm
+    myForm,
+    detail
   },
   data() {
     return {
       buttonDisabled: true,
       tableData: [],
+      imageList: [],
       multipleSelection: null,
       loading: true,
       searchShow: false,
@@ -306,14 +297,15 @@ export default {
     }
   },
   created() {
-    this.getdriverList();
+    this.getcartrailer();
   },
   methods: {
     //查询列表
-    getdriverList() {
+    getcartrailer() {
       this.loading = true
-      getdriverList(this.query).then(response => {
+      getcartrailer(this.query).then(response => {
           if(response !== undefined){
+            console.log(response.data)
               this.tableData = response.data
               this.total = response.total
           }
@@ -323,24 +315,16 @@ export default {
     //搜索
     handleSearch() {
       this.query.page = 1
-      this.getdriverList()
+      this.getcartrailer()
     },
     //刷新重置
     handleReload() {
       this.query.page = 1
       this.query.keywords = ''
       this.query.status = ''
-      this.getdriverList()
+      this.getcartrailer()
     },
-    handleRegulation(raw) {
-      this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
-    },
-    handleAccident() {
-      this.$router.push('/driver/accident');
-    },
-    handletest() {
-      this.$router.push('/driver/test');
-    },
+
     //新增
     handleAdd() {
       this.$refs.myAttr.showForm()
@@ -348,12 +332,12 @@ export default {
     //分页更改页数
     handleSizeChange(limit) {
       this.query.limit = limit
-      this.getdriverList()
+      this.getcartrailer()
     },
     //分页更改当前页
     handleCurrentChange(page) {
       this.query.page = page
-      this.getdriverList()
+      this.getcartrailer()
     },
     //复选框事件
     handleSelectionChange(val) {
@@ -381,10 +365,15 @@ export default {
         return false
       }
     },
+    handleDetail(raw){
+      console.log("handleDetail"+raw.id);
+      this.$refs.myAttrdetail.getcartrailerInfo(raw.id)
+      this.$refs.myAttrdetail.showDetail()
+    },
     //编辑
     handleEdit(raw){
-      console.log("edit"+raw.id);
-      this.$refs.myAttr.getdriverInfo(raw.id)
+      // console.log("edit"+raw.id);
+      this.$refs.myAttr.getcartrailerInfo(raw.id)
       this.$refs.myAttr.showForm()
     },
     //删除
@@ -394,8 +383,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteAdmin({ ids: ids }).then(response => {
-          this.getdriverList()
+        delcartrailer({ ids: ids }).then(response => {
+          this.getcartrailer()
           this.$message({
             type: 'success',
             message: '删除成功!'

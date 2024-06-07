@@ -32,7 +32,7 @@
                             <el-input v-model="formData.carhead_brand" clearable placeholder="品牌"></el-input>
                         </el-form-item>
                         <el-form-item label="自重" prop="carhead_weight">
-                            <el-input v-model="formData.carhead_weight" clearable placeholder="请输入材质"></el-input>
+                            <el-input v-model="formData.carhead_weight" clearable placeholder="请输入自重"></el-input>
                         </el-form-item>
                         <el-form-item label="道路运输证号">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输入道路运输证号"></el-input>

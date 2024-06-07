@@ -59,7 +59,7 @@
                             <UploadImage ref="Image_card_front" v-model="formData.card_front"></UploadImage>
                         </el-form-item>
                         <el-form-item label="身份证反面" prop="card_back">
-                            <UploadImage ref="Image_card_back"" v-model="formData.card_back"></UploadImage>
+                            <UploadImage ref="Image_card_back" v-model="formData.card_back"></UploadImage>
                         </el-form-item>
                         <el-form-item label="驾驶证正面" prop="driver_card_front">
                             <UploadImage ref="Image_driver_card_front" v-model="formData.driver_card_front"></UploadImage>
@@ -166,7 +166,8 @@ export default {
         driver_card_back: '',
         cert_back: '',
         id_card_num: '',
-        card_badirver_card_numck: '',
+        dirver_card_num:'',
+        card_back: '',
         cert_card_num: '',
         employ_time: '',
         type: 2
@@ -204,6 +205,12 @@ export default {
       this.formData.password = ''
       this.formData.autograph = ''
       this.formData.group = []
+      this.$refs.Image_card_front.imgUrl = ''
+      this.$refs.Image_card_back.imgUrl = ''
+      this.$refs.Image_driver_card_front.imgUrl = ''
+      this.$refs.Image_driver_card_back.imgUrl = ''
+      this.$refs.Image_cert_front.imgUrl = ''
+      this.$refs.Image_cert_back.imgUrl = ''
     },
     getdriverInfo(id){
       getdriverInfo({id:id}).then(response=>{
@@ -253,6 +260,7 @@ export default {
                 })
               }else{
                 adddriverAdmin(this.formData).then(_ => {
+                  this.resetData()
                   this.$message({
                     message: '新增成功',
                     type: 'success',

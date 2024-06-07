@@ -60,6 +60,12 @@ export function validPassword(str) {
   return reg.test(str);
 }
 
+export function validIDcard(str) {
+  const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
+  return reg.test(str);
+}
+
+
 /**
  * @param {string} url
  * @returns {Boolean}

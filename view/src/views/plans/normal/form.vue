@@ -1,187 +1,337 @@
 <template>
-    <el-drawer
-            v-if="drawerShow"
-            :before-close="handleClose"
-            :with-header="false"
-            :wrapperClosable="false"
-            :visible.sync="dialog"
-            size="50%"
-            direction="rtl"
-            custom-class="demo-drawer"
-            ref="drawer"
-    >
-        <div class="demo-drawer__content" style="padding: 10px">
-            <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
-            <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
-                     label-width="90px"
-                     style="width: 100%;">
-                <el-tabs style="height: 200px;">
-                    <el-tab-pane label="基本信息">
-                        <el-form-item label="广告位" prop="position">
-                            <el-select v-model="formData.position" style="width: 100%" placeholder="请选择广告位">
-                                <el-option
-                                        v-for="item in positions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="标题" prop="title">
-                            <el-input v-model="formData.title" maxlength="20" clearable placeholder="请输入广告标题"></el-input>
-                        </el-form-item>
-                        <el-form-item label="排序" prop="sort">
-                            <el-input v-model="formData.sort" type="number" min="0" clearable placeholder="请输入排序，数字越大越靠前"></el-input>
-                        </el-form-item>
-                        <el-form-item label="广告图片" prop="thumb">
-                            <UploadImage ref="Image" v-model="formData.thumb"></UploadImage>
-                        </el-form-item>
-                        <el-form-item label="PDF文件" prop="pdf">
-                            <UploadPdf ref="Pdf" v-model="formData.pdf"></UploadPdf>
-                        </el-form-item>
-                        <el-form-item label="多图上传" prop="images">
-                            <MultiImage ref="Images" v-model="formData.images"></MultiImage>
-                        </el-form-item>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-form>
-            <div class="demo-drawer__footer" style="position:fixed;top:15px;right:30px;">
-                <el-button size="mini" @click="$refs.drawer.closeDrawer()">取 消</el-button>
-                <el-button size="mini" type="primary" @click="saveData()">确 定
-                </el-button>
-            </div>
-        </div>
-    </el-drawer>
+  <el-drawer
+          v-if="drawerShow"
+          :before-close="handleClose"
+          :with-header="false"
+          :wrapperClosable="false"
+          :visible.sync="dialog"
+          size="50%"
+          direction="rtl"
+          custom-class="demo-drawer"
+          ref="drawer"
+  >
+      <div class="demo-drawer__content" style="padding: 10px">
+          <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
+          <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
+                   label-width="110px"
+                   style="width: 100%;">
+              <el-tabs style="height: 200px;">
+                  <el-tab-pane label="基本信息">
+                
+                      <el-form-item label="车辆/人员" prop="info_id">
+                          <el-select v-model="formData.info_id" filterable  placeholder="请选择车辆/人员" @change="infoChanged">
+                            <el-option
+                              v-for="item in infolist"
+                              :key="item.value"
+                              :label="item.info"
+                              :value="item.id">
+                            </el-option>
+                          </el-select>
+                      </el-form-item>
+                      
+                      <el-form-item label="挂车" prop="trailer_num">
+                          <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车"></el-input>
+                      </el-form-item>
+                      <el-form-item label="驾驶员" prop="driver_name">
+                          <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
+                      </el-form-item>
+                      <el-form-item label="费用周期" prop="period_id">
+                          <el-input v-model="formData.period_id" clearable placeholder="请输入费用周期"></el-input>
+                      </el-form-item>
+                      <el-form-item label="trailer_status" prop="trailer_status" style="display: none;">
+                          <el-input v-model="formData.trailer_status" clearable placeholder="请输入押运员"></el-input>
+                      </el-form-item>
+                      <el-form-item label="货品名称" prop="product_name">
+                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
+                      </el-form-item>
+ 
+                      <el-form-item label="货品数量" prop="product_quantity">
+                          <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
+                      </el-form-item>
+
+
+                      <!-- <el-form-item label="装货厂家" prop="load_factory">
+                          <el-select v-model="formData.load_factory" filterable  clearable placeholder="请选择装货厂家" @change="loadFactoryChanged">
+                            <el-option
+                              v-for="item in factorylist"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.name">
+                            </el-option>
+                          </el-select>
+                      </el-form-item> -->
+                      <el-form-item label="装货厂家" prop="load_factory">
+                          <el-input v-model="formData.load_factory" clearable placeholder="请输入装货厂家"></el-input>
+                      </el-form-item>
+                      <el-form-item label="装货地址" prop="load_address">
+                          <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
+                      </el-form-item>
+                      <el-form-item label="卸货厂家" prop="unload_factory">
+                          <el-input v-model="formData.unload_factory" clearable placeholder="请输入卸货厂家"></el-input>
+                      </el-form-item>
+                      <!-- <el-form-item label="卸货厂家" prop="unload_factory">
+                          <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
+                            <el-option
+                              v-for="item in factorylist"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.name">
+                            </el-option>
+                          </el-select>
+                      </el-form-item> -->
+                      <!-- <el-form-item label="卸货厂家名字" prop="unload_factory">
+                          <el-input v-model="formData.unload_factory" clearable placeholder="卸货厂家名字"></el-input>
+                      </el-form-item> -->
+                      <el-form-item label="卸货地址" prop="unload_address">
+                          <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
+                      </el-form-item>
+                      <!-- <el-form-item label="新计费周期" prop="start_periodic">
+                          <el-radio-group v-model="formData.start_periodic">
+                            <el-radio :label=1>是</el-radio>
+                            <el-radio :label=0>否</el-radio>
+                          </el-radio-group>
+                      </el-form-item> -->
+                      <!-- <el-form-item label="结束计费周期" prop="end_periodic">
+                          <el-radio-group v-model="formData.end_periodic">
+                            <el-radio :label=1>是</el-radio>
+                            <el-radio :label=0>否</el-radio>
+                          </el-radio-group>
+                      </el-form-item> -->
+                  </el-tab-pane>
+              </el-tabs>
+          </el-form>
+          <div class="demo-drawer__footer" style="position:fixed;top:15px;right:30px;">
+              <el-button size="mini" @click="$refs.drawer.closeDrawer()">取 消</el-button>
+              <el-button size="mini" type="primary" @click="saveData()">确 定</el-button>
+          </div>
+      </div>
+  </el-drawer>
 </template>
 
 <script>
 
-import { addAdvert, editAdvert,getInfo } from '@/api/advert.js'
+import { addnormal, editnormal, getnormalinfo, getplaninfo, getplansinfo } from '@/api/plan.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import UploadPdf from '@/components/Upload/SinglePdf'
-import MultiImage from '@/components/Upload/MultiImage'
+import { validPhone,validIDcard } from '@/utils/validate'
+
+
 
 export default {
-  name: "AdminForm",
-  components: {
-    UploadImage,
-    UploadPdf,
-    MultiImage
-  },
-  data() {
-    const validatePosition = (rule,value,callback)=>{
-      if(value.lenght==0){
-        callback(new Error('请选择广告位'))
-      }else{
-        callback()
-      }
-    }
-    return {
-      title:'',
-      dialog: false,
-      drawerShow:false,
-      saveRules: {
-        position: [{ required: true, trigger: 'blur',validator: validatePosition }],
-        title: [{ required: true, length:20, trigger: 'blur', message:'请输入20个以内的字符' }],
-        sort: [{ required: true, trigger: 'blur', message:'请输入排序' }],
-        thumb: [{ required: true, trigger: 'blur', message: '请上传图片' }],
-      },
-      positions:[{
-        value: 1,
-        label: '首页'
-      }],
-      formData: {
-        position:1,
-        id: 0,
-        title: '',
-        sort: 0,
-        thumb: '',
-        pdf: '',
-        images: []
-      },
-    }
-  },
-  methods: {
-    handleClose() {
-      this.dialog = false
-      this.drawerShow = false
-    },
-    showForm() {
-      this.dialog = true
-      this.drawerShow = true
-      this.title = '新增广告'
-      this.resetData()
-      this.$nextTick(() => {
-        this.$refs.Pdf.initPdf('https://qiniu.chengzhigang.cn/%E7%A8%8B%E5%BF%97%E5%88%9A-PHP-%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86.pdf')
-      })
-    },
-    resetData(){
-      this.formData.id = 0
-      this.formData.position = 1
-      this.formData.title = ''
-      this.formData.sort = 0
-      this.formData.thumb = ''
-      this.formData.pdf = ''
-      this.formData.images = []
-    },
-    getInfo(id){
-      getInfo({id:id}).then(response=>{
-          if(response !== undefined){
-              this.title = '编辑广告'
-              this.formData.id = response.id
-              this.formData.position = 1
-              this.formData.title = response.title
-              this.formData.sort = response.sort
-              this.formData.thumb = response.thumb
-              this.$refs.Image.imgUrl = response.thumb
-              this.formData.images = [
-                  "http://192.168.28.229:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
-              ]
-              this.$refs.Images.init([
-                  "http://192.168.28.229:81/storage/image/20230817/2ed57293bf0022a8aa5447b34f444dd9.jpg"
-              ])
-          }
-      })
-    },
-    saveData() {
-      this.$confirm('您确定要提交吗？', '温馨提示')
-        .then(_ => {
-          this.$refs.saveForm.validate(valid => {
-            if (valid) {
-              if(this.formData.id){
-                editAdvert(this.formData).then(_ => {
-                  this.$message({
-                    message: '编辑成功',
-                    type: 'success',
-                    duration: 5 * 1000
-                  })
-                  this.$emit('updateRow')
-                  this.dialog = false
-                })
-              }else{
-                addAdvert(this.formData).then(_ => {
-                  this.$message({
-                    message: '新增成功',
-                    type: 'success',
-                    duration: 5 * 1000
-                  })
-                  this.$emit('updateRow')
-                  this.dialog = false
-                })
-              }
-            }
-          })
-        })
-        .catch(_ => {
-        })
+name: "myForm",
+components: {
+  UploadImage,
+  Map
+},
+data() {
+
+
+  const validatePhone = (rule, value, callback) => {
+    if (!validPhone(value)) {
+      callback(new Error('请输入正确的手机号'))
+    } else {
+      callback()
     }
   }
+  const validid_card = (rule, value, callback) => {
+    if (!validIDcard(value)) {
+      callback(new Error('请输入正确的身份证号'))
+    } else {
+      callback()
+    }
+  }
+
+  return {
+    title:'',
+    dialog: false,
+    roles: [],
+    infolist: [],
+    factorylist: [],
+    load_factory: null,
+    load_address:'',
+    drawerShow:false,
+    map: null,
+    saveRules: {
+      // info_id: [{ required: true, message: '信息ID不能为空', trigger: 'blur'}],
+      product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur'}],
+      product_quantity: [{ required: true, message: '产品数量不能为空', trigger: 'blur'}],
+      load_factory: [{ required: true, message: '装货厂家不能为空', trigger: 'blur'}],
+      unload_factory: [{ required: true, message: '卸货厂家不能为空', trigger: 'blur'}],
+    },
+    formData: {
+      id: 0,
+      info_id: '',
+      product_name: '',
+      product_quantity: '',
+      load_factory: '',
+      load_address: '',
+      unload_factory: '',
+      unload_address: '',
+      head_num: '',
+      trailer_num: '',
+      driver_name: '',
+      escort_name: '',
+      start_periodic: '',
+      end_periodic: '',
+      period_id: '',
+      trailer_status: '',
+      platform: 'pc'
+    },
+  }
+},
+created() {
+  this.getplaninfo()
+},
+destroyed () {
+    if (this.map != null) {
+      this.map.destroy();
+    }
+  },
+methods: {
+  getplaninfo() {
+    getplaninfo().then(response => {
+        if(response !== undefined){
+          // console.log(response.data)
+          this.infolist = response.data
+          this.factorylist = response.factory
+        }
+    })
+  },
+  infoChanged() {
+    const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
+    if (selectedinfo) {
+      console.log(selectedinfo)
+      // this.formData.head_num = selectedinfo.head_num;
+      this.formData.trailer_num = selectedinfo.trailer_num;
+      this.formData.driver_name = selectedinfo.driver_name;
+      this.formData.period_id = selectedinfo.period_id;
+      this.formData.trailer_status = selectedinfo.trailer_status;
+      // this.formData.escort_name = selectedinfo.escort_name;
+    } else {
+      this.formData.head_num = '';
+      this.formData.trailer_num = '';
+      this.formData.driver_name = '';
+      this.formData.escort_name = '';
+      this.formData.period_id = '';
+      this.formData.trailer_status = '';
+    }
+    // this.load_address = this.load_factory.factory;
+  },
+  loadFactoryChanged() {
+    const selectedFactory = this.factorylist.find(item => item.name === this.formData.load_factory);
+    if (selectedFactory) {
+      console.log(selectedFactory)
+      this.formData.load_address = selectedFactory.address;
+    } else {
+      this.formData.load_address = '';
+    }
+    // this.load_address = this.load_factory.factory;
+  },
+  unloadFactoryChanged() {
+    const selectedFactory = this.factorylist.find(item => item.name === this.formData.unload_factory);
+    if (selectedFactory) {
+      console.log(selectedFactory)
+      this.formData.unload_address = selectedFactory.address;
+    } else {
+      this.formData.unload_address = '';
+    }
+    // this.load_address = this.load_factory.factory;
+  },
+  handleClose() {
+    this.dialog = false
+    this.drawerShow = false
+  },
+  showForm() {
+    this.dialog = true
+    this.drawerShow = true
+    this.title = '新增任务'
+    this.resetData()
+  },
+  resetData(){
+    this.formData.id = 0
+    this.formData.info_id = ''
+    this.formData.product_name = ''
+    this.formData.product_quantity = ''
+    this.formData.load_address = ''
+    this.formData.load_factory = ''
+    this.formData.unload_address = ''
+    this.formData.unload_factory = ''
+    this.formData.head_num = ''
+    this.formData.trailer_num = ''
+    this.formData.driver_name = ''
+    this.formData.escort_name = ''
+    this.formData.start_periodic = ''
+    this.formData.end_periodic = ''
+    this.formData.period_id = ''
+    this.formData.trailer_status = ''
+  },
+  getnormalinfo(id){
+    getnormalinfo({id:id}).then(response=>{
+        if(response !== undefined){
+          console.log('response.start_periodic---'+response.start_periodic)
+            this.title = '编辑'
+            this.formData.id = response.id
+            this.formData.info_id = response.info_id
+            this.formData.product_name = response.product_name
+            this.formData.product_quantity = response.product_quantity
+            this.formData.load_factory = response.load_factory
+            this.formData.load_address = response.load_address
+            this.formData.unload_address = response.unload_address
+            this.formData.unload_factory = response.unload_factory
+            this.formData.head_num = response.head_num
+            this.formData.trailer_num = response.trailer_num
+            this.formData.driver_name = response.driver_name
+            this.formData.escort_name = response.escort_name
+            this.formData.period_id = response.period_id
+            this.formData.start_periodic = response.start_periodic
+            this.formData.end_periodic = response.end_periodic
+            this.formData.trailer_status = response.trailer_status
+        }
+    })
+  },
+  saveData() {
+    this.$confirm('您确定要提交吗？', '温馨提示')
+      .then(_ => {
+        this.$refs.saveForm.validate(valid => {
+          if (valid) {
+            if(this.formData.id){
+              editnormal(this.formData).then(response => {
+                this.$message({
+                  message: response.msg,
+                  type: 'success',
+                  duration: 5 * 1000
+                })
+                this.$emit('updateRow')
+                this.dialog = false
+              })
+            }else{
+              addnormal(this.formData).then(response => {
+                this.$message({
+                  message: response.msg,
+                  type: 'success',
+                  duration: 5 * 1000
+                })
+                this.$emit('updateRow')
+                this.dialog = false
+              })
+            }
+          }
+        })
+      })
+      .catch(_ => {
+      })
+  }
+}
 }
 </script>
 
 <style scoped lang="scss">
-    ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
+  ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
+  .container {
+  width: 500px;
+  height: 300px;
+}
+
 </style>

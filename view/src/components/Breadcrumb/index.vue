@@ -42,7 +42,7 @@ export default {
       if (!this.isDashboard(first)) {
         matched = [{ path: 'home',name:'home', meta: { title: '系统首页', icon: 'dashboard', affix: true }}].concat(matched)
       }
-
+      // console.log(matched)
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },
     isDashboard(route) {

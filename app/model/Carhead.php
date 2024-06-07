@@ -14,5 +14,8 @@ class Carhead extends Model
     protected $autoWriteTimestamp = 'datetime';
 
 
-
+    public function info()
+    {
+        return $this->hasMany('Info', 'head_id');
+    }
 }

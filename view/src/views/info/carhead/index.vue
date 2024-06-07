@@ -4,31 +4,16 @@
             <el-form-item label="关键字">
                 <el-input v-model="query.keywords" placeholder="车牌号|品牌" clearable></el-input>
             </el-form-item>
-            <!-- <el-form-item label="状态">
-                <el-select v-model="query.status" placeholder="选择状态" clearable>
-                    <el-option label="全部" value="0"/>
-                    <el-option label="启用" value="2"></el-option>
-                    <el-option label="禁用" value="1"></el-option>
-                </el-select>
-            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
                 <el-button type="warning" icon="el-icon-refresh-left" @click="handleReload">重置</el-button>
             </el-form-item>
         </el-form>
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-                <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-            </el-tooltip>
+            <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
+            <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+            <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+            <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -50,12 +35,39 @@
                     align="center"
                     width="80">
             </el-table-column>
-            
             <el-table-column
+                prop="head_status"
+                label="状态"
+                align="center"
+                width="110">
+                <template slot-scope="scope">
+                  
+                  <span style="color: #67C23A;" v-if="scope.row.head_status === 0" >回库</span>
+                  <span style="color: #e6a23c;" v-else-if="scope.row.head_status === 1" >装货</span>
+                  <span style="color: #f56c6c;" v-else-if="scope.row.head_status === 2" >卸货</span>
+                  <span style="color: #409EFF;" v-else-if="scope.row.head_status === 3" >在途</span>
+                  <span style="color: #909399;" v-else-if="scope.row.head_status === 4" >停运</span>
+                  <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+                </template>
+            </el-table-column>
+            <!-- <el-table-column
                     prop="carhead_plate"
                     label="车（牌）号"
                     align="center"
                     width="120">
+                    <el-button size="mini" type="primary" @click="scope.row && handledetail(scope.row)"></el-button>
+                    
+            </el-table-column> -->
+            <el-table-column
+                prop="carhead_plate"
+                label="车（牌）号"
+                align="center"
+                width="120">
+                <template slot-scope="scope">
+                    <el-button size="mini"  @click="handleDetail(scope.row)">
+                        {{ scope.row.carhead_plate }}
+                    </el-button>
+                </template>
             </el-table-column>
             <!-- <el-table-column
                     prop="nickname"
@@ -144,11 +156,26 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
-                        :src="scope.row.driving_license"
-                        :preview-src-list="[scope.row.driving_license]"
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.driving_licenses[0].url"
+                        :preview-src-list="[scope.row.driving_licenses[0].url]"
                         slot-scope="scope">
                 </el-image>
+                <!-- <el-image
+                  v-for="(image, index) in imageList"
+                  :key="index"
+                  :src="image.url"
+                  style="width: 40px; height: 40px; margin-right: 10px;"
+                >
+                </el-image> -->
+                 <!-- <el-image
+                    v-for="(image, index) in scope.row.driving_licenses"
+                    :key="index"
+                        style="width: 40px; height: 40px"
+                        :src="image.url"
+                        :preview-src-list="[image.url]"
+                        slot-scope="scope">
+                </el-image> -->
             </el-table-column>
             <el-table-column
                     prop="transport_license"
@@ -156,7 +183,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.transport_license"
                         :preview-src-list="[scope.row.transport_license]"
                         slot-scope="scope">
@@ -168,7 +195,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.traffic_insurance"
                         :preview-src-list="[scope.row.traffic_insurance]"
                         slot-scope="scope">
@@ -180,7 +207,7 @@
                     align="center"
                     width="150">
                 <el-image
-                        style="width: 40px; height: 40px"
+                        style="width: 40px; height: 30px"
                         :src="scope.row.business_insurance"
                         :preview-src-list="[scope.row.business_insurance]"
                         slot-scope="scope">
@@ -203,19 +230,17 @@
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
-                    </el-tooltip>
+                    <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
                     <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                         <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                     </el-tooltip>
                     <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
                         <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
                     </el-tooltip> -->
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                    <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
                                    circle @click="handleDelete([scope.row.id])"></el-button>
-                    </el-tooltip>
+                    </el-tooltip> -->
                     <!-- <el-tooltip class="item" effect="dark" content="违章信息" placement="top">
                         <el-button size="mini" type="danger" v-permission="'admin.driver.regulation'"  icon="el-icon-warning-outline" circle @click="handleRegulation([scope.row.id])"></el-button>
                     </el-tooltip>
@@ -240,6 +265,7 @@
         </div>
         <!--表单-->
         <myForm ref="myAttr" @updateRow="handleReload"/>
+        <detail ref="myAttrdetail" @updateRow="handleReload"/>
     </div>
 </template>
 
@@ -247,17 +273,20 @@
 
 import { getcarhead, delcarhead } from '@/api/Info.js'
 import myForm from './form.vue'
+import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
 
 export default {
   name: 'Admin',
   components: {
-    myForm
+    myForm,
+    detail
   },
   data() {
     return {
       buttonDisabled: true,
       tableData: [],
+      imageList: [],
       multipleSelection: null,
       loading: true,
       searchShow: false,
@@ -279,6 +308,7 @@ export default {
       this.loading = true
       getcarhead(this.query).then(response => {
           if(response !== undefined){
+            console.log(response.data)
               this.tableData = response.data
               this.total = response.total
           }
@@ -343,6 +373,11 @@ export default {
 
         return false
       }
+    },
+    handleDetail(raw){
+      console.log("handleDetail"+raw.id);
+      this.$refs.myAttrdetail.getcarheadInfo(raw.id)
+      this.$refs.myAttrdetail.showDetail()
     },
     //编辑
     handleEdit(raw){
