@@ -145,6 +145,7 @@ Route::group('/',function(){
         Route::post('delinfo','Info/delinfo');//删除押运员信息
         Route::get('getinfo','Info/getinfo');//匹配信息详情
         Route::post('Pouring','Info/Pouring');//调度员倒料
+        Route::get('infonotice','Info/infonotice');//调度员倒料
         Route::get('getcarlist','Info/getcarlist');//信息详情
         Route::get('getcarscope','Info/getcarscope');//获取经营范围
         Route::get('getfactory','Info/getfactory');//厂家列表
@@ -152,6 +153,8 @@ Route::group('/',function(){
         Route::post('addfactory','Info/addfactory');//创建厂家
         Route::post('editfactory','Info/editfactory');//修改厂家
         Route::post('delfactory','Info/delfactory');//删除厂家
+        Route::post('bind', 'Info\WebSocket@bind');
+        Route::post('end', 'Info\WebSocket@send');
     })->middleware(['adminAuth']);
 
     Route::group('plan',function(){
