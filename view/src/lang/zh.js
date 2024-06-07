@@ -17,7 +17,7 @@ export default {
     route_second: '路由1-1',
     link_blog: '博客外链',
     plans: '任务管理',
-    plans_plans: '任务列表',
+    plans_plans: '运输计划',
     plans_normal: '常规任务',
     plans_temporary: '临时任务',
     auth_admin_driver: '驾驶员列表',
