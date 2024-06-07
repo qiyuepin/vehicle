@@ -22,7 +22,7 @@
       </el-form>
       <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <!-- <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button> -->
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
           <el-button @click="exportExcel" type="primary" size="mini">导出</el-button>
@@ -229,7 +229,7 @@
 
 <script>
 
-import { gettemporary, deltemporary, gettemporaryinfo, getnormalinfo } from '@/api/plan.js'
+import { gettemporary, delnormal, gettemporaryinfo, getnormalinfo } from '@/api/plan.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
@@ -371,12 +371,12 @@ methods: {
   },
   //删除
   handleDelete(ids){
-    this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+    this.$confirm('您确定要删除该任务吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delescort({ ids: ids }).then(response => {
+      delnormal({ ids: ids }).then(response => {
         this.gettemporary()
         this.$message({
           type: 'success',

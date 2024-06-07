@@ -21,7 +21,13 @@
               
 
                     <el-form-item label="厂家名称" prop="name">
-                        <el-input v-model="formData.name" clearable placeholder="请输入车头"></el-input>
+                        <el-input v-model="formData.name" clearable placeholder="请输入厂家名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="厂家联系人" prop="contact">
+                        <el-input v-model="formData.contact" clearable placeholder="请输入厂家联系人"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系电话" prop="contact_phone">
+                        <el-input v-model="formData.contact_phone" clearable placeholder="请输入厂家联系电话"></el-input>
                     </el-form-item>
                     <el-form-item label="厂家地址" prop="load_address">
                       <!-- <el-input id="mapInput" type="text" value="请输入关键字：(选定后搜索)" onfocus='this.value=""' placeholder="请输入活动地址" /> -->
@@ -37,6 +43,9 @@
                     </el-form-item>
                     <el-form-item label="所属省份" prop="pname">
                         <el-input v-model="formData.pname" clearable placeholder="请输入所属省份"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属城市" prop="city">
+                        <el-input v-model="formData.city" clearable placeholder="请输入所属城市"></el-input>
                     </el-form-item>
                     <el-form-item label="具体地址" prop="address">
                         <el-input v-model="formData.address" clearable placeholder="请输入具体地址"></el-input>
@@ -110,7 +119,10 @@ data() {
       pname: '',
       location: '',
       regeocode_id: '',
-      adcode: ''
+      adcode: '',
+      city: '',
+      contact: '',
+      contact_phone: ''
     },
   }
 },
@@ -134,6 +146,9 @@ methods: {
             this.formData.location = response.location
             this.formData.regeocode_id = response.regeocode_id
             this.formData.pname = response.pname
+            this.formData.city = response.city
+            this.formData.contact = response.contact
+            this.formData.contact_phone = response.contact_phone
             this.initAMap(response.location)
         }
     })
@@ -212,6 +227,8 @@ methods: {
     this.formData.address = markerData.pname + markerData.cityname + markerData.adname + markerData.address;
     console.log(this.address);
     this.formData.pname = markerData.pname;
+
+    this.formData.city = markerData.cityname?markerData.cityname:markerData.pname;
     // location = markerData.location;
     this.formData.location = markerData.location.lng + ',' + markerData.location.lat;
     const panel = document.getElementById('panel');
@@ -251,12 +268,13 @@ methods: {
                     const regeocode = result.regeocode.addressComponent;
                     const address = regeocode.province + regeocode.city + regeocode.district + regeocode.township + regeocode.street + regeocode.streetNumber;
                     const address0 = result.regeocode.formattedAddress;
-                    
+                    console.log(regeocode)
                     // 使用箭头函数确保正确的上下文
                     selfs.formData.pname = regeocode.province;
                     selfs.formData.address = address;
                     selfs.formData.regeocode_id = regeocode.regeocode_id;
                     selfs.formData.adcode = regeocode.adcode;
+                    selfs.formData.city = regeocode.city?regeocode.city:regeocode.province;
                     // 你可以将位置信息存储到需要的地方
                 } else {
                     console.error('逆地理编码失败');
@@ -314,6 +332,9 @@ methods: {
     this.formData.address = ''
     this.formData.pname = ''
     this.formData.location = ''
+    this.formData.city = ''
+    this.formData.contact = ''
+    this.formData.contact_phone = ''
   }
 }
 }

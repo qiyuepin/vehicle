@@ -101,7 +101,7 @@
                   align="center"
                   width="150">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="head_num"
                   label="车头号"
                   align="center"
@@ -112,7 +112,7 @@
                   label="押运员"
                   align="center"
                   width="150">
-          </el-table-column>
+          </el-table-column> -->
           
           <el-table-column
                   prop="cost_img"

@@ -65,7 +65,7 @@
                 <el-button  v-else-if="scope.row.status === 1"  type="success"  size="mini" plain @click="handleDetail(scope.row)"> 已完成</el-button> -->
               </template>
           </el-table-column>
-          
+<!--           
           <el-table-column
               prop="plan_type"
               label="任务类别"
@@ -77,11 +77,11 @@
                 <span style="color: #E6A23C;" v-else-if="scope.row.plan_type === 1" >装货任务</span>
                 <span style="color: #F56C6C;" v-else-if="scope.row.plan_type === 2" >卸货任务</span>
               </template>
-          </el-table-column>
+          </el-table-column> -->
        
           <el-table-column
               prop="start_periodic"
-              label="新周期"
+              label="始发任务"
               align="center"
               width="110">
               <template slot-scope="scope">

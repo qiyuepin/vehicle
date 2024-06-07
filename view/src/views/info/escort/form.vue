@@ -106,7 +106,7 @@ data() {
     drawerShow:false,
     saveRules: {
 
-      name: [{ required: true, trigger: 'blur'}],
+      name: [{ required: true, message: '姓名不能为空', trigger: 'blur'}],
       id_card: [{ required: true, trigger: 'blur', validator: validid_card }],
       phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
 

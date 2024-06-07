@@ -39,11 +39,11 @@
                           </el-select>
                       </el-form-item> -->
                       <el-form-item label="驾驶员">
-                          <el-input v-model="formData.driver_name" clearable
+                          <el-input v-model="formData.driver_name" clearable disabled
                                     placeholder="请输入驾驶员"></el-input>
                       </el-form-item>
                       <el-form-item label="计费周期">
-                          <el-input v-model="formData.period_id_driver" clearable
+                          <el-input v-model="formData.period_id_driver" clearable disabled
                                     placeholder="请输入计费周期"></el-input>
                       </el-form-item>
                       <!-- <el-form-item label="费用金额">

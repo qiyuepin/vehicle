@@ -14,7 +14,7 @@
             <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
             
 
-            <el-descriptions  direction="vertical" :column="4" border>
+            <el-descriptions :column="2" border>
                 <el-descriptions-item label="车牌号" class="custom-descriptions">{{formData.trailer_plate}}</el-descriptions-item>
                 <el-descriptions-item label="品牌" class="custom-descriptions">{{formData.trailer_brand}}</el-descriptions-item>
                 <el-descriptions-item label="材质" class="custom-descriptions">{{formData.trailer_material}}</el-descriptions-item>
@@ -26,10 +26,20 @@
                 <el-descriptions-item label="经营范围">{{formData.trailer_scope_name}}</el-descriptions-item>
 
                 <el-descriptions-item label="注册日期">{{formData.regist_time}}</el-descriptions-item>
-                <el-descriptions-item label="强制报废日期">{{formData.scrapp_time}}</el-descriptions-item>
-                <el-descriptions-item label="检验有效期">{{formData.inspection_time}}</el-descriptions-item>
-                <el-descriptions-item label="审验有效期">{{formData.validity_time}}</el-descriptions-item>
-                <el-descriptions-item label="罐检报告有效期">{{formData.frame_time}}</el-descriptions-item>
+                <!-- <el-descriptions-item label="强制报废日期" :class="{ datestatus: formData.scrapp_status?false:true}">{{formData.scrapp_time}}{{formData.scrapp_status}}</el-descriptions-item>
+                <el-descriptions-item label="检验有效期" :class="{ datestatus: formData.inspection_status?false:true}">{{formData.inspection_time}}{{formData.inspection_status}}</el-descriptions-item> -->
+                <el-descriptions-item label="强制报废日期" :content-class-name="{ datestatus: formData.scrapp_status ? false : true }">
+                    {{formData.scrapp_time}}
+                </el-descriptions-item>
+                <el-descriptions-item label="检验有效期" :content-class-name="{ datestatus: formData.inspection_status ? false : true }">
+                    {{formData.inspection_time}}
+                </el-descriptions-item>
+                <el-descriptions-item label="审验有效期" :content-class-name="{ datestatus: formData.validity_status ? false : true }">
+                    {{formData.validity_time}}
+                </el-descriptions-item>
+                <el-descriptions-item label="罐检报告有效期" :content-class-name="{ datestatus: formData.frame_status ? false : true }">
+                  {{formData.frame_time}}
+                </el-descriptions-item>
                 <el-descriptions-item label="创建日期">{{formData.create_time}}</el-descriptions-item>
                 <el-descriptions-item label="更新日期">{{formData.update_time}}</el-descriptions-item>
             
@@ -149,7 +159,7 @@ export default {
         
       this.dialog = true
       this.drawerShow = true
-      this.title = '车头信息详情'
+      this.title = '挂车信息详情'
       this.resetData()
     },
     resetData(){
@@ -178,6 +188,7 @@ export default {
       getcartrailerInfo({id:id}).then(response=>{
         console.log(response.transport_license)
           if(response !== undefined){
+            console.log(response);
               this.title = '车头信息详情'
               this.formData.id = response.id
               this.formData.trailer_plate = response.trailer_plate
@@ -207,6 +218,10 @@ export default {
               this.formData.cargo_insurance = response.cargo_insurance.split(',').map(item => item.trim());
               this.formData.create_time = response.create_time
               this.formData.update_time = response.update_time
+              this.formData.scrapp_status  = response.scrapp_status 
+              this.formData.inspection_status  = response.inspection_status 
+              this.formData.validity_status  = response.validity_status 
+              this.formData.frame_status  = response.frame_status 
           }
       })
     }
@@ -215,6 +230,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    
     ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -222,4 +238,5 @@ export default {
     ::v-deep .custom-descriptions .el-descriptions-item {
         width: 200px; /* 设置固定宽度 */
     }
+    
 </style>
