@@ -112,6 +112,14 @@ export function addplan(data) {
     data
   })
 }
+
+export function addhisplan(data) {
+    return request({
+        url:'/plan/addhisplan',
+        method:'post',
+        data
+    })
+}
 export function editplan(data) {
   return request({
     url:'/plan/editplan',
@@ -128,7 +136,7 @@ export function distplan(data) {
 }
 export function delplan(data) {
   return request({
-    url:'/plan/delnplan',
+    url:'/plan/delplan',
     method:'post',
     data
   })

@@ -177,6 +177,7 @@ Route::group('/',function(){
         Route::get('driver_normal','Plan/driver_normal');//挂车信息
         Route::get('notice','Plan/notice');//挂车信息
         Route::post('driver_sumitnormal','Plan/driver_sumitnormal');//驾驶员提交信息
+        Route::post('addhisplan','Plan/addhisplan');//任务列表删除的历史记录
     })->middleware(['adminAuth']);
 });
 

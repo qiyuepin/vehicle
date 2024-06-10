@@ -78,6 +78,7 @@ return [
         'admin/plan/getplaninfo',
         'admin/plan/getplans',
         'admin/plan/addplan',
+        'admin/plan/addhisplan',
         'admin/plan/editplan',
         'admin/plan/distplan',
         'admin/plan/getplansinfo',
@@ -94,6 +95,8 @@ return [
         'admin/cost/getcostlist',
         'admin/cost/getcosttype',
         'admin/auth/freshToken',
-        'admin/test/index'
+        'admin/test/index',
+        'admin/info/delcarhead',
+        'admin/info/delinfo'
     ],//白名单
 ];

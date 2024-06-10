@@ -41,7 +41,8 @@
               stripe
               style="width: 100%"
               v-loading="loading"
-              @selection-change="handleSelectionChange">
+              @selection-change="handleSelectionChange"
+              :header-cell-style="{'text-align':'center'}">
           <el-table-column
                   type="selection"
                   width="40"
@@ -65,34 +66,34 @@
                 <el-button  v-else-if="scope.row.status === 1"  type="success"  size="mini" plain @click="handleDetail(scope.row)"> 已完成</el-button> -->
               </template>
           </el-table-column>
-          
+
           <el-table-column
               prop="plan_type"
               label="任务类别"
               align="center"
               width="110">
               <template slot-scope="scope">
-                
+
                 <span style="color: #409EFF;" v-if="scope.row.plan_type === 0" >运输任务</span>
                 <span style="color: #E6A23C;" v-else-if="scope.row.plan_type === 1" >装货任务</span>
                 <span style="color: #F56C6C;" v-else-if="scope.row.plan_type === 2" >卸货任务</span>
               </template>
           </el-table-column>
-       
+
           <el-table-column
               prop="start_periodic"
               label="新周期"
               align="center"
               width="110">
               <template slot-scope="scope">
-             
+
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
                 <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
-    
+
               </template>
           </el-table-column>
-          
+
           <!-- <el-table-column
                   prop="head_num"
                   label="车头"
@@ -130,6 +131,12 @@
                   width="150">
           </el-table-column>
           <el-table-column
+              prop="plan_unit_price"
+              label="运输单价"
+              align="right"
+              width="150">
+          </el-table-column>
+          <el-table-column
                   prop="load_factory"
                   label="装货厂家"
                   align="center"
@@ -157,9 +164,6 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-          
-          
-          
           <el-table-column
                   prop="create_time"
                   label="创建时间"
@@ -169,6 +173,7 @@
                   <i class="el-icon-time"></i>
                   <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
               </template>
+
           </el-table-column>
 
           <el-table-column
@@ -180,19 +185,19 @@
                   <el-button size="mini" type="danger" v-if="scope.row.status==0" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)">分配</el-button>
                   <el-button size="mini" type="danger" v-if="scope.row.status==1" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)" disabled>分配</el-button>
                   <!-- <el-tooltip class="item" effect="dark" content="编辑" placement="top"> -->
-                  <el-button size="mini" type="primary" v-if="scope.row.status==0" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  <el-button size="mini" type="primary" v-if="scope.row.status==1" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)" disabled>编辑</el-button>
-                  
+<!--                  <el-button size="mini" type="primary" v-if="scope.row.status==0" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>-->
+<!--                  <el-button size="mini" type="primary" v-if="scope.row.status==1" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)" disabled>编辑</el-button>-->
+
                   <!-- <el-button size="mini" type="success" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button> -->
                   <el-button size="mini" type="info" plain v-if="scope.row.status==0" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">未完成</el-button>
-               
+
                   <el-button size="mini" type="success" plain v-if="scope.row.status==1" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">已完成</el-button>
-               
+
                   <!-- </el-tooltip> -->
                   <!-- <el-tooltip class="item" effect="dark" content="分配" placement="top">
                       <el-button size="mini" type="warning" v-permission="'admin.plans.editplan'"  @click="handleDist(scope.row)">分配</el-button>
                   </el-tooltip> -->
-                  
+
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -234,7 +239,7 @@
 
 <script>
 
-import { getplans, delplan, getplansinfo, editplan } from '@/api/plan.js'
+import { getplans, delplan, getplansinfo, editplan, addhisplan } from '@/api/plan.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import planDist from './dist.vue'
@@ -253,7 +258,24 @@ data() {
   return {
     buttonDisabled: true,
     tableData: [],
-    multipleSelection: null,
+    //multipleSelection: null,
+      multipleSelection: '',
+      arrSelection: {
+          id: 0,
+          status: '',
+          plan_type: '',
+          start_periodic: '',
+          product_name: '',
+          product_quantity: '',
+          //改修 No.22 start
+          plan_unit_price:'',
+          //改修 No.22 end
+          load_factory: '',
+          load_address: '',
+          unload_factory: '',
+          unload_address: '',
+          create_time: ''
+      },
     loading: true,
     searchShow: false,
     total: 0,
@@ -383,13 +405,32 @@ methods: {
     this.$refs.myAttrdetail.showDetail()
   },
   //删除
+
   handleDelete(ids){
     this.$confirm('您确定要删除该用户吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delescort({ ids: ids }).then(response => {
+        console.log(this.multipleSelection)
+        console.log(this.arrSelection)
+        //addhisplan(this.arrSelection)
+        delplan({ ids: ids }).then(response => {
+            this.multipleSelection.forEach(row=>{
+                this.arrSelection.id = row.id;
+                this.arrSelection.status = row.status;
+                this.arrSelection.plan_type = row.plan_type;
+                this.arrSelection.start_periodic = row.start_periodic;
+                this.arrSelection.product_name = row.product_name;
+                this.arrSelection.product_quantity = row.product_quantity;
+                this.arrSelection.plan_unit_price = row.plan_unit_price;
+                this.arrSelection.load_factory = row.load_factory;
+                this.arrSelection.load_address = row.load_address;
+                this.arrSelection.unload_factory = row.unload_factory;
+                this.arrSelection.unload_address = row.unload_address;
+                this.arrSelection.create_time = row.create_time;
+                addhisplan(this.arrSelection)
+            })
         this.getplans()
         this.$message({
           type: 'success',

@@ -17,10 +17,10 @@
 
           </el-descriptions> -->
           <br>
-          
+
           <el-descriptions class="margin-top" :title="'计费周期 ' + formData.period_id" :column="2"  border>
             <!-- <el-descriptions-item><template slot="label">计费周期</template>{{formData.period_id}}</el-descriptions-item> -->
-            
+
 
             <el-descriptions-item><template slot="label">货品名称</template>{{formData.product_name}}</el-descriptions-item>
             <el-descriptions-item><template slot="label">货品数量</template>{{product_quantity}}</el-descriptions-item>
@@ -38,7 +38,7 @@
                    style="width: 100%;">
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="任务分配">
-                
+
                       <el-form-item label="挂车/驾驶员" prop="info_id">
                           <el-select v-model="formData.info_id" filterable  placeholder="请选择挂车/驾驶员" @change="infoChanged">
                             <el-option
@@ -67,7 +67,7 @@
                       <!-- <el-form-item label="货品名称" prop="product_name">
                           <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
                       </el-form-item>
- 
+
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
                       </el-form-item>
@@ -97,7 +97,7 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-        
+
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
@@ -114,7 +114,7 @@
                             <el-radio :label=0 :disabled="formData.plan_type !== 0">否</el-radio>
                           </el-radio-group>
                       </el-form-item> -->
-  
+
                   </el-tab-pane>
               </el-tabs>
           </el-form>
@@ -159,7 +159,8 @@ data() {
     load_factory: null,
     load_address:'',
     drawerShow:false,
-    product_quantity:'',
+    //product_quantity:'',
+      product_quantity:'30',
     map: null,
     saveRules: {
       product_name: [{ required: true, message: '货品名称不能为空',trigger: 'blur'}],
@@ -301,7 +302,10 @@ methods: {
             this.formData.id = response.id
             this.formData.info_id = response.info_id
             this.formData.product_name = response.product_name
-            this.formData.product_quantity = response.product_quantity
+            //修改 No.8 start
+            //this.formData.product_quantity = response.product_quantity
+            this.formData.product_quantity = 30
+            //修改 No.8 end
             this.formData.load_factory = response.load_factory
             this.formData.load_address = response.load_address
             this.formData.unload_address = response.unload_address
@@ -333,9 +337,10 @@ methods: {
               distplan(this.formData).then(response => {
                 // 获取返回值
                 console.log(response);
-                console.log(response.msg);
+                //console.log(response.msg);
                 this.$message({
-                  message: response.msg,
+                 // message: response.msg,
+                    message:'分配成功',
                   type: 'success',
                   duration: 5 * 1000
                 })
