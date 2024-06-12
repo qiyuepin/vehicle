@@ -47,10 +47,6 @@
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
                       </el-form-item>
-                      <el-form-item label="运输单价" prop="plan_unit_price">
-                          <el-input v-model="formData.plan_unit_price" clearable placeholder="请输入运输单价" @input="handleInput"></el-input>
-                      </el-form-item>
-
                       <el-form-item label="装货厂家" prop="load_factory">
                           <el-select v-model="formData.load_factory" filterable  clearable placeholder="请选择装货厂家" @change="loadFactoryChanged">
                             <el-option
@@ -153,18 +149,12 @@ data() {
       plan_type: [{ required: true, message: '请选择任务类别', trigger: 'change' }],
       // load_factory: [{ required: true, message: '装货厂家不能为空', trigger: 'blur'}],
       // unload_factory: [{ required: true, message: '卸货厂家不能为空',trigger: 'blur'}],
-        //改修 No.22 start
-      plan_unit_price:[{ validator: this.validateDecimal, trigger: 'blur' }],
-        //改修 No.22 end
     },
     formData: {
       id: 0,
       info_id: '',
       product_name: '',
       product_quantity: '',
-      //改修 No.22 start
-      plan_unit_price:'',
-      //改修 No.22 end
       load_factory: '',
       load_address: '',
       unload_factory: '',
@@ -271,9 +261,6 @@ methods: {
     this.formData.info_id = ''
     this.formData.product_name = ''
     this.formData.product_quantity = ''
-      //改修 No.22 start
-      this.formData.plan_unit_price = ''
-      //改修 No.22 end
     this.formData.load_address = ''
     this.formData.load_factory = ''
     this.formData.unload_address = ''
@@ -297,9 +284,6 @@ methods: {
             this.formData.info_id = response.info_id
             this.formData.product_name = response.product_name
             this.formData.product_quantity = response.product_quantity
-            //改修 No.22 start
-            this.formData.plan_unit_price = response.plan_unit_price
-            //改修 No.22 end
             this.formData.load_factory = response.load_factory
             this.formData.load_address = response.load_address
             this.formData.unload_address = response.unload_address
@@ -348,26 +332,7 @@ methods: {
       })
       .catch(_ => {
       })
-  },
-    //改修 No.22 start
-    validateDecimal(rule, value, callback) {
-        // 正则表达式用于检验小数点后最多两位
-        const regex = /^(\d+)?(\.\d{1,2})?$/;
-        if (regex.test(value)) {
-            callback(); // 验证通过
-        } else {
-            callback(new Error('请输入正确的小数值，小数点后最多两位数字'));
-        }
-    },
-    handleInput(value) {
-        // 处理输入，保证用户输入的是数字和小数点
-        this.formData.plan_unit_price = value.replace(/[^\d.]/g, '')
-            .replace(/\.{2,}/g, '.')
-            .replace('.', '$#$')
-            .replace(/\./g, '')
-            .replace('$#$', '.');
-    }
-    //改修 No.22 end
+  }
 }
 }
 </script>
