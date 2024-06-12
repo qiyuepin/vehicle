@@ -65,34 +65,34 @@
                 <el-button  v-else-if="scope.row.status === 1"  type="success"  size="mini" plain @click="handleDetail(scope.row)"> 已完成</el-button> -->
               </template>
           </el-table-column>
-<!--           
+<!--
           <el-table-column
               prop="plan_type"
               label="任务类别"
               align="center"
               width="110">
               <template slot-scope="scope">
-                
+
                 <span style="color: #409EFF;" v-if="scope.row.plan_type === 0" >运输任务</span>
                 <span style="color: #E6A23C;" v-else-if="scope.row.plan_type === 1" >装货任务</span>
                 <span style="color: #F56C6C;" v-else-if="scope.row.plan_type === 2" >卸货任务</span>
               </template>
           </el-table-column> -->
-       
+
           <el-table-column
               prop="start_periodic"
               label="始发任务"
               align="center"
               width="110">
               <template slot-scope="scope">
-             
+
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
                 <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
-    
+
               </template>
           </el-table-column>
-          
+
           <!-- <el-table-column
                   prop="head_num"
                   label="车头"
@@ -157,9 +157,9 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-          
-          
-          
+
+
+
           <el-table-column
                   prop="create_time"
                   label="创建时间"
@@ -185,14 +185,14 @@
 
                   <!-- <el-button size="mini" type="success" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button> -->
                   <el-button size="mini" type="info" plain v-if="scope.row.status==0" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">未完成</el-button>
-               
+
                   <el-button size="mini" type="success" plain v-if="scope.row.status==1" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">已完成</el-button>
-               
+
                   <!-- </el-tooltip> -->
                   <!-- <el-tooltip class="item" effect="dark" content="分配" placement="top">
                       <el-button size="mini" type="warning" v-permission="'admin.plans.editplan'"  @click="handleDist(scope.row)">分配</el-button>
                   </el-tooltip> -->
-                  
+
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -261,9 +261,6 @@ data() {
           start_periodic: '',
           product_name: '',
           product_quantity: '',
-          //改修 No.22 start
-          plan_unit_price:'',
-          //改修 No.22 end
           load_factory: '',
           load_address: '',
           unload_factory: '',
@@ -416,7 +413,6 @@ methods: {
                 this.arrSelection.start_periodic = row.start_periodic;
                 this.arrSelection.product_name = row.product_name;
                 this.arrSelection.product_quantity = row.product_quantity;
-                this.arrSelection.plan_unit_price = row.plan_unit_price;
                 this.arrSelection.load_factory = row.load_factory;
                 this.arrSelection.load_address = row.load_address;
                 this.arrSelection.unload_factory = row.unload_factory;
