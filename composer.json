@@ -30,7 +30,8 @@
         "ric/thinkphp6-captcha": "^1.0",
         "topthink/think-queue": "^3.0",
         "yzh52521/think-mail": "^2.0",
-        "topthink/think-filesystem": "^2.0"
+        "topthink/think-filesystem": "^2.0",
+        "tencentcloud/tencentcloud-sdk-php": "^3.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

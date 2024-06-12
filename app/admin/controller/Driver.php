@@ -93,6 +93,7 @@ class Driver extends Base
     }
     public function delaccident(Request $request,AdminValidate $validate,AdminService $service){
         $param = $request->param();
+        //
         if(!$validate->scene('delaccident')->check($param)){
             return $this->fail(400,$validate->getError());
         }

@@ -101,6 +101,14 @@ class Plan extends Base
         $data = $service -> addplan($param,$authorization);
         return $this->responseData($data);
     }
+    //修改 No.9
+    public function addhisplan(Request $request,PlanService $service){
+        $param = $request->param();
+        $authorization = $request->header('Authorization');
+        $data = $service -> addhisplan($param,$authorization);
+        return $this->responseData($data);
+    }
+    //修改 No.9
     public function editplan(Request $request,PlanService $service){
         $param = $request->param();
         $authorization = $request->header('Authorization');
