@@ -67,16 +67,16 @@
                             <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
                         </el-form-item>
                         <el-form-item label="强制报废日期">
-                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期"></el-input>
+                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="检验有效期">
-                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期"></el-input>
+                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="审验有效期">
-                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期"></el-input>
+                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="罐检报告有效期">
-                          <el-input v-model="formData.frame_time" type="date" clearable placeholder="选择罐检报告有效期"></el-input>
+                          <el-input v-model="formData.frame_time" type="date" clearable placeholder="选择罐检报告有效期" :class="{ datestatusinput: formData.frame_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="行驶证" prop="driving_license">
                             <!-- <MultiImage ref="Image_driving_license" v-model="formData.driving_license"></MultiImage> -->
@@ -125,8 +125,8 @@ export default {
       trailer_scope: [],
       drawerShow:false,
       saveRules: {
-        trailer_plate: [{ required: true, trigger: 'blur'}],
-        transport_cert: [{ required: true, trigger: 'blur'}]
+        trailer_plate: [{ required: true, message: '车牌号不能为空', trigger: 'blur'}],
+        transport_cert: [{ required: true, message: '道路运输证', trigger: 'blur'}]
       },
       formData: {
         id: 0,
@@ -237,6 +237,11 @@ export default {
               this.$refs.Image_pot_report.imgUrl = response.pot_report
               this.formData.cargo_insurance = response.cargo_insurance
               this.$refs.Image_cargo_insurance.imgUrl = response.cargo_insurance
+
+              this.formData.scrapp_status  = response.scrapp_status 
+              this.formData.inspection_status  = response.inspection_status 
+              this.formData.validity_status  = response.validity_status 
+              this.formData.frame_status  = response.frame_status 
           }
       })
     },

@@ -37,14 +37,14 @@
                     width="40"
                     :selectable="isSelected">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="id"
                     label="ID"
                     align="center"
                     width="80">
-            </el-table-column>
+            </el-table-column> -->
 
-            <el-table-column
+            <!-- <el-table-column
                 prop="name"
                 label="详情"
                 align="center"
@@ -54,30 +54,48 @@
                         点击查看详情
                     </el-button>
                 </template>
+            </el-table-column> -->
+            <el-table-column
+                    prop="pname"
+                    label="所属省份"
+                    align="center"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="city"
+                    label="所属城市"
+                    align="center"
+                    width="120">
             </el-table-column>
             <el-table-column
                     prop="name"
                     label="厂家名称"
                     align="center"
-                    width="150">
+                    width="220">
             </el-table-column>
             <el-table-column
-                    prop="pname"
-                    label="所属省份"
+                    prop="contact"
+                    label="厂家联系人"
                     align="center"
                     width="150">
-            </el-table-column>
+            </el-table-column> 
+            <el-table-column
+                    prop="contact_phone"
+                    label="联系方式"
+                    align="center"
+                    width="220">
+            </el-table-column> 
             <el-table-column
                     prop="address"
                     label="厂家地址"
                     align="center"
-                    width="300">
+                    width="250">
             </el-table-column>
             <el-table-column
                     prop="location"
                     label="经纬度"
                     align="center"
-                    width="200">
+                    width="180">
             </el-table-column>
 
             <el-table-column
@@ -257,8 +275,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delcarhead({ ids: ids }).then(response => {
-          this.getfactoryList()
+        delfactory({ ids: ids }).then(response => {
+          this.getfactory()
           this.$message({
             type: 'success',
             message: '删除成功!'

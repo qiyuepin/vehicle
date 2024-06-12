@@ -79,25 +79,25 @@
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="任务类别" prop="plan_type" >
+                      <!-- <el-form-item label="任务类别" prop="plan_type" >
                           <el-radio-group v-model="formData.plan_type" @change="handlePlanTypeChange">
                             <el-radio :label=0>运输任务</el-radio>
                             <el-radio :label=1>装车任务</el-radio>
                             <el-radio :label=2>卸车任务</el-radio>
                           </el-radio-group>
-                      </el-form-item>
-                      <el-form-item label="新计费周期" prop="start_periodic">
+                      </el-form-item> -->
+                      <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1 :disabled="formData.plan_type !== 0">是</el-radio>
                             <el-radio :label=0 :disabled="formData.plan_type !== 0">否</el-radio>
                           </el-radio-group>
-                      </el-form-item>
-                      <!-- <el-form-item label="结束计费周期" prop="end_periodic">
-                          <el-radio-group v-model="formData.end_periodic">
-                            <el-radio :label=1>是</el-radio>
-                            <el-radio :label=0>否</el-radio>
-                          </el-radio-group>
                       </el-form-item> -->
+                      <el-form-item label="新计费周期" prop="start_periodic">
+                          <el-radio-group v-model="formData.start_periodic">
+                            <el-radio :label=1 >是</el-radio>
+                            <el-radio :label=0 >否</el-radio>
+                          </el-radio-group>
+                      </el-form-item>
                   </el-tab-pane>
               </el-tabs>
           </el-form>

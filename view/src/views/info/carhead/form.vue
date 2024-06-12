@@ -47,16 +47,16 @@
                             <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
                         </el-form-item>
                         <el-form-item label="强制报废日期">
-                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期"></el-input>
+                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="检验有效期">
-                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期"></el-input>
+                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="审验有效期">
-                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期"></el-input>
+                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="交强险有效期">
-                          <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期"></el-input>
+                          <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期" :class="{ datestatusinput: formData.traffic_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="行驶证" prop="driving_license">
                             <!-- <MultiImage ref="Image_driving_license" v-model="formData.driving_license"></MultiImage> -->
@@ -65,11 +65,18 @@
                         <el-form-item label="道路运输证" prop="transport_license">
                             <UploadImage ref="Image_transport_license" v-model="formData.transport_license"></UploadImage>
                         </el-form-item>
-                        <el-form-item label="交强险保单" prop="traffic_insurance">
+                        <!-- <el-form-item label="交强险保单" prop="traffic_insurance">
                             <UploadImage ref="Image_traffic_insurance" v-model="formData.traffic_insurance"></UploadImage>
+                        </el-form-item> -->
+                        <el-form-item label="交强险保单" prop="traffic_insurance">
+                            <UploadPdf ref="Image_traffic_insurance" v-model="formData.traffic_insurance"></UploadPdf>
                         </el-form-item>
-                        <el-form-item label="商业险保单" prop="business_insurance">
+                        <!-- <el-form-item label="商业险保单" prop="business_insurance">
                             <UploadImage ref="Image_business_insurance" v-model="formData.business_insurance"></UploadImage>
+                        </el-form-item> -->
+                        <el-form-item label="商业险保单" prop="business_insurance">
+                            <UploadPdf ref="Image_business_insurance" v-model="formData.business_insurance"></UploadPdf>
+                            <!-- <iframe loading="lazy" id="pdf_container" :src="pdfUrl" frameborder="0" height="100%" width="100%"></iframe> -->
                         </el-form-item>
 
                     </el-tab-pane>
@@ -86,17 +93,18 @@
 
 <script>
 
-import { addcarhead, editcarhead, getcarheadInfo, getcarscope} from '@/api/Info.js'
+import { addcarhead, editcarhead, getcarheadInfo, getcarscope, infonotice} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
-
+import UploadPdf from '@/components/Upload/SinglePdf'
 
 
 export default {
   name: "AdminForm",
   components: {
     UploadImage,
-    MultiImage
+    MultiImage,
+    UploadPdf
   },
   data() {
     return {
@@ -131,6 +139,16 @@ export default {
     this.getcarscope()
   },
   methods: {
+    infonotice() {
+      infonotice().then(response => {
+          if(response !== undefined){
+            console.log(response)
+            // this.infolist = response.data
+            this.noticelist = response.data
+            this.noticecount = response.count
+          }
+      })
+    },
     getcarscope(){
       getcarscope().then(response=>{
           if(response !== undefined){
@@ -202,9 +220,14 @@ export default {
               this.formData.transport_license = response.transport_license
               this.$refs.Image_transport_license.imgUrl = response.transport_license
               this.formData.traffic_insurance = response.traffic_insurance
-              this.$refs.Image_traffic_insurance.imgUrl = response.traffic_insurance
+              this.$refs.Image_traffic_insurance.pdfUrl = response.traffic_insurance
               this.formData.business_insurance = response.business_insurance
-              this.$refs.Image_business_insurance.imgUrl = response.business_insurance
+              this.$refs.Image_business_insurance.pdfUrl = response.business_insurance
+
+              this.formData.scrapp_status  = response.scrapp_status 
+              this.formData.inspection_status  = response.inspection_status 
+              this.formData.validity_status  = response.validity_status 
+              this.formData.traffic_status  = response.traffic_status 
           }
       })
     },
@@ -216,6 +239,7 @@ export default {
             if (valid) {
               if(this.formData.id){
                 editcarhead(this.formData).then(_ => {
+                  this.infonotice()
                   this.$message({
                     message: '编辑成功',
                     type: 'success',

@@ -189,3 +189,18 @@ export function delfactory(data) {
     data
   })
 }
+
+export function Pouring(data) {
+  return request({
+    url:'/info/Pouring',
+    method:'post',
+    data
+  })
+}
+export function infonotice(query) {
+  return request({
+    url:'/info/infonotice',
+    method:'get',
+    params:query
+  })
+}

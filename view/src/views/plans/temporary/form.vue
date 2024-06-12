@@ -85,6 +85,9 @@
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
+                      <el-form-item label="排序" prop="plan_type">
+                          <el-input v-model="formData.plan_type" clearable></el-input>
+                      </el-form-item>
                       <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1>是</el-radio>
@@ -174,7 +177,8 @@ data() {
       escort_name: '',
       start_periodic: '',
       end_periodic: '',
-      platform: 'pc'
+      platform: 'pc',
+      plan_type: 0
     },
   }
 },
@@ -257,6 +261,7 @@ methods: {
     this.formData.escort_name = ''
     this.formData.start_periodic = ''
     this.formData.end_periodic = ''
+    this.formData.plan_type = ''
   },
   gettemporaryinfo(id){
     gettemporaryinfo({id:id}).then(response=>{
@@ -278,7 +283,8 @@ methods: {
         
             this.formData.start_periodic = response.start_periodic
      
-            this.formData.end_periodic = response.end_periodic
+            // this.formData.end_periodic = response.end_periodic
+            this.formData.plan_type = response.plan_type
         }
     })
   },

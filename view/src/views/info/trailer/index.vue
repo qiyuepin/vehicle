@@ -10,18 +10,11 @@
             </el-form-item>
         </el-form>
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-                <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-            </el-tooltip>
+            <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
+            <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+            <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+            <el-button @click="handlePouring" size="mini" style="background-color: #12bbab;border-color: #12bbab;color: #FFFFFF;">倒料</el-button>
+            <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -46,7 +39,7 @@
          
             <el-table-column
                 prop="trailer_status"
-                label="状态"
+                label="挂车状态"
                 align="center"
                 width="110">
                 <template slot-scope="scope">
@@ -56,14 +49,17 @@
                   <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
                 </template>
             </el-table-column>
-            <!-- <el-table-column
-                    prop="trailer_plate"
-                    label="车（牌）号"
-                    align="center"
-                    width="120">
-                    <el-button size="mini" type="primary" @click="scope.row && handledetail(scope.row)"></el-button>
+            <el-table-column
+                prop="date_status"
+                label="是否超期"
+                align="center"
+                width="120">
+                <template slot-scope="scope">
+                  <span style="color: #F56C6C;" v-if="scope.row.date_status > 0" >{{scope.row.date_status}}个证件过期</span>
+                  <span style="color: #409EFF;" v-else >-</span>
+                </template>
                     
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column
                 prop="trailer_plate"
                 label="车（牌）号"
@@ -139,42 +135,32 @@
                     prop="scrapp_time"
                     label="强制报废日期"
                     align="center"
-                    width="200">
+                    width="200"
+                    >
+                <template slot-scope="scope">
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px" :class="{ datestatus: scope.row.scrapp_status ? false : true }" v-text="scope.row.scrapp_time"></span>
+                </template>
+            </el-table-column> 
+            <el-table-column prop="inspection_time" label="检验有效期"  align="center" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.scrapp_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.inspection_status ? false : true }" v-text="scope.row.inspection_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column
-                    prop="inspection_time"
-                    label="检验有效期"
-                    align="center"
-                    width="200">
+            <el-table-column prop="validity_time" label="审验有效期" align="center" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.inspection_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.validity_status ? false : true}" v-text="scope.row.validity_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column
-                    prop="validity_time"
-                    label="审验有效期"
-                    align="center"
-                    width="200">
+            <el-table-column prop="frame_time" label="罐检报告有效期" align="center" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.validity_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.frame_status ? false : true}" v-text="scope.row.frame_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column
-                    prop="frame_time"
-                    label="交强险有效期"
-                    align="center"
-                    width="200">
-                <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.frame_time"></span>
-                </template>
-            </el-table-column>
+
             <el-table-column
                     prop="driving_license"
                     label="行驶证"
@@ -201,7 +187,7 @@
             </el-table-column>
             <el-table-column
                     prop="pot_report"
-                    label="交强险保单"
+                    label="罐检报告"
                     align="center"
                     width="150">
                 <el-image
@@ -213,7 +199,7 @@
             </el-table-column>
             <el-table-column
                     prop="cargo_insurance"
-                    label="商业险保单"
+                    label="货检保单"
                     align="center"
                     width="150">
                 <el-image
@@ -240,10 +226,9 @@
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
-                    </el-tooltip>
-
+            
+                  <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
+                
                 </template>
             </el-table-column>
         </el-table>
@@ -263,6 +248,7 @@
         <!--表单-->
         <myForm ref="myAttr" @updateRow="handleReload"/>
         <detail ref="myAttrdetail" @updateRow="handleReload"/>
+        <Pouring ref="myAttrPouring" @updateRow="handleReload"/>
     </div>
 </template>
 
@@ -271,13 +257,15 @@
 import { getcartrailer, deltrailer } from '@/api/Info.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
+import Pouring from './pouring.vue'
 import { getArrByKey } from '@/utils'
 
 export default {
   name: 'Admin',
   components: {
     myForm,
-    detail
+    detail,
+    Pouring
   },
   data() {
     return {
@@ -324,7 +312,10 @@ export default {
       this.query.status = ''
       this.getcartrailer()
     },
-
+    //倒料
+    handlePouring() {
+      this.$refs.myAttrPouring.showForm()
+    },
     //新增
     handleAdd() {
       this.$refs.myAttr.showForm()
@@ -427,3 +418,13 @@ export default {
   },
 }
 </script>
+<style>
+.datestatus{
+  background-color: red;
+  color: white;
+}
+.datestatusinput>input{
+  background-color: rgba(255, 0, 0, 0.767);
+  color: white;
+}
+</style>

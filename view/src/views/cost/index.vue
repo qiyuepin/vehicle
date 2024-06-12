@@ -351,19 +351,19 @@ methods: {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(data);
     // 合并相同费用周期的单元格
-    let prevPeriod = null;
-    let mergeStartIndex = 1;
-    for (let i = 0; i < data.length; i++) {
-      const currentPeriod = data[i]["费用周期"];
-      if (currentPeriod !== prevPeriod) {
-        if (mergeStartIndex !== i) {
-          const mergeEndIndex = i - 1;
-          ws['!merges'].push({ s: { r: mergeStartIndex, c: 1 }, e: { r: mergeEndIndex, c: 1 } }); // 合并 B 列的单元格
-        }
-        mergeStartIndex = i;
-        prevPeriod = currentPeriod;
-      }
-    }
+    // let prevPeriod = null;
+    // let mergeStartIndex = 1;
+    // for (let i = 0; i < data.length; i++) {
+    //   const currentPeriod = data[i]["费用周期"];
+    //   if (currentPeriod !== prevPeriod) {
+    //     if (mergeStartIndex !== i) {
+    //       const mergeEndIndex = i - 1;
+    //       ws['!merges'].push({ s: { r: mergeStartIndex, c: 1 }, e: { r: mergeEndIndex, c: 1 } }); // 合并 B 列的单元格
+    //     }
+    //     mergeStartIndex = i;
+    //     prevPeriod = currentPeriod;
+    //   }
+    // }
 
 
 

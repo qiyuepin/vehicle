@@ -85,6 +85,9 @@
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
+                      <el-form-item label="排序" prop="plan_type">
+                          <el-input v-model="formData.plan_type" clearable></el-input>
+                      </el-form-item>
                       <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1>是</el-radio>
@@ -110,7 +113,7 @@
 
 <script>
 
-import { addnormal, editnormal, getnormalinfo, getplaninfo, getplansinfo } from '@/api/plan.js'
+import { addnormal, edittemporary, getnormalinfo, getplaninfo, getplansinfo } from '@/api/plan.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
@@ -174,7 +177,8 @@ data() {
       end_periodic: '',
       period_id: '',
       trailer_status: '',
-      platform: 'pc'
+      platform: 'pc',
+      plan_type: 0
     },
   }
 },
@@ -263,6 +267,7 @@ methods: {
     this.formData.end_periodic = ''
     this.formData.period_id = ''
     this.formData.trailer_status = ''
+    this.formData.plan_type = 0
   },
   getnormalinfo(id){
     getnormalinfo({id:id}).then(response=>{
@@ -285,6 +290,7 @@ methods: {
             this.formData.start_periodic = response.start_periodic
             this.formData.end_periodic = response.end_periodic
             this.formData.trailer_status = response.trailer_status
+            this.formData.plan_type = response.plan_type
         }
     })
   },
@@ -294,7 +300,7 @@ methods: {
         this.$refs.saveForm.validate(valid => {
           if (valid) {
             if(this.formData.id){
-              editnormal(this.formData).then(response => {
+              edittemporary(this.formData).then(response => {
                 this.$message({
                   message: response.msg,
                   type: 'success',

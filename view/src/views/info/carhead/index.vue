@@ -50,14 +50,17 @@
                   <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
                 </template>
             </el-table-column>
-            <!-- <el-table-column
-                    prop="carhead_plate"
-                    label="车（牌）号"
-                    align="center"
-                    width="120">
-                    <el-button size="mini" type="primary" @click="scope.row && handledetail(scope.row)"></el-button>
+            <el-table-column
+                prop="date_status"
+                label="是否超期"
+                align="center"
+                width="120">
+                <template slot-scope="scope">
+                  <span style="color: #F56C6C;" v-if="scope.row.date_status > 0" >{{scope.row.date_status}}个证件过期</span>
+                  <span style="color: #409EFF;" v-else >-</span>
+                </template>
                     
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column
                 prop="carhead_plate"
                 label="车（牌）号"
@@ -117,7 +120,7 @@
                     width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.scrapp_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.scrapp_status ? false : true}" v-text="scope.row.scrapp_time"></span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -127,7 +130,7 @@
                     width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.inspection_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.inspection_status ? false : true}" v-text="scope.row.inspection_time"></span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -137,7 +140,7 @@
                     width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.validity_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.validity_status ? false : true}" v-text="scope.row.validity_time"></span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -147,7 +150,7 @@
                     width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.traffic_time"></span>
+                    <span style="margin-left: 10px" :class="{ datestatus: scope.row.traffic_status ? false : true}" v-text="scope.row.traffic_time"></span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -436,3 +439,13 @@ export default {
   },
 }
 </script>
+<style>
+.datestatus{
+  background-color: #fc3b3b;
+  color: white;
+}
+.datestatusinput>input{
+  background-color: rgba(255, 0, 0, 0.767);
+  color: white;
+}
+</style>

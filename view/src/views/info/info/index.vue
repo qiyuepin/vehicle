@@ -17,18 +17,10 @@
           </el-form-item>
       </el-form>
       <el-row style="margin-bottom: 10px;">
-          <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-              <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="新增" placement="top">
-              <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-              <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="删除" placement="top">
-              <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-          </el-tooltip>
+        <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
+        <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+        <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+        <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
       </el-row>
       <el-table
               ref="multipleTable"
@@ -45,8 +37,8 @@
                   :selectable="isSelected">
           </el-table-column>
           <el-table-column
-                  prop="id"
-                  label="ID"
+                label="id"
+                  type="index"
                   align="center"
                   width="80">
           </el-table-column>
@@ -75,9 +67,30 @@
           </el-table-column> -->
           <el-table-column
                   prop="head_num"
-                  label="车头车牌号"
+                  label="牵引车车牌号"
                   align="center"
                   width="200">
+          </el-table-column>
+          <!-- <el-table-column
+                  prop="head_status"
+                  label="牵引车状态"
+                  align="center"
+                  width="200">
+          </el-table-column> -->
+          <el-table-column
+              prop="head_status"
+              label="牵引车状态"
+              align="center"
+              width="110">
+              <template slot-scope="scope">
+                
+                <span style="color: #67C23A;" v-if="scope.row.head_status === 0" >回库</span>
+                <span style="color: #e6a23c;" v-else-if="scope.row.head_status === 1" >装货</span>
+                <span style="color: #f56c6c;" v-else-if="scope.row.head_status === 2" >卸货</span>
+                <span style="color: #409EFF;" v-else-if="scope.row.head_status === 3" >在途</span>
+                <span style="color: #909399;" v-else-if="scope.row.head_status === 4" >停运</span>
+                <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+              </template>
           </el-table-column>
           <el-table-column
                   prop="trailer_num"
@@ -85,6 +98,23 @@
                   align="center"
                   width="200">
           </el-table-column>
+          <el-table-column
+              prop="trailer_status"
+              label="挂车状态"
+              align="center"
+              width="110">
+              <template slot-scope="scope">
+                
+                <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >回库</span>
+                <span style="color: #e6a23c;" v-else-if="scope.row.trailer_status === 1" >装货</span>
+                <span style="color: #f56c6c;" v-else-if="scope.row.trailer_status === 2" >卸货</span>
+                <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 3" >在途</span>
+                <span style="color: #909399;" v-else-if="scope.row.trailer_status === 4" >停运</span>
+                <span style="color: #909399;" v-else >-</span>
+                <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+              </template>
+          </el-table-column>
+ 
           <el-table-column
                   prop="driver_name"
                   label="驾驶员"
@@ -103,13 +133,13 @@
           
           
           <el-table-column
-                  prop="create_time"
-                  label="创建时间"
+                  prop="update_time"
+                  label="修改时间"
                   align="center"
                   width="200">
               <template slot-scope="scope">
                   <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
+                  <span style="margin-left: 10px" v-text="scope.row.update_time"></span>
               </template>
           </el-table-column>
           <el-table-column
@@ -118,9 +148,9 @@
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                      <el-button size="mini" type="primary" v-permission="'admin.info.editinfo'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  </el-tooltip>
+             
+                  <el-button size="mini" type="primary" v-permission="'admin.info.editinfo'"  @click="handleEdit(scope.row)">编辑</el-button>
+                 
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>

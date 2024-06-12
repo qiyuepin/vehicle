@@ -22,9 +22,9 @@
       </el-form>
       <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="success" v-permission="'admin.plans.addnormal'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-          <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+          <el-button type="danger" v-permission="'admin.plans.delnormal'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
           <!-- <el-tooltip class="item" effect="dark" content="map" placement="top">
               <el-button type="success"  size="mini" @click="handlemap">map</el-button>
           </el-tooltip> -->
@@ -79,6 +79,7 @@
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
                 <span style="color: #F56C6C;"  @click="handleDetail(scope.row)" v-else >待接单</span> -->
                 <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 3"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
                 <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
                 <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
@@ -182,10 +183,14 @@
                   fixed="right"
                   label="操作"
                   align="center"
-                  min-width="150">
+                  min-width="160">
               <template slot-scope="scope">
                   <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
-                
+                  
+                  <el-button v-if="scope.row.driver_status==3" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
+                  <el-button v-else size="mini" type="danger" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">作废</el-button>
+  
+
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -227,7 +232,7 @@
 
 <script>
 
-import { getnormal, delnormal, getnormalinfo } from '@/api/plan.js'
+import { getnormal, delnormal, getnormalinfo, deltemporary } from '@/api/plan.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import test from './test.vue'
@@ -348,12 +353,12 @@ methods: {
   },
   //删除
   handleDelete(ids){
-    this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+    this.$confirm('您确定要删除该任务吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delescort({ ids: ids }).then(response => {
+      delnormal({ ids: ids }).then(response => {
         this.getnormal()
         this.$message({
           type: 'success',
@@ -374,13 +379,14 @@ methods: {
   },
   //启用禁用操作
   handleStatus(index, id, status) {
-    let handlerMsg = status === 1 ? '启用' : '禁用';
-    this.$confirm('您确定要' + handlerMsg + '该用户吗?', '温馨提示', {
+    let handlerMsg = status === 3 ? '已终止' : '终止';
+    this.$confirm('您确定要' + handlerMsg + '该任务吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      changeStatus({ id: id, status: 3 - status }).then(response => {
+      console.log(555)
+      deltemporary({ id: id, status: 3 - status }).then(response => {
         this.tableData[index]['status'] = 3 - status
         this.$message({
           type: 'success',

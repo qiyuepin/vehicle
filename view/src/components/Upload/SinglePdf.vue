@@ -108,24 +108,27 @@ export default {
       return isPDF && isLt10M
     },
     initPdf(url) {
+      console.log(url)
+      console.log(defaultSettings.readFileActive)
       //方法一
-      let that = this
-      axios({
-        method: 'GET',
-        url: process.env.VUE_APP_BASE_URL + process.env.VUE_APP_BASE_API + defaultSettings.readFileActive,
-        params: { url:url },
-        responseType: 'blob' // 更改responseType类型为 blob
-      }).then(res => {
-        // 转换pdf
-        console.log(res.data)
-        const blob = new Blob([res.data], { type: 'application/pdf;charset=utf-8' });
-        let windowURL = window.URL || window.webkitURL;
-        that.pdfUrl = windowURL.createObjectURL(blob);
-      }).catch(err => {
-        console.log(err)
-      })
+      // let that = this
+      // axios({
+      //   method: 'GET',
+      //   url: process.env.VUE_APP_BASE_URL + process.env.VUE_APP_BASE_API + defaultSettings.readFileActive,
+      //   params: { url:url },
+      //   responseType: 'blob' // 更改responseType类型为 blob
+      // }).then(res => {
+      //   // 转换pdf
+      //   console.log(res.data)
+      //   const blob = new Blob([res.data], { type: 'application/pdf;charset=utf-8' });
+      //   let windowURL = window.URL || window.webkitURL;
+      //   that.pdfUrl = windowURL.createObjectURL(blob);
+      // }).catch(err => {
+      //   console.log(err)
+      // })
       //方法二
       // this.pdfUrl = process.env.VUE_APP_BASE_URL + '/static/pdf/web/viewer.html?file=' + encodeURIComponent(url)
+      this.pdfUrl = url
     },
   }
 }

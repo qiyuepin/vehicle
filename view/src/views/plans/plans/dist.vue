@@ -61,6 +61,13 @@
                       <el-form-item label="货品数量">
                           <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
                       </el-form-item>
+                       <el-form-item label="任务类别" prop="plan_type" >
+                          <el-radio-group v-model="formData.plan_type">
+                            <el-radio :label=0>运输任务</el-radio>
+                            <el-radio :label=1>仅装车</el-radio>
+                            <el-radio :label=2>仅卸车</el-radio>
+                          </el-radio-group>
+                      </el-form-item>
                       <!-- <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item> -->

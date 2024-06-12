@@ -67,17 +67,25 @@
                 </el-tabs>
             </el-form> -->
 
-            <el-descriptions  direction="vertical" :column="4" border>
+            <el-descriptions :column="2" border>
                 <el-descriptions-item label="车牌号" class="custom-descriptions">{{formData.carhead_plate}}</el-descriptions-item>
                 <el-descriptions-item label="品牌" class="custom-descriptions">{{formData.carhead_plate}}</el-descriptions-item>
                 <el-descriptions-item label="自重" class="custom-descriptions">{{formData.carhead_weight}}</el-descriptions-item>
                 <el-descriptions-item label="道路运输证号" class="custom-descriptions">{{formData.transport_cert}}</el-descriptions-item>
                 <el-descriptions-item label="经营范围">{{formData.carhead_scope_name}}</el-descriptions-item>
                 <el-descriptions-item label="注册日期">{{formData.regist_time}}</el-descriptions-item>
-                <el-descriptions-item label="强制报废日期">{{formData.scrapp_time}}</el-descriptions-item>
-                <el-descriptions-item label="检验有效期">{{formData.inspection_time}}</el-descriptions-item>
-                <el-descriptions-item label="审验有效期">{{formData.validity_time}}</el-descriptions-item>
-                <el-descriptions-item label="交强险有效期">{{formData.traffic_time}}</el-descriptions-item>
+                <el-descriptions-item label="强制报废日期" :content-class-name="{ datestatus: formData.scrapp_status ? false : true }">
+                  {{formData.scrapp_time}}
+                </el-descriptions-item>
+                <el-descriptions-item label="检验有效期" :content-class-name="{ datestatus: formData.inspection_status ? false : true }">
+                  {{formData.inspection_time}}
+                </el-descriptions-item>
+                <el-descriptions-item label="审验有效期" :content-class-name="{ datestatus: formData.validity_status ? false : true }">
+                  {{formData.validity_time}}
+                </el-descriptions-item>
+                <el-descriptions-item label="交强险有效期" :content-class-name="{ datestatus: formData.traffic_status ? false : true }">
+                  {{formData.traffic_time}}
+                </el-descriptions-item>
                 <el-descriptions-item label="创建日期">{{formData.create_time}}</el-descriptions-item>
                 <el-descriptions-item label="更新日期">{{formData.update_time}}</el-descriptions-item>
             
@@ -97,9 +105,10 @@
                         :src="formData.transport_license[0]" 
                         :preview-src-list="formData.transport_license">
                     </el-image>
+                    <el-button size="mini">下载</el-button>
                     </div>
                 </el-descriptions-item>
-                <el-descriptions-item label="交强险保单">
+                <!-- <el-descriptions-item label="交强险保单">
                     <div class="demo-image__preview">
                     <el-image 
                         style="width: 100px; height: 100px"
@@ -107,14 +116,44 @@
                         :preview-src-list="formData.traffic_insurance">
                     </el-image>
                     </div>
+                </el-descriptions-item> -->
+                <el-descriptions-item label="交强险保单">
+                    <div class="demo-image__preview">
+                    <div v-if="formData.traffic_insurance !=''" class="pdf-box">
+                        <svg-icon icon-class="pdf" class-name="pdf" />
+                        <span class="el-upload-list__item-actions">
+                              <span
+                                      class="el-upload-list__item-preview"
+                                      title="预览"
+                                      @click.prevent="handlePreview()">
+                                      <i class="el-icon-zoom-in"></i>
+                              </span>
+                          
+                        </span>
+                    </div>
+                    </div>
                 </el-descriptions-item>
                 <el-descriptions-item label="商业险保单">
                     <div class="demo-image__preview">
-                    <el-image 
+                    <!-- <el-image 
                         style="width: 100px; height: 100px"
                         :src="formData.business_insurance[0]" 
                         :preview-src-list="formData.business_insurance">
-                    </el-image>
+                    </el-image> -->
+                    <div v-if="formData.business_insurance" class="pdf-box">
+                        <svg-icon icon-class="pdf" class-name="pdf" />
+                        <span class="el-upload-list__item-actions">
+                              <span
+                                      class="el-upload-list__item-preview"
+                                      title="预览"
+                                      @click.prevent="handlePreview()">
+                                      <i class="el-icon-zoom-in"></i>
+                              </span>
+                          
+                        </span>
+                    </div>
+                    
+                          
                     </div>
                 </el-descriptions-item>
             </el-descriptions>
@@ -123,6 +162,9 @@
                 <!-- <el-button size="mini" type="primary" @click="saveData()">确 定
                 </el-button> -->
             </div>
+            <el-dialog :modal-append-to-body="false" top="0" class="dialogPdf" :fullscreen="true" :append-to-body="true" :visible.sync="dialogVisible">
+                <iframe loading="lazy" id="pdf_container" :src="formData.business_insurance" frameborder="0" height="100%" width="100%"></iframe>
+            </el-dialog>
         </div>
     </el-drawer>
 </template>
@@ -132,14 +174,15 @@
 import { getcarheadInfo, getcarscope} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
-
+import UploadPdf from '@/components/Upload/SinglePdf'
 
 
 export default {
   name: "Detail",
   components: {
     UploadImage,
-    MultiImage
+    MultiImage,
+    UploadPdf
   },
   data() {
     return {
@@ -152,6 +195,7 @@ export default {
         carhead_plate: [{ required: true, trigger: 'blur'}],
         transport_cert: [{ required: true, trigger: 'blur'}]
       },
+      dialogVisible:false,
       formData: {
         id: 0,
         carhead_plate: '',
@@ -177,6 +221,9 @@ export default {
     this.getcarscope()
   },
   methods: {
+    handlePreview(){
+      this.dialogVisible = true;
+    },
     getcarscope(){
       getcarscope().then(response=>{
           if(response !== undefined){
@@ -244,6 +291,10 @@ export default {
               this.formData.business_insurance = response.business_insurance.split(',').map(item => item.trim());
               this.formData.create_time = response.create_time
               this.formData.update_time = response.update_time
+              this.formData.scrapp_status  = response.scrapp_status 
+              this.formData.inspection_status  = response.inspection_status 
+              this.formData.validity_status  = response.validity_status 
+              this.formData.traffic_status  = response.traffic_status 
           }
       })
     }
@@ -258,5 +309,16 @@ export default {
     }
     ::v-deep .custom-descriptions .el-descriptions-item {
         width: 200px; /* 设置固定宽度 */
+    }
+
+    ::v-deep .pdf-box {
+        display: inline-block;
+        height: 101px;
+        width: 101px;
+        position: relative;
+        border: 1px dashed #d9d9d9;
+        margin-right: 10px;
+        text-align: center;
+        vertical-align: top;
     }
 </style>

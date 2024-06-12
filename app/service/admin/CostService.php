@@ -35,7 +35,7 @@ class CostService extends BaseService
             if(isset($param['title'])){
                 $where[] = ['title','like','%'.$param['title'].'%'];
             }
-            if(isset($param['status'])&&$param['status']){
+            if(isset($param['status'])){
                 $where[] = ['status','=',$param['status']];
             }
             if(isset($param['driver_name'])&&$param['driver_name']){
@@ -162,7 +162,7 @@ class CostService extends BaseService
     public function getinfo($param=[]){
         try{
             
-            if(isset($param['id'])){
+            if(isset($param['id'])){//费用详情
                 // dump('--id--');
                 $info = Cost::where('id',$param['id'])->find();
                 if(empty($info)){
@@ -171,7 +171,7 @@ class CostService extends BaseService
                     $info = $info->toArray();
                 }
             }
-            else if(isset($param['period_id'])){
+            else if(isset($param['period_id'])){//周期详情
                 // dump($param);die;
                 $info = Db::name('admin_carplan_period')->where('id',$param['period_id'])->find();
             }
