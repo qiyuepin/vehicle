@@ -180,9 +180,9 @@
                   <el-button size="mini" type="danger" v-if="scope.row.status==0" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)">分配</el-button>
                   <el-button size="mini" type="danger" v-if="scope.row.status==1" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)" disabled>分配</el-button>
                   <!-- <el-tooltip class="item" effect="dark" content="编辑" placement="top"> -->
-                  <el-button size="mini" type="primary" v-if="scope.row.status==0" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  <el-button size="mini" type="primary" v-if="scope.row.status==1" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)" disabled>编辑</el-button>
-                  
+<!--                  <el-button size="mini" type="primary" v-if="scope.row.status==0" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>-->
+<!--                  <el-button size="mini" type="primary" v-if="scope.row.status==1" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)" disabled>编辑</el-button>-->
+
                   <!-- <el-button size="mini" type="success" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button> -->
                   <el-button size="mini" type="info" plain v-if="scope.row.status==0" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">未完成</el-button>
                
@@ -234,7 +234,7 @@
 
 <script>
 
-import { getplans, delplan, getplansinfo, editplan } from '@/api/plan.js'
+import { getplans, delplan, getplansinfo, editplan, addhisplan } from '@/api/plan.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import planDist from './dist.vue'
@@ -254,6 +254,22 @@ data() {
     buttonDisabled: true,
     tableData: [],
     multipleSelection: null,
+      arrSelection: {
+          id: 0,
+          status: '',
+          plan_type: '',
+          start_periodic: '',
+          product_name: '',
+          product_quantity: '',
+          //改修 No.22 start
+          plan_unit_price:'',
+          //改修 No.22 end
+          load_factory: '',
+          load_address: '',
+          unload_factory: '',
+          unload_address: '',
+          create_time: ''
+      },
     loading: true,
     searchShow: false,
     total: 0,
@@ -389,7 +405,25 @@ methods: {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delescort({ ids: ids }).then(response => {
+        console.log(this.multipleSelection)
+        console.log(this.arrSelection)
+        //addhisplan(this.arrSelection)
+        delplan({ ids: ids }).then(response => {
+            this.multipleSelection.forEach(row=>{
+                this.arrSelection.id = row.id;
+                this.arrSelection.status = row.status;
+                this.arrSelection.plan_type = row.plan_type;
+                this.arrSelection.start_periodic = row.start_periodic;
+                this.arrSelection.product_name = row.product_name;
+                this.arrSelection.product_quantity = row.product_quantity;
+                this.arrSelection.plan_unit_price = row.plan_unit_price;
+                this.arrSelection.load_factory = row.load_factory;
+                this.arrSelection.load_address = row.load_address;
+                this.arrSelection.unload_factory = row.unload_factory;
+                this.arrSelection.unload_address = row.unload_address;
+                this.arrSelection.create_time = row.create_time;
+                addhisplan(this.arrSelection)
+            })
         this.getplans()
         this.$message({
           type: 'success',
