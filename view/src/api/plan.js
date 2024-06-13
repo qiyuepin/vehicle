@@ -120,6 +120,13 @@ export function addhisplan(data) {
         data
     })
 }
+export function getPlanCount(query) {
+    return request({
+        url:'/plan/getPlanCount',
+        method:'get',
+        params:query
+    })
+}
 export function editplan(data) {
   return request({
     url:'/plan/editplan',

@@ -181,6 +181,7 @@ Route::group('/',function(){
         Route::get('notice','Plan/notice');//挂车信息
         Route::post('driver_sumitnormal','Plan/driver_sumitnormal');//驾驶员提交信息
         Route::post('addhisplan','Plan/addhisplan');//任务列表删除的历史记录
+        Route::get('getPlanCount','Plan/getPlanCount');//相同的运输计划不能超过两条
     })->middleware(['adminAuth']);
 });
 

@@ -666,7 +666,7 @@ class PlanService extends BaseService
             return $this->error();
         }
     }
-    //修改 No.9
+    //修改 No.10
     public function addhisplan($param=[],$Authorization){
 
         try {
@@ -691,7 +691,26 @@ class PlanService extends BaseService
             return $this->error();
         }
     }
-    //修改 No.9
+    public function getPlanCount($param=[]){
+        try{
+            $cnt = Plans::where('status',0)
+                ->where('product_name',$param['product_name'])
+                ->where('product_quantity',$param['product_quantity'])
+                ->where('load_factory',$param['load_factory'])
+                ->where('load_address',$param['load_address'])
+                ->where('unload_factory',$param['unload_factory'])
+                ->where('unload_address',$param['unload_address'])
+                ->count();
+
+            $returnArr[]=$cnt;
+
+            return $this->success($returnArr);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    //修改 No.10
     public function editplan($param=[],$Authorization){
         try{
             Db::startTrans();

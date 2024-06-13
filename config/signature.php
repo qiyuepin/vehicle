@@ -97,6 +97,7 @@ return [
         'admin/auth/freshToken',
         'admin/test/index',
         'admin/info/delcarhead',
-        'admin/info/delinfo'
+        'admin/info/delinfo',
+        'admin/plan/getPlanCount'
     ],//白名单
 ];
