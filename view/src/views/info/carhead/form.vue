@@ -29,13 +29,31 @@
                             <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
                         </el-form-item> -->
                         <el-form-item label="品牌" prop="carhead_brand">
-                            <el-input v-model="formData.carhead_brand" clearable placeholder="品牌"></el-input>
+<!--                            <el-input v-model="formData.carhead_brand" clearable placeholder="品牌"></el-input>-->
+                            <el-select v-model="formData.carhead_brand" filterable  clearable placeholder="请选择品牌">
+                                <el-option
+                                    v-for="item in branchnamelist"
+                                    :key="item.value"
+                                    :label="item.branch_name"
+                                    :value="item.branch_name">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="自重" prop="carhead_weight">
                             <el-input v-model="formData.carhead_weight" clearable placeholder="请输入自重"></el-input>
                         </el-form-item>
                         <el-form-item label="道路运输证号">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输入道路运输证号"></el-input>
+                        </el-form-item>
+                        <el-form-item label="排放等级" prop="discharge_level">
+                            <el-select v-model="formData.discharge_level" filterable  clearable placeholder="请选择排放等级">
+                                <el-option
+                                    v-for="item in dischargelevellist"
+                                    :key="item.value"
+                                    :label="item.discharge_level"
+                                    :value="item.discharge_level">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="经营范围" prop="carhead_scope">
                             <!-- <el-input v-model="formData.carhead_scope" clearable placeholder="请输入经营范围"></el-input> -->
@@ -57,6 +75,16 @@
                         </el-form-item>
                         <el-form-item label="交强险有效期">
                           <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期" :class="{ datestatusinput: formData.traffic_status ? false : true}"></el-input>
+                        </el-form-item>
+                        <el-form-item label="动力源" prop="power_supply">
+                            <el-select v-model="formData.power_supply" filterable  clearable placeholder="请选择动力源">
+                                <el-option
+                                    v-for="item in powersupplyllist"
+                                    :key="item.value"
+                                    :label="item.power_supply"
+                                    :value="item.power_supply">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="行驶证" prop="driving_license">
                             <!-- <MultiImage ref="Image_driving_license" v-model="formData.driving_license"></MultiImage> -->
@@ -93,7 +121,7 @@
 
 <script>
 
-import { addcarhead, editcarhead, getcarheadInfo, getcarscope, infonotice} from '@/api/Info.js'
+import { addcarhead, editcarhead, getcarheadInfo, getcarscope, infonotice,getheadbranch,getdischarge,getpowersupply} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
@@ -111,6 +139,9 @@ export default {
       title:'',
       dialog: false,
       carhead_scope: [],
+        branchnamelist:[],
+        dischargelevellist:[],
+        powersupplyllist:[],
       drawerShow:false,
       saveRules: {
         carhead_plate: [{ required: true, trigger: 'blur'}],
@@ -122,12 +153,14 @@ export default {
         carhead_brand: '',
         carhead_weight: '',
         transport_cert: '',
+          discharge_level:'',
         carhead_scope: [],
         regist_time: '',
         scrapp_time: '',
         inspection_time: '',
         validity_time: '',
         traffic_time: '',
+          power_supply:'',
         driving_license: [],
         transport_license: '',
         traffic_insurance: '',
@@ -137,8 +170,35 @@ export default {
   },
   created() {
     this.getcarscope()
+      this.getheadbranch()
+      this.getdischarge()
+      this.getpowersupply()
   },
   methods: {
+      getheadbranch(){
+          getheadbranch().then(response => {
+              if(response !== undefined){
+                  console.log(response.data)
+                  this.branchnamelist = response.data
+              }
+          })
+      },
+      getdischarge(){
+          getdischarge().then(response => {
+              if(response !== undefined){
+                  console.log(response.data)
+                  this.dischargelevellist = response.data
+              }
+          })
+      },
+      getpowersupply(){
+          getpowersupply().then(response => {
+              if(response !== undefined){
+                  console.log(response.data)
+                  this.powersupplyllist = response.data
+              }
+          })
+      },
     infonotice() {
       infonotice().then(response => {
           if(response !== undefined){
@@ -183,6 +243,8 @@ export default {
       this.formData.transport_license = ''
       this.formData.traffic_insurance = ''
       this.formData.business_insurance = ''
+      this.formData.discharge_level = ''
+      this.formData.power_supply = ''
     },
     getcarheadInfo(id){
       getcarheadInfo({id:id}).then(response=>{
@@ -215,7 +277,7 @@ export default {
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
                 return item
               });
-          
+
               this.$refs.Image_driving_license.imgUrl = response.driving_licenses
               this.formData.transport_license = response.transport_license
               this.$refs.Image_transport_license.imgUrl = response.transport_license
@@ -224,14 +286,16 @@ export default {
               this.formData.business_insurance = response.business_insurance
               this.$refs.Image_business_insurance.pdfUrl = response.business_insurance
 
-              this.formData.scrapp_status  = response.scrapp_status 
-              this.formData.inspection_status  = response.inspection_status 
-              this.formData.validity_status  = response.validity_status 
-              this.formData.traffic_status  = response.traffic_status 
+              this.formData.scrapp_status  = response.scrapp_status
+              this.formData.inspection_status  = response.inspection_status
+              this.formData.validity_status  = response.validity_status
+              this.formData.traffic_status  = response.traffic_status
+              this.formData.discharge_level = response.discharge_level
+              this.formData.power_supply = response.power_supply
           }
       })
     },
-    
+
     saveData() {
       this.$confirm('您确定要提交吗？', '温馨提示')
         .then(_ => {

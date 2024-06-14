@@ -41,7 +41,7 @@
                 align="center"
                 width="110">
                 <template slot-scope="scope">
-                  
+
                   <span style="color: #67C23A;" v-if="scope.row.head_status === 0" >回库</span>
                   <span style="color: #e6a23c;" v-else-if="scope.row.head_status === 1" >装货</span>
                   <span style="color: #f56c6c;" v-else-if="scope.row.head_status === 2" >卸货</span>
@@ -59,7 +59,7 @@
                   <span style="color: #F56C6C;" v-if="scope.row.date_status > 0" >{{scope.row.date_status}}个证件过期</span>
                   <span style="color: #409EFF;" v-else >-</span>
                 </template>
-                    
+
             </el-table-column>
             <el-table-column
                 prop="carhead_plate"
@@ -95,6 +95,12 @@
                     label="道路运输证号"
                     align="center"
                     width="200">
+            </el-table-column>
+            <el-table-column
+                prop="discharge_level"
+                label="排放等级"
+                align="center"
+                width="200">
             </el-table-column>
             <el-table-column
                     prop="carhead_scope"
@@ -152,6 +158,12 @@
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px" :class="{ datestatus: scope.row.traffic_status ? false : true}" v-text="scope.row.traffic_time"></span>
                 </template>
+            </el-table-column>
+            <el-table-column
+                prop="power_supply"
+                label="动力源"
+                align="center"
+                width="200">
             </el-table-column>
             <el-table-column
                     prop="driving_license"
@@ -216,7 +228,7 @@
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
-            
+
             <el-table-column
                     prop="create_time"
                     label="创建时间"
@@ -336,7 +348,7 @@ export default {
     handleAccident() {
       this.$router.push('/driver/accident');
     },
- 
+
     //新增
     handleAdd() {
       this.$refs.myAttr.showForm()
