@@ -31,9 +31,11 @@ class UserService extends BaseService
     public function info($id){
         
         try{
+          
             $data = Cache::get('adminInfo:'.$id);
             if(empty($data)){
                 $data = Admin::where('id',$id)->field(['id','username','nickname','phone','email','avatar','sign'])->find();
+                // dump($data);die;
                 $data = $data->toArray();
                 $data['rule'] = $this->getRule($id);
                 $data['roles'] = AuthGroupAccess::where('uid',$id)->column('group_id');

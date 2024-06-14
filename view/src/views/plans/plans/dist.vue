@@ -61,13 +61,13 @@
                       <el-form-item label="货品数量">
                           <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
                       </el-form-item>
-                       <el-form-item label="任务类别" prop="plan_type" >
+                       <!-- <el-form-item label="任务类别" prop="plan_type" >
                           <el-radio-group v-model="formData.plan_type">
                             <el-radio :label=0>运输任务</el-radio>
                             <el-radio :label=1>仅装车</el-radio>
                             <el-radio :label=2>仅卸车</el-radio>
                           </el-radio-group>
-                      </el-form-item>
+                      </el-form-item> -->
                       <!-- <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item> -->
@@ -171,8 +171,7 @@ data() {
     map: null,
     saveRules: {
       product_name: [{ required: true, message: '货品名称不能为空',trigger: 'blur'}],
-      product_quantity: [{ required: true, message: '货品数量不能为空',trigger: 'blur'}],
-      plan_type: [{ required: true, message: '请选择任务类别', trigger: 'change' }],
+      product_quantity: [{ required: true, message: '货品数量不能为空',trigger: 'blur'}]
       // load_factory: [{ required: true, message: '装货厂家不能为空', trigger: 'blur'}],
       // unload_factory: [{ required: true, message: '卸货厂家不能为空',trigger: 'blur'}],
 
@@ -191,7 +190,6 @@ data() {
       trailer_num: '',
       driver_name: '',
       trailer_status: '',
-      plan_type: '',
       start_periodic: '',
       end_periodic: '',
       platform: 'pc',
@@ -294,7 +292,6 @@ methods: {
     this.formData.trailer_status = ''
     this.formData.trailer_num = ''
     this.formData.driver_name = ''
-    this.formData.plan_type = ''
     this.formData.start_periodic = ''
     this.formData.end_periodic = ''
     this.formData.load_location = ''
@@ -320,7 +317,6 @@ methods: {
             this.formData.trailer_status = response.trailer_status
             this.formData.trailer_num = response.trailer_num
             this.formData.driver_name = response.driver_name
-            this.formData.plan_type = response.plan_type
             this.formData.period_id = response.period_id
             this.formData.platform = response.platform
             this.formData.start_periodic = response.start_periodic

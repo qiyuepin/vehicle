@@ -155,6 +155,14 @@ Route::group('/',function(){
         Route::post('delfactory','Info/delfactory');//删除厂家
         Route::post('bind', 'Info\WebSocket@bind');
         Route::post('end', 'Info\WebSocket@send');
+        Route::get('getproduct', 'Info/getproduct');
+        Route::get('getheadbranch', 'Info/getheadbranch');
+        Route::get('getdischarge', 'Info/getdischarge');
+        Route::get('getpowersupply', 'Info/getpowersupply');
+        Route::get('gettrailerbranch', 'Info/gettrailerbranch');
+        Route::get('gettrailermaterial', 'Info/gettrailermaterial');
+        Route::get('gettrailerdes', 'Info/gettrailerdes');
+        Route::get('gettrailerkeepwarm', 'Info/gettrailerkeepwarm');
     })->middleware(['adminAuth']);
 
     Route::group('plan',function(){

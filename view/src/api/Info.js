@@ -204,3 +204,60 @@ export function infonotice(query) {
     params:query
   })
 }
+
+export function getproduct(query) {
+  return request({
+    url:'/info/getproduct',
+    method:'get',
+    params:query
+  })
+}
+export function getheadbranch(query) {
+  return request({
+    url:'/info/getheadbranch',
+    method:'get',
+    params:query
+  })
+}
+export function getdischarge(query) {
+  return request({
+    url:'/info/getdischarge',
+    method:'get',
+    params:query
+  })
+}
+export function getpowersupply(query) {
+  return request({
+    url:'/info/getpowersupply',
+    method:'get',
+    params:query
+  })
+}
+export function gettrailerbranch(query) {
+  return request({
+    url:'/info/gettrailerbranch',
+    method:'get',
+    params:query
+  })
+}
+export function gettrailermaterial(query) {
+  return request({
+    url:'/info/gettrailermaterial',
+    method:'get',
+    params:query
+  })
+}
+export function gettrailerdes(query) {
+  return request({
+    url:'/info/gettrailerdes',
+    method:'get',
+    params:query
+  })
+}
+export function gettrailerkeepwarm(query) {
+  return request({
+    url:'/info/gettrailerkeepwarm',
+    method:'get',
+    params:query
+  })
+}

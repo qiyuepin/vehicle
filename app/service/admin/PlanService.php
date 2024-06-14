@@ -163,6 +163,7 @@ class PlanService extends BaseService
             $plan = $param;
             
             $info = Plan::where('id',$plan['id'])->find();
+            $info['trailer_material'] = Cartrailer::where('trailer_plate',$info['trailer_num'])->value('trailer_material');
             // dump($info['period_id']);die;
             if(isset($param['platform']) && $param['platform'] == "app"){
                 $where['plan_id'] = $info['id'];
@@ -172,7 +173,7 @@ class PlanService extends BaseService
                 $where['unload_factory'] = $info['unload_factory'];
                 // $notice = Db::name("admin_car_notice")->where($where)->find();
                 // dump($notice);die;
-                $notice = Db::name("admin_car_notice")->where($where)->update(['read' => 1]);
+                // $notice = Db::name("admin_car_notice")->where($where)->update(['read' => 1]);
             }
             // $Plan_scope = explode(',', $info['Plan_scope']);
             // $info['Plan_scope'] = array_map('intval', $Plan_scope);
@@ -1094,13 +1095,29 @@ class PlanService extends BaseService
                     $escort['escort_status'] = ($param['status'] == 0) ? 0 : 1;
                 }
                 // dump($driver);die;
-                if (in_array($param['status'], [3, 5])) {
-                    $trailer['trailer_status'] = ($param['status'] == 3) ? 1 : 0;
+                $trailer['trailer_plate'] = $Plan['trailer_num'];
+                $trailerdata['product_name'] = $Plan['product_name'];
+                if ($param['status'] == 3) {
+                    $trailerdata['trailer_status'] = 1;
+                    $trailerdata['product_quantity'] = $param['load_product_quantity'];
+                    $trailerdata['product_name'] = $Plan['product_name'];
+                } elseif ($param['status'] == 5 && $Plan['plan_type'] == 0) {
+                    $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
+                    $quantity = $product_quantity - $param['unload_product_quantity'];
+                    $trailerdata['product_quantity'] = $quantity;
+                    $trailerdata['trailer_status'] = ($quantity > 0.2) ? 1 : 0;
+           
+                } elseif ($param['status'] == 5 && $Plan['plan_type'] == 2) {
+                    $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
+                    $quantity = $product_quantity - $param['unload_product_quantity'];
+                    $trailerdata['product_quantity'] = $quantity;
+                    $trailerdata['trailer_status'] = ($quantity > 0.2) ? 1 : 0;
+                    
                 } else {
                     $trailer['trailer_status'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('trailer_status');
                 }
                 Carhead::update($head,['carhead_plate'=>$carhead_plate]);
-                Cartrailer::update($trailer,['trailer_plate'=>$Plan['trailer_num']]);
+                Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata);
                 Escort::update($escort,['name'=>$escort_name]);
                 Admin::update($driver,['username'=>$Plan['driver_name']]);
                 

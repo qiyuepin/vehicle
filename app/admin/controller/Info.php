@@ -196,15 +196,51 @@ class Info extends Base
         return $this->responseData($data);
     }
 
-    public function bind(Request $request,InfoService $service){
+    public function getproduct(Request $request,InfoService $service){
         $param = $request->param();
-        $data = $service -> bind($param);
+        $data = $service -> infonotice($param);
         return $this->responseData($data);
     }
 
-    public function send(Request $request,InfoService $service){
+    public function getheadbranch(Request $request,InfoService $service){
         $param = $request->param();
-        $data = $service -> send($param);
+        $data = $service -> getheadbranch($param);
+        return $this->responseData($data);
+    }
+
+    public function getdischarge(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> getdischarge($param);
+        return $this->responseData($data);
+    }
+
+    public function getpowersupply(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> getpowersupply($param);
+        return $this->responseData($data);
+    }
+
+    public function gettrailerbranch(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> gettrailerbranch($param);
+        return $this->responseData($data);
+    }
+
+    public function gettrailermaterial(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> gettrailermaterial($param);
+        return $this->responseData($data);
+    }
+
+    public function gettrailerdes(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> gettrailerdes($param);
+        return $this->responseData($data);
+    }
+
+    public function gettrailerkeepwarm(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> gettrailerkeepwarm($param);
         return $this->responseData($data);
     }
 }

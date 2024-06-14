@@ -22,12 +22,52 @@
                             <el-input v-model="formData.trailer_plate" clearable placeholder="请输入车牌号"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="品牌" prop="trailer_brand">
+                        <!-- <el-form-item label="品牌" prop="trailer_brand">
                             <el-input v-model="formData.trailer_brand" clearable placeholder="品牌"></el-input>
+                        </el-form-item> -->
+                        <el-form-item label="挂车品牌" prop="trailer_brand">
+                            <el-select v-model="formData.trailer_brand" filterable  clearable placeholder="请选择挂车品牌">
+                              <el-option
+                                v-for="item in branchlist"
+                                :key="item.value"
+                                :label="item.trailer_branch"
+                                :value="item.trailer_branch">
+                              </el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item label="材质" prop="trailer_material">
+                        <el-form-item label="罐体材质" prop="trailer_material">
+                            <el-select v-model="formData.trailer_material" filterable  clearable placeholder="请选择罐体材质">
+                              <el-option
+                                v-for="item in materiallist"
+                                :key="item.value"
+                                :label="item.trailer_material"
+                                :value="item.trailer_material">
+                              </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="设计代码" prop="trailer_designcode">
+                            <el-select v-model="formData.trailer_designcode" filterable  clearable placeholder="请选择设计代码">
+                              <el-option
+                                v-for="item in designlist"
+                                :key="item.value"
+                                :label="item.trailer_designcode"
+                                :value="item.trailer_designcode">
+                              </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="保温性能" prop="trailer_keepwarm">
+                            <el-select v-model="formData.trailer_keepwarm" filterable  clearable placeholder="请选择保温性能">
+                              <el-option
+                                v-for="item in keepwarmlist"
+                                :key="item.value"
+                                :label="item.trailer_keepwarm"
+                                :value="item.trailer_keepwarm">
+                              </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <!-- <el-form-item label="材质" prop="trailer_material">
                             <el-input v-model="formData.trailer_material" clearable placeholder="请输入材质"></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="自重" prop="trailer_weight">
                             <el-input v-model="formData.trailer_weight" clearable placeholder="请输入自重"></el-input>
                         </el-form-item>
@@ -106,7 +146,7 @@
 
 <script>
 
-import { addcartrailer, editcartrailer, getcartrailerInfo, getcarscope} from '@/api/Info.js'
+import { addcartrailer, editcartrailer, getcartrailerInfo, getcarscope, gettrailerbranch, gettrailermaterial, gettrailerdes, gettrailerkeepwarm} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 
@@ -122,6 +162,10 @@ export default {
     return {
       title:'',
       dialog: false,
+      branchlist: [],
+      materiallist: [],
+      designlist: [],
+      keepwarmlist: [],
       trailer_scope: [],
       drawerShow:false,
       saveRules: {
@@ -152,9 +196,45 @@ export default {
     }
   },
   created() {
-    this.getcarscope()
+    this.getcarscope();
+    this.gettrailerbranch();
+    this.gettrailermaterial();
+    this.gettrailerdes();
+    this.gettrailerkeepwarm();
   },
   methods: {
+    gettrailerdes(){
+      gettrailerdes().then(response=>{
+          if(response !== undefined){
+            console.log(response.data)
+            this.designlist = response.data;
+          }
+      })
+    },
+    gettrailerkeepwarm(){
+      gettrailerkeepwarm().then(response=>{
+          if(response !== undefined){
+            console.log(response.data)
+            this.keepwarmlist = response.data;
+          }
+      })
+    },
+    gettrailermaterial(){
+      gettrailermaterial().then(response=>{
+          if(response !== undefined){
+            console.log(response.data)
+            this.materiallist = response.data;
+          }
+      })
+    },
+    gettrailerbranch(){
+      gettrailerbranch().then(response=>{
+          if(response !== undefined){
+            console.log(response.data)
+            this.branchlist = response.data;
+          }
+      })
+    },
     getcarscope(){
       getcarscope().then(response=>{
           if(response !== undefined){

@@ -730,7 +730,15 @@ class InfoService extends BaseService
             if(isset($param['trailer']) && $param['trailer']){
                 $trailer['trailer_status'] = $param['trailer'];
             }
-            // dump($param['trailer']);die;
+            // if(isset($param['id']) && $param['id']){
+
+            //     $trailer['product_name'] = $param['product_name'];
+            //     $trailer['id'] = array('<>',$param['id']);
+
+            // }
+
+            // dump($trailer);die;
+
             foreach($driver as $key => $value ){
 
                 $plan = Plan::where(['driver_status' => 1, 'plan_type' => 0])
@@ -756,7 +764,17 @@ class InfoService extends BaseService
             // return $this->success($data);
             $data['escort'] = Escort::where('escort_status','in',[0,1])->field('id,name,escort_status')->select();
             $data['head'] = Carhead::where('head_status','in',[0,3])->field('id,carhead_plate,head_status')->select();
-            $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status')->select();
+            $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+            if(isset($param['id']) && $param['id']){
+                $data['trailer'] = Cartrailer::where('id', '<>', $param['id'])
+                    ->where(function($query) use ($param) {
+                        $query->where('product_name', '=', $param['product_name'])
+                            ->whereOr('trailer_status', '=', 0);
+                    })
+                    ->field('id,trailer_plate,trailer_status,product_name,product_quantity')
+                    ->select();
+            }
+            
             // $data['admin'] = Escort::where($where)->order(['create_time'=>'desc'])
             //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 // dump($data);die;
@@ -869,9 +887,24 @@ class InfoService extends BaseService
     public function Pouring($param=[]){
         try{
             Db::startTrans();
-            // dump(Driver::whereIn('id',$param['ids'])->find());die;
-            Cartrailer::where('trailer_plate',$param['old_trailer'])->update(['trailer_status'=> 0]);
-            $res = Cartrailer::where('trailer_plate',$param['new_trailer'])->update(['trailer_status'=> 1]);
+            $oldtrailer= Cartrailer::where('id',$param['old_trailer'])->find();
+            $newtrailer= Cartrailer::where('id',$param['new_trailer'])->find();
+            if($newtrailer['product_name'] && $newtrailer['product_name'] != $param['product_name']){
+                // throw new \Exception('车辆产品名称不一致');
+                return $this->error('车辆产品名称不一致');
+            }
+            else{
+                $oldproduct_quantity = $oldtrailer['product_quantity'] - $param['product_quantity'];
+                $old['product_quantity'] = $oldproduct_quantity>0.2 ? $oldproduct_quantity : 0;
+                $old['trailer_status'] = $oldproduct_quantity>0.2 ? 1 : 0;
+                $new['product_quantity'] = $param['all_product_quantity'];
+                $new['product_name'] = $param['product_name'];
+                $new['trailer_status'] = 1;
+            }
+            // $test = Cartrailer::where('trailer_plate',$param['old_trailer'])->fetchsql()->update($old);
+            // dump($test);die;
+            Cartrailer::where('id',$param['old_trailer'])->update($old);
+            $res = Cartrailer::where('id',$param['new_trailer'])->update($new);
             // dump($param);die;
             // $res = Factory::whereIn('id',$param['ids'])->delete();
             if(!$res){
@@ -1217,40 +1250,86 @@ class InfoService extends BaseService
             return $this->error();
         }
     }
-    public function bind($client_id)
-    {
-        Gateway::sendToClient($client_id, json_encode(['type' => 'connect', 'message' => 'WebSocket connected']));
+
+    public function getproduct(){
+        try{
+            $data = Db::name("admin_product_master")->select()->toArray();
+            // dump($data);die;
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
     }
 
-    public function send($client_id, $data)
-    {
-        Gateway::sendToAll(json_encode(['type' => 'message', 'message' => $data]));
+    public function getheadbranch(){
+        try{
+            $data = Db::name("admin_van_branch_master")->select()->toArray();
+            // dump($data);die;
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
     }
 
-    // public function bind()
-    // {
-    //     $this->initializeGatewayClient();
+    public function getdischarge(){
+        try{
+            $data = Db::name("admin_discharge_level_master")->select()->toArray();
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
 
-    //     while (true) {
-    //         // 获取客户端发送的数据
-    //         $data = Websocket::recv(Gateway::getSender());
+    public function getpowersupply(){
+        try{
+            $data = Db::name("admin_powersupply_master")->select()->toArray();
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
 
-    //         if ($data === '') {
-    //             Gateway::closeCurrentClient();
-    //             continue;
-    //         }
-    //         $message = json_decode($data, true);
+    public function gettrailerbranch(){
+        try{
+            $data = Db::name("admin_trailer_branch_master")->select()->toArray();
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
 
-  
-    //     }
-    // }
+    public function gettrailermaterial(){
+        try{
+            $data = Db::name("admin_trailer_material_master")->select()->toArray();
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
 
-    // private function initializeGatewayClient()
-    // {
-    //     Gateway::$registerAddress = '127.0.0.1:1236';
-    // }
-    // public function onClose($client_id)
-    // {
-    //     Gateway::sendToAll(json_encode(['type' => 'disconnect', 'message' => 'WebSocket disconnected']));
-    // }
+    public function gettrailerdes(){
+        try{
+            $data = Db::name("admin_trailer_designcode_master")->select()->toArray();
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+
+    public function gettrailerkeepwarm(){
+        try{
+            $data = Db::name("admin_trailer_keepwarm_master")->select()->toArray();
+            return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
 }

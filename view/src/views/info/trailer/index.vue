@@ -79,7 +79,19 @@
             </el-table-column>
             <el-table-column
                     prop="trailer_material"
-                    label="材质"
+                    label="罐体材质"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="product_name"
+                    label="货品名称"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="product_quantity"
+                    label="货品数量"
                     align="center"
                     width="150">
             </el-table-column>
