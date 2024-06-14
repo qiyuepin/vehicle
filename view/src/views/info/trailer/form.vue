@@ -35,6 +35,17 @@
                               </el-option>
                             </el-select>
                         </el-form-item>
+                        <el-form-item label="自重" prop="trailer_weight">
+                            <el-input-number v-model="formData.trailer_weight" clearable placeholder="请输入自重"></el-input-number>
+                            <span>（ t ）</span>
+                        </el-form-item>
+                        <el-form-item label="容积" prop="trailer_volume">
+                            <el-input-number v-model="formData.trailer_volume" clearable placeholder="请输入容积"></el-input-number>
+                            <span>（ m³ ）</span>
+                        </el-form-item>
+                        <el-form-item label="道路运输证号" prop="transport_cert">
+                            <el-input v-model="formData.transport_cert" clearable placeholder="请输入12位道路运输证号"></el-input>
+                        </el-form-item>
                         <el-form-item label="罐体材质" prop="trailer_material">
                             <el-select v-model="formData.trailer_material" filterable  clearable placeholder="请选择罐体材质">
                               <el-option
@@ -65,39 +76,6 @@
                               </el-option>
                             </el-select>
                         </el-form-item>
-                        <!-- <el-form-item label="材质" prop="trailer_material">
-                            <el-input v-model="formData.trailer_material" clearable placeholder="请输入材质"></el-input>
-                        </el-form-item> -->
-                        <el-form-item label="自重" prop="trailer_weight">
-                            <el-input v-model="formData.trailer_weight" clearable placeholder="请输入自重"></el-input>
-                        </el-form-item>
-                        <el-form-item label="容积" prop="trailer_volume">
-                            <el-input v-model="formData.trailer_volume" clearable placeholder="请输入容积"></el-input>
-                        </el-form-item>
-                        <!-- <el-form-item label="压力" prop="trailer_pressure">
-                            <el-input v-model="formData.trailer_pressure" clearable placeholder="请输入压力"></el-input>
-                        </el-form-item> -->
-                        <el-form-item label="压力等级" prop="trailer_pressure">
-                          <el-radio-group v-model="formData.trailer_pressure">
-                            <el-radio label="常压"></el-radio>
-                            <el-radio label="低压"></el-radio>
-                            <el-radio label="高压"></el-radio>
-                          </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="是否为框架罐" prop="frame_tank">
-                            <!-- <el-input v-model="formData.frame_tank" clearable placeholder="请输入框架罐"></el-input> -->
-                            <el-radio-group v-model="formData.frame_tank">
-                              <el-radio label="是"></el-radio>
-                              <el-radio label="否"></el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-
-
-
-
-                        <el-form-item label="道路运输证号">
-                            <el-input v-model="formData.transport_cert" clearable placeholder="请输入道路运输证号"></el-input>
-                        </el-form-item>
                         <el-form-item label="经营范围" prop="trailer_scope">
                             <el-checkbox-group v-model="formData.trailer_scope">
                                 <el-checkbox v-for="item in trailer_scope" :key="item.id" :label="item.id">{{item.name}}</el-checkbox>
@@ -106,6 +84,27 @@
                         <el-form-item label="注册日期">
                             <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
                         </el-form-item>
+                        
+                       
+                        <!-- <el-form-item label="压力等级" prop="trailer_pressure">
+                          <el-radio-group v-model="formData.trailer_pressure">
+                            <el-radio label="常压"></el-radio>
+                            <el-radio label="低压"></el-radio>
+                            <el-radio label="高压"></el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="是否为框架罐" prop="frame_tank">
+                            <el-radio-group v-model="formData.frame_tank">
+                              <el-radio label="是"></el-radio>
+                              <el-radio label="否"></el-radio>
+                            </el-radio-group>
+                        </el-form-item> -->
+
+
+
+
+                        
+                        
                         <el-form-item label="强制报废日期">
                           <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"></el-input>
                         </el-form-item>
@@ -126,10 +125,12 @@
                             <UploadImage ref="Image_transport_license" clearable v-model="formData.transport_license"></UploadImage>
                         </el-form-item>
                         <el-form-item label="罐检报告" prop="pot_report">
-                            <UploadImage ref="Image_pot_report" clearable v-model="formData.pot_report"></UploadImage>
+                            <!-- <UploadImage ref="Image_pot_report" clearable v-model="formData.pot_report"></UploadImage> -->
+                            <UploadPdf ref="Image_pot_report" v-model="formData.pot_report"></UploadPdf>
                         </el-form-item>
                         <el-form-item label="货检保单" prop="cargo_insurance">
-                            <UploadImage ref="Image_cargo_insurance" clearable v-model="formData.cargo_insurance"></UploadImage>
+                            <!-- <UploadImage ref="Image_cargo_insurance" clearable v-model="formData.cargo_insurance"></UploadImage> -->
+                            <UploadPdf ref="Image_cargo_insurance" v-model="formData.cargo_insurance"></UploadPdf>
                         </el-form-item>
 
                     </el-tab-pane>
@@ -149,14 +150,15 @@
 import { addcartrailer, editcartrailer, getcartrailerInfo, getcarscope, gettrailerbranch, gettrailermaterial, gettrailerdes, gettrailerkeepwarm} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
-
+import UploadPdf from '@/components/Upload/SinglePdf'
 
 
 export default {
   name: "AdminForm",
   components: {
     UploadImage,
-    MultiImage
+    MultiImage,
+    UploadPdf
   },
   data() {
     return {
@@ -170,7 +172,8 @@ export default {
       drawerShow:false,
       saveRules: {
         trailer_plate: [{ required: true, message: '车牌号不能为空', trigger: 'blur'}],
-        transport_cert: [{ required: true, message: '道路运输证', trigger: 'blur'}]
+        // transport_cert: [{ required: true, message: '道路运输证', trigger: 'blur'}],
+        transport_cert: [{ validator: this.validateNumber, message: '道路运输证必须是12位数', trigger: 'blur'}]
       },
       formData: {
         id: 0,
@@ -190,8 +193,14 @@ export default {
         frame_time: '',
         driving_license: [],
         transport_license: '',
+        trailer_designcode: '',
+        trailer_keepwarm: '',
         pot_report: '',
-        cargo_insurance: ''
+        cargo_insurance: '',
+        frame_status: true,
+        validity_status: true,
+        inspection_status: true,
+        scrapp_status: true
       },
     }
   },
@@ -203,6 +212,16 @@ export default {
     this.gettrailerkeepwarm();
   },
   methods: {
+    validateNumber(rule, value, callback) {
+      const regex = /^\d{12}$/;
+      if (!value) {
+        return callback(new Error('内容不能为空'));
+      } else if (!regex.test(value)) {
+        return callback(new Error('必须是12位数字'));
+      } else {
+        return callback();
+      }
+    },
     gettrailerdes(){
       gettrailerdes().then(response=>{
           if(response !== undefined){
@@ -273,12 +292,18 @@ export default {
       this.formData.transport_license = ''
       this.formData.pot_report = ''
       this.formData.cargo_insurance = ''
-      this.$refs.Image_driving_license.uploadFileList=[]
-      this.$refs.Image_driving_license.uploadFiles=''
+      this.formData.trailer_designcode = ''
+      this.formData.trailer_keepwarm = ''
+      // this.$refs.Image_driving_license.uploadFileList=[]
+      // this.$refs.Image_driving_license.uploadFiles=''
+      this.frame_status = true,
+      this.validity_status = false,
+      this.inspection_status = true,
+      this.scrapp_status = true
     },
     getcartrailerInfo(id){
       getcartrailerInfo({id:id}).then(response=>{
-        console.log(response.transport_license)
+
           if(response !== undefined){
               this.title = '编辑车头信息'
               this.formData.id = response.id
@@ -304,6 +329,9 @@ export default {
               //   console.log(item);
               //   return item
               // });
+
+              this.formData.trailer_designcode = response.trailer_designcode
+              this.formData.trailer_keepwarm = response.trailer_keepwarm
               this.formData.driving_license = response.driving_licenses
               this.$refs.Image_driving_license.uploadFileList.push(...response.driving_licenses)
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
@@ -314,9 +342,12 @@ export default {
               this.formData.transport_license = response.transport_license
               this.$refs.Image_transport_license.imgUrl = response.transport_license
               this.formData.pot_report = response.pot_report
-              this.$refs.Image_pot_report.imgUrl = response.pot_report
+              // this.$refs.Image_pot_report.imgUrl = response.pot_report
               this.formData.cargo_insurance = response.cargo_insurance
-              this.$refs.Image_cargo_insurance.imgUrl = response.cargo_insurance
+              // this.$refs.Image_cargo_insurance.imgUrl = response.cargo_insurance
+
+              this.$refs.Image_pot_report.pdfUrl = response.pot_report
+              this.$refs.Image_cargo_insurance.pdfUrl = response.cargo_insurance
 
               this.formData.scrapp_status  = response.scrapp_status 
               this.formData.inspection_status  = response.inspection_status 
@@ -367,4 +398,5 @@ export default {
         -webkit-box-shadow: none;
         box-shadow: none;
     }
+
 </style>

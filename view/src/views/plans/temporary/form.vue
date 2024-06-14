@@ -40,10 +40,19 @@
                       <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item>
-                      <el-form-item label="货品名称" prop="product_name">
+                      <!-- <el-form-item label="货品名称" prop="product_name">
                           <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
+                      </el-form-item> -->
+                      <el-form-item label="货品名称" prop="product_name">
+                          <el-select v-model="formData.product_name" filterable  clearable placeholder="请选择货品名称">
+                            <el-option
+                              v-for="item in productlist"
+                              :key="item.value"
+                              :label="item.product_name"
+                              :value="item.product_name">
+                            </el-option>
+                          </el-select>
                       </el-form-item>
- 
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
                       </el-form-item>
@@ -114,6 +123,7 @@
 <script>
 
 import { addnormal, editnormal, gettemporaryinfo, getplaninfo } from '@/api/plan.js'
+import { getproduct } from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
@@ -153,6 +163,7 @@ data() {
     load_address:'',
     drawerShow:false,
     map: null,
+    productlist: [],
     saveRules: {
 
       info_id: [{ required: true, trigger: 'blur'}],
@@ -184,6 +195,7 @@ data() {
 },
 created() {
   this.getplaninfo()
+  this.getproduct()
 },
 destroyed () {
     if (this.map != null) {
@@ -191,6 +203,15 @@ destroyed () {
     }
   },
 methods: {
+  getproduct(){
+      getproduct().then(response => {
+          console.log(response.data)
+          if (response !== undefined) {
+
+              this.productlist = response.data
+          }
+      })
+  },
   getplaninfo() {
     getplaninfo().then(response => {
         if(response !== undefined){

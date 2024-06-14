@@ -176,21 +176,7 @@
                         :preview-src-list="[scope.row.driving_licenses[0].url]"
                         slot-scope="scope">
                 </el-image>
-                <!-- <el-image
-                  v-for="(image, index) in imageList"
-                  :key="index"
-                  :src="image.url"
-                  style="width: 40px; height: 40px; margin-right: 10px;"
-                >
-                </el-image> -->
-                 <!-- <el-image
-                    v-for="(image, index) in scope.row.driving_licenses"
-                    :key="index"
-                        style="width: 40px; height: 40px"
-                        :src="image.url"
-                        :preview-src-list="[image.url]"
-                        slot-scope="scope">
-                </el-image> -->
+
             </el-table-column>
             <el-table-column
                     prop="transport_license"
@@ -204,7 +190,7 @@
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="traffic_insurance"
                     label="交强险保单"
                     align="center"
@@ -215,8 +201,8 @@
                         :preview-src-list="[scope.row.traffic_insurance]"
                         slot-scope="scope">
                 </el-image>
-            </el-table-column>
-            <el-table-column
+            </el-table-column> -->
+            <!-- <el-table-column
                     prop="business_insurance"
                     label="商业险保单"
                     align="center"
@@ -227,8 +213,25 @@
                         :preview-src-list="[scope.row.business_insurance]"
                         slot-scope="scope">
                 </el-image>
+            </el-table-column> -->
+            <el-table-column
+                    prop="traffic_insurance"
+                    label="交强险保单"
+                    align="center"
+                    width="165">
+                    <template slot-scope="scope">
+                      <el-button size="mini" plain @click="handlePreview(scope.row.traffic_insurance)">点击查看交强险保单</el-button>
+                    </template>
             </el-table-column>
-
+            <el-table-column
+                    prop="business_insurance"
+                    label="商业险保单"
+                    align="center"
+                    width="165">
+                    <template slot-scope="scope">
+                      <el-button size="mini" plain @click="handlePreview(scope.row.business_insurance)">点击查看商业险保单</el-button>
+                    </template>
+            </el-table-column>
             <el-table-column
                     prop="create_time"
                     label="创建时间"
@@ -281,6 +284,11 @@
         <!--表单-->
         <myForm ref="myAttr" @updateRow="handleReload"/>
         <detail ref="myAttrdetail" @updateRow="handleReload"/>
+
+        <el-dialog :modal-append-to-body="false" top="0" class="dialogPdf" :fullscreen="true" :append-to-body="true" :visible.sync="dialogVisible">
+            <iframe loading="lazy" id="pdf_container" :src="openpdf" frameborder="0" height="100%" width="100%"></iframe>
+        </el-dialog>
+  
     </div>
 </template>
 
@@ -299,6 +307,8 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
+      openpdf: '',
       buttonDisabled: true,
       tableData: [],
       imageList: [],
@@ -318,6 +328,11 @@ export default {
     this.getcarhead();
   },
   methods: {
+    handlePreview(pdfUrl) {
+      console.log([pdfUrl])
+      this.openpdf = [pdfUrl];
+      this.dialogVisible = true;
+    },
     //查询列表
     getcarhead() {
       this.loading = true
@@ -460,4 +475,25 @@ export default {
   background-color: rgba(255, 0, 0, 0.767);
   color: white;
 }
+</style>
+
+<style scoped lang="scss">
+    ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    ::v-deep .custom-descriptions .el-descriptions-item {
+        width: 200px; /* 设置固定宽度 */
+    }
+
+    ::v-deep .pdf-box {
+        display: inline-block;
+        height: 101px;
+        width: 101px;
+        position: relative;
+        border: 1px dashed #d9d9d9;
+        margin-right: 10px;
+        text-align: center;
+        vertical-align: top;
+    }
 </style>

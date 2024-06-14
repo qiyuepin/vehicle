@@ -142,13 +142,13 @@ export default {
     },
     beforeImageUpload(file) {
       const isIMG = file.type === 'image/jpeg' || file.type === 'image/png'
-      const isLt2M = file.size / 1024 / 1024 < 1
+      const isLt2M = file.size / 1024 / 1024 < 20
       if (!isIMG) {
         this.$message.error('上传图片只能是JPG、PNG格式!')
         return false
       }
       if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过2MB!')
+        this.$message.error('上传图片大小不能超过20MB!')
         return false
       }
       return isIMG && isLt2M

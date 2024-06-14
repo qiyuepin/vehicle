@@ -78,10 +78,48 @@
                     width="120">
             </el-table-column>
             <el-table-column
+                    prop="trailer_weight"
+                    label="自重"
+                    align="center"
+                    width="150"
+                    :formatter="formatWeight">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_volume"
+                    label="容积"
+                    align="center"
+                    width="150"
+                    :formatter="formatvolume">
+            </el-table-column>
+            <el-table-column
+                    prop="transport_cert"
+                    label="道路运输证号"
+                    align="center"
+                    width="200">
+            </el-table-column>
+            <el-table-column
                     prop="trailer_material"
                     label="罐体材质"
                     align="center"
-                    width="150">
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_designcode"
+                    label="设计代码"
+                    align="center"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_keepwarm"
+                    label="保温性能"
+                    align="center"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="trailer_scope"
+                    label="经营范围"
+                    align="center"
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="product_name"
@@ -95,19 +133,8 @@
                     align="center"
                     width="150">
             </el-table-column>
-            <el-table-column
-                    prop="trailer_weight"
-                    label="自重"
-                    align="center"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    prop="trailer_volume"
-                    label="容积"
-                    align="center"
-                    width="150">
-            </el-table-column>
-            <el-table-column
+            
+            <!-- <el-table-column
                     prop="trailer_pressure"
                     label="压力等级"
                     align="center"
@@ -118,20 +145,10 @@
                     label="是否为框架罐"
                     align="center"
                     width="150">
-            </el-table-column>
+            </el-table-column> -->
 
-            <el-table-column
-                    prop="transport_cert"
-                    label="道路运输证号"
-                    align="center"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="trailer_scope"
-                    label="经营范围"
-                    align="center"
-                    width="200">
-            </el-table-column>
+            
+            
 
             <el-table-column
                     prop="regist_time"
@@ -141,6 +158,17 @@
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px" v-text="scope.row.regist_time"></span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="regist_time"
+                    label="已运营时间"
+                    align="center"
+                    width="200">
+                <template  v-slot="scope">
+                    <i class="el-icon-time"></i>
+                    <!-- <span style="margin-left: 10px" v-text="scope.row.operation_time"></span> -->
+                    <span style="margin-left: 10px">{{ getDateDifference(scope.row.regist_time) }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -197,7 +225,7 @@
                         slot-scope="scope">
                 </el-image>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="pot_report"
                     label="罐检报告"
                     align="center"
@@ -220,8 +248,25 @@
                         :preview-src-list="[scope.row.cargo_insurance]"
                         slot-scope="scope">
                 </el-image>
+            </el-table-column> -->
+            <el-table-column
+                    prop="pot_report"
+                    label="罐检报告"
+                    align="center"
+                    width="150">
+                    <template slot-scope="scope">
+                      <el-button size="mini" plain @click="handlePreview(scope.row.pot_report)">点击查看罐检报告</el-button>
+                    </template>
             </el-table-column>
-            
+            <el-table-column
+                    prop="cargo_insurance"
+                    label="货检保单"
+                    align="center"
+                    width="150">
+                    <template slot-scope="scope">
+                      <el-button size="mini" plain @click="handlePreview(scope.row.cargo_insurance)">点击查看货检保单</el-button>
+                    </template>
+            </el-table-column>
             <el-table-column
                     prop="create_time"
                     label="创建时间"
@@ -238,9 +283,7 @@
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-            
                   <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
-                
                 </template>
             </el-table-column>
         </el-table>
@@ -261,6 +304,10 @@
         <myForm ref="myAttr" @updateRow="handleReload"/>
         <detail ref="myAttrdetail" @updateRow="handleReload"/>
         <Pouring ref="myAttrPouring" @updateRow="handleReload"/>
+
+        <el-dialog :modal-append-to-body="false" top="0" class="dialogPdf" :fullscreen="true" :append-to-body="true" :visible.sync="dialogVisible">
+            <iframe loading="lazy" id="pdf_container" :src="openpdf" frameborder="0" height="100%" width="100%"></iframe>
+        </el-dialog>
     </div>
 </template>
 
@@ -281,6 +328,8 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
+      openpdf: '',
       buttonDisabled: true,
       tableData: [],
       imageList: [],
@@ -300,6 +349,17 @@ export default {
     this.getcartrailer();
   },
   methods: {
+    handlePreview(openPdf){
+      console.log(openPdf)
+      this.openpdf = openPdf;
+      this.dialogVisible = true;
+    },
+    formatWeight(row, column, cellValue) {
+      return `${cellValue} t`;
+    },
+    formatvolume(row, column, cellValue) {
+      return `${cellValue} m³`;
+    },
     //查询列表
     getcartrailer() {
       this.loading = true
@@ -311,6 +371,31 @@ export default {
           }
           this.loading = false
       })
+    },
+    getDateDifference(dateString) {
+      // console.log(dateString);
+      const specificDate = new Date(dateString);
+      const currentDate = new Date();
+      
+      const specificYear = specificDate.getFullYear();
+      const specificMonth = specificDate.getMonth(); 
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth();
+
+      let yearsDifference = currentYear - specificYear;
+      let monthsDifference = currentMonth - specificMonth;
+
+      if (monthsDifference < 0) {
+        yearsDifference -= 1;
+        monthsDifference += 12;
+      }
+      // if(yearsDifference>0){
+      //   return `${yearsDifference}年${monthsDifference}个月`;
+      // }
+      // else{
+      //   return `${monthsDifference}个月`;
+      // }
+      return `${yearsDifference}年${monthsDifference}个月`;
     },
     //搜索
     handleSearch() {
@@ -369,7 +454,7 @@ export default {
       }
     },
     handleDetail(raw){
-      console.log("handleDetail"+raw.id);
+      // console.log("handleDetail"+raw.id);
       this.$refs.myAttrdetail.getcartrailerInfo(raw.id)
       this.$refs.myAttrdetail.showDetail()
     },

@@ -29,7 +29,7 @@ return [
     ],
     'type' => [
         'image' => [
-            'size' => 1048576,//1M
+            'size' => 10485760,//1M
             'ext' => 'jpeg,jpg,gif,bmp,png',
             'water' => [
                 'status' => false,//默认不开起水印

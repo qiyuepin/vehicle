@@ -32,7 +32,8 @@
                             <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
                         </el-form-item>
                         <el-form-item label="货品数量" prop="product_quantity">
-                            <el-input v-model.number="formData.product_quantity" clearable placeholder="请输入货品数量" :min="minquantity":max="maxquantity" @input="updateProductQuantity"></el-input>
+                            <el-input-number  v-model.number="formData.product_quantity" clearable placeholder="请输入货品数量" :min="minquantity":max="maxquantity" @input="updateProductQuantity"></el-input-number>
+                            <span>（ 吨 ）</span>
                         </el-form-item>
                         <el-form-item label="目标挂车" prop="new_trailer">
                           <el-select v-model="formData.new_trailer" filterable  placeholder="请选择导入挂车"  @change="Selectnewtrailer">
@@ -236,6 +237,6 @@ export default {
       margin-left: 140px!important;
     }
     ::v-deep .el-input--small{
-      width: 200px;
+      max-width: 200px;
     }
 </style>

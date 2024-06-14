@@ -105,18 +105,9 @@
                         :src="formData.transport_license[0]" 
                         :preview-src-list="formData.transport_license">
                     </el-image>
-                    <el-button size="mini">下载</el-button>
                     </div>
                 </el-descriptions-item>
-                <!-- <el-descriptions-item label="交强险保单">
-                    <div class="demo-image__preview">
-                    <el-image 
-                        style="width: 100px; height: 100px"
-                        :src="formData.traffic_insurance[0]" 
-                        :preview-src-list="formData.traffic_insurance">
-                    </el-image>
-                    </div>
-                </el-descriptions-item> -->
+                
                 <el-descriptions-item label="交强险保单">
                     <div class="demo-image__preview">
                     <div v-if="formData.traffic_insurance !=''" class="pdf-box">
@@ -125,7 +116,7 @@
                               <span
                                       class="el-upload-list__item-preview"
                                       title="预览"
-                                      @click.prevent="handlePreview()">
+                                      @click.prevent="handlePreview(formData.traffic_insurance)">
                                       <i class="el-icon-zoom-in"></i>
                               </span>
                           
@@ -135,18 +126,13 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="商业险保单">
                     <div class="demo-image__preview">
-                    <!-- <el-image 
-                        style="width: 100px; height: 100px"
-                        :src="formData.business_insurance[0]" 
-                        :preview-src-list="formData.business_insurance">
-                    </el-image> -->
                     <div v-if="formData.business_insurance" class="pdf-box">
                         <svg-icon icon-class="pdf" class-name="pdf" />
                         <span class="el-upload-list__item-actions">
                               <span
                                       class="el-upload-list__item-preview"
                                       title="预览"
-                                      @click.prevent="handlePreview()">
+                                      @click.prevent="handlePreview(formData.business_insurance)">
                                       <i class="el-icon-zoom-in"></i>
                               </span>
                           
@@ -159,11 +145,9 @@
             </el-descriptions>
             <div class="demo-drawer__footer" style="position:fixed;top:15px;right:30px;">
                 <el-button size="mini" @click="$refs.drawer.closeDrawer()">关 闭</el-button>
-                <!-- <el-button size="mini" type="primary" @click="saveData()">确 定
-                </el-button> -->
             </div>
             <el-dialog :modal-append-to-body="false" top="0" class="dialogPdf" :fullscreen="true" :append-to-body="true" :visible.sync="dialogVisible">
-                <iframe loading="lazy" id="pdf_container" :src="formData.business_insurance" frameborder="0" height="100%" width="100%"></iframe>
+                <iframe loading="lazy" id="pdf_container" :src="openPdf" frameborder="0" height="100%" width="100%"></iframe>
             </el-dialog>
         </div>
     </el-drawer>
@@ -186,6 +170,7 @@ export default {
   },
   data() {
     return {
+      openPdf:'',
       title:'',
       dialog: false,
       carhead_scope: [],
@@ -221,7 +206,9 @@ export default {
     this.getcarscope()
   },
   methods: {
-    handlePreview(){
+    handlePreview(openPdf){
+      console.log(openPdf)
+      this.openPdf = openPdf;
       this.dialogVisible = true;
     },
     getcarscope(){

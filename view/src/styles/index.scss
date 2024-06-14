@@ -207,4 +207,17 @@ aside {
   border-radius: 3px;
   background: rgba(255, 255, 255, 1);
 }
+.el-input--small{
+  max-width: 500px;
+}
+.pdf-box {
+  display: inline-block;
+  height: 101px;
+  width: 101px;
+  position: relative;
+  border: 1px dashed #d9d9d9;
+  margin-right: 10px;
+  text-align: center;
+  vertical-align: top;
+}
 

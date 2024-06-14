@@ -159,47 +159,49 @@ class InfoService extends BaseService
         try{
             Db::startTrans();
             $Carhead = Carhead::where('id',$param['id'])->find();
-            // dump($Carhead);die;
+            
             if(empty($Carhead)){
                 throw new \Exception('信息不存在');
             }
  
             $param['type'] = 1;
-            
-            if(isset($param['driving_license'])){
+            // dump($param['driving_license']);die;
+            if(isset($param['driving_license']) && is_array($param['driving_license'])){
+                
                 $driving_license = array();
                 foreach($param['driving_license'] as $value){
-                    // dump($value);die;
-                    $driving_license[]= $value['url']?$value['url']:$value;
+                    // dump($value['url']);die;
+                    $driving_license[]= isset($value['url'])?$value['url']:$value;
                 }
-                // dump($driving_license);die;
             }else{
 
                 $driving_license = $param['driving_license'];
             }
-            
+
             if (isset($driving_license) && is_array($driving_license)) {
                 $param['driving_license'] = implode(',', $driving_license);
+  
             } else {
+               
             }
-            // dump($param);die;
-            Db::name('admin_info_notice')->where('carhead_plate',$param['carhead_plate'])->update(['isread'=>1]);
-            $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
-            $newTimestamp = strtotime('+30 days', time());
+   
+            // Db::name('admin_info_notice')->where('carhead_plate',$param['carhead_plate'])->update(['isread'=>1]);
+            // $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
+            // $newTimestamp = strtotime('+30 days', time());
 
-            // dump($newTimestamp);die;
-            if(isset($exitnotice) && strtotime($param['scrapp_time']) > $newTimestamp){
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('scrapp_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
-            if(isset($exitnotice) && strtotime($param['inspection_time']) > $newTimestamp){
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('inspection_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
-            if(isset($exitnotice) && strtotime($param['validity_time']) > $newTimestamp){
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('validity_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
-            if(isset($exitnotice) && strtotime($param['traffic_time']) > $newTimestamp){
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('traffic_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
+            // // dump($newTimestamp);die;
+            // if(isset($exitnotice) && strtotime($param['scrapp_time']) > $newTimestamp){
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('scrapp_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
+            // if(isset($exitnotice) && strtotime($param['inspection_time']) > $newTimestamp){
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('inspection_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
+            // if(isset($exitnotice) && strtotime($param['validity_time']) > $newTimestamp){
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('validity_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
+            // if(isset($exitnotice) && strtotime($param['traffic_time']) > $newTimestamp){
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('carhead_plate',$param['carhead_plate'])->where('deal',0)->where('traffic_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
             // dump($param);die;
             $res = Carhead::update($param,['id'=>$param['id']]);
             if(!$res){
@@ -391,7 +393,8 @@ class InfoService extends BaseService
        
                 $driving_license = array();
                 foreach($param['driving_license'] as $key => $value){
-                    $driving_license[]= $value['url'];
+                    // $driving_license[]= $value['url'];
+                    $driving_license[]= isset($value['url'])?$value['url']:$value;
                 }
             }else{
 
