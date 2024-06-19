@@ -29,31 +29,40 @@
                             <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
                         </el-form-item> -->
                         <el-form-item label="手机号" prop="phone">
-                            <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
+                            <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号" maxLength='11'></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" prop="email">
+                        <el-form-item label="手机号2" prop="phone2">
+                            <el-input v-model="formData.phone2" clearable placeholder="请输入正确的手机号" oninput="value=value.replace(/[^\d]/g,'')"
+                            maxLength='11'></el-input>
+                        </el-form-item>
+                        <!-- <el-form-item label="邮箱" prop="email">
                             <el-input v-model="formData.email" clearable
                                       placeholder="请输入正确的邮箱"></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="登录密码" prop="password" :rules="formData.id===0?saveRules.password:[{require:false}]">
                             <el-input v-model="formData.password" clearable show-password
                                       autocomplete="new-password"
                                       placeholder="请输入6-18个字母和数字下划线"></el-input>
                         </el-form-item>
-                        <el-form-item label="身份证">
-                            <el-input v-model="formData.id_card_num" clearable
-                                      placeholder="请输入身份证"></el-input>
+                        <el-form-item label="身份证" prop="id_card_num">
+                            <el-input v-model="formData.id_card_num" clearable placeholder="请输入身份证" maxLength='18'></el-input>
                         </el-form-item>
-                        <el-form-item label="驾驶证号">
+                        <el-form-item label="驾驶证号" prop="dirver_card_num">
                             <el-input v-model="formData.dirver_card_num" clearable
-                                      placeholder="请输入驾驶证号"></el-input>
+                                      placeholder="请输入驾驶证号" maxLength='18'></el-input>
                         </el-form-item>
-                        <el-form-item label="从业资格证号">
+                        <el-form-item label="从业资格证号" prop="cert_card_num">
                             <el-input v-model="formData.cert_card_num" clearable
-                                      placeholder="请输入从业资格证号"></el-input>
+                                      placeholder="请输入从业资格证号" maxLength='18'></el-input>
                         </el-form-item>
                         <el-form-item label="入职时间">
                           <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
+                        </el-form-item>
+                        <el-form-item label="是否具有押运员资格证" >
+                            <el-radio-group v-model="formData.is_escort">
+                              <el-radio v-model="formData.is_escort" label="是">是</el-radio>
+                              <el-radio v-model="formData.is_escort" label="否">否</el-radio>
+                            </el-radio-group>
                         </el-form-item>
                         <el-form-item label="身份证正面" prop="card_front">
                             <UploadImage ref="Image_card_front" v-model="formData.card_front"></UploadImage>
@@ -73,6 +82,9 @@
                         <el-form-item label="从业资格证反面" prop="cert_back">
                             <UploadImage ref="Image_cert_back" v-model="formData.cert_back"></UploadImage>
                         </el-form-item>
+                        <el-form-item label="押运员资格证" prop="escort_cert">
+                            <UploadImage ref="Image_escort_cert" v-model="formData.escort_cert"></UploadImage>
+                        </el-form-item>
                     </el-tab-pane>
                 </el-tabs>
             </el-form>
@@ -89,7 +101,7 @@
 
 import { getRole, adddriverAdmin, editdriverAdmin,getdriverInfo } from '@/api/admin.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import { validUsername, validNickname, validPhone, validEmail, validPassword } from '@/utils/validate'
+import { validUsername, validIDCard, validPhone, validPassword } from '@/utils/validate'
 
 export default {
   name: "AdminForm",
@@ -97,6 +109,7 @@ export default {
     UploadImage
   },
   data() {
+
     const validateGroup = (rule,value,callback)=>{
       if(value.lenght==0){
         callback(new Error('请选择角色'))
@@ -105,19 +118,39 @@ export default {
       }
     }
     const validateUsername = (rule, value, callback) => {
+      console.log(value)
       if (!validUsername(value)) {
         callback(new Error('用户名称长度2-10位'))
       } else {
         callback()
       }
     }
-    // const validateNickname = (rule, value, callback) => {
-    //   if (!validNickname(value)) {
-    //     callback(new Error('昵称必须是20个以内的中文字符'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    
+    const validCard = (rule, value, callback) => {
+      console.log(value)
+      if (!validIDCard(value)) {
+        callback(new Error('请输入正确身份证号（18位数字）'))
+      } else {
+        callback()
+      }
+    }
+    const validdriverCard = (rule, value, callback) => {
+      console.log(value)
+      if (!validIDCard(value)) {
+        callback(new Error('请输入正确驾驶证号（18位数字）'))
+      } else {
+        callback()
+      }
+    }
+    const validcertCard = (rule, value, callback) => {
+      console.log(value)
+      if (!validIDCard(value)) {
+        callback(new Error('请输入正确从业资格证号（18位数字）'))
+      } else {
+        callback()
+      }
+    }
+
     const validatePhone = (rule, value, callback) => {
       if (!validPhone(value)) {
         callback(new Error('请输入正确的手机号'))
@@ -125,13 +158,7 @@ export default {
         callback()
       }
     }
-    // const validateEmail = (rule, value, callback) => {
-    //   if (!validEmail(value)) {
-    //     callback(new Error('请输入正确的邮箱地址'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+ 
     const validatePassword = (rule, value, callback) => {
       if (!validPassword(value)) {
         callback(new Error('登录密码必须是字母、数字、下划线组合，且长度6-18位'))
@@ -147,8 +174,11 @@ export default {
       saveRules: {
         group: [{ required: true, trigger: 'blur',validator: validateGroup }],
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        // nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
+        id_card_num: [{ required: true, trigger: 'blur', validator: validCard}],
+        dirver_card_num: [{ required: true, trigger: 'blur', validator: validdriverCard}],
+        cert_card_num: [{ required: true, trigger: 'blur', validator: validcertCard}],
         phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+        phone2: [{ trigger: 'blur', validator: validatePhone }],
         // email: [{ required: true, trigger: 'blur', validator: validateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
@@ -170,6 +200,7 @@ export default {
         card_back: '',
         cert_card_num: '',
         employ_time: '',
+        escort_cert: '',
         type: 2
       },
     }
@@ -178,6 +209,16 @@ export default {
     this.getRole()
   },
   methods: {
+    handleInput() {
+      this.inputValue = value.replace(/[^\d]/g, '');
+    },
+    handleKeyPress(event) {
+      // 处理键盘输入，只允许输入数字
+      const charCode = event.which ? event.which : event.keyCode;
+      if (charCode < 48 || charCode > 57) {
+        event.preventDefault();
+      }
+    },
     getRole() {
       getRole().then(response => {
           if(response !== undefined){
@@ -205,12 +246,15 @@ export default {
       this.formData.password = ''
       this.formData.autograph = ''
       this.formData.group = []
-      this.$refs.Image_card_front.imgUrl = ''
-      this.$refs.Image_card_back.imgUrl = ''
-      this.$refs.Image_driver_card_front.imgUrl = ''
-      this.$refs.Image_driver_card_back.imgUrl = ''
-      this.$refs.Image_cert_front.imgUrl = ''
-      this.$refs.Image_cert_back.imgUrl = ''
+      this.formData.id_card_num = ''
+      this.formData.dirver_card_num = ''
+      this.formData.cert_card_num = ''
+      // this.$refs.Image_card_front.imgUrl = ''
+      // this.$refs.Image_card_back.imgUrl = ''
+      // this.$refs.Image_driver_card_front.imgUrl = ''
+      // this.$refs.Image_driver_card_back.imgUrl = ''
+      // this.$refs.Image_cert_front.imgUrl = ''
+      // this.$refs.Image_cert_back.imgUrl = ''
     },
     getdriverInfo(id){
       getdriverInfo({id:id}).then(response=>{
@@ -225,6 +269,9 @@ export default {
               this.formData.dirver_card_num = response.dirver_card_num
               this.formData.cert_card_num = response.cert_card_num
               this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)
+              this.is_escort = response.is_escort
+              this.formData.escort_cert = response.escort_cert
+              this.$refs.Image_escort_cert.imgUrl = response.escort_cert
               this.formData.card_front = response.card_front
               this.$refs.Image_card_front.imgUrl = response.card_front
               this.formData.card_back = response.card_back

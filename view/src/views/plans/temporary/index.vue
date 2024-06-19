@@ -22,7 +22,7 @@
       </el-form>
       <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <!-- <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button> -->
+          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
           <el-button @click="exportExcel" type="primary" size="mini">导出</el-button>
@@ -102,12 +102,12 @@
                 <el-tag v-else-if="scope.row.plan_type === 2" type="danger">卸车任务</el-tag> -->
               </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="head_num"
                   label="车头"
                   align="center"
                   width="120">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
                   prop="trailer_num"
                   label="挂车"
@@ -120,12 +120,12 @@
                   align="center"
                   width="150">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="escort_name"
                   label="押运员"
                   align="center"
                   width="150">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
                   prop="product_name"
                   label="货品名称"

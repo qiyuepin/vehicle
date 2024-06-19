@@ -148,7 +148,7 @@ class PlanService extends BaseService
 
             }
 
-            $data = Plan::where($where)->order(['sort'=>'desc','id'=>'desc'])
+            $data = Plan::where($where)->order(['plan_order'=>'desc','id'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
             // dump($data);
             return $this->success($data);
@@ -204,11 +204,16 @@ class PlanService extends BaseService
     }
 
     public function addnormal($param=[],$Authorization){
-        
+   
         try{
             Db::startTrans();
-            $Plan = Plan::where('driver_name',$param['driver_name'])->where('period_id',$param['period_id'])->order(['id'=>'desc'])->find();
-            
+            // $Plan = Plan::where('driver_name',$param['driver_name'])->where('period_id',$param['period_id'])->order(['id'=>'desc'])->find();
+            // $Plan = Plan::where('driver_name',$param['driver_name'])->order(['sort'=>'desc'])->find();
+            $Plan = Plan::where('driver_name', $param['driver_name'])
+                    ->order('plan_order', 'desc')
+                    ->order('id', 'desc')
+                    ->find();
+            // dump($Plan);die;
             $currentYear = date('Y');
             $currentMonth = date('m');
             // dump($currentYear);
@@ -228,6 +233,8 @@ class PlanService extends BaseService
             $userInfo = Cache::get('userinfo');
             // $param['plan_type'] = $userInfo['username'];
             // $param['dispatcher'] = $userInfo['username'];
+
+            $param['fixed'] = 0;
             $userid = $this->getValue($Authorization);
             $param['dispatcher'] = Admin::where('id',$userid)->value('username');
             if(isset($param['id'])){
@@ -438,7 +445,7 @@ class PlanService extends BaseService
         }
     }
 
-    public function addtemporary($param=[]){
+    public function addtemporary0($param=[]){
         
         try{
             Db::startTrans();
@@ -462,6 +469,80 @@ class PlanService extends BaseService
      
             Db::commit();
             return $this->success([],'新增成功');
+    
+            
+        }catch (\Exception $exception){
+            Db::rollback();
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    public function addtemporary($param=[],$Authorization){
+   
+        try{
+            Db::startTrans();
+
+            $Plan = Plan::where('driver_name', $param['driver_name'])
+                    ->order('plan_order', 'desc')
+                    ->order('id', 'desc')
+                    ->find();
+            // dump($Plan);die;
+            $currentYear = date('Y');
+            $currentMonth = date('m');
+            // dump($currentYear);
+            // dump($currentMonth);
+            if($Plan['driver_status'] > 1){
+                $param['driver_status'] = 1;
+                
+            }
+            else{
+                $param['driver_status'] = 0;
+            }
+
+
+            $param['month'] = $currentMonth;
+            $param['year'] = $currentYear;
+            // $param['plan_id'] = null;
+            $userInfo = Cache::get('userinfo');
+            // $param['plan_type'] = $userInfo['username'];
+            // $param['dispatcher'] = $userInfo['username'];
+
+            $userid = $this->getValue($Authorization);
+            $param['dispatcher'] = Admin::where('id',$userid)->value('username');
+            if(isset($param['id'])){
+                unset($param['id']);
+            }
+            
+            $phone = Admin::where('username',$param['driver_name'])->value('phone');
+            $res = Plan::create($param);
+            if($param['driver_status'] == 1){
+                // dump($param);die;
+                $id = $res->id;
+                $cid = Admin::where('username',$param['driver_name'])->value('user_cid');
+                if($res->plan_type == 1){
+                    $plantype = "装货任务";
+                    $planmsg = "从".$res->load_factory."出发装货";
+                }
+                else if($res->plan_type == 2){
+                    $plantype = "卸货任务";
+                    $planmsg = "到".$res->unload_factory."卸货";
+                }
+                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory']);
+                $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+                Db::commit();
+                if($r['code'] == 0){
+                    return $this->success(['msg' => '分配成功']);
+                }
+            }
+            
+            // dump($res);
+            if(!$res){
+                throw new \Exception('新增失败');
+            }
+     
+
+            Db::commit();
+            return $this->success(['msg' => '分配成功']);
     
             
         }catch (\Exception $exception){
@@ -819,6 +900,7 @@ class PlanService extends BaseService
             // dump($plans);die;
             // $r = $this->pushToSingleByCids();
             //     dump($r);die;
+            $plans['fixed'] = 1;
             $res = Plan::create($plans);
             if($plans['driver_status'] == 1){
                 $id = $res->id;

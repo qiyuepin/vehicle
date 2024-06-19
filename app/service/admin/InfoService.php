@@ -59,10 +59,10 @@ class InfoService extends BaseService
                     $data['data'][$key]['driving_licenses'][$k]['url'] = $val;
                 }
                 $data['data'][$key]['date_status'] = 0;
-                $data['data'][$key]['scrapp_status'] = $this->diffdate($value['scrapp_time']);  
-                $data['data'][$key]['inspection_status'] = $this->diffdate($value['inspection_time']);
-                $data['data'][$key]['validity_status'] = $this->diffdate($value['validity_time']);
-                $data['data'][$key]['traffic_status'] = $this->diffdate($value['traffic_time']);
+                $data['data'][$key]['scrapp_status'] = $value['scrapp_time']?$this->diffdate($value['scrapp_time']):true;  
+                $data['data'][$key]['inspection_status'] = $value['inspection_time']?$this->diffdate($value['inspection_time']):true;
+                $data['data'][$key]['validity_status'] = $value['validity_time']?$this->diffdate($value['validity_time']):true;
+                $data['data'][$key]['traffic_status'] = $value['traffic_time']?$this->diffdate($value['traffic_time']):true;
                 if($data['data'][$key]['scrapp_status']==false){
                     $data['data'][$key]['date_status'] = $data['data'][$key]['date_status']+1;
                 }
@@ -114,10 +114,10 @@ class InfoService extends BaseService
                 $driving_licenses[$key]['name'] = $key;
                 $driving_licenses[$key]['url'] = $value;
             }
-            $info['scrapp_status'] = $this->diffdate($info['scrapp_time']);  
-            $info['inspection_status'] = $this->diffdate($info['inspection_time']);
-            $info['validity_status'] = $this->diffdate($info['validity_time']);
-            $info['traffic_status'] = $this->diffdate($info['traffic_time']);
+            $info['scrapp_status'] = $info['scrapp_time']?$this->diffdate($info['scrapp_time']):true;  
+            $info['inspection_status'] = $info['inspection_time']?$this->diffdate($info['inspection_time']):true;
+            $info['validity_status'] = $info['validity_time']?$this->diffdate($info['validity_time']):true;
+            $info['traffic_status'] = $info['traffic_time']?$this->diffdate($info['traffic_time']):true;
             $info['driving_licenses'] = $driving_licenses;
             //车体照片 start
             $info['carbody_pictures'] = $carbody_pictures;
@@ -282,26 +282,34 @@ class InfoService extends BaseService
             }
             $data = Cartrailer::where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
-                // dump($data);die;
+                
             foreach ($data['data'] as $key => $value) {
          
                 $trailer_scope = Db::name("admin_carscope")->where('id','in', $value['trailer_scope'])->field('name')->select();
                 $items = $trailer_scope->toArray();
 
                 $itemNames = array_column($items, 'name');
-
+                // dump($value['driving_license']);die;
                 $data['data'][$key]['trailer_scope'] = implode(', ', $itemNames);
-                $driving_license = explode(',', $value['driving_license']);
-                foreach ($driving_license as $k => $val){
-                    $data['data'][$key]['driving_licenses'][$k]['url'] = $val;
+                if($value['driving_license']!=null){
+                    $driving_license = explode(',', $value['driving_license']);
+                    foreach ($driving_license as $k => $val){
+                        $data['data'][$key]['driving_licenses'][$k]['url'] = $val;
+                    }
                 }
+                else{
+                    
+                    $data['data'][$key]['driving_licenses'][0]['url']='';
+                }
+                
                 // scrapp_time,inspection_time,validity_time,frame_time
                 // $scrapp_time = \DateTime::createFromFormat('Y-m-d', $value['scrapp_time']);
                 $data['data'][$key]['date_status'] = 0;
-                $data['data'][$key]['scrapp_status'] = $this->diffdate($value['scrapp_time']);  
-                $data['data'][$key]['inspection_status'] = $this->diffdate($value['inspection_time']);
-                $data['data'][$key]['validity_status'] = $this->diffdate($value['validity_time']);
-                $data['data'][$key]['frame_status'] = $this->diffdate($value['frame_time']);
+                $data['data'][$key]['scrapp_status'] = $value['scrapp_time']?$this->diffdate($value['scrapp_time']):true;
+                $data['data'][$key]['inspection_status'] = $value['scrapp_time']?$this->diffdate($value['inspection_time']):true;
+                $data['data'][$key]['validity_status'] = $value['scrapp_time']?$this->diffdate($value['validity_time']):true;
+                $data['data'][$key]['frame_status'] = $value['scrapp_time']?$this->diffdate($value['frame_time']):true;
+                // dump($data);die;
                 if($data['data'][$key]['scrapp_status']==false){
                     $data['data'][$key]['date_status'] = $data['data'][$key]['date_status']+1;
                 }
@@ -315,7 +323,7 @@ class InfoService extends BaseService
                     $data['data'][$key]['date_status'] = $data['data'][$key]['date_status']+1;
                 }
             }
-                
+            
             return $this->success($data);
         }catch (\Exception $exception){
             $this->recordLog($exception);
@@ -365,10 +373,10 @@ class InfoService extends BaseService
                 $driving_licenses[$key]['name'] = $key;
                 $driving_licenses[$key]['url'] = $value;
             }
-            $info['scrapp_status'] = $this->diffdate($info['scrapp_time']);  
-            $info['inspection_status'] = $this->diffdate($info['inspection_time']);
-            $info['validity_status'] = $this->diffdate($info['validity_time']);
-            $info['frame_status'] = $this->diffdate($info['frame_time']);
+            $info['scrapp_status'] = $info['scrapp_time']?$this->diffdate($info['scrapp_time']):true;  
+            $info['inspection_status'] = $info['inspection_time']?$this->diffdate($info['inspection_time']):true;;
+            $info['validity_status'] = $info['validity_time']?$this->diffdate($info['validity_time']):true;;
+            $info['frame_status'] = $info['frame_time']?$this->diffdate($info['frame_time']):true;;
             $info['driving_licenses'] = $driving_licenses;
    
             if(empty($info)){

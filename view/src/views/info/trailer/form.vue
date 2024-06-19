@@ -18,10 +18,17 @@
                 <el-tabs style="height: 200px;">
                     <el-tab-pane label="基本信息">
 
-                        <el-form-item label="车牌号" prop="trailer_plate">
-                            <el-input v-model="formData.trailer_plate" clearable placeholder="请输入车牌号"></el-input>
+                        <el-form-item label="车牌号" prop="Vaildplate">
+                            <!-- <el-input v-model="formData.trailer_plate" clearable placeholder="请输入车牌号"></el-input> -->
+                            <el-input
+                              v-model="formData.Vaildplate"
+                              placeholder="请输入车牌号"
+                              :maxlength="5"
+                            >
+                              <template v-slot:prepend>吉B</template>
+                            </el-input>
                         </el-form-item>
-
+                        
                         <!-- <el-form-item label="品牌" prop="trailer_brand">
                             <el-input v-model="formData.trailer_brand" clearable placeholder="品牌"></el-input>
                         </el-form-item> -->
@@ -35,16 +42,24 @@
                               </el-option>
                             </el-select>
                         </el-form-item>
+                        <!-- <el-form-item label="自重" prop="trailer_weight">
+                            <el-input-number v-model="formData.trailer_weight" clearable placeholder="请输入自重" :step="0.5" :precision="2"></el-input-number>
+                            <span>（ t ）保留两位小数</span>
+                        </el-form-item> -->
                         <el-form-item label="自重" prop="trailer_weight">
-                            <el-input-number v-model="formData.trailer_weight" clearable placeholder="请输入自重"></el-input-number>
-                            <span>（ t ）</span>
+                            <el-input  v-model="formData.trailer_weight" clearable placeholder="请输入自重"
+                                      maxlength="10"
+                                      onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
+                                      v-on:input="clearNoNum(formData.trailer_weight,index,indexs)"
+                                      @blur.native.capture="clearnumber(formData.trailer_weight,index,indexs)" v-input.float="2">
+                                     </el-input>
                         </el-form-item>
                         <el-form-item label="容积" prop="trailer_volume">
-                            <el-input-number v-model="formData.trailer_volume" clearable placeholder="请输入容积"></el-input-number>
-                            <span>（ m³ ）</span>
+                            <el-input-number v-model="formData.trailer_volume" clearable placeholder="请输入容积" :step="0.5" :precision="2"></el-input-number>
+                            <span>（ m³ ）保留两位小数</span>
                         </el-form-item>
                         <el-form-item label="道路运输证号" prop="transport_cert">
-                            <el-input v-model="formData.transport_cert" clearable placeholder="请输入12位道路运输证号"></el-input>
+                            <el-input v-model="formData.transport_cert" clearable placeholder="请输入12位道路运输证号" maxLength='12'></el-input>
                         </el-form-item>
                         <el-form-item label="罐体材质" prop="trailer_material">
                             <el-select v-model="formData.trailer_material" filterable  clearable placeholder="请选择罐体材质">
@@ -151,7 +166,7 @@ import { addcartrailer, editcartrailer, getcartrailerInfo, getcarscope, gettrail
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
-
+import { validCert, validPlate } from '@/utils/validate'
 
 export default {
   name: "AdminForm",
@@ -161,6 +176,30 @@ export default {
     UploadPdf
   },
   data() {
+    const validateCert = (rule, value, callback) => {
+      console.log(value)
+      
+      if (!validCert(value)) {
+        callback(new Error('请输入正确道路运输证号（12位数字）'))
+      } else {
+        callback()
+      }
+    } 
+    const validatePlate = (rule, value, callback) => {
+      console.log(value)
+      const newplate = '吉B ' + value;
+      if (!validPlate(value)) {
+        callback(new Error('请输入正确车牌号（吉B（固定）+1字母+4数字）'))
+      } else {
+        
+        console.log(newplate)
+        this.$nextTick(() => {
+          this.formData.trailer_plate = newplate;
+        });
+        callback()
+      }
+    } 
+
     return {
       title:'',
       dialog: false,
@@ -171,12 +210,14 @@ export default {
       trailer_scope: [],
       drawerShow:false,
       saveRules: {
-        trailer_plate: [{ required: true, message: '车牌号不能为空', trigger: 'blur'}],
+        Vaildplate: [{ required: true, trigger: 'blur', validator: validatePlate }],
         // transport_cert: [{ required: true, message: '道路运输证', trigger: 'blur'}],
-        transport_cert: [{ validator: this.validateNumber, message: '道路运输证必须是12位数', trigger: 'blur'}]
+        transport_cert: [{ required: true, trigger: 'blur', validator: validateCert }]
+        // transport_cert: [{ validator: validateCert, message: '道路运输证必须是12位数字', trigger: 'blur'}]
       },
       formData: {
         id: 0,
+        Vaildplate: '',
         trailer_plate: '',
         trailer_brand: '',
         trailer_material: '',
@@ -212,16 +253,7 @@ export default {
     this.gettrailerkeepwarm();
   },
   methods: {
-    validateNumber(rule, value, callback) {
-      const regex = /^\d{12}$/;
-      if (!value) {
-        return callback(new Error('内容不能为空'));
-      } else if (!regex.test(value)) {
-        return callback(new Error('必须是12位数字'));
-      } else {
-        return callback();
-      }
-    },
+
     gettrailerdes(){
       gettrailerdes().then(response=>{
           if(response !== undefined){
@@ -269,7 +301,7 @@ export default {
     showForm() {
       this.dialog = true
       this.drawerShow = true
-      this.title = '新增车头信息'
+      this.title = '新增挂车信息'
       this.resetData()
     },
     resetData(){
@@ -283,11 +315,11 @@ export default {
       this.formData.frame_tank = ''
       this.formData.transport_cert = ''
       this.formData.trailer_scope = []
-      this.formData.regist_time = ''
-      this.formData.scrapp_time = ''
-      this.formData.inspection_time = ''
-      this.formData.validity_time = ''
-      this.formData.frame_time = ''
+      this.formData.regist_time = null
+      this.formData.scrapp_time = null
+      this.formData.inspection_time = null
+      this.formData.validity_time = null
+      this.formData.frame_time = null
       this.formData.driving_license = []
       this.formData.transport_license = ''
       this.formData.pot_report = ''
@@ -296,10 +328,11 @@ export default {
       this.formData.trailer_keepwarm = ''
       // this.$refs.Image_driving_license.uploadFileList=[]
       // this.$refs.Image_driving_license.uploadFiles=''
-      this.frame_status = true,
-      this.validity_status = false,
-      this.inspection_status = true,
-      this.scrapp_status = true
+      this.formData.frame_status = true,
+      this.formData.validity_status = true,
+      this.formData.inspection_status = true,
+      this.formData.scrapp_status = true,
+      this.formData.Vaildplate = ''
     },
     getcartrailerInfo(id){
       getcartrailerInfo({id:id}).then(response=>{
@@ -307,6 +340,7 @@ export default {
           if(response !== undefined){
               this.title = '编辑车头信息'
               this.formData.id = response.id
+              this.formData.Vaildplate = response.Vaildplate
               this.formData.trailer_plate = response.trailer_plate
               this.formData.trailer_brand = response.trailer_brand
               this.formData.trailer_material = response.trailer_material

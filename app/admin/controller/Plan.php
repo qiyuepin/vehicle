@@ -35,8 +35,8 @@ class Plan extends Base
     }
     public function addnormal(Request $request,PlanService $service){
         $param = $request->param();
-
-        $data = $service -> addnormal($param);
+        $authorization = $request->header('Authorization');
+        $data = $service -> addnormal($param,$authorization);
         return $this->responseData($data);
     }
     public function editnormal(Request $request,PlanService $service){

@@ -23,8 +23,7 @@
                             </el-checkbox-group>
                         </el-form-item> -->
                         <el-form-item label="车牌号" prop="carhead_plate">
-                            <el-input v-model="formData.carhead_plate" clearable placeholder="请输入车牌号"
-                                      style="width: 200px"></el-input>
+                            <el-input v-model="formData.carhead_plate" clearable placeholder="请输入车牌号"></el-input>
                         </el-form-item>
                         <!-- <el-form-item label="昵称" prop="nickname">
                             <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
@@ -41,20 +40,10 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="自重" prop="carhead_weight">
-<!--                            <el-input v-model="formData.carhead_weight" clearable placeholder="请输入自重"></el-input>-->
-
-                            <el-input  v-model="formData.carhead_weight" clearable placeholder="请输入自重"
-                                      maxlength="10"
-                                      onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
-                                      v-on:input="clearNoNum(formData.carhead_weight)"
-                                      @blur.native.capture="clearnumber(formData.carhead_weight)" v-input.float="2"
-                                       style="width: 150px">
-                                     </el-input>
-                            <span>（ t ）</span>
+                            <el-input v-model="formData.carhead_weight" clearable placeholder="请输入自重"></el-input>
                         </el-form-item>
-                        <el-form-item label="道路运输证号" prop="transport_cert">
-                            <el-input v-model="formData.transport_cert" clearable placeholder="请输12位入道路运输证号"
-                                      style="width: 200px" ></el-input>
+                        <el-form-item label="道路运输证号">
+                            <el-input v-model="formData.transport_cert" clearable placeholder="请输入道路运输证号"></el-input>
                         </el-form-item>
                         <el-form-item label="排放等级" prop="discharge_level">
                             <el-select v-model="formData.discharge_level" filterable  clearable placeholder="请选择排放等级">
@@ -73,27 +62,19 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="注册日期">
-                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"
-                                      style="width: 150px;"></el-input>
-                        </el-form-item>
-                        <el-form-item label="已运营时间">
-                            <el-label > {{ years }}</el-label>
+                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
                         </el-form-item>
                         <el-form-item label="强制报废日期">
-                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="检验有效期">
-                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"></el-input>
                         </el-form-item>
-                        <el-form-item label="营运证有效期">
-                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择营运证有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                        <el-form-item label="审验有效期">
+                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="交强险有效期">
-                          <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期" :class="{ datestatusinput: formData.traffic_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                          <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期" :class="{ datestatusinput: formData.traffic_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="动力源" prop="power_supply">
                             <el-select v-model="formData.power_supply" filterable  clearable placeholder="请选择动力源">
@@ -105,12 +86,9 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="车体照片" prop="carbody_picture">
-                            <MultiImage ref="Image_carbody_picture" :images="formData.carbody_picture" v-model="formData.carbody_picture"></MultiImage>
-                        </el-form-item>
                         <el-form-item label="行驶证" prop="driving_license">
                             <!-- <MultiImage ref="Image_driving_license" v-model="formData.driving_license"></MultiImage> -->
-                            <MultiImage ref="Image_driving_license" :images="formData.driving_license" v-model="formData.driving_license"></MultiImage>
+                            <MultiImage ref="Image_driving_license":images="formData.driving_license" v-model="formData.driving_license"></MultiImage>
                         </el-form-item>
                         <el-form-item label="道路运输证" prop="transport_license">
                             <UploadImage ref="Image_transport_license" v-model="formData.transport_license"></UploadImage>
@@ -147,7 +125,7 @@ import { addcarhead, editcarhead, getcarheadInfo, getcarscope, infonotice,gethea
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
-import moment from 'moment'
+
 
 export default {
   name: "AdminForm",
@@ -166,9 +144,8 @@ export default {
         powersupplyllist:[],
       drawerShow:false,
       saveRules: {
-        carhead_plate: [{ required: true, trigger: 'blur',message: '请输入车牌号'}],
-        transport_cert: [{ message: '请输入数字',trigger: 'blur'},
-            {pattern: /^[0-9]{12}$/, message: '输入内容不是有效的数字'}]
+        carhead_plate: [{ required: true, trigger: 'blur'}],
+        transport_cert: [{ required: true, trigger: 'blur'}]
       },
       formData: {
         id: 0,
@@ -176,48 +153,21 @@ export default {
         carhead_brand: '',
         carhead_weight: '',
         transport_cert: '',
-        discharge_level: '',
+          discharge_level:'',
         carhead_scope: [],
         regist_time: '',
         scrapp_time: '',
         inspection_time: '',
         validity_time: '',
         traffic_time: '',
-        power_supply: '',
+          power_supply:'',
         driving_license: [],
         transport_license: '',
         traffic_insurance: '',
-        business_insurance: '',
-        carbody_picture: [],
-        scrapp_status: '',
-        inspection_status: '',
-        validity_status: '',
-        traffic_status: '',
+        business_insurance: ''
       },
     }
   },
-    computed: {
-        years() {
-            const now = new Date()
-            const valueStart = this.formData.regist_time === null ? 0 : this.formData.regist_time
-            const valueEnd = this.formData.regist_time === null? 0 : now
-            const yearStr = moment(valueEnd).diff(moment(valueStart), 'years')
-            const monthStr = moment(valueEnd).diff(moment(valueStart), 'months') % 12
-
-            if (yearStr === 0 && monthStr === 0) {
-                return ''
-            }
-            else if (yearStr === 0 && monthStr > 0) {
-                return monthStr + '月'
-            }
-            else if (yearStr < 0 || monthStr < 0) {
-                return ''
-            }
-            else{
-                return yearStr + '年' + ' ' + monthStr + '月'
-            }
-        }
-    },
   created() {
     this.getcarscope()
       this.getheadbranch()
@@ -225,36 +175,6 @@ export default {
       this.getpowersupply()
   },
   methods: {
-      clearNoNum(value) {
-          if (value) {
-              let value1 = parseFloat(value);
-              value = value1 == 0 ? "" : value;
-              let i = value.indexOf(".");
-              value = i == 0 ? "" : value;
-              if (value.indexOf(".") > 0) {
-                  value = value.replace(/\.{2,}/g, ".");
-                  let arr = value.split(".");
-                  value = arr.length == 3 ? value.substr(0, value.length - 1) : value;
-              }
-          }
-          // this.list[index].child[indexs].rate = value;
-          this.formData.carhead_weight = value;
-      },
-      //离开输入框后增加小数点
-      clearnumber(value) {
-          if (value) {
-              console.log(value.length)
-              // value = value.length === 1 ? value + ".00" : value;
-              // value =
-              //     value.length == 2 && value.indexOf(".") < 0 ? value + ".0" : value;
-              // value =
-              //     value.length == 3 && value.indexOf(".") > 0 ? value + "0" : value;
-              value = value.indexOf(".") < 0 ? value + ".00" : value;
-          }
-          console.log(value)
-          // this.list[index].child[indexs].rate = value;
-          this.formData.carhead_weight = value;
-      },
       getheadbranch(){
           getheadbranch().then(response => {
               if(response !== undefined){
@@ -314,18 +234,17 @@ export default {
       this.formData.carhead_weight = ''
       this.formData.transport_cert = ''
       this.formData.carhead_scope = []
-      this.formData.regist_time = null
-      this.formData.scrapp_time = null
-      this.formData.inspection_time = null
-      this.formData.validity_time = null
-      this.formData.traffic_time = null
+      this.formData.regist_time = ''
+      this.formData.scrapp_time = ''
+      this.formData.inspection_time = ''
+      this.formData.validity_time = ''
+      this.formData.traffic_time = ''
       this.formData.driving_license = []
       this.formData.transport_license = ''
       this.formData.traffic_insurance = ''
       this.formData.business_insurance = ''
       this.formData.discharge_level = ''
       this.formData.power_supply = ''
-      this.formData.carbody_picture = []
     },
     getcarheadInfo(id){
       getcarheadInfo({id:id}).then(response=>{
@@ -353,16 +272,6 @@ export default {
               //   console.log(item);
               //   return item
               // });
-              //车体照片 start
-              this.formData.carbody_picture = response.carbody_pictures
-              console.log(response.carbody_pictures)
-              this.$refs.Image_carbody_picture.uploadFileList.push(...response.carbody_pictures)
-              this.$refs.Image_carbody_picture.uploadFiles = this.$refs.Image_carbody_picture.uploadFileList.map(itemcarbody => {
-                  return itemcarbody
-              });
-              this.$refs.Image_carbody_picture.imgUrl = response.carbody_pictures
-              //车体照片 end
-                console.log('测试')
               this.formData.driving_license = response.driving_licenses
               this.$refs.Image_driving_license.uploadFileList.push(...response.driving_licenses)
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {

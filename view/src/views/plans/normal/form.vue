@@ -55,7 +55,7 @@
                           </el-select>
                       </el-form-item>
                       <el-form-item label="货品数量" prop="product_quantity">
-                          <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
+                          <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
                       </el-form-item>
 
 
@@ -78,25 +78,14 @@
                       <el-form-item label="卸货厂家" prop="unload_factory">
                           <el-input v-model="formData.unload_factory" clearable placeholder="请输入卸货厂家"></el-input>
                       </el-form-item>
-                      <!-- <el-form-item label="卸货厂家" prop="unload_factory">
-                          <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
-                            <el-option
-                              v-for="item in factorylist"
-                              :key="item.value"
-                              :label="item.name"
-                              :value="item.name">
-                            </el-option>
-                          </el-select>
-                      </el-form-item> -->
-                      <!-- <el-form-item label="卸货厂家名字" prop="unload_factory">
-                          <el-input v-model="formData.unload_factory" clearable placeholder="卸货厂家名字"></el-input>
-                      </el-form-item> -->
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
                       <el-form-item label="排序" prop="plan_type">
                           <el-input v-model="formData.plan_type" clearable></el-input>
                       </el-form-item>
+
+                      
                       <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1>是</el-radio>
@@ -166,8 +155,8 @@ data() {
     map: null,
     saveRules: {
       // info_id: [{ required: true, message: '信息ID不能为空', trigger: 'blur'}],
-      product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur'}],
-      product_quantity: [{ required: true, message: '产品数量不能为空', trigger: 'blur'}],
+      product_name: [{ required: true, message: '货品名称不能为空', trigger: 'blur'}],
+      product_quantity: [{ required: true, message: '货品数量不能为空', trigger: 'blur'}],
       load_factory: [{ required: true, message: '装货厂家不能为空', trigger: 'blur'}],
       unload_factory: [{ required: true, message: '卸货厂家不能为空', trigger: 'blur'}],
     },

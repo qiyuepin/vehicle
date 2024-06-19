@@ -116,7 +116,7 @@
                     fixed="right"
                     label="操作"
                     align="center"
-                    min-width="200">
+                    min-width="220">
                 <template slot-scope="scope">
                   <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
                   <el-button v-if="scope.row.status==1" size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)"

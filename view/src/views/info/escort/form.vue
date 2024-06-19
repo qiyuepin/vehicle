@@ -26,15 +26,16 @@
                           <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
                       </el-form-item>
  
-     
+                      <el-form-item label="手机号2" prop="phone2">
+                          <el-input v-model="formData.phone2" clearable placeholder="请输入正确的手机号"></el-input>
+                      </el-form-item>
                       <el-form-item label="身份证号" prop="id_card">
-                          <el-input v-model="formData.id_card" clearable
-                                    placeholder="请输入正确的身份证号"></el-input>
+                          <el-input v-model="formData.id_card" clearable placeholder="请输入正确的身份证号"  maxLength='18'></el-input>
                       </el-form-item>
 
-                      <el-form-item label="从业资格证号">
+                      <el-form-item label="从业资格证号" prop="cert_card_num">
                           <el-input v-model="formData.cert_card_num" clearable
-                                    placeholder="请输入从业资格证号"></el-input>
+                                    placeholder="请输入从业资格证号"  maxLength='18'></el-input>
                       </el-form-item>
                       <el-form-item label="是否离职" prop="escort_status">
                             <el-radio-group v-model="formData.escort_status">
@@ -74,7 +75,7 @@
 
 import { addescort, editescort,getescortInfo } from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import { validPhone,validIDcard } from '@/utils/validate'
+import { validPhone,validIDCard } from '@/utils/validate'
 
 export default {
 name: "myForm",
@@ -91,9 +92,18 @@ data() {
       callback()
     }
   }
-  const validid_card = (rule, value, callback) => {
-    if (!validIDcard(value)) {
-      callback(new Error('请输入正确的身份证号'))
+  const validCard = (rule, value, callback) => {
+    console.log(value)
+    if (!validIDCard(value)) {
+      callback(new Error('请输入正确身份证号（18位数字）'))
+    } else {
+      callback()
+    }
+  }
+  const validcertCard = (rule, value, callback) => {
+    console.log(value)
+    if (!validIDCard(value)) {
+      callback(new Error('请输入正确从业资格证号（18位数字）'))
     } else {
       callback()
     }
@@ -107,7 +117,8 @@ data() {
     saveRules: {
 
       name: [{ required: true, message: '姓名不能为空', trigger: 'blur'}],
-      id_card: [{ required: true, trigger: 'blur', validator: validid_card }],
+      id_card: [{ required: true, trigger: 'blur', validator: validCard}],
+      cert_card_num: [{ required: true, trigger: 'blur', validator: validcertCard}],
       phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
 
     },
@@ -115,14 +126,14 @@ data() {
       id: 0,
       name: '',
       phone: '',
+      phone2: '',
       id_card: '',
       card_front: '',
       card_back: '',
-      driver_card_front: '',
-      driver_card_back: '',
+      // driver_card_front: '',
+      // driver_card_back: '',
       cert_back: '',
-      id_card_num: '',
-      card_badirver_card_numck: '',
+      // card_badirver_card_numck: '',
       cert_card_num: '',
       employ_time: '',
       escort_status: ''
@@ -144,11 +155,11 @@ methods: {
   resetData(){
     this.formData.id = 0
     this.formData.name = ''
-    this.formData.nickname = ''
     this.formData.phone = ''
+    this.formData.phone2 = ''
     this.formData.id_card = ''
     this.formData.cert_card_num = ''
-    this.formData.employ_time = ''
+    this.formData.employ_time = null
     this.formData.card_front = ''
     this.formData.card_back = ''
     this.formData.cert_front = ''
@@ -198,7 +209,7 @@ methods: {
               })
             }else{
               addescort(this.formData).then(_ => {
-                resetData();
+                // resetData();
                 this.$message({
                   message: '新增成功',
                   type: 'success',

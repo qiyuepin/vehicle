@@ -342,8 +342,8 @@ export default {
       years(val) {
           const now = new Date()
           // console.log(this.query)
-          const valueStart = val.length === 0 ? 0 : val
-              const valueEnd = val.length === 0 ? 0 : now
+          const valueStart = val === null ? 0 : val
+              const valueEnd = val === null  ? 0 : now
               const yearStr = moment(valueEnd).diff(moment(valueStart), 'years')
               const monthStr = moment(valueEnd).diff(moment(valueStart), 'months') % 12
               // console.log(valueStart)

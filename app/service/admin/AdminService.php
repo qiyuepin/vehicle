@@ -337,7 +337,7 @@ class AdminService extends BaseService
             if(isset($param['status'])&&$param['status']){
                 $where[] = ['status','=',$param['status']];
             }
-            $data = Admin::where($where)->field(['id','driver_status','username','phone','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','status','login_ip','login_time','create_time'])
+            $data = Admin::where($where)->field(['id','driver_status','username','phone','phone2','is_escort','escort_cert','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','status','login_ip','login_time','create_time'])
                 ->where(['type'=>'2'])
                 ->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
@@ -359,7 +359,7 @@ class AdminService extends BaseService
      */
     public function getdriverInfo($param=[]){
         try{
-            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','avatar','phone','type','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','driver_status'])->find();
+            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','avatar','phone','phone2','is_escort','escort_cert','type','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','driver_status'])->find();
             if(empty($info)){
                 return $this->error('管理员不存在');
             }
@@ -393,7 +393,7 @@ class AdminService extends BaseService
             // $param['sign'] = $param['autograph'];
             $res = Admin::update($param,['id'=>$param['id']]);
             if(!$res){
-                throw new \Exception('新增管理员失败');
+                throw new \Exception('编辑失败');
             }
             $res = AuthGroupAccess::where('uid',$param['id'])->delete();
             if(!$res){

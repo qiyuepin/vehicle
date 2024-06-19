@@ -91,6 +91,12 @@
                   width="120">
           </el-table-column>
           <el-table-column
+                  prop="phone2"
+                  label="手机号2"
+                  align="center"
+                  width="120">
+          </el-table-column>
+          <el-table-column
                   prop="id_card"
                   label="身份证号"
                   align="center"
@@ -119,7 +125,7 @@
                   align="center"
                   width="150">
               <el-image
-                      style="width: 40px; height: 40px"
+                      style="width: 40px; height: 30px"
                       :src="scope.row.card_front"
                       :preview-src-list="[scope.row.card_front]"
                       slot-scope="scope">
@@ -131,7 +137,7 @@
                   align="center"
                   width="150">
               <el-image
-                      style="width: 40px; height: 40px"
+                      style="width: 40px; height: 30px"
                       :src="scope.row.card_back"
                       :preview-src-list="[scope.row.card_back]"
                       slot-scope="scope">
@@ -144,7 +150,7 @@
                   align="center"
                   width="150">
               <el-image
-                      style="width: 40px; height: 40px"
+                      style="width: 40px; height: 30px"
                       :src="scope.row.cert_front"
                       :preview-src-list="[scope.row.cert_front]"
                       slot-scope="scope">
@@ -156,7 +162,7 @@
                   align="center"
                   width="150">
               <el-image
-                      style="width: 40px; height: 40px"
+                      style="width: 40px; height: 30px"
                       :src="scope.row.cert_back"
                       :preview-src-list="[scope.row.cert_back]"
                       slot-scope="scope">
