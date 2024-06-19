@@ -252,6 +252,9 @@ methods: {
         }
         this.loading = false
     })
+  },
+  getexcel() {
+
     getcost(this.excelquery).then(response => {
         if(response !== undefined){
           this.excelData = response
@@ -262,6 +265,7 @@ methods: {
   handleSearch() {
     this.query.page = 1
     this.getcost()
+    this.getexcel()
   },
   //刷新重置
   handleReload() {

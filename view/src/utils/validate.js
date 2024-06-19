@@ -17,18 +17,42 @@ export function isExternal(path) {
  */
 export function validUsername(str) {
   const reg = /^[\u4e00-\u9fa5a-zA-Z0-9]{2,10}$/; //必须是2-10个字符
+  console.log(reg.test(str))
   return reg.test(str);
 }
 
 /**
- * 验证昵称
- * @param str
- * @returns {*|boolean}
+ * 验证身道路运输证
+ * @param {string} str - 待验证的道路运输证
+ * @returns {boolean} - 如果正确，返回 true；否则，返回 false
  */
-// export function validNickname(str) {
-//   const reg = /^[\u4e00-\u9fa5]{0,20}$/; //必须是20个以内中文字符
-//   return reg.test(str);
-// }
+export function validCert(str) {
+  const reg = /^\d{12}$/;
+  return reg.test(str);
+}
+
+/**
+ * 验证车牌号
+ * @param {string} str - 待验证的车牌号
+ * @returns {boolean} - 如果正确，返回 true；否则，返回 false
+ */
+export function validPlate(str) {
+
+  // let input = str.replace(/^吉B/, '');
+  const reg = /^[A-Z]{1}\d{4}$/;
+  return reg.test(str);
+}
+
+/**
+ * 验证身份证号码的合法性
+ * @param {string} str - 待验证的身份证号码
+ * @returns {boolean} - 如果身份证号码合法，返回 true；否则，返回 false
+ */
+export function validIDCard(str) {
+  const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
+  return reg.test(str);
+}
+
 
 /**
  * 验证手机号
@@ -60,10 +84,7 @@ export function validPassword(str) {
   return reg.test(str);
 }
 
-export function validIDcard(str) {
-  const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
-  return reg.test(str);
-}
+
 
 
 /**
@@ -123,3 +144,4 @@ export function isArray(arg) {
   }
   return Array.isArray(arg)
 }
+

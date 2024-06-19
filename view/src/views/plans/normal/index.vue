@@ -49,6 +49,12 @@
                   align="center"
                   width="80">
           </el-table-column>
+          <el-table-column
+                  prop="plan_order"
+                  label="排序"
+                  align="center"
+                  width="100">
+          </el-table-column>
           <!-- <el-table-column
                   prop="escort_status"
                   label="状态"
@@ -100,6 +106,17 @@
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
                 <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
     
+              </template>
+          </el-table-column>
+          <el-table-column
+              prop="start_periodic"
+              label="任务类别"
+              align="center"
+              width="110">
+              <template slot-scope="scope">
+       
+                <el-tag v-if="scope.row.fixed === 0" type="info">非固定</el-tag>
+                <el-tag v-else-if="scope.row.fixed === 1" type="success">固定</el-tag>
               </template>
           </el-table-column>
           <el-table-column

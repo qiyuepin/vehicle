@@ -28,22 +28,22 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      <el-form-item label="车头" prop="head_num">
+                      <!-- <el-form-item label="车头" prop="head_num">
                           <el-input v-model="formData.head_num" clearable placeholder="请输入车头"></el-input>
-                      </el-form-item>
+                      </el-form-item> -->
                       <el-form-item label="挂车" prop="trailer_num">
                           <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车"></el-input>
                       </el-form-item>
                       <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
                       </el-form-item>
-                      <el-form-item label="押运员" prop="escort_name">
+                      <!-- <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
-                      </el-form-item>
-                      <!-- <el-form-item label="货品名称" prop="product_name">
-                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
                       </el-form-item> -->
                       <el-form-item label="货品名称" prop="product_name">
+                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
+                      </el-form-item>
+                      <!-- <el-form-item label="货品名称" prop="product_name">
                           <el-select v-model="formData.product_name" filterable  clearable placeholder="请选择货品名称">
                             <el-option
                               v-for="item in productlist"
@@ -52,13 +52,13 @@
                               :value="item.product_name">
                             </el-option>
                           </el-select>
-                      </el-form-item>
+                      </el-form-item> -->
                       <el-form-item label="货品数量" prop="product_quantity">
-                          <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
+                          <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
                       </el-form-item>
 
 
-                      <el-form-item label="装货厂家" prop="load_factory">
+                      <!-- <el-form-item label="装货厂家" prop="load_factory">
                           <el-select v-model="formData.load_factory" filterable  clearable placeholder="请选择装货厂家" @change="loadFactoryChanged">
                             <el-option
                               v-for="item in factorylist"
@@ -67,10 +67,10 @@
                               :value="item.name">
                             </el-option>
                           </el-select>
-                      </el-form-item>
-                      <!-- <el-form-item label="装货厂家名字" prop="load_factory">
-                          <el-input v-model="formData.load_factory" clearable placeholder="装货厂家名字"></el-input>
                       </el-form-item> -->
+                      <el-form-item label="装货厂家" prop="load_factory">
+                          <el-input v-model="formData.load_factory" clearable placeholder="装货厂家"></el-input>
+                      </el-form-item>
                       <el-form-item label="装货地址" prop="load_address">
                           <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item>
@@ -78,7 +78,7 @@
                           
                         <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item> -->
-                      <el-form-item label="卸货厂家" prop="unload_factory">
+                      <!-- <el-form-item label="卸货厂家" prop="unload_factory">
                           <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
                             <el-option
                               v-for="item in factorylist"
@@ -87,15 +87,21 @@
                               :value="item.name">
                             </el-option>
                           </el-select>
-                      </el-form-item>
-                      <!-- <el-form-item label="卸货厂家名字" prop="unload_factory">
-                          <el-input v-model="formData.unload_factory" clearable placeholder="卸货厂家名字"></el-input>
                       </el-form-item> -->
+                      <el-form-item label="卸货厂家" prop="unload_factory">
+                          <el-input v-model="formData.unload_factory" clearable placeholder="卸货厂家"></el-input>
+                      </el-form-item>
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="排序" prop="plan_type">
-                          <el-input v-model="formData.plan_type" clearable></el-input>
+                      <el-form-item label="任务类别" prop="plan_type" >
+                          <el-radio-group v-model="formData.plan_type">
+                            <el-radio :label=1>装车任务</el-radio>
+                            <el-radio :label=2>卸车任务</el-radio>
+                          </el-radio-group>
+                      </el-form-item> 
+                      <el-form-item label="排序" prop="plan_order">
+                          <el-input v-model="formData.plan_order" clearable></el-input>
                       </el-form-item>
                       <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
@@ -122,7 +128,7 @@
 
 <script>
 
-import { addnormal, editnormal, gettemporaryinfo, getplaninfo } from '@/api/plan.js'
+import { addtemporary, edittemporary, gettemporaryinfo, getplaninfo } from '@/api/plan.js'
 import { getproduct } from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
@@ -167,11 +173,11 @@ data() {
     saveRules: {
 
       info_id: [{ required: true, trigger: 'blur'}],
-      product_name: [{ required: true, trigger: 'blur'}],
-      product_quantity: [{ required: true, trigger: 'blur'}],
+      product_name: [{ required: true,message: '请填写货品名称', trigger: 'blur'}],
+      product_quantity: [{ required: true,message: '请填写货品数量',  trigger: 'blur'}],
       load_factory: [{ required: true, trigger: 'blur'}],
       unload_factory: [{ required: true, trigger: 'blur'}],
-
+      plan_type: [{ required: true,message: '请选择任务类别', trigger: 'blur'}],
     },
     formData: {
       id: 0,
@@ -189,7 +195,8 @@ data() {
       start_periodic: '',
       end_periodic: '',
       platform: 'pc',
-      plan_type: 0
+      plan_order: 0,
+      plan_type: ''
     },
   }
 },
@@ -283,6 +290,7 @@ methods: {
     this.formData.start_periodic = ''
     this.formData.end_periodic = ''
     this.formData.plan_type = ''
+    this.formData.plan_order = 0
   },
   gettemporaryinfo(id){
     gettemporaryinfo({id:id}).then(response=>{
@@ -315,7 +323,7 @@ methods: {
         this.$refs.saveForm.validate(valid => {
           if (valid) {
             if(this.formData.id){
-              editnormal(this.formData).then(_ => {
+              edittemporary(this.formData).then(_ => {
                 this.$message({
                   message: '编辑成功',
                   type: 'success',
@@ -325,7 +333,7 @@ methods: {
                 this.dialog = false
               })
             }else{
-              addnormal(this.formData).then(_ => {
+              addtemporary(this.formData).then(_ => {
                 this.$message({
                   message: '新增成功',
                   type: 'success',
