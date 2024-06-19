@@ -198,7 +198,7 @@ class Info extends Base
 
     public function getproduct(Request $request,InfoService $service){
         $param = $request->param();
-        $data = $service -> infonotice($param);
+        $data = $service -> getproduct($param);
         return $this->responseData($data);
     }
 
