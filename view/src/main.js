@@ -28,6 +28,8 @@ import SocketIO from "socket.io-client"
 import defaultSettings from './settings.js'
 import VueSocketIO from 'vue-socket.io'
 
+
+import inputDirective from './directive/input/install';
 // import VueAMap from 'vue-amap'
 // Vue.use(VueAMap);
 
@@ -84,3 +86,5 @@ new Vue({
   i18n,
   render: h => h(App)
 })
+
+Vue.use( inputDirective );

@@ -120,6 +120,16 @@
                 </template>
             </el-table-column>
             <el-table-column
+                label="已运营时间"
+                align="center"
+                width="200">
+                <template slot-scope="scope">
+<!--                    <span style="margin-left: 10px" >{{years}}</span>-->
+                    <span >{{ years(scope.row.regist_time)}}</span>
+<!--                    <span>测试：{{ testSpan()}}</span>-->
+                </template>
+            </el-table-column>
+            <el-table-column
                     prop="scrapp_time"
                     label="强制报废日期"
                     align="center"
@@ -141,7 +151,7 @@
             </el-table-column>
             <el-table-column
                     prop="validity_time"
-                    label="审验有效期"
+                    label="营运证有效期"
                     align="center"
                     width="200">
                 <template slot-scope="scope">
@@ -288,7 +298,7 @@
         <el-dialog :modal-append-to-body="false" top="0" class="dialogPdf" :fullscreen="true" :append-to-body="true" :visible.sync="dialogVisible">
             <iframe loading="lazy" id="pdf_container" :src="openpdf" frameborder="0" height="100%" width="100%"></iframe>
         </el-dialog>
-  
+
     </div>
 </template>
 
@@ -298,6 +308,7 @@ import { getcarhead, delcarhead } from '@/api/Info.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
+import moment from 'moment'
 
 export default {
   name: 'Admin',
@@ -328,6 +339,34 @@ export default {
     this.getcarhead();
   },
   methods: {
+      years(val) {
+          const now = new Date()
+          // console.log(this.query)
+          const valueStart = val.length === 0 ? 0 : val
+              const valueEnd = val.length === 0 ? 0 : now
+              const yearStr = moment(valueEnd).diff(moment(valueStart), 'years')
+              const monthStr = moment(valueEnd).diff(moment(valueStart), 'months') % 12
+              // console.log(valueStart)
+              // console.log(valueEnd)
+              // console.log(yearStr)
+              // console.log(monthStr)
+              if (yearStr === 0 && monthStr === 0) {
+                  // console.log('1')
+                  return ''
+              } else if (yearStr === 0 && monthStr > 0) {
+                  // console.log('2')
+                  console.log(monthStr + '月')
+                  return monthStr + '月'
+              } else if (yearStr < 0 || monthStr < 0) {
+                  // console.log('3')
+                  return ''
+              } else {
+                  // console.log('4')
+                  return yearStr + '年' + ' ' + monthStr + '月'
+
+              }
+          // })
+      },
     handlePreview(pdfUrl) {
       console.log([pdfUrl])
       this.openpdf = [pdfUrl];

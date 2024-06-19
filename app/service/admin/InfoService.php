@@ -95,6 +95,16 @@ class InfoService extends BaseService
             $driving_licenses = []; // 确保 $driving_licenses 在循环之前被正确初始化
             $info['driving_licenses'] = [];
 
+            //车体照片 start
+            $carbody_picture = explode(',',$info['carbody_picture']);
+            $carbody_pictures = [];
+            $info['carbody_pictures'] = [];
+            foreach ($carbody_picture as $key => $value) {
+                $carbody_pictures[$key]['name'] = $key;
+                $carbody_pictures[$key]['url'] = $value;
+            }
+            //车体照片 end
+
             $carhead_scope = Db::name("admin_carscope")->where('id','in', $info['carhead_scope'])->field('name')->select();
             $items = $carhead_scope->toArray();
             $itemNames = array_column($items, 'name');
@@ -109,6 +119,9 @@ class InfoService extends BaseService
             $info['validity_status'] = $this->diffdate($info['validity_time']);
             $info['traffic_status'] = $this->diffdate($info['traffic_time']);
             $info['driving_licenses'] = $driving_licenses;
+            //车体照片 start
+            $info['carbody_pictures'] = $carbody_pictures;
+            //车体照片 end
    
             if(empty($info)){
                 return $this->error('信息不存在');
@@ -133,6 +146,11 @@ class InfoService extends BaseService
             
             if (isset($param['driving_license']) && is_array($param['driving_license'])) {
                 $param['driving_license'] = implode(',', $param['driving_license']);
+            } else {
+            }
+
+            if (isset($param['carbody_picture']) && is_array($param['carbody_picture'])) {
+                $param['carbody_picture'] = implode(',', $param['carbody_picture']);
             } else {
             }
             
@@ -184,6 +202,27 @@ class InfoService extends BaseService
             } else {
                
             }
+
+            //车体照片 start
+            if(isset($param['carbody_picture']) && is_array($param['carbody_picture'])){
+
+                $carbody_picture = array();
+                foreach($param['carbody_picture'] as $value){
+                    // dump($value['url']);die;
+                    $carbody_picture[]= isset($value['url'])?$value['url']:$value;
+                }
+            }else{
+
+                $carbody_picture = $param['carbody_picture'];
+            }
+
+            if (isset($carbody_picture) && is_array($carbody_picture)) {
+                $param['carbody_picture'] = implode(',', $carbody_picture);
+
+            } else {
+
+            }
+            //车体照片 end
    
             // Db::name('admin_info_notice')->where('carhead_plate',$param['carhead_plate'])->update(['isread'=>1]);
             // $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
