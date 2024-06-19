@@ -224,7 +224,7 @@ export default {
       clearNoNum(value) {
           if (value) {
               let value1 = parseFloat(value);
-              value = value1 == 0 ? "" : value;
+              // value = value1 == 0 ? "" : value;
               let i = value.indexOf(".");
               value = i == 0 ? "" : value;
               if (value.indexOf(".") > 0) {
