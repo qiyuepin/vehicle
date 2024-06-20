@@ -50,7 +50,7 @@
                                       @blur.native.capture="clearnumber(formData.carhead_weight)" v-input.float="2"
                                        style="width: 150px">
                                      </el-input>
-                            <span>（ t ）</span>
+                            <span>（ t ）保留两位小数</span>
                         </el-form-item>
                         <el-form-item label="道路运输证号" prop="transport_cert">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输12位入道路运输证号"

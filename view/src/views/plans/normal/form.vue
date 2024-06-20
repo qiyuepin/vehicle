@@ -17,7 +17,7 @@
                    style="width: 100%;">
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="基本信息">
-                
+
                       <el-form-item label="车辆/人员" prop="info_id">
                           <el-select v-model="formData.info_id" filterable  placeholder="请选择车辆/人员" @change="infoChanged">
                             <el-option
@@ -28,7 +28,7 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      
+
                       <el-form-item label="挂车" prop="trailer_num">
                           <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车"></el-input>
                       </el-form-item>
@@ -56,6 +56,7 @@
                       </el-form-item>
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
+                          <span>（ t ）</span>
                       </el-form-item>
 
 
@@ -85,7 +86,7 @@
                           <el-input v-model="formData.plan_type" clearable></el-input>
                       </el-form-item>
 
-                      
+
                       <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1>是</el-radio>

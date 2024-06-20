@@ -58,8 +58,9 @@
                       <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
                       </el-form-item>
-                      <el-form-item label="货品数量">
-                          <el-input v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input>
+                      <el-form-item label="货品数量" prop="product_quantity">
+                          <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
+                         <span>（ t ）</span>
                       </el-form-item>
                        <!-- <el-form-item label="任务类别" prop="plan_type" >
                           <el-radio-group v-model="formData.plan_type">

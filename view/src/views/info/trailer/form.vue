@@ -28,7 +28,7 @@
                               <template v-slot:prepend>吉B</template>
                             </el-input>
                         </el-form-item>
-                        
+
                         <!-- <el-form-item label="品牌" prop="trailer_brand">
                             <el-input v-model="formData.trailer_brand" clearable placeholder="品牌"></el-input>
                         </el-form-item> -->
@@ -51,12 +51,20 @@
                                       maxlength="10"
                                       onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
                                       v-on:input="clearNoNum(formData.trailer_weight,index,indexs)"
-                                      @blur.native.capture="clearnumber(formData.trailer_weight,index,indexs)" v-input.float="2">
-                                     </el-input>
+                                      @blur.native.capture="clearnumber(formData.trailer_weight,index,indexs)" v-input.float="2"
+                                       style="width: 150px">
+                                     </el-input><span>（ t ）保留两位小数</span>
                         </el-form-item>
                         <el-form-item label="容积" prop="trailer_volume">
-                            <el-input-number v-model="formData.trailer_volume" clearable placeholder="请输入容积" :step="0.5" :precision="2"></el-input-number>
-                            <span>（ m³ ）保留两位小数</span>
+<!--                            <el-input-number v-model="formData.trailer_volume" clearable placeholder="请输入容积" :step="0.5" :precision="2"></el-input-number>-->
+                            <el-input  v-model="formData.trailer_volume" clearable placeholder="请输入自重"
+                                       maxlength="10"
+                                       onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
+                                       v-on:input="clearNoNumvolume(formData.trailer_volume,index,indexs)"
+                                       @blur.native.capture="clearnumbervolume(formData.trailer_volume,index,indexs)" v-input.float="1"
+                                       style="width: 150px">
+                            </el-input>
+                            <span>（ m³ ）保留一位小数</span>
                         </el-form-item>
                         <el-form-item label="道路运输证号" prop="transport_cert">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输入12位道路运输证号" maxLength='12'></el-input>
@@ -99,8 +107,8 @@
                         <el-form-item label="注册日期">
                             <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
                         </el-form-item>
-                        
-                       
+
+
                         <!-- <el-form-item label="压力等级" prop="trailer_pressure">
                           <el-radio-group v-model="formData.trailer_pressure">
                             <el-radio label="常压"></el-radio>
@@ -118,8 +126,8 @@
 
 
 
-                        
-                        
+
+
                         <el-form-item label="强制报废日期">
                           <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"></el-input>
                         </el-form-item>
@@ -178,27 +186,27 @@ export default {
   data() {
     const validateCert = (rule, value, callback) => {
       console.log(value)
-      
+
       if (!validCert(value)) {
         callback(new Error('请输入正确道路运输证号（12位数字）'))
       } else {
         callback()
       }
-    } 
+    }
     const validatePlate = (rule, value, callback) => {
       console.log(value)
       const newplate = '吉B ' + value;
       if (!validPlate(value)) {
         callback(new Error('请输入正确车牌号（吉B（固定）+1字母+4数字）'))
       } else {
-        
+
         console.log(newplate)
         this.$nextTick(() => {
           this.formData.trailer_plate = newplate;
         });
         callback()
       }
-    } 
+    }
 
     return {
       title:'',
@@ -253,7 +261,66 @@ export default {
     this.gettrailerkeepwarm();
   },
   methods: {
-
+      clearNoNum(value) {
+          if (value) {
+              let value1 = parseFloat(value);
+              // value = value1 == 0 ? "" : value;
+              let i = value.indexOf(".");
+              value = i == 0 ? "" : value;
+              if (value.indexOf(".") > 0) {
+                  value = value.replace(/\.{2,}/g, ".");
+                  let arr = value.split(".");
+                  value = arr.length == 3 ? value.substr(0, value.length - 1) : value;
+              }
+          }
+          // this.list[index].child[indexs].rate = value;
+          this.formData.trailer_weight = value;
+      },
+      //离开输入框后增加小数点
+      clearnumber(value) {
+          if (value) {
+              console.log(value.length)
+              // value = value.length === 1 ? value + ".00" : value;
+              // value =
+              //     value.length == 2 && value.indexOf(".") < 0 ? value + ".0" : value;
+              // value =
+              //     value.length == 3 && value.indexOf(".") > 0 ? value + "0" : value;
+              value = value.indexOf(".") < 0 ? value + ".00" : value;
+          }
+          console.log(value)
+          // this.list[index].child[indexs].rate = value;
+          this.formData.trailer_weight = value;
+      },
+      clearNoNumvolume(value) {
+          if (value) {
+              let value1 = parseFloat(value);
+              // value = value1 == 0 ? "" : value;
+              let i = value.indexOf(".");
+              value = i == 0 ? "" : value;
+              if (value.indexOf(".") > 0) {
+                  value = value.replace(/\.{2,}/g, ".");
+                  let arr = value.split(".");
+                  value = arr.length == 3 ? value.substr(0, value.length - 1) : value;
+              }
+          }
+          // this.list[index].child[indexs].rate = value;
+          this.formData.trailer_volume = value;
+      },
+      //离开输入框后增加小数点
+      clearnumbervolume(value) {
+          if (value) {
+              console.log(value.length)
+              // value = value.length === 1 ? value + ".00" : value;
+              // value =
+              //     value.length == 2 && value.indexOf(".") < 0 ? value + ".0" : value;
+              // value =
+              //     value.length == 3 && value.indexOf(".") > 0 ? value + "0" : value;
+              value = value.indexOf(".") < 0 ? value + ".00" : value;
+          }
+          console.log(value)
+          // this.list[index].child[indexs].rate = value;
+          this.formData.trailer_volume = value;
+      },
     gettrailerdes(){
       gettrailerdes().then(response=>{
           if(response !== undefined){
@@ -338,7 +405,7 @@ export default {
       getcartrailerInfo({id:id}).then(response=>{
 
           if(response !== undefined){
-              this.title = '编辑车头信息'
+              this.title = '编辑挂车信息'
               this.formData.id = response.id
               this.formData.Vaildplate = response.Vaildplate
               this.formData.trailer_plate = response.trailer_plate
@@ -348,7 +415,7 @@ export default {
               this.formData.trailer_volume = response.trailer_volume
               this.formData.trailer_pressure = response.trailer_pressure
               this.formData.frame_tank = response.frame_tank
-              
+
               this.formData.transport_cert = response.transport_cert
 
               this.formData.trailer_scope.push(...response.trailer_scope);
@@ -371,7 +438,7 @@ export default {
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
                 return item
               });
-          
+
               this.$refs.Image_driving_license.imgUrl = response.driving_licenses
               this.formData.transport_license = response.transport_license
               this.$refs.Image_transport_license.imgUrl = response.transport_license
@@ -383,14 +450,14 @@ export default {
               this.$refs.Image_pot_report.pdfUrl = response.pot_report
               this.$refs.Image_cargo_insurance.pdfUrl = response.cargo_insurance
 
-              this.formData.scrapp_status  = response.scrapp_status 
-              this.formData.inspection_status  = response.inspection_status 
-              this.formData.validity_status  = response.validity_status 
-              this.formData.frame_status  = response.frame_status 
+              this.formData.scrapp_status  = response.scrapp_status
+              this.formData.inspection_status  = response.inspection_status
+              this.formData.validity_status  = response.validity_status
+              this.formData.frame_status  = response.frame_status
           }
       })
     },
-    
+
     saveData() {
       this.$confirm('您确定要提交吗？', '温馨提示')
         .then(_ => {

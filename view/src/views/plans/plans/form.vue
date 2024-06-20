@@ -54,7 +54,7 @@
                           </el-select>
                       </el-form-item>
                       <el-form-item label="货品数量" prop="product_quantity">
-                          <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number><span>（ 吨 ）</span>
+                          <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number><span>（ t ）</span>
                       </el-form-item>
                       <el-form-item label="装货厂家" prop="load_factory">
                           <el-select v-model="formData.load_factory" filterable  clearable placeholder="请选择装货厂家" @change="loadFactoryChanged">
@@ -126,7 +126,6 @@ import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
 
-
 export default {
     name: "myForm",
     components: {
@@ -187,7 +186,7 @@ export default {
     created() {
         this.getplaninfo();
         this.getproduct();
-        
+
     },
     destroyed() {
         if (this.map != null) {

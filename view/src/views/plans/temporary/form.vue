@@ -17,7 +17,7 @@
                    style="width: 100%;">
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="基本信息">
-                
+
                       <el-form-item label="车辆/人员" prop="info_id">
                           <el-select v-model="formData.info_id" filterable  placeholder="请选择车辆/人员" @change="infoChanged">
                             <el-option
@@ -55,6 +55,7 @@
                       </el-form-item> -->
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
+                          <span>（ t ）</span>
                       </el-form-item>
 
 
@@ -75,7 +76,7 @@
                           <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item>
                       <!-- <el-form-item label="装货地址" prop="load_address">
-                          
+
                         <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item> -->
                       <!-- <el-form-item label="卸货厂家" prop="unload_factory">
@@ -99,7 +100,7 @@
                             <el-radio :label=1>装车任务</el-radio>
                             <el-radio :label=2>卸车任务</el-radio>
                           </el-radio-group>
-                      </el-form-item> 
+                      </el-form-item>
                       <el-form-item label="排序" prop="plan_order">
                           <el-input v-model="formData.plan_order" clearable></el-input>
                       </el-form-item>
@@ -309,9 +310,9 @@ methods: {
             this.formData.trailer_num = response.trailer_num
             this.formData.driver_name = response.driver_name
             this.formData.escort_name = response.escort_name
-        
+
             this.formData.start_periodic = response.start_periodic
-     
+
             // this.formData.end_periodic = response.end_periodic
             this.formData.plan_type = response.plan_type
         }
