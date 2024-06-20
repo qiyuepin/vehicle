@@ -22,9 +22,18 @@
                                 <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-if="item.type == 2">{{item.title}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item> -->
-                        <el-form-item label="车牌号" prop="carhead_plate">
-                            <el-input v-model="formData.carhead_plate" clearable placeholder="请输入车牌号"
-                                      style="width: 200px"></el-input>
+<!--                        <el-form-item label="车牌号" prop="carhead_plate">-->
+<!--                            <el-input v-model="formData.carhead_plate" clearable placeholder="请输入车牌号"-->
+<!--                                      style="width: 200px"></el-input>-->
+<!--                        </el-form-item>-->
+                        <el-form-item label="车牌号" prop="Vaildplate">
+                            <el-input
+                                v-model="formData.Vaildplate"
+                                placeholder="请输入车牌号"
+                                :maxlength="5"
+                            >
+                                <template v-slot:prepend>吉B</template>
+                            </el-input>
                         </el-form-item>
                         <!-- <el-form-item label="昵称" prop="nickname">
                             <el-input v-model="formData.nickname" clearable placeholder="请输入20个以内的中文字符"></el-input>
@@ -148,6 +157,7 @@ import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
 import moment from 'moment'
+import { validCert, validPlate } from '@/utils/validate'
 
 export default {
   name: "AdminForm",
@@ -157,6 +167,20 @@ export default {
     UploadPdf
   },
   data() {
+      const validatePlate = (rule, value, callback) => {
+          console.log(value)
+          const newplate = '吉B ' + value;
+          if (!validPlate(value)) {
+              callback(new Error('请输入正确车牌号（吉B（固定）+1字母+4数字）'))
+          } else {
+
+              console.log(newplate)
+              this.$nextTick(() => {
+                  this.formData.carhead_plate = newplate;
+              });
+              callback()
+          }
+      }
     return {
       title:'',
       dialog: false,
@@ -166,12 +190,14 @@ export default {
         powersupplyllist:[],
       drawerShow:false,
       saveRules: {
+          Vaildplate: [{ required: true, trigger: 'blur', validator: validatePlate }],
         carhead_plate: [{ required: true, trigger: 'blur',message: '请输入车牌号'}],
         transport_cert: [{ message: '请输入数字',trigger: 'blur'},
             {pattern: /^[0-9]{12}$/, message: '输入内容不是有效的数字'}]
       },
       formData: {
         id: 0,
+          Vaildplate: '',
         carhead_plate: '',
         carhead_brand: '',
         carhead_weight: '',
@@ -326,6 +352,7 @@ export default {
       this.formData.discharge_level = ''
       this.formData.power_supply = ''
       this.formData.carbody_picture = []
+        this.formData.Vaildplate = ''
     },
     getcarheadInfo(id){
       getcarheadInfo({id:id}).then(response=>{
@@ -333,6 +360,7 @@ export default {
           if(response !== undefined){
               this.title = '编辑车头信息'
               this.formData.id = response.id
+              this.formData.Vaildplate = response.Vaildplate
               this.formData.carhead_plate = response.carhead_plate
               this.formData.carhead_brand = response.carhead_brand
               this.formData.carhead_weight = response.carhead_weight
