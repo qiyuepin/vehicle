@@ -10,7 +10,7 @@
             custom-class="demo-drawer"
             ref="drawer"
     >
-        <div class="demo-drawer__content" style="padding: 10px">
+        <div class="demo-drawer__content" style="padding: 10px" >
             <h3 style="margin: 7px 0px;font-weight: 600;font-size: 20px;" v-text="title"></h3>
             <el-form ref="saveForm" :model="formData" :rules="saveRules" size="small" label-position="right"
                      label-width="110px"
