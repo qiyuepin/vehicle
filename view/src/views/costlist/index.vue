@@ -116,15 +116,22 @@
           
           <el-table-column
                   prop="cost_img"
-                  label="费用照片"
+                  label="费用照片1"
                   align="center"
                   width="150">
-              <el-image
+              <!-- <el-image
                       style="width: 40px; height: 30px"
                       :src="scope.row.cost_img"
                       :preview-src-list="[scope.row.cost_img]"
                       slot-scope="scope">
-              </el-image>
+              </el-image> -->
+              <template slot-scope="scope">
+                <el-image
+                  style="width: 40px; height: 30px"
+                  :src="scope.row.cost_img ? scope.row.cost_img : noImage"
+                  :preview-src-list="[scope.row.cost_img ? scope.row.cost_img : noImage]">
+                </el-image>
+              </template>
           </el-table-column>
           <el-table-column
                   prop="cost_creater"
@@ -200,6 +207,7 @@ import costForm from './costform.vue'
 import { getArrByKey } from '@/utils'
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
+import noImage from '../../assets/no_images/none.png';
 
 export default {
 name: '',
@@ -216,6 +224,7 @@ data() {
     total: 0,
     typelist: [],
     excelData: [],
+    noImage,
     query: {
       page: 1,
       limit: 10,

@@ -50,7 +50,7 @@
                     label="头像"
                     align="center"
                     width="80">
-                <el-avatar :size="40" :src="scope.row.avatar" shape="square" slot-scope="scope">
+                <el-avatar :size="30" :src="scope.row.avatar" shape="square" slot-scope="scope">
                 </el-avatar>
             </el-table-column>
             <el-table-column

@@ -106,19 +106,26 @@
             
             <el-table-column
                     prop="cost_img"
-                    label="费用照片"
+                    label="费用照片1"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.cost_img"
                         :preview-src-list="[scope.row.cost_img]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.cost_img ? scope.row.cost_img : './assets/no_images/none.png'"
+                    :preview-src-list="[scope.row.cost_img ? scope.row.cost_img : './assets/no_images/none.png']">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="cost_creater"
-                    label="添加人"
+                    label="添加人11"
                     align="center"
                     width="150">
             </el-table-column>

@@ -240,6 +240,7 @@ data() {
 },
 created() {
   this.getcost();
+  this.getexcel();
 },
 methods: {
   //查询列表
@@ -251,15 +252,17 @@ methods: {
             this.total = response.total
         }
         this.loading = false
-    })
-  },
-  getexcel() {
+    });
 
     getcost(this.excelquery).then(response => {
         if(response !== undefined){
           this.excelData = response
         }
-    })
+    }) 
+  },
+  getexcel() {
+
+    
   },
   //搜索
   handleSearch() {
@@ -350,6 +353,7 @@ methods: {
     });
 
     // const data = this.excelData;
+
 
     // 构建 Workbook
     const wb = XLSX.utils.book_new();

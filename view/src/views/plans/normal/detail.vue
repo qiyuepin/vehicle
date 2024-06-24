@@ -19,6 +19,7 @@
                 {{formData.period_id}}
               </template> -->
               <!-- <el-descriptions-item><template slot="label">周期编号</template>{{formData.period_id}}</el-descriptions-item> -->
+              <el-descriptions-item v-if="formData.driver_status == 4" :span="2"><template slot="label">异常原因</template>{{formData.abnormal_remark}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">车头</template>{{formData.head_num}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">挂车</template>{{formData.trailer_num}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">驾驶员</template>{{formData.driver_name}}</el-descriptions-item>
@@ -235,6 +236,7 @@ export default {
               this.formData.create_time = response.create_time
               this.formData.update_time = response.update_time
               this.formData.back_mileage_img = response.back_mileage_img
+              this.formData.abnormal_remark = response.abnormal_remark
           }
       })
     }

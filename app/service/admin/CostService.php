@@ -6,6 +6,7 @@ namespace app\service\admin;
 use app\model\Admin;
 use app\model\AdminLoginLog;
 use app\model\Cost;
+use app\model\Plan;
 use app\model\AuthGroup;
 use app\model\AuthGroupAccess;
 use app\service\BaseService;
@@ -32,19 +33,18 @@ class CostService extends BaseService
     public function getcost($param=[]){
         try{
             $where = [];
-            if(isset($param['title'])){
-                $where[] = ['title','like','%'.$param['title'].'%'];
-            }
-            if(isset($param['status'])){
-                $where[] = ['status','=',$param['status']];
-            }
-            if(isset($param['driver_name'])&&$param['driver_name']){
-                $where[] = ['driver_name','=',$param['driver_name']];
-            }
-            // dump($where);die;
+            // if(isset($param['keywords'])){
+            //     $where[] = ['driver_name','like','%'.$param['driver_name'].'%'];
+            // }
+            // if(isset($param['status'])){
+            //     $where[] = ['status','=',$param['status']];
+            // }
+            // dump($param);die;
             if(isset($param['platform'])&&$param['platform'] == "pc"){//电脑端
+
                 $data = Db::name("admin_carplan_period")->where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+
                 foreach($data['data'] as $key => $value ){
                     $data['data'][$key]['total'] = Cost::where('period_id_driver',$value['period_id_driver'])->sum('cost_money');
                 }
@@ -57,7 +57,10 @@ class CostService extends BaseService
                 }
             }
             else if(isset($param['platform'])&&$param['platform'] == "excelall"){//导出excel
-                $data = Db::name("admin_cost")->where($where)->order(['period_id_driver'=>'desc'])->select()->toArray();
+                $group = Db::name("admin_carplan_period")->group('period_id_driver')->column('period_id_driver');
+                // dump($group);die;
+                // $where[] = ['status','=',$param['status']];
+                $data = Db::name("admin_cost")->where($where)->where('period_id_driver','in',$group)->select()->toArray();
                 // foreach($data as $key => $value ){
                 //     $data[$key]['total'] = Cost::where('period_id_driver',$value['period_id_driver'])->sum('cost_money');
                 // }
