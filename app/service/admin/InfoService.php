@@ -838,7 +838,11 @@ class InfoService extends BaseService
     public function getfactory($param=[]){
    
         try{
+            // $where = [];
             $where = [];
+            if(isset($param['keywords'])&&$param['keywords']){
+                $where[] = ['city|name','like','%'.$param['keywords'].'%'];
+            }
             // $data = Factory::where($where)->order(['pname_letter'=>'asc','name_letter'=>'asc'])
             //     ->fetchsql()->select();
             //     dump($data);die;

@@ -2,7 +2,7 @@
     <div class="app-container">
         <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
             <el-form-item label="关键字">
-                <el-input v-model="query.keywords" placeholder="车牌号|品牌" clearable></el-input>
+                <el-input v-model="query.keywords" placeholder="厂家名称|城市" clearable></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
