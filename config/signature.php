@@ -37,6 +37,7 @@ return [
         'admin/driver/editregulation',
         'admin/driver/delregulation',
         'admin/driver/getaccident',
+        'admin/driver/getaccidentinfo',
         'admin/driver/addaccident',
         'admin/driver/delaccident',
         'admin/driver/test',

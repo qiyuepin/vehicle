@@ -188,6 +188,8 @@ export default {
         group: [],
         nickname: '',
         phone: '',
+        phone2: '',
+        is_escort: '',
         email: '',
         password: '',
         card_front: '',
@@ -241,6 +243,8 @@ export default {
       this.formData.username = ''
       this.formData.nickname = ''
       this.formData.phone = ''
+      this.formData.phone2= ''
+      this.formData.is_escort= ''
       this.formData.email = ''
       this.formData.avatar = ''
       this.formData.password = ''
@@ -264,7 +268,9 @@ export default {
               this.formData.username = response.username
               this.formData.nickname = response.nickname
               this.formData.phone = response.phone
+              this.formData.phone2 = response.phone2
               this.formData.email = response.email
+              this.formData.is_escort = response.is_escort
               this.formData.id_card_num = response.id_card_num
               this.formData.dirver_card_num = response.dirver_card_num
               this.formData.cert_card_num = response.cert_card_num
@@ -331,5 +337,8 @@ export default {
     ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
         -webkit-box-shadow: none;
         box-shadow: none;
+    }
+    ::v-deep .el-form-item__label{
+      width: 160px!important;
     }
 </style>

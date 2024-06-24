@@ -76,6 +76,12 @@
                     width="120">
             </el-table-column>
             <el-table-column
+                    prop="phone2"
+                    label="手机号2"
+                    align="center"
+                    width="120">
+            </el-table-column>
+            <el-table-column
                     prop="id_card_num"
                     label="身份证号"
                     align="center"
