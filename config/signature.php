@@ -55,6 +55,7 @@ return [
         'admin/info/getescort',
         'admin/info/addescort',
         'admin/info/editescort',
+        'admin/info/delescort',
         'admin/info/getescortInfo',
         'admin/info/getinfolist',
         'admin/info/addinfo',
