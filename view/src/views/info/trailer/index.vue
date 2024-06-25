@@ -36,14 +36,14 @@
                     align="center"
                     width="80">
             </el-table-column>
-         
+
             <el-table-column
                 prop="trailer_status"
                 label="挂车状态"
                 align="center"
                 width="110">
                 <template slot-scope="scope">
-                  
+
                   <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
                   <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 1" >重车</span>
                   <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
@@ -58,7 +58,7 @@
                   <span style="color: #F56C6C;" v-if="scope.row.date_status > 0" >{{scope.row.date_status}}个证件过期</span>
                   <span style="color: #409EFF;" v-else >-</span>
                 </template>
-                    
+
             </el-table-column>
             <el-table-column
                 prop="trailer_plate"
@@ -133,7 +133,7 @@
                     align="center"
                     width="150">
             </el-table-column>
-            
+
             <!-- <el-table-column
                     prop="trailer_pressure"
                     label="压力等级"
@@ -147,8 +147,8 @@
                     width="150">
             </el-table-column> -->
 
-            
-            
+
+
 
             <el-table-column
                     prop="regist_time"
@@ -181,14 +181,14 @@
                   <i class="el-icon-time"></i>
                   <span style="margin-left: 10px" :class="{ datestatus: scope.row.scrapp_status ? false : true }" v-text="scope.row.scrapp_time"></span>
                 </template>
-            </el-table-column> 
+            </el-table-column>
             <el-table-column prop="inspection_time" label="检验有效期"  align="center" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px" :class="{ datestatus: scope.row.inspection_status ? false : true }" v-text="scope.row.inspection_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column prop="validity_time" label="审验有效期" align="center" width="200">
+            <el-table-column prop="validity_time" label="营运证有效期" align="center" width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px" :class="{ datestatus: scope.row.validity_status ? false : true}" v-text="scope.row.validity_time"></span>
@@ -376,9 +376,9 @@ export default {
       // console.log(dateString);
       const specificDate = new Date(dateString);
       const currentDate = new Date();
-      
+
       const specificYear = specificDate.getFullYear();
-      const specificMonth = specificDate.getMonth(); 
+      const specificMonth = specificDate.getMonth();
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth();
 

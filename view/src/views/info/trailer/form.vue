@@ -134,8 +134,8 @@
                         <el-form-item label="检验有效期">
                           <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"></el-input>
                         </el-form-item>
-                        <el-form-item label="审验有效期">
-                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择审验有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"></el-input>
+                        <el-form-item label="营运证有效期">
+                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择营运证有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"></el-input>
                         </el-form-item>
                         <el-form-item label="罐检报告有效期">
                           <el-input v-model="formData.frame_time" type="date" clearable placeholder="选择罐检报告有效期" :class="{ datestatusinput: formData.frame_status ? false : true}"></el-input>
