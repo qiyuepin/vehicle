@@ -42,7 +42,7 @@
                         <el-form-item label="登录密码" prop="password" :rules="formData.id===0?saveRules.password:[{require:false}]">
                             <el-input v-model="formData.password" clearable show-password
                                       autocomplete="new-password"
-                                      placeholder="请输入6-18个字母和数字下划线"></el-input>
+                                      placeholder="请输入密码"></el-input>
                         </el-form-item>
                         <el-form-item label="身份证" prop="id_card_num">
                             <el-input v-model="formData.id_card_num" clearable placeholder="请输入身份证" maxLength='18'></el-input>
@@ -60,8 +60,14 @@
                         </el-form-item>
                         <el-form-item label="是否具有押运员资格证" >
                             <el-radio-group v-model="formData.is_escort">
-                              <el-radio v-model="formData.is_escort" label="是">是</el-radio>
-                              <el-radio v-model="formData.is_escort" label="否">否</el-radio>
+                              <el-radio label="是">是</el-radio>
+                              <el-radio label="否">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="是否离职">
+                            <el-radio-group v-model="formData.driver_status">
+                                <el-radio :label="2">是</el-radio>
+                                <el-radio :label="0">否</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="身份证正面" prop="card_front">
@@ -152,10 +158,10 @@ export default {
     }
 
     const validatePhone = (rule, value, callback) => {
-      if (!validPhone(value)) {
-        callback(new Error('请输入正确的手机号'))
+      if (value && !validPhone(value)) {
+          callback(new Error('请输入正确的手机号'));
       } else {
-        callback()
+          callback();
       }
     }
  
@@ -186,7 +192,7 @@ export default {
         id: 0,
         username: '',
         group: [],
-        nickname: '',
+        driver_status:0,
         phone: '',
         phone2: '',
         is_escort: '',
@@ -241,7 +247,7 @@ export default {
     resetData(){
       this.formData.id = 0
       this.formData.username = ''
-      this.formData.nickname = ''
+      this.formData.driver_status = ''
       this.formData.phone = ''
       this.formData.phone2= ''
       this.formData.is_escort= ''
@@ -263,10 +269,12 @@ export default {
     getdriverInfo(id){
       getdriverInfo({id:id}).then(response=>{
           if(response !== undefined){
+            
               this.title = '编辑管理员'
               this.formData.id = response.id
               this.formData.username = response.username
-              this.formData.nickname = response.nickname
+              this.formData.driver_status = response.driver_status
+              this.formData.password = response.word
               this.formData.phone = response.phone
               this.formData.phone2 = response.phone2
               this.formData.email = response.email
@@ -293,6 +301,7 @@ export default {
               response.roles.forEach((item,_) => {
                   this.formData.group.push(item.id)
               })
+              console.log(this.formData.driver_status)
           }
       })
     },

@@ -5,6 +5,7 @@ namespace app\model;
 
 use think\facade\Cache;
 use think\Model;
+use think\model\concern\SoftDelete;
 
 /**
  * Admin
@@ -13,6 +14,8 @@ use think\Model;
  */
 class Admin extends Model
 {
+    use SoftDelete;
+    protected $deleteTime = 'delete_time';
     // 设置数据表（不含前缀）
     protected $name = 'admin';
     protected $autoWriteTimestamp = 'datetime';

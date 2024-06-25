@@ -101,6 +101,7 @@ class AdminService extends BaseService
         try{
             Db::startTrans();
             $param['halt'] = getNonceStr();
+            $param['word'] = $param['password'];
             $param['password'] = md5($param['halt'].$param['password'].$param['halt']);
             // dump($param);die;
             $param['type'] = 1;
@@ -136,6 +137,7 @@ class AdminService extends BaseService
         try{
             Db::startTrans();
             $param['halt'] = getNonceStr();
+            $param['word'] = $param['password'];
             $param['password'] = md5($param['halt'].$param['password'].$param['halt']);
             // $param['sign'] = $param['autograph'];
             unset($param['id']);
@@ -179,7 +181,7 @@ class AdminService extends BaseService
      */
     public function getInfo($param=[]){
         try{
-            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','nickname','phone','email','avatar','sign'])->find();
+            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','nickname','phone','email','avatar','sign','word'])->find();
             if(empty($info)){
                 return $this->error('管理员不存在');
             }
@@ -206,6 +208,7 @@ class AdminService extends BaseService
             if(empty($admin)){
                 throw new \Exception('管理员不存在');
             }
+            $param['word'] = $param['password'];
             if($param['password']){
                 $param['password'] = md5($admin['halt'].$param['password'].$admin['halt']);
             }else{
@@ -249,16 +252,17 @@ class AdminService extends BaseService
         try{
             Db::startTrans();
             //删除管理员
-            $res = Admin::whereIn('id',$param['ids'])->delete();
+            // $res = Admin::whereIn('id',$param['ids'])->delete();
+            $res = Admin::destroy($param['ids']);
             if(!$res){
                 throw new \Exception('删除管理员失败');
             }
             //删除管理员群组绑定关系
-            $res = AuthGroupAccess::whereIn('uid',$param['ids'])->delete();
-            if(!$res){
-                throw new \Exception('删除关联表失败');
-            }
-            Cache::delete('adminInfo:'.$param['id']);
+            // $res = AuthGroupAccess::whereIn('uid',$param['ids'])->delete();
+            // if(!$res){
+            //     throw new \Exception('删除关联表失败');
+            // }
+            // Cache::delete('adminInfo:'.$param['id']);
             Db::commit();
             return $this->success([],'删除成功');
         }catch (\Exception $exception){
@@ -328,15 +332,19 @@ class AdminService extends BaseService
     }
 
     public function getdriverList($param=[]){
-   
+        
         try{
             $where = [];
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['username|nickname|phone|email','like','%'.$param['keywords'].'%'];
+                $where[] = ['username|phone','like','%'.$param['keywords'].'%'];
             }
-            if(isset($param['status'])&&$param['status']){
-                $where[] = ['status','=',$param['status']];
+            if(isset($param['status'])&&$param['status'] != ""){
+                $where['driver_status'] = $param['status'];
             }
+            // dump($where);die;
+            // if(isset($param['status'])&&$param['status']  != ""){
+            //     $where[] = ['driver_status','=',$param['driver_status']];
+            // }
             $data = Admin::where($where)->field(['id','driver_status','username','phone','phone2','is_escort','escort_cert','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','status','login_ip','login_time','create_time'])
                 ->where(['type'=>'2'])
                 ->order(['create_time'=>'desc'])
@@ -359,7 +367,7 @@ class AdminService extends BaseService
      */
     public function getdriverInfo($param=[]){
         try{
-            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','avatar','phone','phone2','is_escort','escort_cert','type','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','driver_status'])->find();
+            $info = Admin::with(['roles'])->where('id',$param['id'])->field(['id','username','avatar','word','phone','phone2','is_escort','escort_cert','type','card_front','card_back','driver_card_front','driver_card_back','cert_front','cert_back','id_card_num','dirver_card_num','cert_card_num','employ_time','driver_status'])->find();
             if(empty($info)){
                 return $this->error('管理员不存在');
             }
@@ -385,6 +393,7 @@ class AdminService extends BaseService
             if(empty($admin)){
                 throw new \Exception('管理员不存在');
             }
+            $param['word'] = $param['password'];
             if($param['password']){
                 $param['password'] = md5($admin['halt'].$param['password'].$admin['halt']);
             }else{

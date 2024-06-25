@@ -33,12 +33,12 @@ class CostService extends BaseService
     public function getcost($param=[]){
         try{
             $where = [];
-            // if(isset($param['keywords'])){
-            //     $where[] = ['driver_name','like','%'.$param['driver_name'].'%'];
-            // }
-            // if(isset($param['status'])){
-            //     $where[] = ['status','=',$param['status']];
-            // }
+            if(isset($param['keywords'])&&$param['keywords']){
+                $where[] = ['driver_name|trailer_num','like','%'.$param['keywords'].'%'];
+            }
+            if(isset($param['status'])&&$param['status'] !=''){
+                $where[] = ['status','=',$param['status']];
+            }
             // dump($param);die;
             if(isset($param['platform'])&&$param['platform'] == "pc"){//电脑端
 

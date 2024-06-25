@@ -2,13 +2,13 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="驾驶员|挂车号" clearable></el-input>
           </el-form-item>
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
-                  <el-option label="全部" value="0"/>
-                  <el-option label="启用" value="2"></el-option>
-                  <el-option label="禁用" value="1"></el-option>
+                  <el-option label="全部" value=""/>
+                  <el-option label="进行中" value="0"></el-option>
+                  <el-option label="已结束" value="1"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item>
@@ -20,7 +20,7 @@
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
           <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-          <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+          <!-- <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button> -->
           <el-button @click="exportExcel" type="primary" size="mini">导出所有费用</el-button>
       </el-row>
       <el-table

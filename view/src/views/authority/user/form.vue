@@ -31,19 +31,19 @@
                         <el-form-item label="手机号" prop="phone">
                             <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" prop="email">
+                        <!-- <el-form-item label="邮箱" prop="email">
                             <el-input v-model="formData.email" clearable
                                       placeholder="请输入正确的邮箱"></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="登录密码" prop="password" :rules="formData.id===0?saveRules.password:[{require:false}]">
                             <el-input v-model="formData.password" clearable show-password
                                       autocomplete="new-password"
-                                      placeholder="请输入6-18个字母和数字下划线"></el-input>
+                                      placeholder="请输入密码"></el-input>
                         </el-form-item>
-                        <el-form-item label="个人签名">
+                        <!-- <el-form-item label="个人签名">
                             <el-input v-model="formData.autograph" clearable
                                       placeholder="请输入个人签名"></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="用户头像" prop="avatar">
                             <UploadImage ref="Image" v-model="formData.avatar"></UploadImage>
                         </el-form-item>
@@ -135,7 +135,7 @@ export default {
         email: '',
         password: '',
         avatar: '',
-        type: '',
+        type: 1,
         autograph: ''
       },
     }
@@ -170,15 +170,18 @@ export default {
       this.formData.avatar = ''
       this.formData.password = ''
       this.formData.autograph = ''
+      this.formData.type = 1
       this.formData.group = []
     },
     getInfo(id){
       getInfo({id:id}).then(response=>{
+        console.log(response)
           if(response !== undefined){
               this.title = '编辑管理员'
               this.formData.id = response.id
+              this.formData.type = 1
               this.formData.username = response.username
-              // this.formData.nickname = response.nickname
+              this.formData.password = response.word
               this.formData.phone = response.phone
               this.formData.email = response.email
               this.formData.autograph = response.sign

@@ -59,7 +59,7 @@
               width="100">
               <template slot-scope="scope">
                 <el-tag type="success"  v-if="scope.row.escort_status === '0'" >空闲</el-tag>
-                <el-tag type="warning" v-else-if="scope.row.escort_status === '1'">出车</el-tag>
+                <el-tag type="danger" v-else-if="scope.row.escort_status === '1'">出车</el-tag>
                 <el-tag type="info" v-else >离职</el-tag>
                   <!-- <el-button 
                       v-if="scope.row.escort_status === '0'" 

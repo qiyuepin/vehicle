@@ -156,10 +156,12 @@ class InfoService extends BaseService
                 $param['carbody_picture'] = implode(',', $param['carbody_picture']);
             } else {
             }
-            
+            unset($param['id']);
             // dump($param);
+            // dump($param);die;
             $res = Carhead::create($param);
-            $info['head_id'] = $res->id; 
+            $info['head_id'] = $res->id;
+            $info['head_num'] = $res->carhead_plate;
             $resinfo = Info::create($info);
             // dump($info);die;
             if(!$resinfo){
@@ -645,20 +647,36 @@ class InfoService extends BaseService
         try{
             $where = [];
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['name|phone','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|trailer_num|head_num','like','%'.$param['keywords'].'%'];
             }
-            
-            $data = Info::where($where)->order(['create_time'=>'desc'])
-                ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
-                // dump($data['data']);die;
+            if(isset($param['status'])&&$param['status'] != ""){
+                $where['head_status'] = $param['status'];
+            }
+            // dump($where);die; 
+            $data = Info::withJoin(['headid'])
+                    ->where($where)
+                    ->order('info.create_time', 'desc')
+                    ->field("info.id,info.head_id,info.trailer_id,info.escort_id,info.driver_id,info.driver_id,info.update_time,info.create_time")
+                    ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                    // dump($data);die;
+            // $data1 = Db::table('admin_careinfo')
+            //         ->alias('i')
+            //         ->join('admin_carhead c', 'i.head_id = c.id', 'LEFT') // 根据实际表名和字段名调整
+            //         ->where($where)
+            //         ->order('i.create_time', 'desc')
+            //         ->fetchsql()
+            //         ->select();dump($data1);die;   
+            // $data = Info::where($where)->order(['create_time'=>'desc'])
+            //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                // dump($data['data']);die;carhead
             foreach($data['data'] as $key =>  $value){
                 // $posts = Carhead::with('heads')->where('id',$value['head_id'])->value('carhead_plate');
-                $data['data'][$key]['head_num'] = Carhead::where('id',$value['head_id'])->value('carhead_plate');
+                // $data['data'][$key]['head_num'] = Carhead::where('id',$value['head_id'])->value('carhead_plate');
                 $data['data'][$key]['head_status'] = Carhead::where('id',$value['head_id'])->value('head_status');
-                $data['data'][$key]['trailer_num'] = Cartrailer::where('id',$value['trailer_id'])->value('trailer_plate');
+                // $data['data'][$key]['trailer_num'] = Cartrailer::where('id',$value['trailer_id'])->value('trailer_plate');
                 $data['data'][$key]['escort_name'] = Escort::where('id',$value['escort_id'])->value('name');
-                $data['data'][$key]['driver_name'] = Db::name('admin')->where('id',$value['driver_id'])->value('username');
-                $data['data'][$key]['head_status'] = Carhead::where('id',$value['head_id'])->value('head_status');
+                // $data['data'][$key]['driver_name'] = Db::name('admin')->where('id',$value['driver_id'])->value('username');
+                // $data['data'][$key]['head_status'] = Carhead::where('id',$value['head_id'])->value('head_status');
                 $data['data'][$key]['trailer_status'] = Cartrailer::where('id',$value['trailer_id'])->value('trailer_status');
                 // dump($data['data'][$key]);die;
             }
@@ -750,10 +768,12 @@ class InfoService extends BaseService
             if($escort){
                 return $this->error('押运员已存在，请删除历史记录');
             }
-
+            $param['driver_name'] = Db::name('admin')->where('id',$param['driver_id'])->value('username');
+            $param['head_num'] = Carhead::where('id',$param['head_id'])->value('carhead_plate');
+            $param['trailer_num'] = Cartrailer::where('id',$param['trailer_id'])->value('trailer_plate');
             $res = Info::update($param,['id'=>$param['id']]);
             if(!$res){
-                throw new \Exception('新增管理员失败');
+                throw new \Exception('编辑失败');
             }
            
       
@@ -787,9 +807,9 @@ class InfoService extends BaseService
     public function getcarlist($param=[]){
         $period_id = null;
         try{
-
-            $data['driver'] = Db::name('admin')->where(['type' => 2, 'driver_status' => 0])->field('id,username,status,type,driver_status')->select()->toArray();
-            $driver = Db::name('admin')->where(['type' => 2, 'driver_status' => 0])->field('id,username,status,type,driver_status')->select()->toArray();
+            
+            $data['driver'] = Db::name('admin')->where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
+            $driver = Db::name('admin')->where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
             $trailer = [];
             if(isset($param['trailer']) && $param['trailer']){
                 $trailer['trailer_status'] = $param['trailer'];

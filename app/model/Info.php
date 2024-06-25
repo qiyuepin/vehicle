@@ -5,6 +5,7 @@ namespace app\model;
 
 use think\facade\Cache;
 use think\Model;
+use app\model\Carhead;
 
 
 class Info extends Model
@@ -12,20 +13,20 @@ class Info extends Model
     // 设置数据表（不含前缀）
     protected $name = 'admin_careinfo';
     protected $autoWriteTimestamp = 'datetime';
-
+   
     public function Logs()
     {
         return $this->hasMany('InfoLog', 'info_id');
     }
 
-    public function heads()
+    
+    public function headid()
     {
-        return $this->belongsTo('Carhead', 'id');
+        return $this->belongsTo('Carhead', 'head_id', 'id')->joinType('LEFT');
     }
 
     public static function carhead($head_id)
     {
-        // dump($head_id);
         $carhead_plate = self::alias('i')->join('admin_carhead c','c.id=i.head_id')->where('i.head_id',$head_id)->value('carhead_plate');
         return $carhead_plate;
     }

@@ -2,13 +2,16 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="车牌号|驾驶员" clearable></el-input>
           </el-form-item>
           <el-form-item label="状态">
-              <el-select v-model="query.status" placeholder="选择状态" clearable>
-                  <el-option label="全部" value="0"/>
-                  <el-option label="启用" value="2"></el-option>
-                  <el-option label="禁用" value="1"></el-option>
+              <el-select v-model="query.status" placeholder="选择牵引车状态" clearable>
+                  <el-option label="全部" value=""/>
+                  <el-option label="回库" value="0"></el-option>
+                  <el-option label="装货" value="1"></el-option>
+                  <el-option label="卸货" value="2"></el-option>
+                  <el-option label="在途" value="3"></el-option>
+                  <el-option label="停运" value="4"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item>
