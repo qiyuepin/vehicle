@@ -120,7 +120,7 @@ data() {
       id_card: [{ required: true, trigger: 'blur', validator: validCard}],
       cert_card_num: [{ required: true, trigger: 'blur', validator: validcertCard}],
       phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-
+      phone2: [{ required: true, trigger: 'blur', validator: validatePhone }],
     },
     formData: {
       id: 0,
@@ -177,6 +177,7 @@ methods: {
             this.formData.id = response.id
             this.formData.name = response.name
             this.formData.phone = response.phone
+            this.formData.phone2 = response.phone2
             this.formData.id_card = response.id_card
             this.formData.cert_card_num = response.cert_card_num
             this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)

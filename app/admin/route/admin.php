@@ -135,7 +135,7 @@ Route::group('/',function(){
         Route::get('getescort','Info/getescort');//押运员信息
         Route::post('addescort','Info/addescort');//创建押运员信息
         Route::post('editescort','Info/editescort');//修改押运员信息
-        Route::post('delrescort','Info/delescort');//删除押运员信息
+        Route::post('delescort','Info/delescort');//删除押运员信息
         Route::get('getcartrailer','Info/getcartrailer');//挂车信息
         Route::post('addcartrailer','Info/addcartrailer');//创建挂车信息
         Route::post('editcartrailer','Info/editcartrailer');//修改挂车信息

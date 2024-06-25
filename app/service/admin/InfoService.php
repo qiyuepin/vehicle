@@ -534,12 +534,16 @@ class InfoService extends BaseService
     }
 
     public function getescort($param=[]){
-        // dump($param);die;
+        // dump($param['escort_status']);die;
         try{
             $where = [];
             if(isset($param['keywords'])&&$param['keywords']){
                 $where[] = ['name|phone','like','%'.$param['keywords'].'%'];
             }
+            if(isset($param['escort_status'])&&$param['escort_status'] != ""){
+                $where['escort_status'] = $param['escort_status'];
+            }
+            // dump($where);die;
             $data = Escort::where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 // dump($data);die;
@@ -623,7 +627,7 @@ class InfoService extends BaseService
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
             $res = Escort::whereIn('id',$param['ids'])->delete();
             if(!$res){
-                throw new \Exception('删除违章失败');
+                throw new \Exception('删除失败');
             }
 
             Db::commit();
