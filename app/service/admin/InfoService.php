@@ -41,6 +41,9 @@ class InfoService extends BaseService
    
         try{
             $where = [];
+            if(isset($param['keywords'])&&$param['keywords']){
+                $where[] = ['carhead_plate|carhead_brand','like','%'.$param['keywords'].'%'];
+            }
 
             $data = Carhead::where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
@@ -202,6 +205,13 @@ class InfoService extends BaseService
             } else {
                
             }
+            //经营范围 start
+            if (isset($param['carhead_scope']) && is_array($param['carhead_scope'])) {
+                $param['carhead_scope'] = implode(',', $param['carhead_scope']);
+            } else {
+
+            }
+            //经营范围 end
 
             //车体照片 start
             if(isset($param['carbody_picture']) && is_array($param['carbody_picture'])){

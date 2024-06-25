@@ -352,12 +352,14 @@ export default {
       this.formData.discharge_level = ''
       this.formData.power_supply = ''
       this.formData.carbody_picture = []
-        this.formData.Vaildplate = ''
+      this.formData.Vaildplate = ''
+      this.$refs.Image_carbody_picture.uploadFileList = []
+      this.$refs.Image_driving_license.uploadFileList = []
     },
     getcarheadInfo(id){
-      getcarheadInfo({id:id}).then(response=>{
+      getcarheadInfo({id:id}).then(response => {
         console.log(response.transport_license)
-          if(response !== undefined){
+        if(response !== undefined) {
               this.title = '编辑车头信息'
               this.formData.id = response.id
               this.formData.Vaildplate = response.Vaildplate
@@ -382,15 +384,19 @@ export default {
               //   return item
               // });
               //车体照片 start
-              this.formData.carbody_picture = response.carbody_pictures
               console.log(response.carbody_pictures)
-              this.$refs.Image_carbody_picture.uploadFileList.push(...response.carbody_pictures)
-              this.$refs.Image_carbody_picture.uploadFiles = this.$refs.Image_carbody_picture.uploadFileList.map(itemcarbody => {
-                  return itemcarbody
-              });
-              this.$refs.Image_carbody_picture.imgUrl = response.carbody_pictures
+            if(response.carbody_pictures[0].url !== ''){
+                  this.formData.carbody_picture = response.carbody_pictures
+                  this.$refs.Image_carbody_picture.uploadFileList.push(...response.carbody_pictures)
+                  this.$refs.Image_carbody_picture.uploadFiles = this.$refs.Image_carbody_picture.uploadFileList.map(itemcarbody => {
+                      return itemcarbody
+                  });
+                  this.$refs.Image_carbody_picture.imgUrl = response.carbody_pictures
+            }
               //车体照片 end
-                console.log('测试')
+
+            //行驶证 start
+            if(response.driving_licenses[0].url !== '') {
               this.formData.driving_license = response.driving_licenses
               this.$refs.Image_driving_license.uploadFileList.push(...response.driving_licenses)
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
@@ -398,6 +404,8 @@ export default {
               });
 
               this.$refs.Image_driving_license.imgUrl = response.driving_licenses
+            }
+            //行驶证 end
               this.formData.transport_license = response.transport_license
               this.$refs.Image_transport_license.imgUrl = response.transport_license
               this.formData.traffic_insurance = response.traffic_insurance

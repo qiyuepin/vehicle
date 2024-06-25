@@ -462,7 +462,7 @@ export default {
         type: 'warning'
       }).then(() => {
         delcarhead({ ids: ids }).then(response => {
-          this.getdriverList()
+          this.getcarhead()
           this.$message({
             type: 'success',
             message: '删除成功!'
