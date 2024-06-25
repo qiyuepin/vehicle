@@ -20,7 +20,7 @@ export default {
     plans_plans: '运输计划',
     plans_normal: '常规任务',
     plans_temporary: '临时任务',
-    auth_admin_driver: '驾驶员列表',
+    auth_admin_driver: '驾驶员管理',
     driver: '驾驶员信息',
     admin_driver_regulation: '违章列表',
     admin_driver_accident: '事故列表',
