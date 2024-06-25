@@ -315,7 +315,7 @@ export default {
               //     value.length == 2 && value.indexOf(".") < 0 ? value + ".0" : value;
               // value =
               //     value.length == 3 && value.indexOf(".") > 0 ? value + "0" : value;
-              value = value.indexOf(".") < 0 ? value + ".00" : value;
+              value = value.indexOf(".") < 0 ? value + ".0" : value;
           }
           console.log(value)
           // this.list[index].child[indexs].rate = value;
@@ -400,6 +400,7 @@ export default {
       this.formData.inspection_status = true,
       this.formData.scrapp_status = true,
       this.formData.Vaildplate = ''
+        this.$refs.Image_driving_license.uploadFileList = []
     },
     getcartrailerInfo(id){
       getcartrailerInfo({id:id}).then(response=>{
@@ -433,6 +434,8 @@ export default {
 
               this.formData.trailer_designcode = response.trailer_designcode
               this.formData.trailer_keepwarm = response.trailer_keepwarm
+              //行驶证 start
+              if (response.driving_licenses[0].url !== '') {
               this.formData.driving_license = response.driving_licenses
               this.$refs.Image_driving_license.uploadFileList.push(...response.driving_licenses)
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {
@@ -440,6 +443,8 @@ export default {
               });
 
               this.$refs.Image_driving_license.imgUrl = response.driving_licenses
+              }
+              //行驶证 end
               this.formData.transport_license = response.transport_license
               this.$refs.Image_transport_license.imgUrl = response.transport_license
               this.formData.pot_report = response.pot_report
