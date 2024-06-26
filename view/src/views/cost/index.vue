@@ -70,8 +70,9 @@
               align="center"
               width="100">
               <template slot-scope="scope">
-                <el-tag type="success"  v-if="scope.row.status === 0" >进行中</el-tag>
-                <el-tag type="warning" v-else-if="scope.row.status === 1">已结束</el-tag>
+                <el-tag type="info"  v-if="scope.row.status === 0" >未开始</el-tag>
+                <el-tag type="primary" v-else-if="scope.row.status === 1">进行中</el-tag>
+                <el-tag type="success" v-else-if="scope.row.status === 2">已结束</el-tag>
                 <el-tag type="info" v-else >-</el-tag>
                   <!-- <el-button 
                       v-if="scope.row.cost_status === '0'" 
