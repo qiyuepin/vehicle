@@ -57,10 +57,10 @@ class CostService extends BaseService
                 }
             }
             else if(isset($param['platform'])&&$param['platform'] == "excelall"){//导出excel
-                $group = Db::name("admin_carplan_period")->group('period_id_driver')->column('period_id_driver');
+                $group = Db::name("admin_carplan_period")->where($where)->group('period_id_driver')->column('period_id_driver');
                 // dump($group);die;
                 // $where[] = ['status','=',$param['status']];
-                $data = Db::name("admin_cost")->where($where)->where('period_id_driver','in',$group)->select()->toArray();
+                $data = Db::name("admin_cost")->where('period_id_driver','in',$group)->select()->toArray();
                 // foreach($data as $key => $value ){
                 //     $data[$key]['total'] = Cost::where('period_id_driver',$value['period_id_driver'])->sum('cost_money');
                 // }
@@ -150,7 +150,7 @@ class CostService extends BaseService
             // }
             $param['cost_creater'] = Admin::where('id',$userid)->value('username');
             // $param['cost_creater'] = $userInfo['username'];
-            // dump($param);die;
+            dump($param);die;
             $res = Cost::create($param);
             if(!$res){
                 throw new \Exception('新增失败');
@@ -211,7 +211,7 @@ class CostService extends BaseService
                 $driver['driver_name'] = $param['driver_name'];
             }
             
-            $data = Db::name("admin_carplan_period")->where($driver)->order(['create_time'=>'desc'])->field('id,period_id_driver')->select()->toArray();
+            $data = Db::name("admin_carplan_period")->where($driver)->order(['create_time'=>'desc'])->field('id,period_id_driver,trailer_num,year')->select()->toArray();
             return $this->success($data);
             // return $this->success($info->toArray());
         }catch (\Exception $exception){

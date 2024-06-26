@@ -196,6 +196,7 @@ methods: {
       // this.formData.driver_name = '';
       // this.formData.trailer_status = '';
     }
+    console.log(this.formData)
     // this.load_address = this.load_factory.factory;
   },
   handleClose() {

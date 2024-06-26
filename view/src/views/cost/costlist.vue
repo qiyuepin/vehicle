@@ -205,6 +205,7 @@
     return {
       buttonDisabled: true,
       tableData: [],
+      typelist: [],
       multipleSelection: null,
       loading: true,
       searchShow: false,

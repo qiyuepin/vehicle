@@ -28,8 +28,8 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      <el-form-item label="计费周期" prop="period_id_driver">
-                          <el-select v-model="formData.period_id_driver" filterable  placeholder="请选择计费周期">
+                      <el-form-item label="计费周期" prop="period_id">
+                          <el-select v-model="formData.period_id" filterable  placeholder="请选择计费周期"  @change="periodChanged">
                             <el-option
                               v-for="item in period_idlist"
                               :key="item.value"
@@ -38,7 +38,16 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-
+                      <el-form-item label="费用类别" prop="type_name">
+                          <el-select v-model="formData.type_name" filterable clearable placeholder="请选择费用类别">
+                            <el-option
+                              v-for="item in typelist"
+                              :key="item.value"
+                              :label="item.type_name"
+                              :value="item.type_name">
+                            </el-option>
+                          </el-select>
+                      </el-form-item>
                       <el-form-item label="费用金额">
                           <el-input v-model="formData.cost_money" clearable
                                     placeholder="请输入费用金额"></el-input>
@@ -64,7 +73,7 @@
 
 <script>
 
-import { addcost, editcost, getinfo, getperiod } from '@/api/cost.js'
+import { addcost, editcost, getinfo, getperiod, getcosttype } from '@/api/cost.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 import { getcarlist } from '@/api/Info.js'
@@ -110,15 +119,28 @@ data() {
       remark: '',
       cost_img: '',
       period_id_driver: '',
-      cost_money: ''
+      cost_money: '',
+      trailer_num: '',
+      year: '',
+      type_name: ''
     },
   }
 },
 created() {
   this.getcarlist()
+  this.getcosttype()
   // this.getperiod(this.driver)
 },
 methods: {
+  getcosttype() {
+    getcosttype().then(response => {
+        if(response !== undefined){
+          console.log(response)
+          // this.infolist = response.data
+          this.typelist = response
+        }
+    })
+  },
   getperiod(driver) {
     getperiod({driver_name:driver}).then(response => {
       console.log(driver)
@@ -142,16 +164,26 @@ methods: {
     if (selectedinfo) {
       // console.log(selectedinfo)
       this.formData.period_id_driver = selectedinfo.period_id;
+      this.formData.driver_name = selectedinfo.username;
       console.log(selectedinfo.username)
       this.getperiod(selectedinfo.username)
-      // this.formData.trailer_num = selectedinfo.trailer_num;
-      // this.formData.driver_name = selectedinfo.driver_name;
-      // this.formData.trailer_status = selectedinfo.trailer_status;
+      console.log(this.formData)
     } else {
-      // this.formData.head_num = '';
-      // this.formData.period_id_driver = '';
-      // this.formData.driver_name = '';
-      // this.formData.trailer_status = '';
+
+    }
+  
+  },
+  periodChanged() {
+    const selectedinfo = this.period_idlist.find(item => item.id === this.formData.period_id);
+    if (selectedinfo) {
+      console.log(selectedinfo)
+      this.formData.period_id_driver = selectedinfo.period_id_driver;
+      this.formData.trailer_num = selectedinfo.trailer_num;
+      this.formData.year = selectedinfo.year;
+      console.log(this.formData)
+  
+    } else {
+
     }
     // this.load_address = this.load_factory.factory;
   },
@@ -172,6 +204,8 @@ methods: {
     this.formData.cost_money = ''
     this.formData.cost_img = ''
     this.formData.period_id_driver = ''
+    this.formData.trailer_num = ''
+    this.type_name = ''
   },
   getinfo(id){
     getinfo({id:id}).then(response=>{
@@ -180,11 +214,12 @@ methods: {
             this.formData.id = response.id
             this.formData.driver_name = response.driver_name
             this.formData.remark = response.remark
+            this.formData.type_name = response.type_name
             this.formData.period_id_driver = response.period_id_driver
             this.formData.cost_money = response.cost_money
             this.formData.cost_img = response.cost_img
             this.$refs.Image_cost_img.imgUrl = response.cost_img
-
+          
         }
     })
   },
