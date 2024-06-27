@@ -23,19 +23,19 @@ use TencentCloud\Common\AbstractModel;
  * @method string getInputImage() 获取输入图 Base64 数据。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于 8MB。
  * @method void setInputImage(string $InputImage) 设置输入图 Base64 数据。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于 8MB。
  * @method string getInputUrl() 获取输入图 Url。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于8MB。
  * @method void setInputUrl(string $InputUrl) 设置输入图 Url。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于8MB。
  * @method string getPrompt() 获取文本描述。
 用于在输入图的基础上引导生成图效果，增加生成结果中出现描述内容的可能。
 推荐使用中文。最多支持256个 utf-8 字符。
@@ -49,15 +49,17 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
 用于一定程度上从反面引导模型生成的走向，减少生成结果中出现描述内容的可能，但不能完全杜绝。
 推荐使用中文。最多可传256个 utf-8 字符。
  * @method array getStyles() 获取绘画风格。
-请在  [智能图生图风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
+请在  [图像风格化风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
 推荐使用且只使用一种风格。不传默认使用201（日系动漫风格）。
  * @method void setStyles(array $Styles) 设置绘画风格。
-请在  [智能图生图风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
+请在  [图像风格化风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
 推荐使用且只使用一种风格。不传默认使用201（日系动漫风格）。
  * @method ResultConfig getResultConfig() 获取生成图结果的配置，包括输出图片分辨率和尺寸等。
-支持生成以下分辨率的图片：origin（与输入图分辨率一致）、768:768（1:1）、768:1024（3:4）、1024:768（4:3），不传默认使用origin。
+支持生成以下分辨率的图片：origin（与输入图分辨率一致，长边最高为2000，超出将做等比例缩小）、768:768（1:1）、768:1024（3:4）、1024:768（4:3）。
+不传默认使用origin。
  * @method void setResultConfig(ResultConfig $ResultConfig) 设置生成图结果的配置，包括输出图片分辨率和尺寸等。
-支持生成以下分辨率的图片：origin（与输入图分辨率一致）、768:768（1:1）、768:1024（3:4）、1024:768（4:3），不传默认使用origin。
+支持生成以下分辨率的图片：origin（与输入图分辨率一致，长边最高为2000，超出将做等比例缩小）、768:768（1:1）、768:1024（3:4）、1024:768（4:3）。
+不传默认使用origin。
  * @method integer getLogoAdd() 获取为生成结果图添加标识的开关，默认为1。
 1：添加标识。
 0：不添加标识。
@@ -73,10 +75,10 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
  * @method void setLogoParam(LogoParam $LogoParam) 设置标识内容设置。
 默认在生成结果图右下角添加“图片由 AI 生成”字样，您可根据自身需要替换为其他的标识图片。
  * @method float getStrength() 获取生成自由度。
-Strength 值越小，生成图和原图越接近，取值范围0 - 1，不传使用模型内置的默认值。
+Strength 值越小，生成图和原图越接近，取值范围(0, 1]，不传使用模型内置的默认值。
 推荐的取值范围为0.6 - 0.8。
  * @method void setStrength(float $Strength) 设置生成自由度。
-Strength 值越小，生成图和原图越接近，取值范围0 - 1，不传使用模型内置的默认值。
+Strength 值越小，生成图和原图越接近，取值范围(0, 1]，不传使用模型内置的默认值。
 推荐的取值范围为0.6 - 0.8。
  * @method string getRspImgType() 获取返回图像方式（base64 或 url) ，二选一，默认为 base64。url 有效期为1小时。
  * @method void setRspImgType(string $RspImgType) 设置返回图像方式（base64 或 url) ，二选一，默认为 base64。url 有效期为1小时。
@@ -87,7 +89,7 @@ class ImageToImageRequest extends AbstractModel
      * @var string 输入图 Base64 数据。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于 8MB。
      */
     public $InputImage;
 
@@ -95,7 +97,7 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
      * @var string 输入图 Url。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于8MB。
      */
     public $InputUrl;
 
@@ -115,14 +117,15 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
 
     /**
      * @var array 绘画风格。
-请在  [智能图生图风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
+请在  [图像风格化风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
 推荐使用且只使用一种风格。不传默认使用201（日系动漫风格）。
      */
     public $Styles;
 
     /**
      * @var ResultConfig 生成图结果的配置，包括输出图片分辨率和尺寸等。
-支持生成以下分辨率的图片：origin（与输入图分辨率一致）、768:768（1:1）、768:1024（3:4）、1024:768（4:3），不传默认使用origin。
+支持生成以下分辨率的图片：origin（与输入图分辨率一致，长边最高为2000，超出将做等比例缩小）、768:768（1:1）、768:1024（3:4）、1024:768（4:3）。
+不传默认使用origin。
      */
     public $ResultConfig;
 
@@ -143,7 +146,7 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
 
     /**
      * @var float 生成自由度。
-Strength 值越小，生成图和原图越接近，取值范围0 - 1，不传使用模型内置的默认值。
+Strength 值越小，生成图和原图越接近，取值范围(0, 1]，不传使用模型内置的默认值。
 推荐的取值范围为0.6 - 0.8。
      */
     public $Strength;
@@ -157,11 +160,11 @@ Strength 值越小，生成图和原图越接近，取值范围0 - 1，不传使
      * @param string $InputImage 输入图 Base64 数据。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于 8MB。
      * @param string $InputUrl 输入图 Url。
 算法将根据输入的图片，结合文本描述智能生成与之相关的图像。
 Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
-图片限制：单边分辨率小于2000，转成 Base64 字符串后小于 5MB。
+图片限制：单边分辨率小于5000且大于50，转成 Base64 字符串后小于8MB。
      * @param string $Prompt 文本描述。
 用于在输入图的基础上引导生成图效果，增加生成结果中出现描述内容的可能。
 推荐使用中文。最多支持256个 utf-8 字符。
@@ -169,10 +172,11 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
 用于一定程度上从反面引导模型生成的走向，减少生成结果中出现描述内容的可能，但不能完全杜绝。
 推荐使用中文。最多可传256个 utf-8 字符。
      * @param array $Styles 绘画风格。
-请在  [智能图生图风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
+请在  [图像风格化风格列表](https://cloud.tencent.com/document/product/1668/86250) 中选择期望的风格，传入风格编号。
 推荐使用且只使用一种风格。不传默认使用201（日系动漫风格）。
      * @param ResultConfig $ResultConfig 生成图结果的配置，包括输出图片分辨率和尺寸等。
-支持生成以下分辨率的图片：origin（与输入图分辨率一致）、768:768（1:1）、768:1024（3:4）、1024:768（4:3），不传默认使用origin。
+支持生成以下分辨率的图片：origin（与输入图分辨率一致，长边最高为2000，超出将做等比例缩小）、768:768（1:1）、768:1024（3:4）、1024:768（4:3）。
+不传默认使用origin。
      * @param integer $LogoAdd 为生成结果图添加标识的开关，默认为1。
 1：添加标识。
 0：不添加标识。
@@ -181,7 +185,7 @@ Base64 和 Url 必须提供一个，如果都提供以 Base64 为准。
      * @param LogoParam $LogoParam 标识内容设置。
 默认在生成结果图右下角添加“图片由 AI 生成”字样，您可根据自身需要替换为其他的标识图片。
      * @param float $Strength 生成自由度。
-Strength 值越小，生成图和原图越接近，取值范围0 - 1，不传使用模型内置的默认值。
+Strength 值越小，生成图和原图越接近，取值范围(0, 1]，不传使用模型内置的默认值。
 推荐的取值范围为0.6 - 0.8。
      * @param string $RspImgType 返回图像方式（base64 或 url) ，二选一，默认为 base64。url 有效期为1小时。
      */

@@ -18,28 +18,28 @@ namespace TencentCloud\Hunyuan\V20230901\Models;
 use TencentCloud\Common\AbstractModel;
 
 /**
- * 会话内容,  按对话时间序排列，长度最多为40
+ * 会话内容
  *
- * @method string getRole() 获取角色
- * @method void setRole(string $Role) 设置角色
- * @method string getContent() 获取消息的内容
- * @method void setContent(string $Content) 设置消息的内容
+ * @method string getRole() 获取角色，可选值包括 system、user、assistant。
+ * @method void setRole(string $Role) 设置角色，可选值包括 system、user、assistant。
+ * @method string getContent() 获取文本内容
+ * @method void setContent(string $Content) 设置文本内容
  */
 class Message extends AbstractModel
 {
     /**
-     * @var string 角色
+     * @var string 角色，可选值包括 system、user、assistant。
      */
     public $Role;
 
     /**
-     * @var string 消息的内容
+     * @var string 文本内容
      */
     public $Content;
 
     /**
-     * @param string $Role 角色
-     * @param string $Content 消息的内容
+     * @param string $Role 角色，可选值包括 system、user、assistant。
+     * @param string $Content 文本内容
      */
     function __construct()
     {

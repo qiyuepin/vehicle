@@ -61,14 +61,14 @@ use TencentCloud\Common\AbstractModel;
 <li> 企业印章</li>
 <li> 骑缝章等签署控件</li></ul>
  * @method string getApproverIdCardType() 获取签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD 居民身份证  (默认值)</li>
+<ul><li>ID_CARD 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE 其他证件</li></ul>
 
 注: `其他证件类型为白名单功能，使用前请联系对接的客户经理沟通。`
  * @method void setApproverIdCardType(string $ApproverIdCardType) 设置签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD 居民身份证  (默认值)</li>
+<ul><li>ID_CARD 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE 其他证件</li></ul>
@@ -85,17 +85,15 @@ use TencentCloud\Common\AbstractModel;
  * @method string getNotifyType() 获取通知签署方经办人的方式,  有以下途径:
 <ul><li>  **sms**  :  (默认)短信</li>
 <li>   **none**   : 不通知</li></ul>
-```
+
 注意：
-如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信
-```
+`如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信`
  * @method void setNotifyType(string $NotifyType) 设置通知签署方经办人的方式,  有以下途径:
 <ul><li>  **sms**  :  (默认)短信</li>
 <li>   **none**   : 不通知</li></ul>
-```
+
 注意：
-如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信
-```
+`如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信`
  * @method integer getApproverRole() 获取收据场景设置签署人角色类型, 可以设置如下****类型****:
 <ul><li> **1**  :收款人</li>
 <li>   **2**   :开具人</li>
@@ -283,7 +281,7 @@ class ApproverInfo extends AbstractModel
 
     /**
      * @var string 签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD 居民身份证  (默认值)</li>
+<ul><li>ID_CARD 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE 其他证件</li></ul>
@@ -304,10 +302,9 @@ class ApproverInfo extends AbstractModel
      * @var string 通知签署方经办人的方式,  有以下途径:
 <ul><li>  **sms**  :  (默认)短信</li>
 <li>   **none**   : 不通知</li></ul>
-```
+
 注意：
-如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信
-```
+`如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信`
      */
     public $NotifyType;
 
@@ -464,7 +461,7 @@ class ApproverInfo extends AbstractModel
 <li> 企业印章</li>
 <li> 骑缝章等签署控件</li></ul>
      * @param string $ApproverIdCardType 签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD 居民身份证  (默认值)</li>
+<ul><li>ID_CARD 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE 其他证件</li></ul>
@@ -477,10 +474,9 @@ class ApproverInfo extends AbstractModel
      * @param string $NotifyType 通知签署方经办人的方式,  有以下途径:
 <ul><li>  **sms**  :  (默认)短信</li>
 <li>   **none**   : 不通知</li></ul>
-```
+
 注意：
-如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信
-```
+`如果使用的是通过文件发起合同（CreateFlowByFiles），NotifyType必须 是 sms 才会发送短信`
      * @param integer $ApproverRole 收据场景设置签署人角色类型, 可以设置如下****类型****:
 <ul><li> **1**  :收款人</li>
 <li>   **2**   :开具人</li>

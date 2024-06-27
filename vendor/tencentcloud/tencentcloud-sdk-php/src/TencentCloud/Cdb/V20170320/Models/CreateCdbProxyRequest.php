@@ -27,13 +27,31 @@ use TencentCloud\Common\AbstractModel;
  * @method string getUniqSubnetId() 获取私有子网ID
  * @method void setUniqSubnetId(string $UniqSubnetId) 设置私有子网ID
  * @method array getProxyNodeCustom() 获取节点规格配置
+备注：数据库代理支持的节点规格为：2C4000MB、4C8000MB、8C16000MB。
+示例中参数说明：
+NodeCount：节点个数。
+Region：节点地域。
+Zone：节点可用区。
+Cpu：单个代理节点核数（单位：核）。
+Mem：单个代理节点内存数（单位：MB）。
  * @method void setProxyNodeCustom(array $ProxyNodeCustom) 设置节点规格配置
+备注：数据库代理支持的节点规格为：2C4000MB、4C8000MB、8C16000MB。
+示例中参数说明：
+NodeCount：节点个数。
+Region：节点地域。
+Zone：节点可用区。
+Cpu：单个代理节点核数（单位：核）。
+Mem：单个代理节点内存数（单位：MB）。
  * @method array getSecurityGroup() 获取安全组
  * @method void setSecurityGroup(array $SecurityGroup) 设置安全组
  * @method string getDesc() 获取描述
  * @method void setDesc(string $Desc) 设置描述
  * @method integer getConnectionPoolLimit() 获取连接池阈值
+注意：如需使用数据库代理连接池能力，MySQL 8.0 主实例的内核小版本要大于等于 MySQL 8.0 20230630。
  * @method void setConnectionPoolLimit(integer $ConnectionPoolLimit) 设置连接池阈值
+注意：如需使用数据库代理连接池能力，MySQL 8.0 主实例的内核小版本要大于等于 MySQL 8.0 20230630。
+ * @method string getProxyVersion() 获取指定要购买的 proxy 内核版本。不填则默认发货最新版本的 proxy。
+ * @method void setProxyVersion(string $ProxyVersion) 设置指定要购买的 proxy 内核版本。不填则默认发货最新版本的 proxy。
  */
 class CreateCdbProxyRequest extends AbstractModel
 {
@@ -54,6 +72,13 @@ class CreateCdbProxyRequest extends AbstractModel
 
     /**
      * @var array 节点规格配置
+备注：数据库代理支持的节点规格为：2C4000MB、4C8000MB、8C16000MB。
+示例中参数说明：
+NodeCount：节点个数。
+Region：节点地域。
+Zone：节点可用区。
+Cpu：单个代理节点核数（单位：核）。
+Mem：单个代理节点内存数（单位：MB）。
      */
     public $ProxyNodeCustom;
 
@@ -69,17 +94,32 @@ class CreateCdbProxyRequest extends AbstractModel
 
     /**
      * @var integer 连接池阈值
+注意：如需使用数据库代理连接池能力，MySQL 8.0 主实例的内核小版本要大于等于 MySQL 8.0 20230630。
      */
     public $ConnectionPoolLimit;
+
+    /**
+     * @var string 指定要购买的 proxy 内核版本。不填则默认发货最新版本的 proxy。
+     */
+    public $ProxyVersion;
 
     /**
      * @param string $InstanceId 实例ID
      * @param string $UniqVpcId 私有网络ID
      * @param string $UniqSubnetId 私有子网ID
      * @param array $ProxyNodeCustom 节点规格配置
+备注：数据库代理支持的节点规格为：2C4000MB、4C8000MB、8C16000MB。
+示例中参数说明：
+NodeCount：节点个数。
+Region：节点地域。
+Zone：节点可用区。
+Cpu：单个代理节点核数（单位：核）。
+Mem：单个代理节点内存数（单位：MB）。
      * @param array $SecurityGroup 安全组
      * @param string $Desc 描述
      * @param integer $ConnectionPoolLimit 连接池阈值
+注意：如需使用数据库代理连接池能力，MySQL 8.0 主实例的内核小版本要大于等于 MySQL 8.0 20230630。
+     * @param string $ProxyVersion 指定要购买的 proxy 内核版本。不填则默认发货最新版本的 proxy。
      */
     function __construct()
     {
@@ -125,6 +165,10 @@ class CreateCdbProxyRequest extends AbstractModel
 
         if (array_key_exists("ConnectionPoolLimit",$param) and $param["ConnectionPoolLimit"] !== null) {
             $this->ConnectionPoolLimit = $param["ConnectionPoolLimit"];
+        }
+
+        if (array_key_exists("ProxyVersion",$param) and $param["ProxyVersion"] !== null) {
+            $this->ProxyVersion = $param["ProxyVersion"];
         }
     }
 }

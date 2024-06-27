@@ -41,31 +41,31 @@ use TencentCloud\Common\AbstractModel;
  * @method string getName() 获取签署方经办人的姓名。
 经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
 
-注：`请确保和合同中填入的一致`
+注：`请确保和合同中填入的一致`，`除动态签署人场景外，此参数必填`
  * @method void setName(string $Name) 设置签署方经办人的姓名。
 经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
 
-注：`请确保和合同中填入的一致`
+注：`请确保和合同中填入的一致`，`除动态签署人场景外，此参数必填`
  * @method string getMobile() 获取手机号码， 支持国内手机号11位数字(无需加+86前缀或其他字符)。
 请确认手机号所有方为此业务通知方。
 
-注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`
+注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`，`除动态签署人场景外，此参数必填`
  * @method void setMobile(string $Mobile) 设置手机号码， 支持国内手机号11位数字(无需加+86前缀或其他字符)。
 请确认手机号所有方为此业务通知方。
 
-注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`
+注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`，`除动态签署人场景外，此参数必填`
  * @method UserInfo getOperator() 获取执行本接口操作的员工信息。
 注: `在调用此接口时，请确保指定的员工已获得所需的接口调用权限，并具备接口传入的相应资源的数据权限。`
  * @method void setOperator(UserInfo $Operator) 设置执行本接口操作的员工信息。
 注: `在调用此接口时，请确保指定的员工已获得所需的接口调用权限，并具备接口传入的相应资源的数据权限。`
  * @method string getIdCardType() 获取证件类型，支持以下类型
-<ul><li>**ID_CARD** : 居民身份证 (默认值)</li>
+<ul><li>**ID_CARD** : 中国大陆居民身份证 (默认值)</li>
 <li>**HONGKONG_AND_MACAO** : 港澳居民来往内地通行证</li>
 <li>**HONGKONG_MACAO_AND_TAIWAN** : 港澳台居民居住证(格式同居民身份证)</li></ul>
 
 注：`请确保和合同中填入的一致`
  * @method void setIdCardType(string $IdCardType) 设置证件类型，支持以下类型
-<ul><li>**ID_CARD** : 居民身份证 (默认值)</li>
+<ul><li>**ID_CARD** : 中国大陆居民身份证 (默认值)</li>
 <li>**HONGKONG_AND_MACAO** : 港澳居民来往内地通行证</li>
 <li>**HONGKONG_MACAO_AND_TAIWAN** : 港澳台居民居住证(格式同居民身份证)</li></ul>
 
@@ -124,6 +124,8 @@ use TencentCloud\Common\AbstractModel;
 <li>**false**: 会跳转至批量合同流程的列表,  点击需要批量签署合同后进入合同内容页面进行签署(默认)</li>
 <li>**true**: 跳过合同流程列表, 直接进入合同内容页面进行签署</li>
 </ul>
+ * @method FlowBatchUrlInfo getFlowBatchUrlInfo() 获取批量签署合同相关信息，指定合同和签署方的信息，用于补充动态签署人。	
+ * @method void setFlowBatchUrlInfo(FlowBatchUrlInfo $FlowBatchUrlInfo) 设置批量签署合同相关信息，指定合同和签署方的信息，用于补充动态签署人。	
  */
 class ChannelCreateBatchSignUrlRequest extends AbstractModel
 {
@@ -144,7 +146,7 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
      * @var string 签署方经办人的姓名。
 经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
 
-注：`请确保和合同中填入的一致`
+注：`请确保和合同中填入的一致`，`除动态签署人场景外，此参数必填`
      */
     public $Name;
 
@@ -152,7 +154,7 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
      * @var string 手机号码， 支持国内手机号11位数字(无需加+86前缀或其他字符)。
 请确认手机号所有方为此业务通知方。
 
-注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`
+注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`，`除动态签署人场景外，此参数必填`
      */
     public $Mobile;
 
@@ -164,7 +166,7 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
 
     /**
      * @var string 证件类型，支持以下类型
-<ul><li>**ID_CARD** : 居民身份证 (默认值)</li>
+<ul><li>**ID_CARD** : 中国大陆居民身份证 (默认值)</li>
 <li>**HONGKONG_AND_MACAO** : 港澳居民来往内地通行证</li>
 <li>**HONGKONG_MACAO_AND_TAIWAN** : 港澳台居民居住证(格式同居民身份证)</li></ul>
 
@@ -220,6 +222,11 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
     public $JumpToDetail;
 
     /**
+     * @var FlowBatchUrlInfo 批量签署合同相关信息，指定合同和签署方的信息，用于补充动态签署人。	
+     */
+    public $FlowBatchUrlInfo;
+
+    /**
      * @param Agent $Agent 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容，您可以参阅开发者中心所提供的 Agent 结构体以获取详细定义。
 
 此接口下面信息必填。
@@ -232,15 +239,15 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
      * @param string $Name 签署方经办人的姓名。
 经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
 
-注：`请确保和合同中填入的一致`
+注：`请确保和合同中填入的一致`，`除动态签署人场景外，此参数必填`
      * @param string $Mobile 手机号码， 支持国内手机号11位数字(无需加+86前缀或其他字符)。
 请确认手机号所有方为此业务通知方。
 
-注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`
+注：`请确保和合同中填入的一致,  若无法保持一致，请确保在发起和生成批量签署链接时传入相同的参与方证件信息`，`除动态签署人场景外，此参数必填`
      * @param UserInfo $Operator 执行本接口操作的员工信息。
 注: `在调用此接口时，请确保指定的员工已获得所需的接口调用权限，并具备接口传入的相应资源的数据权限。`
      * @param string $IdCardType 证件类型，支持以下类型
-<ul><li>**ID_CARD** : 居民身份证 (默认值)</li>
+<ul><li>**ID_CARD** : 中国大陆居民身份证 (默认值)</li>
 <li>**HONGKONG_AND_MACAO** : 港澳居民来往内地通行证</li>
 <li>**HONGKONG_MACAO_AND_TAIWAN** : 港澳台居民居住证(格式同居民身份证)</li></ul>
 
@@ -272,6 +279,7 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
 <li>**false**: 会跳转至批量合同流程的列表,  点击需要批量签署合同后进入合同内容页面进行签署(默认)</li>
 <li>**true**: 跳过合同流程列表, 直接进入合同内容页面进行签署</li>
 </ul>
+     * @param FlowBatchUrlInfo $FlowBatchUrlInfo 批量签署合同相关信息，指定合同和签署方的信息，用于补充动态签署人。	
      */
     function __construct()
     {
@@ -326,6 +334,11 @@ class ChannelCreateBatchSignUrlRequest extends AbstractModel
 
         if (array_key_exists("JumpToDetail",$param) and $param["JumpToDetail"] !== null) {
             $this->JumpToDetail = $param["JumpToDetail"];
+        }
+
+        if (array_key_exists("FlowBatchUrlInfo",$param) and $param["FlowBatchUrlInfo"] !== null) {
+            $this->FlowBatchUrlInfo = new FlowBatchUrlInfo();
+            $this->FlowBatchUrlInfo->deserialize($param["FlowBatchUrlInfo"]);
         }
     }
 }

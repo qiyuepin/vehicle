@@ -153,7 +153,7 @@ ListDiagnoseReport 用于获取用户诊断URL访问后各个子任务的简要�
 注意：
 Route 字段，使用点分隔，最后一段称为叶子节点，非叶子节点配置保持不变；
 Value 字段，使用 json 进行序列化，其中固定 update 作为 key，配置路径值参考 https://cloud.tencent.com/document/product/228/41116 接口各配置项复杂类型，为配置路径对应复杂类型下的节点。
-云审计相关：接口的入参可能包含密钥等敏感信息，所以此接口的入参不会上报到云审计。
+操作审计相关：接口的入参可能包含密钥等敏感信息，所以此接口的入参不会上报到操作审计。
  * @method Models\ModifyPurgeFetchTaskStatusResponse ModifyPurgeFetchTaskStatus(Models\ModifyPurgeFetchTaskStatusRequest $req) ModifyPurgeFetchTaskStatus 用于上报定时刷新预热任务执行状态
  * @method Models\PurgePathCacheResponse PurgePathCache(Models\PurgePathCacheRequest $req) PurgePathCache 用于批量提交目录刷新，根据域名的加速区域进行对应区域的刷新。
 默认情况下境内、境外加速区域每日目录刷新额度为各 100 条，每次最多可提交 500 条。
@@ -169,7 +169,7 @@ Value 字段，使用 json 进行序列化，其中固定 update 作为 key，�
  * @method Models\StopScdnDomainResponse StopScdnDomain(Models\StopScdnDomainRequest $req) StopScdnDomain 用于关闭域名的安全防护配置
  * @method Models\UpdateDomainConfigResponse UpdateDomainConfig(Models\UpdateDomainConfigRequest $req) UpdateDomainConfig 用于修改内容分发网络加速域名配置信息。
 注意：如果需要更新复杂类型的配置项，必须传递整个对象的所有属性，未传递的属性将使用默认值，建议通过查询接口获取配置属性后，直接修改后传递给本接口。
-云审计相关：接口的入参可能包含密钥等敏感信息，所以此接口的入参不会上报到云审计。
+操作审计相关：接口的入参可能包含密钥等敏感信息，所以此接口的入参不会上报到操作审计。
  * @method Models\UpdateImageConfigResponse UpdateImageConfig(Models\UpdateImageConfigRequest $req) UpdateImageConfig 用于更新控制台图片优化的相关配置，支持Webp、TPG、 Guetzli 和 Avif。 
  * @method Models\UpdatePayTypeResponse UpdatePayType(Models\UpdatePayTypeRequest $req) 本接口(UpdatePayType)用于修改账号计费类型，暂不支持月结用户或子账号修改。
  * @method Models\UpdateScdnDomainResponse UpdateScdnDomain(Models\UpdateScdnDomainRequest $req) UpdateScdnDomain 用于修改 SCDN 加速域名安全相关配置

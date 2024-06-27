@@ -28,8 +28,8 @@ use TencentCloud\Common\AbstractModel;
  * @method void setEndTime(integer $EndTime) 设置预定的房间结束时间，unix时间戳。
  * @method integer getResolution() 获取分辨率。可以有如下取值： 1 标清 2 高清 3 全高清
  * @method void setResolution(integer $Resolution) 设置分辨率。可以有如下取值： 1 标清 2 高清 3 全高清
- * @method integer getMaxMicNumber() 获取最大连麦人数（不包括老师）。取值范围[0, 16]
- * @method void setMaxMicNumber(integer $MaxMicNumber) 设置最大连麦人数（不包括老师）。取值范围[0, 16]
+ * @method integer getMaxMicNumber() 获取设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
+ * @method void setMaxMicNumber(integer $MaxMicNumber) 设置设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
  * @method string getSubType() 获取房间子类型，可以有以下取值： videodoc 文档+视频 video 纯视频
  * @method void setSubType(string $SubType) 设置房间子类型，可以有以下取值： videodoc 文档+视频 video 纯视频
  * @method string getTeacherId() 获取老师ID。通过[注册用户]接口获取的UserId。
@@ -61,7 +61,9 @@ use TencentCloud\Common\AbstractModel;
  * @method integer getIsGradingRequiredPostClass() 获取开启课后评分。 0：不开启(默认)  1：开启
  * @method void setIsGradingRequiredPostClass(integer $IsGradingRequiredPostClass) 设置开启课后评分。 0：不开启(默认)  1：开启
  * @method integer getRoomType() 获取房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+注：大班课的布局(layout)只有三分屏
  * @method void setRoomType(integer $RoomType) 设置房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+注：大班课的布局(layout)只有三分屏
  * @method integer getEndDelayTime() 获取拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
  * @method void setEndDelayTime(integer $EndDelayTime) 设置拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
  * @method integer getLiveType() 获取直播类型：0 常规（默认）1 伪直播
@@ -100,7 +102,7 @@ class RoomInfo extends AbstractModel
     public $Resolution;
 
     /**
-     * @var integer 最大连麦人数（不包括老师）。取值范围[0, 16]
+     * @var integer 设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
      */
     public $MaxMicNumber;
 
@@ -181,6 +183,7 @@ class RoomInfo extends AbstractModel
 
     /**
      * @var integer 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+注：大班课的布局(layout)只有三分屏
      */
     public $RoomType;
 
@@ -225,7 +228,7 @@ class RoomInfo extends AbstractModel
      * @param integer $StartTime 预定的房间开始时间，unix时间戳。
      * @param integer $EndTime 预定的房间结束时间，unix时间戳。
      * @param integer $Resolution 分辨率。可以有如下取值： 1 标清 2 高清 3 全高清
-     * @param integer $MaxMicNumber 最大连麦人数（不包括老师）。取值范围[0, 16]
+     * @param integer $MaxMicNumber 设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
      * @param string $SubType 房间子类型，可以有以下取值： videodoc 文档+视频 video 纯视频
      * @param string $TeacherId 老师ID。通过[注册用户]接口获取的UserId。
      * @param integer $AutoMic 进入课堂时是否自动连麦。可以有以下取值： 0 不自动连麦（需要手动申请上麦，默认值） 1 自动连麦
@@ -242,6 +245,7 @@ class RoomInfo extends AbstractModel
      * @param integer $VideoOrientation 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
      * @param integer $IsGradingRequiredPostClass 开启课后评分。 0：不开启(默认)  1：开启
      * @param integer $RoomType 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 (后续扩展)
+注：大班课的布局(layout)只有三分屏
      * @param integer $EndDelayTime 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
      * @param integer $LiveType 直播类型：0 常规（默认）1 伪直播
      * @param string $RecordLiveUrl 伪直播回放链接

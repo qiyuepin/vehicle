@@ -80,13 +80,13 @@ use TencentCloud\Common\AbstractModel;
 <li>港澳台居民居住证号码编码规则与中国大陆身份证相同，应为18位字符串。</li></ul>
  * @method string getRecipientId() 获取签署方经办人在模板中配置的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。
 
-<b>模板发起合同时，该参数为必填项，可以通过[查询模版信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
+<b>模板发起合同时，该参数为必填项，可以通过[查询模板信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
 <b>文件发起合同时，该参数无需传值。</b>
 
 如果开发者后续用合同模板发起合同，建议保存此值，在用合同模板发起合同中需此值绑定对应的签署经办人 。
  * @method void setRecipientId(string $RecipientId) 设置签署方经办人在模板中配置的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。
 
-<b>模板发起合同时，该参数为必填项，可以通过[查询模版信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
+<b>模板发起合同时，该参数为必填项，可以通过[查询模板信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
 <b>文件发起合同时，该参数无需传值。</b>
 
 如果开发者后续用合同模板发起合同，建议保存此值，在用合同模板发起合同中需此值绑定对应的签署经办人 。
@@ -218,7 +218,8 @@ use TencentCloud\Common\AbstractModel;
 `此参数仅针对文件发起设置生效,模板发起合同签署流程, 请以模板配置为主`
  * @method array getComponentLimitType() 获取当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>
@@ -228,7 +229,8 @@ use TencentCloud\Common\AbstractModel;
 ![image](https://qcloudimg.tencent-cloud.cn/raw/ee0498856c060c065628a0c5ba780d6b.jpg)
  * @method void setComponentLimitType(array $ComponentLimitType) 设置当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>
@@ -363,7 +365,7 @@ class FlowCreateApprover extends AbstractModel
     /**
      * @var string 签署方经办人在模板中配置的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。
 
-<b>模板发起合同时，该参数为必填项，可以通过[查询模版信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
+<b>模板发起合同时，该参数为必填项，可以通过[查询模板信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
 <b>文件发起合同时，该参数无需传值。</b>
 
 如果开发者后续用合同模板发起合同，建议保存此值，在用合同模板发起合同中需此值绑定对应的签署经办人 。
@@ -497,7 +499,8 @@ class FlowCreateApprover extends AbstractModel
     /**
      * @var array 当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>
@@ -594,7 +597,7 @@ class FlowCreateApprover extends AbstractModel
 <li>港澳台居民居住证号码编码规则与中国大陆身份证相同，应为18位字符串。</li></ul>
      * @param string $RecipientId 签署方经办人在模板中配置的参与方ID，与控件绑定，是控件的归属方，ID为32位字符串。
 
-<b>模板发起合同时，该参数为必填项，可以通过[查询模版信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
+<b>模板发起合同时，该参数为必填项，可以通过[查询模板信息接口](https://qian.tencent.com/developers/companyApis/templatesAndFiles/DescribeFlowTemplates)获得。</b>
 <b>文件发起合同时，该参数无需传值。</b>
 
 如果开发者后续用合同模板发起合同，建议保存此值，在用合同模板发起合同中需此值绑定对应的签署经办人 。
@@ -663,7 +666,8 @@ class FlowCreateApprover extends AbstractModel
 `此参数仅针对文件发起设置生效,模板发起合同签署流程, 请以模板配置为主`
      * @param array $ComponentLimitType 当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>

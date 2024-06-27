@@ -20,6 +20,7 @@ class ComposerStaticInit938e18d4af8b6d05c58c6a556492e591
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        'dc1275c308c5b416beb314b6317daca2' => __DIR__ . '/..' . '/overtrue/pinyin/src/const.php',
         'fbb5c868497bc147a1be7341123f293d' => __DIR__ . '/..' . '/ric/thinkphp6-captcha/src/helper.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
@@ -73,6 +74,10 @@ class ComposerStaticInit938e18d4af8b6d05c58c6a556492e591
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
             'Phinx\\' => 6,
+        ),
+        'O' => 
+        array (
+            'Overtrue\\Pinyin\\' => 16,
         ),
         'L' => 
         array (
@@ -197,8 +202,8 @@ class ComposerStaticInit938e18d4af8b6d05c58c6a556492e591
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -215,6 +220,10 @@ class ComposerStaticInit938e18d4af8b6d05c58c6a556492e591
         'Phinx\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-migration/phinx',
+        ),
+        'Overtrue\\Pinyin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/overtrue/pinyin/src',
         ),
         'League\\MimeTypeDetection\\' => 
         array (
@@ -265,6 +274,39 @@ class ComposerStaticInit938e18d4af8b6d05c58c6a556492e591
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'GTAlert' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/ios/GTAlert.php',
+        'GTAliasRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/user/GTAliasRequest.php',
+        'GTAndroid' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/android/GTAndroid.php',
+        'GTApiRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/GTApiRequest.php',
+        'GTAps' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/ios/GTAps.php',
+        'GTAudienceRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTAudienceRequest.php',
+        'GTAuthRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/auth/GTAuthRequest.php',
+        'GTBadgeSetRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/user/GTBadgeSetRequest.php',
+        'GTBaseApi' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/GTBaseApi.php',
+        'GTCidAlias' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/user/GTCidAlias.php',
+        'GTClient' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/GTClient.php',
+        'GTCondition' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTCondition.php',
+        'GTConfig' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/utils/GTConfig.php',
+        'GTException' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/exception/GTException.php',
+        'GTHttpManager' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/utils/GTHttpManager.php',
+        'GTIos' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/ios/GTIos.php',
+        'GTMultimedia' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/ios/GTMultimedia.php',
+        'GTNotification' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTNotification.php',
+        'GTPushApi' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/GTPushApi.php',
+        'GTPushBatchRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTPushBatchRequest.php',
+        'GTPushChannel' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTPushChannel.php',
+        'GTPushMessage' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTPushMessage.php',
+        'GTPushRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTPushRequest.php',
+        'GTRevoke' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTRevoke.php',
+        'GTSettings' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTSettings.php',
+        'GTStatisticsApi' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/GTStatisticsApi.php',
+        'GTStrategy' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/GTStrategy.php',
+        'GTTagBatchSetRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/user/GTTagBatchSetRequest.php',
+        'GTTagSetRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/user/GTTagSetRequest.php',
+        'GTThirdNotification' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/android/GTThirdNotification.php',
+        'GTUps' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/push/android/GTUps.php',
+        'GTUserApi' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/GTUserApi.php',
+        'GTUserQueryRequest' => __DIR__ . '/..' . '/getuilaboratory/getui-pushapi-php-client-v2/request/user/GTUserQueryRequest.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'QcloudApi' => __DIR__ . '/..' . '/tencentcloud/tencentcloud-sdk-php/src/QcloudApi/QcloudApi.php',

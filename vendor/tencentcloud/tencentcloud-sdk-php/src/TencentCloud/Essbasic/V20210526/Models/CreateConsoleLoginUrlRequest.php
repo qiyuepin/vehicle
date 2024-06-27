@@ -40,12 +40,14 @@ use TencentCloud\Common\AbstractModel;
 `1. 企业激活时， 此时的Agent.ProxyOrganizationOpenId将会是企业激活后企业的唯一标识，建议开发者保存企业ProxyOrganizationOpenId，后续各项接口调用皆需要此参数。 `
 `2. 员工认证时， 此时的Agent.ProxyOperator.OpenId将会是员工认证加入企业后的唯一标识，建议开发者保存此员工的OpenId，后续各项接口调用皆需要此参数。 `
 `3. 同渠道应用(Agent.AppId)下，企业唯一标识ProxyOrganizationOpenId需要保持唯一，员工唯一标识OpenId也要保持唯一 (而不是企业下唯一)。 `
- * @method string getProxyOrganizationName() 获取第三方平台子客企业名称，请确认该名称与企业营业执照中注册的名称一致。
+ * @method string getProxyOrganizationName() 获取第三方平台子客的企业名称，请确认该企业名称与企业营业执照中注册的名称完全一致。
+在测试环境联调的过程中，企业名称请统一加上“测试”二字，如：典子谦示例企业测试，否则将无法审核通过。
 
 注:
  `1. 如果名称中包含英文括号()，请使用中文括号（）代替。`
  `2、该名称需要与Agent.ProxyOrganizationOpenId相匹配,  企业激活后Agent.ProxyOrganizationOpenId会跟此企业名称一一绑定; 如果您的企业已经在认证授权中或者激活完成，这里修改子客企业名字将不会生效。 `
- * @method void setProxyOrganizationName(string $ProxyOrganizationName) 设置第三方平台子客企业名称，请确认该名称与企业营业执照中注册的名称一致。
+ * @method void setProxyOrganizationName(string $ProxyOrganizationName) 设置第三方平台子客的企业名称，请确认该企业名称与企业营业执照中注册的名称完全一致。
+在测试环境联调的过程中，企业名称请统一加上“测试”二字，如：典子谦示例企业测试，否则将无法审核通过。
 
 注:
  `1. 如果名称中包含英文括号()，请使用中文括号（）代替。`
@@ -148,6 +150,8 @@ use TencentCloud\Common\AbstractModel;
 注意：`目前仅支持 H5 和 PC`。
  * @method void setAutoJumpUrl(string $AutoJumpUrl) 设置认证完成跳转链接。
 注意：`目前仅支持 H5 和 PC`。
+ * @method string getTopNavigationStatus() 获取是否展示头顶导航栏  <ul><li> **ENABLE** : (默认)进入web控制台展示头顶导航栏</li> <li> **DISABLE** : 进入web控制台不展示头顶导航栏</li></ul> 注：该参数**仅在企业和员工激活完成，登录控制台场景才生效**。
+ * @method void setTopNavigationStatus(string $TopNavigationStatus) 设置是否展示头顶导航栏  <ul><li> **ENABLE** : (默认)进入web控制台展示头顶导航栏</li> <li> **DISABLE** : 进入web控制台不展示头顶导航栏</li></ul> 注：该参数**仅在企业和员工激活完成，登录控制台场景才生效**。
  */
 class CreateConsoleLoginUrlRequest extends AbstractModel
 {
@@ -166,7 +170,8 @@ class CreateConsoleLoginUrlRequest extends AbstractModel
     public $Agent;
 
     /**
-     * @var string 第三方平台子客企业名称，请确认该名称与企业营业执照中注册的名称一致。
+     * @var string 第三方平台子客的企业名称，请确认该企业名称与企业营业执照中注册的名称完全一致。
+在测试环境联调的过程中，企业名称请统一加上“测试”二字，如：典子谦示例企业测试，否则将无法审核通过。
 
 注:
  `1. 如果名称中包含英文括号()，请使用中文括号（）代替。`
@@ -273,6 +278,11 @@ class CreateConsoleLoginUrlRequest extends AbstractModel
     public $AutoJumpUrl;
 
     /**
+     * @var string 是否展示头顶导航栏  <ul><li> **ENABLE** : (默认)进入web控制台展示头顶导航栏</li> <li> **DISABLE** : 进入web控制台不展示头顶导航栏</li></ul> 注：该参数**仅在企业和员工激活完成，登录控制台场景才生效**。
+     */
+    public $TopNavigationStatus;
+
+    /**
      * @param Agent $Agent 关于渠道应用的相关信息，包括渠道应用标识、第三方平台子客企业标识及第三方平台子客企业中的员工标识等内容
 此接口下面信息必填。
 <ul>
@@ -283,7 +293,8 @@ class CreateConsoleLoginUrlRequest extends AbstractModel
 `1. 企业激活时， 此时的Agent.ProxyOrganizationOpenId将会是企业激活后企业的唯一标识，建议开发者保存企业ProxyOrganizationOpenId，后续各项接口调用皆需要此参数。 `
 `2. 员工认证时， 此时的Agent.ProxyOperator.OpenId将会是员工认证加入企业后的唯一标识，建议开发者保存此员工的OpenId，后续各项接口调用皆需要此参数。 `
 `3. 同渠道应用(Agent.AppId)下，企业唯一标识ProxyOrganizationOpenId需要保持唯一，员工唯一标识OpenId也要保持唯一 (而不是企业下唯一)。 `
-     * @param string $ProxyOrganizationName 第三方平台子客企业名称，请确认该名称与企业营业执照中注册的名称一致。
+     * @param string $ProxyOrganizationName 第三方平台子客的企业名称，请确认该企业名称与企业营业执照中注册的名称完全一致。
+在测试环境联调的过程中，企业名称请统一加上“测试”二字，如：典子谦示例企业测试，否则将无法审核通过。
 
 注:
  `1. 如果名称中包含英文括号()，请使用中文括号（）代替。`
@@ -337,6 +348,7 @@ class CreateConsoleLoginUrlRequest extends AbstractModel
 注意：`如果已同步，这里非空会更新同步的经办人身份证号，暂时只支持居民身份证类型`。
      * @param string $AutoJumpUrl 认证完成跳转链接。
 注意：`目前仅支持 H5 和 PC`。
+     * @param string $TopNavigationStatus 是否展示头顶导航栏  <ul><li> **ENABLE** : (默认)进入web控制台展示头顶导航栏</li> <li> **DISABLE** : 进入web控制台不展示头顶导航栏</li></ul> 注：该参数**仅在企业和员工激活完成，登录控制台场景才生效**。
      */
     function __construct()
     {
@@ -407,6 +419,10 @@ class CreateConsoleLoginUrlRequest extends AbstractModel
 
         if (array_key_exists("AutoJumpUrl",$param) and $param["AutoJumpUrl"] !== null) {
             $this->AutoJumpUrl = $param["AutoJumpUrl"];
+        }
+
+        if (array_key_exists("TopNavigationStatus",$param) and $param["TopNavigationStatus"] !== null) {
+            $this->TopNavigationStatus = $param["TopNavigationStatus"];
         }
     }
 }

@@ -23,12 +23,15 @@ use TencentCloud\Common\Credential;
 use TencentCloud\Mrs\V20200910\Models as Models;
 
 /**
+ * @method Models\DrugInstructionObjectResponse DrugInstructionObject(Models\DrugInstructionObjectRequest $req) 药品说明书PDF文件结构化
  * @method Models\ImageMaskResponse ImageMask(Models\ImageMaskRequest $req) 医疗报告图片脱敏接口
  * @method Models\ImageMaskAsyncResponse ImageMaskAsync(Models\ImageMaskAsyncRequest $req) 图片脱敏-异步接口
  * @method Models\ImageMaskAsyncGetResultResponse ImageMaskAsyncGetResult(Models\ImageMaskAsyncGetResultRequest $req) 图片脱敏-异步获取结果接口
  * @method Models\ImageToClassResponse ImageToClass(Models\ImageToClassRequest $req) 图片分类
  * @method Models\ImageToObjectResponse ImageToObject(Models\ImageToObjectRequest $req) 图片转结构化对象
  * @method Models\TextToClassResponse TextToClass(Models\TextToClassRequest $req) 文本分类
+
+适用场景：经过腾讯医疗专用 OCR 从图片识别之后的文本，并且需要加上每个字符的坐标信息，才可以调用此接口。通过其它 OCR 识别的文本可能不适配。医院的 XML 格式文本也不适配，XML 文件需要经过特殊转换才能直接调用此接口。单次调用传入的文本不宜超过 2000 字。如有需要调用此接口，建议先咨询产品团队。
  * @method Models\TextToObjectResponse TextToObject(Models\TextToObjectRequest $req) 文本转结构化对象。
 
 适用场景：经过腾讯医疗专用 OCR 从图片识别之后的文本，可以调用此接口。通过其它 OCR 识别的文本可能不适配。医院的 XML 格式文本也不适配，XML 文件需要经过特殊转换才能直接调用此接口。单次调用传入的文本不宜超过 2000 字。

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fb9d5829beb1463887547b4f6028ced",
+    "content-hash": "0e7f3535005d9a46dc370609b7069f77",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -290,6 +290,58 @@
                 }
             ],
             "time": "2023-06-01T07:04:22+00:00"
+        },
+        {
+            "name": "getuilaboratory/getui-pushapi-php-client-v2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GetuiLaboratory/getui-pushapi-php-client-v2.git",
+                "reference": "255cc076624d049c0481d7172cd3c519ae7b07f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GetuiLaboratory/getui-pushapi-php-client-v2/zipball/255cc076624d049c0481d7172cd3c519ae7b07f6",
+                "reference": "255cc076624d049c0481d7172cd3c519ae7b07f6",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    ""
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "getui",
+                    "homepage": "https://www.getui.com/cn"
+                }
+            ],
+            "description": "getui php client V2",
+            "homepage": "https://www.getui.com/cn/",
+            "keywords": [
+                "GeTui",
+                "GetuiLaboratory",
+                "getui-pushapi-php-client",
+                "getui-pushapi-php-client-v2",
+                "pushapi"
+            ],
+            "support": {
+                "issues": "https://github.com/GetuiLaboratory/getui-pushapi-php-client-v2/issues",
+                "source": "https://github.com/GetuiLaboratory/getui-pushapi-php-client-v2/tree/master"
+            },
+            "time": "2021-06-21T03:22:42+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -900,6 +952,85 @@
                 }
             ],
             "time": "2024-01-25T10:35:09+00:00"
+        },
+        {
+            "name": "overtrue/pinyin",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/pinyin.git",
+                "reference": "4d0fb4f27f0c79e81c9489e0c0ae4a4f8837eae7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/pinyin/zipball/4d0fb4f27f0c79e81c9489e0c0ae4a4f8837eae7",
+                "reference": "4d0fb4f27f0c79e81c9489e0c0ae4a4f8837eae7",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "brainmaestro/composer-git-hooks": "^2.7",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "~8.0"
+            },
+            "type": "library",
+            "extra": {
+                "hooks": {
+                    "pre-commit": [
+                        "composer test",
+                        "composer fix-style"
+                    ],
+                    "pre-push": [
+                        "composer test",
+                        "composer check-style"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/const.php"
+                ],
+                "psr-4": {
+                    "Overtrue\\Pinyin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com",
+                    "homepage": "http://github.com/overtrue"
+                }
+            ],
+            "description": "Chinese to pinyin translator.",
+            "homepage": "https://github.com/overtrue/pinyin",
+            "keywords": [
+                "Chinese",
+                "Pinyin",
+                "cn2pinyin"
+            ],
+            "support": {
+                "issues": "https://github.com/overtrue/pinyin/issues",
+                "source": "https://github.com/overtrue/pinyin/tree/4.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/overtrue",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-04-27T10:17:12+00:00"
         },
         {
             "name": "psr/clock",
@@ -2325,16 +2456,16 @@
         },
         {
             "name": "tencentcloud/tencentcloud-sdk-php",
-            "version": "3.0.1114",
+            "version": "3.0.1159",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TencentCloud/tencentcloud-sdk-php.git",
-                "reference": "2687855f7628f10d4af4953d4d0db8920416b106"
+                "reference": "1447d10e941f488d5444340b299186a017cda72b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TencentCloud/tencentcloud-sdk-php/zipball/2687855f7628f10d4af4953d4d0db8920416b106",
-                "reference": "2687855f7628f10d4af4953d4d0db8920416b106",
+                "url": "https://api.github.com/repos/TencentCloud/tencentcloud-sdk-php/zipball/1447d10e941f488d5444340b299186a017cda72b",
+                "reference": "1447d10e941f488d5444340b299186a017cda72b",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2375,9 +2506,9 @@
             "homepage": "https://github.com/TencentCloud/tencentcloud-sdk-php",
             "support": {
                 "issues": "https://github.com/TencentCloud/tencentcloud-sdk-php/issues",
-                "source": "https://github.com/TencentCloud/tencentcloud-sdk-php/tree/3.0.1114"
+                "source": "https://github.com/TencentCloud/tencentcloud-sdk-php/tree/3.0.1159"
             },
-            "time": "2024-04-01T20:07:16+00:00"
+            "time": "2024-06-09T20:07:48+00:00"
         },
         {
             "name": "topthink/framework",
@@ -3171,7 +3302,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "getuilaboratory/getui-pushapi-php-client-v2": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

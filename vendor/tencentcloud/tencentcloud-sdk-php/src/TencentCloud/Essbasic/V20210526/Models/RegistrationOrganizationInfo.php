@@ -52,9 +52,9 @@ use TencentCloud\Common\AbstractModel;
  * @method void setAdminName(string $AdminName) 设置组织机构超管姓名。
 在注册流程中，必须是超管本人进行操作。
 如果法人作为超管管理组织机构,超管姓名就是法人姓名
- * @method string getAdminMobile() 获取组织机构超管姓名。
+ * @method string getAdminMobile() 获取组织机构超管手机号。
 在注册流程中，这个手机号必须跟操作人在电子签注册的个人手机号一致。
- * @method void setAdminMobile(string $AdminMobile) 设置组织机构超管姓名。
+ * @method void setAdminMobile(string $AdminMobile) 设置组织机构超管手机号。
 在注册流程中，这个手机号必须跟操作人在电子签注册的个人手机号一致。
  * @method array getAuthorizationTypes() 获取可选的此企业允许的授权方式, 可以设置的方式有:
 1：上传授权书
@@ -90,6 +90,17 @@ use TencentCloud\Common\AbstractModel;
  * @method void setAdminIdCardNumber(string $AdminIdCardNumber) 设置经办人的证件号
  * @method string getBusinessLicense() 获取营业执照正面照(PNG或JPG) base64格式, 大小不超过5M
  * @method void setBusinessLicense(string $BusinessLicense) 设置营业执照正面照(PNG或JPG) base64格式, 大小不超过5M
+ * @method array getPowerOfAttorneys() 获取授权书(PNG或JPG或PDF) base64格式, 大小不超过8M 。
+p.s. 如果上传授权书 ，需遵循以下条件
+1. 超管的信息（超管姓名，超管身份证，超管手机号）必须为必填参数。
+2. 超管的个人身份必须在电子签已经实名。
+2. 认证方式AuthorizationTypes必须只能是上传授权书方式 
+
+ * @method void setPowerOfAttorneys(array $PowerOfAttorneys) 设置授权书(PNG或JPG或PDF) base64格式, 大小不超过8M 。
+p.s. 如果上传授权书 ，需遵循以下条件
+1. 超管的信息（超管姓名，超管身份证，超管手机号）必须为必填参数。
+2. 超管的个人身份必须在电子签已经实名。
+2. 认证方式AuthorizationTypes必须只能是上传授权书方式 
  */
 class RegistrationOrganizationInfo extends AbstractModel
 {
@@ -138,7 +149,7 @@ class RegistrationOrganizationInfo extends AbstractModel
     public $AdminName;
 
     /**
-     * @var string 组织机构超管姓名。
+     * @var string 组织机构超管手机号。
 在注册流程中，这个手机号必须跟操作人在电子签注册的个人手机号一致。
      */
     public $AdminMobile;
@@ -177,6 +188,16 @@ class RegistrationOrganizationInfo extends AbstractModel
     public $BusinessLicense;
 
     /**
+     * @var array 授权书(PNG或JPG或PDF) base64格式, 大小不超过8M 。
+p.s. 如果上传授权书 ，需遵循以下条件
+1. 超管的信息（超管姓名，超管身份证，超管手机号）必须为必填参数。
+2. 超管的个人身份必须在电子签已经实名。
+2. 认证方式AuthorizationTypes必须只能是上传授权书方式 
+
+     */
+    public $PowerOfAttorneys;
+
+    /**
      * @param string $OrganizationName 组织机构名称。
 请确认该名称与企业营业执照中注册的名称一致。
 如果名称中包含英文括号()，请使用中文括号（）代替。
@@ -193,7 +214,7 @@ class RegistrationOrganizationInfo extends AbstractModel
      * @param string $AdminName 组织机构超管姓名。
 在注册流程中，必须是超管本人进行操作。
 如果法人作为超管管理组织机构,超管姓名就是法人姓名
-     * @param string $AdminMobile 组织机构超管姓名。
+     * @param string $AdminMobile 组织机构超管手机号。
 在注册流程中，这个手机号必须跟操作人在电子签注册的个人手机号一致。
      * @param array $AuthorizationTypes 可选的此企业允许的授权方式, 可以设置的方式有:
 1：上传授权书
@@ -212,6 +233,11 @@ class RegistrationOrganizationInfo extends AbstractModel
 
      * @param string $AdminIdCardNumber 经办人的证件号
      * @param string $BusinessLicense 营业执照正面照(PNG或JPG) base64格式, 大小不超过5M
+     * @param array $PowerOfAttorneys 授权书(PNG或JPG或PDF) base64格式, 大小不超过8M 。
+p.s. 如果上传授权书 ，需遵循以下条件
+1. 超管的信息（超管姓名，超管身份证，超管手机号）必须为必填参数。
+2. 超管的个人身份必须在电子签已经实名。
+2. 认证方式AuthorizationTypes必须只能是上传授权书方式 
      */
     function __construct()
     {
@@ -272,6 +298,10 @@ class RegistrationOrganizationInfo extends AbstractModel
 
         if (array_key_exists("BusinessLicense",$param) and $param["BusinessLicense"] !== null) {
             $this->BusinessLicense = $param["BusinessLicense"];
+        }
+
+        if (array_key_exists("PowerOfAttorneys",$param) and $param["PowerOfAttorneys"] !== null) {
+            $this->PowerOfAttorneys = $param["PowerOfAttorneys"];
         }
     }
 }

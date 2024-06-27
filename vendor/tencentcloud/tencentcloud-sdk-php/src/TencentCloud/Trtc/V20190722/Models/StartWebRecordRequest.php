@@ -24,9 +24,9 @@ use TencentCloud\Common\AbstractModel;
 
  * @method void setRecordUrl(string $RecordUrl) 设置需要录制的网页URL
 
- * @method integer getMaxDurationLimit() 获取录制最大时长限制， 单位 s, 合法取值范围[0, 36000], 默认 36000s(10 小时)
+ * @method integer getMaxDurationLimit() 获取录制最大时长限制， 单位 s, 合法取值范围[1800, 36000], 默认 36000s(10 小时)
 
- * @method void setMaxDurationLimit(integer $MaxDurationLimit) 设置录制最大时长限制， 单位 s, 合法取值范围[0, 36000], 默认 36000s(10 小时)
+ * @method void setMaxDurationLimit(integer $MaxDurationLimit) 设置录制最大时长限制， 单位 s, 合法取值范围[1800, 36000], 默认 36000s(10 小时)
 
  * @method StorageParams getStorageParams() 获取云存储相关的参数，目前支持腾讯云对象存储，不支持第三方云存储以及VOD
  * @method void setStorageParams(StorageParams $StorageParams) 设置云存储相关的参数，目前支持腾讯云对象存储，不支持第三方云存储以及VOD
@@ -38,6 +38,8 @@ use TencentCloud\Common\AbstractModel;
 传入录制RecordId来标识此次任务， 小于32字节，若携带RecordId发起两次以上的开始录制请求，任务只会启动一个，第二个报错FailedOperation.TaskExist。注意StartWebRecord调用失败时而非FailedOperation.TaskExist错误，请更换RecordId重新发起。
  * @method void setRecordId(string $RecordId) 设置当对重复任务敏感时，请关注此值： 为了避免任务在短时间内重复发起，导致任务重复
 传入录制RecordId来标识此次任务， 小于32字节，若携带RecordId发起两次以上的开始录制请求，任务只会启动一个，第二个报错FailedOperation.TaskExist。注意StartWebRecord调用失败时而非FailedOperation.TaskExist错误，请更换RecordId重新发起。
+ * @method array getPublishCdnParams() 获取若您想要推流到CDN，可以使用PublishCdnParams.N参数设置，支持最多同时推流到10个CDN地址。若转推地址是腾讯云CDN时，请将IsTencentCdn明确设置为1
+ * @method void setPublishCdnParams(array $PublishCdnParams) 设置若您想要推流到CDN，可以使用PublishCdnParams.N参数设置，支持最多同时推流到10个CDN地址。若转推地址是腾讯云CDN时，请将IsTencentCdn明确设置为1
  */
 class StartWebRecordRequest extends AbstractModel
 {
@@ -48,7 +50,7 @@ class StartWebRecordRequest extends AbstractModel
     public $RecordUrl;
 
     /**
-     * @var integer 录制最大时长限制， 单位 s, 合法取值范围[0, 36000], 默认 36000s(10 小时)
+     * @var integer 录制最大时长限制， 单位 s, 合法取值范围[1800, 36000], 默认 36000s(10 小时)
 
      */
     public $MaxDurationLimit;
@@ -75,15 +77,21 @@ class StartWebRecordRequest extends AbstractModel
     public $RecordId;
 
     /**
+     * @var array 若您想要推流到CDN，可以使用PublishCdnParams.N参数设置，支持最多同时推流到10个CDN地址。若转推地址是腾讯云CDN时，请将IsTencentCdn明确设置为1
+     */
+    public $PublishCdnParams;
+
+    /**
      * @param string $RecordUrl 需要录制的网页URL
 
-     * @param integer $MaxDurationLimit 录制最大时长限制， 单位 s, 合法取值范围[0, 36000], 默认 36000s(10 小时)
+     * @param integer $MaxDurationLimit 录制最大时长限制， 单位 s, 合法取值范围[1800, 36000], 默认 36000s(10 小时)
 
      * @param StorageParams $StorageParams 云存储相关的参数，目前支持腾讯云对象存储，不支持第三方云存储以及VOD
      * @param WebRecordVideoParams $WebRecordVideoParams 页面录制视频参数
      * @param integer $SdkAppId TRTC的SdkAppId
      * @param string $RecordId 当对重复任务敏感时，请关注此值： 为了避免任务在短时间内重复发起，导致任务重复
 传入录制RecordId来标识此次任务， 小于32字节，若携带RecordId发起两次以上的开始录制请求，任务只会启动一个，第二个报错FailedOperation.TaskExist。注意StartWebRecord调用失败时而非FailedOperation.TaskExist错误，请更换RecordId重新发起。
+     * @param array $PublishCdnParams 若您想要推流到CDN，可以使用PublishCdnParams.N参数设置，支持最多同时推流到10个CDN地址。若转推地址是腾讯云CDN时，请将IsTencentCdn明确设置为1
      */
     function __construct()
     {
@@ -122,6 +130,15 @@ class StartWebRecordRequest extends AbstractModel
 
         if (array_key_exists("RecordId",$param) and $param["RecordId"] !== null) {
             $this->RecordId = $param["RecordId"];
+        }
+
+        if (array_key_exists("PublishCdnParams",$param) and $param["PublishCdnParams"] !== null) {
+            $this->PublishCdnParams = [];
+            foreach ($param["PublishCdnParams"] as $key => $value){
+                $obj = new McuPublishCdnParam();
+                $obj->deserialize($value);
+                array_push($this->PublishCdnParams, $obj);
+            }
         }
     }
 }

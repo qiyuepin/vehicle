@@ -37,8 +37,6 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 
 - 如传入的关键字<font color="red">"^甲方签署^"</font >，则会在PDF文件中有且仅有"甲方签署"关键字的地方（<font color="red">前后不能有其他字符</font >）进行对应操作。
 - 如传入的关键字为<font color="red">"甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前后可以有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"^甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前面不能有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"甲方签署^</font >"，则PDF文件中每个出现关键字的位置（<font color="red">后面不能有其他字符</font >）都会执行相应操作。
 
 
 注：`控件ID可以在一个PDF中不可重复`
@@ -54,8 +52,6 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 
 - 如传入的关键字<font color="red">"^甲方签署^"</font >，则会在PDF文件中有且仅有"甲方签署"关键字的地方（<font color="red">前后不能有其他字符</font >）进行对应操作。
 - 如传入的关键字为<font color="red">"甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前后可以有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"^甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前面不能有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"甲方签署^</font >"，则PDF文件中每个出现关键字的位置（<font color="red">后面不能有其他字符</font >）都会执行相应操作。
 
 
 注：`控件ID可以在一个PDF中不可重复`
@@ -158,11 +154,13 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
  * @method void setComponentHeight(float $ComponentHeight) 设置**在绝对定位方式和关键字定位方式下**，指定控件的高度， 控件高度是指控件在PDF文件中的高度，单位为pt（点）。
 
  * @method integer getComponentPage() 获取**在绝对定位方式方式下**，指定控件所在PDF文件上的页码
+**在使用文件发起的情况下**，绝对定位方式的填写控件和签署控件支持使用负数来指定控件在PDF文件上的页码，使用负数时，页码从最后一页开始。例如：ComponentPage设置为-1，即代表在PDF文件的最后一页，以此类推。
 
 注：
 1. 页码编号是从<font color="red">1</font>开始编号的。
 2.  <font color="red">页面编号不能超过PDF文件的页码总数</font>。如果指定的页码超过了PDF文件的页码总数，在填写和签署时会出现错误，导致无法正常进行操作。
  * @method void setComponentPage(integer $ComponentPage) 设置**在绝对定位方式方式下**，指定控件所在PDF文件上的页码
+**在使用文件发起的情况下**，绝对定位方式的填写控件和签署控件支持使用负数来指定控件在PDF文件上的页码，使用负数时，页码从最后一页开始。例如：ComponentPage设置为-1，即代表在PDF文件的最后一页，以此类推。
 
 注：
 1. 页码编号是从<font color="red">1</font>开始编号的。
@@ -190,7 +188,8 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 <li> <b>FillMethod</b> : int. 填充方式。0-铺满（默认）；1-等比例缩放</li></ul>
 
 <font color="red">ComponentType为SIGN_SIGNATURE类型时</font>，可以**ComponentTypeLimit**参数控制签署方式
-<ul><li> <b>HANDWRITE</b> : 手写签名</li>
+<ul><li> <b>HANDWRITE</b> : 需要实时手写的手写签名</li>
+<li> <b>HANDWRITTEN_ESIGN</b> : 长效手写签名， 是使用保存到个人中心的印章列表的手写签名(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> : AI智能识别手写签名</li>
 <li> <b>ESIGN</b> : 个人印章类型</li>
 <li> <b>SYSTEM_ESIGN</b> : 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）</li>
@@ -241,7 +240,8 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 <li> <b>FillMethod</b> : int. 填充方式。0-铺满（默认）；1-等比例缩放</li></ul>
 
 <font color="red">ComponentType为SIGN_SIGNATURE类型时</font>，可以**ComponentTypeLimit**参数控制签署方式
-<ul><li> <b>HANDWRITE</b> : 手写签名</li>
+<ul><li> <b>HANDWRITE</b> : 需要实时手写的手写签名</li>
+<li> <b>HANDWRITTEN_ESIGN</b> : 长效手写签名， 是使用保存到个人中心的印章列表的手写签名(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> : AI智能识别手写签名</li>
 <li> <b>ESIGN</b> : 个人印章类型</li>
 <li> <b>SYSTEM_ESIGN</b> : 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）</li>
@@ -275,12 +275,12 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 <b>参数样例</b>：` "{"IgnoreKeywordError":1}"`
  * @method string getComponentValue() 获取控件填充vaule，ComponentType和传入值类型对应关系：
 <ul><li> <b>TEXT</b> : 文本内容</li>
-<li> <b>MULTI_LINE_TEXT</b> : 文本内容</li>
+<li> <b>MULTI_LINE_TEXT</b> : 文本内容， 可以用  \n 来控制换行位置</li>
 <li> <b>CHECK_BOX</b> : true/false</li>
 <li> <b>FILL_IMAGE、ATTACHMENT</b> : 附件的FileId，需要通过UploadFiles接口上传获取</li>
 <li> <b>SELECTOR</b> : 选项值</li>
 <li> <b>DYNAMIC_TABLE</b>  - 传入json格式的表格内容，详见说明：[数据表格](https://qian.tencent.com/developers/company/dynamic_table)</li>
-<li> <b>DATE</b> : 默认是格式化为xxxx年xx月xx日</li>
+<li> <b>DATE</b> : 格式化：xxxx年xx月xx日（例如：2024年05月28日）</li>
 <li> <b>SIGN_SEAL</b> : 印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li>
 <li> <b>SIGN_PAGING_SEAL</b> : 可以指定印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li></ul>
 
@@ -290,12 +290,12 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 注：   `部分特殊控件需要在控制台配置模板形式创建`
  * @method void setComponentValue(string $ComponentValue) 设置控件填充vaule，ComponentType和传入值类型对应关系：
 <ul><li> <b>TEXT</b> : 文本内容</li>
-<li> <b>MULTI_LINE_TEXT</b> : 文本内容</li>
+<li> <b>MULTI_LINE_TEXT</b> : 文本内容， 可以用  \n 来控制换行位置</li>
 <li> <b>CHECK_BOX</b> : true/false</li>
 <li> <b>FILL_IMAGE、ATTACHMENT</b> : 附件的FileId，需要通过UploadFiles接口上传获取</li>
 <li> <b>SELECTOR</b> : 选项值</li>
 <li> <b>DYNAMIC_TABLE</b>  - 传入json格式的表格内容，详见说明：[数据表格](https://qian.tencent.com/developers/company/dynamic_table)</li>
-<li> <b>DATE</b> : 默认是格式化为xxxx年xx月xx日</li>
+<li> <b>DATE</b> : 格式化：xxxx年xx月xx日（例如：2024年05月28日）</li>
 <li> <b>SIGN_SEAL</b> : 印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li>
 <li> <b>SIGN_PAGING_SEAL</b> : 可以指定印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li></ul>
 
@@ -335,15 +335,15 @@ https://cloud.tencent.com/document/product/1323/78346#component-.E4.B8.89.E7.A7.
 <ul><li> <b>Middle</b> :居中</li>
 <li> <b>Below</b> :正下方</li>
 <li> <b>Right</b> :正右方</li>
-<li> <b>LowerRight</b> :右上角</li>
-<li> <b>UpperRight</b> :右下角。</li></ul>
+<li> <b>LowerRight</b> :右下角</li>
+<li> <b>UpperRight</b> :右上角。</li></ul>
 示例：如果设置Middle的关键字盖章，则印章的中心会和关键字的中心重合，如果设置Below，则印章在关键字的正下方
  * @method void setRelativeLocation(string $RelativeLocation) 设置**如果控件是关键字定位方式**，关键字生成的区域的对齐方式， 可以设置下面的值
 <ul><li> <b>Middle</b> :居中</li>
 <li> <b>Below</b> :正下方</li>
 <li> <b>Right</b> :正右方</li>
-<li> <b>LowerRight</b> :右上角</li>
-<li> <b>UpperRight</b> :右下角。</li></ul>
+<li> <b>LowerRight</b> :右下角</li>
+<li> <b>UpperRight</b> :右上角。</li></ul>
 示例：如果设置Middle的关键字盖章，则印章的中心会和关键字的中心重合，如果设置Below，则印章在关键字的正下方
  * @method array getKeywordIndexes() 获取**如果控件是关键字定位方式**，关键字索引是指在PDF文件中存在多个相同的关键字时，通过索引指定使用哪一个关键字作为最后的结果。可以通过指定多个索引来同时使用多个关键字。例如，[0,2]表示使用PDF文件内第1个和第3个关键字位置作为最后的结果。
 
@@ -387,8 +387,6 @@ class Component extends AbstractModel
 
 - 如传入的关键字<font color="red">"^甲方签署^"</font >，则会在PDF文件中有且仅有"甲方签署"关键字的地方（<font color="red">前后不能有其他字符</font >）进行对应操作。
 - 如传入的关键字为<font color="red">"甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前后可以有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"^甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前面不能有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"甲方签署^</font >"，则PDF文件中每个出现关键字的位置（<font color="red">后面不能有其他字符</font >）都会执行相应操作。
 
 
 注：`控件ID可以在一个PDF中不可重复`
@@ -479,6 +477,7 @@ class Component extends AbstractModel
 
     /**
      * @var integer **在绝对定位方式方式下**，指定控件所在PDF文件上的页码
+**在使用文件发起的情况下**，绝对定位方式的填写控件和签署控件支持使用负数来指定控件在PDF文件上的页码，使用负数时，页码从最后一页开始。例如：ComponentPage设置为-1，即代表在PDF文件的最后一页，以此类推。
 
 注：
 1. 页码编号是从<font color="red">1</font>开始编号的。
@@ -516,7 +515,8 @@ class Component extends AbstractModel
 <li> <b>FillMethod</b> : int. 填充方式。0-铺满（默认）；1-等比例缩放</li></ul>
 
 <font color="red">ComponentType为SIGN_SIGNATURE类型时</font>，可以**ComponentTypeLimit**参数控制签署方式
-<ul><li> <b>HANDWRITE</b> : 手写签名</li>
+<ul><li> <b>HANDWRITE</b> : 需要实时手写的手写签名</li>
+<li> <b>HANDWRITTEN_ESIGN</b> : 长效手写签名， 是使用保存到个人中心的印章列表的手写签名(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> : AI智能识别手写签名</li>
 <li> <b>ESIGN</b> : 个人印章类型</li>
 <li> <b>SYSTEM_ESIGN</b> : 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）</li>
@@ -554,12 +554,12 @@ class Component extends AbstractModel
     /**
      * @var string 控件填充vaule，ComponentType和传入值类型对应关系：
 <ul><li> <b>TEXT</b> : 文本内容</li>
-<li> <b>MULTI_LINE_TEXT</b> : 文本内容</li>
+<li> <b>MULTI_LINE_TEXT</b> : 文本内容， 可以用  \n 来控制换行位置</li>
 <li> <b>CHECK_BOX</b> : true/false</li>
 <li> <b>FILL_IMAGE、ATTACHMENT</b> : 附件的FileId，需要通过UploadFiles接口上传获取</li>
 <li> <b>SELECTOR</b> : 选项值</li>
 <li> <b>DYNAMIC_TABLE</b>  - 传入json格式的表格内容，详见说明：[数据表格](https://qian.tencent.com/developers/company/dynamic_table)</li>
-<li> <b>DATE</b> : 默认是格式化为xxxx年xx月xx日</li>
+<li> <b>DATE</b> : 格式化：xxxx年xx月xx日（例如：2024年05月28日）</li>
 <li> <b>SIGN_SEAL</b> : 印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li>
 <li> <b>SIGN_PAGING_SEAL</b> : 可以指定印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li></ul>
 
@@ -621,8 +621,8 @@ class Component extends AbstractModel
 <ul><li> <b>Middle</b> :居中</li>
 <li> <b>Below</b> :正下方</li>
 <li> <b>Right</b> :正右方</li>
-<li> <b>LowerRight</b> :右上角</li>
-<li> <b>UpperRight</b> :右下角。</li></ul>
+<li> <b>LowerRight</b> :右下角</li>
+<li> <b>UpperRight</b> :右上角。</li></ul>
 示例：如果设置Middle的关键字盖章，则印章的中心会和关键字的中心重合，如果设置Below，则印章在关键字的正下方
      */
     public $RelativeLocation;
@@ -668,8 +668,6 @@ class Component extends AbstractModel
 
 - 如传入的关键字<font color="red">"^甲方签署^"</font >，则会在PDF文件中有且仅有"甲方签署"关键字的地方（<font color="red">前后不能有其他字符</font >）进行对应操作。
 - 如传入的关键字为<font color="red">"甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前后可以有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"^甲方签署</font >"，则PDF文件中每个出现关键字的位置（<font color="red">前面不能有其他字符</font >）都会执行相应操作。
-- 如传入的关键字为<font color="red">"甲方签署^</font >"，则PDF文件中每个出现关键字的位置（<font color="red">后面不能有其他字符</font >）都会执行相应操作。
 
 
 注：`控件ID可以在一个PDF中不可重复`
@@ -724,6 +722,7 @@ class Component extends AbstractModel
      * @param float $ComponentHeight **在绝对定位方式和关键字定位方式下**，指定控件的高度， 控件高度是指控件在PDF文件中的高度，单位为pt（点）。
 
      * @param integer $ComponentPage **在绝对定位方式方式下**，指定控件所在PDF文件上的页码
+**在使用文件发起的情况下**，绝对定位方式的填写控件和签署控件支持使用负数来指定控件在PDF文件上的页码，使用负数时，页码从最后一页开始。例如：ComponentPage设置为-1，即代表在PDF文件的最后一页，以此类推。
 
 注：
 1. 页码编号是从<font color="red">1</font>开始编号的。
@@ -749,7 +748,8 @@ class Component extends AbstractModel
 <li> <b>FillMethod</b> : int. 填充方式。0-铺满（默认）；1-等比例缩放</li></ul>
 
 <font color="red">ComponentType为SIGN_SIGNATURE类型时</font>，可以**ComponentTypeLimit**参数控制签署方式
-<ul><li> <b>HANDWRITE</b> : 手写签名</li>
+<ul><li> <b>HANDWRITE</b> : 需要实时手写的手写签名</li>
+<li> <b>HANDWRITTEN_ESIGN</b> : 长效手写签名， 是使用保存到个人中心的印章列表的手写签名(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> : AI智能识别手写签名</li>
 <li> <b>ESIGN</b> : 个人印章类型</li>
 <li> <b>SYSTEM_ESIGN</b> : 系统签名（该类型可以在用户签署时根据用户姓名一键生成一个签名来进行签署）</li>
@@ -783,12 +783,12 @@ class Component extends AbstractModel
 <b>参数样例</b>：` "{"IgnoreKeywordError":1}"`
      * @param string $ComponentValue 控件填充vaule，ComponentType和传入值类型对应关系：
 <ul><li> <b>TEXT</b> : 文本内容</li>
-<li> <b>MULTI_LINE_TEXT</b> : 文本内容</li>
+<li> <b>MULTI_LINE_TEXT</b> : 文本内容， 可以用  \n 来控制换行位置</li>
 <li> <b>CHECK_BOX</b> : true/false</li>
 <li> <b>FILL_IMAGE、ATTACHMENT</b> : 附件的FileId，需要通过UploadFiles接口上传获取</li>
 <li> <b>SELECTOR</b> : 选项值</li>
 <li> <b>DYNAMIC_TABLE</b>  - 传入json格式的表格内容，详见说明：[数据表格](https://qian.tencent.com/developers/company/dynamic_table)</li>
-<li> <b>DATE</b> : 默认是格式化为xxxx年xx月xx日</li>
+<li> <b>DATE</b> : 格式化：xxxx年xx月xx日（例如：2024年05月28日）</li>
 <li> <b>SIGN_SEAL</b> : 印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li>
 <li> <b>SIGN_PAGING_SEAL</b> : 可以指定印章ID，于控制台查询获取，[点击查看在控制上的位置](https://qcloudimg.tencent-cloud.cn/raw/cd403a5b949fce197fd9e88bb6db1517.png)</li></ul>
 
@@ -814,8 +814,8 @@ class Component extends AbstractModel
 <ul><li> <b>Middle</b> :居中</li>
 <li> <b>Below</b> :正下方</li>
 <li> <b>Right</b> :正右方</li>
-<li> <b>LowerRight</b> :右上角</li>
-<li> <b>UpperRight</b> :右下角。</li></ul>
+<li> <b>LowerRight</b> :右下角</li>
+<li> <b>UpperRight</b> :右上角。</li></ul>
 示例：如果设置Middle的关键字盖章，则印章的中心会和关键字的中心重合，如果设置Below，则印章在关键字的正下方
      * @param array $KeywordIndexes **如果控件是关键字定位方式**，关键字索引是指在PDF文件中存在多个相同的关键字时，通过索引指定使用哪一个关键字作为最后的结果。可以通过指定多个索引来同时使用多个关键字。例如，[0,2]表示使用PDF文件内第1个和第3个关键字位置作为最后的结果。
 

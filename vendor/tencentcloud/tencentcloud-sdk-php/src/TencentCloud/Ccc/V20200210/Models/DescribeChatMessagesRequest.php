@@ -22,8 +22,8 @@ use TencentCloud\Common\AbstractModel;
  *
  * @method integer getInstanceId() 获取实例 ID（废弃）
  * @method void setInstanceId(integer $InstanceId) 设置实例 ID（废弃）
- * @method integer getSdkAppId() 获取应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
- * @method void setSdkAppId(integer $SdkAppId) 设置应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
+ * @method integer getSdkAppId() 获取应用 ID，可以查看 https://console.cloud.tencent.com/ccc
+ * @method void setSdkAppId(integer $SdkAppId) 设置应用 ID，可以查看 https://console.cloud.tencent.com/ccc
  * @method string getCdrId() 获取服务记录ID（废弃）
  * @method void setCdrId(string $CdrId) 设置服务记录ID（废弃）
  * @method integer getLimit() 获取返回记录条数，最大为100 默认20
@@ -32,8 +32,8 @@ use TencentCloud\Common\AbstractModel;
  * @method void setOffset(integer $Offset) 设置返回记录偏移，默认为 0
  * @method integer getOrder() 获取1为从早到晚，2为从晚到早，默认为2
  * @method void setOrder(integer $Order) 设置1为从早到晚，2为从晚到早，默认为2
- * @method string getSessionId() 获取服务记录 SessionID（必填）
- * @method void setSessionId(string $SessionId) 设置服务记录 SessionID（必填）
+ * @method string getSessionId() 获取服务记录 SessionID
+ * @method void setSessionId(string $SessionId) 设置服务记录 SessionID
  */
 class DescribeChatMessagesRequest extends AbstractModel
 {
@@ -44,12 +44,13 @@ class DescribeChatMessagesRequest extends AbstractModel
     public $InstanceId;
 
     /**
-     * @var integer 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
+     * @var integer 应用 ID，可以查看 https://console.cloud.tencent.com/ccc
      */
     public $SdkAppId;
 
     /**
      * @var string 服务记录ID（废弃）
+     * @deprecated
      */
     public $CdrId;
 
@@ -69,18 +70,18 @@ class DescribeChatMessagesRequest extends AbstractModel
     public $Order;
 
     /**
-     * @var string 服务记录 SessionID（必填）
+     * @var string 服务记录 SessionID
      */
     public $SessionId;
 
     /**
      * @param integer $InstanceId 实例 ID（废弃）
-     * @param integer $SdkAppId 应用 ID（必填），可以查看 https://console.cloud.tencent.com/ccc
+     * @param integer $SdkAppId 应用 ID，可以查看 https://console.cloud.tencent.com/ccc
      * @param string $CdrId 服务记录ID（废弃）
      * @param integer $Limit 返回记录条数，最大为100 默认20
      * @param integer $Offset 返回记录偏移，默认为 0
      * @param integer $Order 1为从早到晚，2为从晚到早，默认为2
-     * @param string $SessionId 服务记录 SessionID（必填）
+     * @param string $SessionId 服务记录 SessionID
      */
     function __construct()
     {

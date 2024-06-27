@@ -22,53 +22,8 @@ use TencentCloud\Common\AbstractModel;
 
 **各种场景传参说明**:
 
-<table>
-<thead>
-<tr>
-<th>场景编号</th>
-<th>可作为发起方类型</th>
-<th>可作为签署方的类型</th>
-<th>签署方传参说明</th>
-</tr>
-</thead>
+<table>     <thead>     <tr>         <th>场景编号</th>         <th>发起方类型</th>         <th>签署方类型</th>         <th>签署方传参说明</th>     </tr>     </thead>     <tbody>     <tr>         <td>场景一</td>         <td>第三方子企业A员工</td>         <td>第三方子企业A员工</td>         <td>             <ul>                 <li>（选填）IdCardNumber和IdCardType：证件类型和证件号</li>                 <li>（必传）Name：签署方的名字</li>                 <li>（必传）Mobile：签署方的手机号</li>                 <li>（必传）OpenId：企业员工标识</li>                 <li>（必传）OrganizationName：子企业名称</li>                 <li>（必传）OrganizationOpenId：子企业的标识</li>                 <li>（固定）ApproverType：需设置为ORGANIZATION</li>             </ul>         </td>     </tr>     <tr>         <td>场景二</td>         <td>第三方子企业A员工</td>         <td>第三方子企业B(不指定经办人走领取方式)</td>         <td>             <ul>                 <li>（必传）OrganizationName：子企业名称</li>                 <li>（必传）OrganizationOpenId：子企业的标识</li>                 <li>（固定）ApproverType：需设置为ORGANIZATION</li>                 <li>（固定）ApproverOption.FillType：需设置为1</li>             </ul>         </td>     </tr>     <tr>         <td>场景三</td>         <td>第三方子企业A员工</td>         <td>第三方子企业B员工</td>         <td>  <ul>             <li>（选填）IdCardNumber和IdCardType：证件类型和证件号</li>             <li>（必传）Name：签署方的名字</li>             <li>（必传）Mobile：签署方的手机号</li>             <li>（必传）OpenId：企业员工标识</li>             <li>（必传）OrganizationName：子企业名称</li>             <li>（必传）OrganizationOpenId：子企业的标识</li>             <li>（固定）ApproverType：需设置为ORGANIZATION</li>         </ul></td>     </tr>     <tr>         <td>场景四</td>         <td>第三方子企业A员工</td>         <td>个人/自然人</td>         <td>             <ul>                 <li>（选填）IdCardNumber和IdCardType：证件类型和证件号</li>                 <li>（必传）Name：签署方的名字</li>                 <li>（必传）Mobile：签署方的手机号</li>                 <li>（固定）ApproverType：需设置为PERSON</li>             </ul>         </td>     </tr>     <tr>         <td>场景五</td>         <td>第三方子企业A员工</td>         <td>SaaS平台企业员工</td>         <td>             <ul>                 <li>（选填）IdCardNumber和IdCardType：证件类型和证件号</li>                 <li>（必传）OrganizationName：SaaS企业的名字</li>                 <li>（必传）Name：签署方的名字</li>                 <li>（必传）Mobile：签署方的手机号</li>                 <li>（必传）OrganizationOpenId：子企业的标识</li>                 <li>（固定）ApproverType：需设置为ORGANIZATION</li>                 <li>（固定）NotChannelOrganization：需设置为True</li>             </ul>         </td>     </tr>     </tbody> </table>
 
-<tbody>
-<tr>
-<td>场景一</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业A员工</td>
-<td>OpenId、OrganizationName、OrganizationOpenId必传 ,ApproverType设置为ORGANIZATION</td>
-</tr>
-
-<tr>
-<td>场景二</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业B(不指定经办人)</td>
-<td>OrganizationName、OrganizationOpenId必传 ,ApproverType设置为ORGANIZATION</td>
-</tr>
-
-<tr>
-<td>场景三</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业B员工</td>
-<td>OpenId、OrganizationOpenId、OrganizationName必传, ApproverType设置为ORGANIZATION</td>
-</tr>
-
-<tr>
-<td>场景四</td>
-<td>第三方子企业A员工</td>
-<td>个人/自然人</td>
-<td>Name、Mobile必传, ApproverType设置为PERSON</td>
-</tr>
-
-<tr>
-<td>场景五</td>
-<td>第三方子企业A员工</td>
-<td>SaaS平台企业员工</td>
-<td>Name、Mobile、OrganizationName必传，且NotChannelOrganization=True。 ApproverType设置为ORGANIZATION</td>
-</tr>
-</tbody>
-</table>
 
 **注1**: `使用模板发起合同时，RecipientId（模板发起合同时）必传`
 
@@ -82,14 +37,14 @@ RecipientId参数获取：
  * @method void setName(string $Name) 设置签署方经办人的姓名。
 经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
  * @method string getIdCardType() 获取签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD : 居民身份证  (默认值)</li>
+<ul><li>ID_CARD : 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO : 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN : 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE : 其他证件</li></ul>
 
 注: `其他证件类型为白名单功能，使用前请联系对接的客户经理沟通。`
  * @method void setIdCardType(string $IdCardType) 设置签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD : 居民身份证  (默认值)</li>
+<ul><li>ID_CARD : 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO : 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN : 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE : 其他证件</li></ul>
@@ -177,7 +132,8 @@ RecipientId参数获取：
  * @method void setSignComponents(array $SignComponents) 设置使用PDF文件直接发起合同时，签署人指定的签署控件；<br/>使用模板发起合同时，指定本企业印章签署控件的印章ID: <br/>通过ComponentId或ComponenetName指定签署控件，ComponentValue为印章ID。
  * @method array getComponentLimitType() 获取当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>
@@ -187,7 +143,8 @@ RecipientId参数获取：
 ![image](https://qcloudimg.tencent-cloud.cn/raw/ee0498856c060c065628a0c5ba780d6b.jpg)
  * @method void setComponentLimitType(array $ComponentLimitType) 设置当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>
@@ -350,7 +307,7 @@ class FlowApproverInfo extends AbstractModel
 
     /**
      * @var string 签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD : 居民身份证  (默认值)</li>
+<ul><li>ID_CARD : 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO : 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN : 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE : 其他证件</li></ul>
@@ -447,7 +404,8 @@ class FlowApproverInfo extends AbstractModel
     /**
      * @var array 当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>
@@ -586,7 +544,7 @@ class FlowApproverInfo extends AbstractModel
      * @param string $Name 签署方经办人的姓名。
 经办人的姓名将用于身份认证和电子签名，请确保填写的姓名为签署方的真实姓名，而非昵称等代名。
      * @param string $IdCardType 签署方经办人的证件类型，支持以下类型
-<ul><li>ID_CARD : 居民身份证  (默认值)</li>
+<ul><li>ID_CARD : 中国大陆居民身份证  (默认值)</li>
 <li>HONGKONG_AND_MACAO : 港澳居民来往内地通行证</li>
 <li>HONGKONG_MACAO_AND_TAIWAN : 港澳台居民居住证(格式同居民身份证)</li>
 <li>OTHER_CARD_TYPE : 其他证件</li></ul>
@@ -634,7 +592,8 @@ class FlowApproverInfo extends AbstractModel
      * @param array $SignComponents 使用PDF文件直接发起合同时，签署人指定的签署控件；<br/>使用模板发起合同时，指定本企业印章签署控件的印章ID: <br/>通过ComponentId或ComponenetName指定签署控件，ComponentValue为印章ID。
      * @param array $ComponentLimitType 当签署方控件类型为 <b>SIGN_SIGNATURE</b> 时，可以指定签署方签名方式。如果不指定，签署人可以使用所有的签名类型，可指定的签名类型包括：
 
-<ul><li> <b>HANDWRITE</b> :手写签名。</li>
+<ul><li> <b>HANDWRITE</b> :需要实时手写的手写签名。</li>
+<li> <b>HANDWRITTEN_ESIGN</b> :长效手写签名， 是使用保存到个人中心的印章列表的手写签名。(并且包含HANDWRITE)</li>
 <li> <b>OCR_ESIGN</b> :AI智能识别手写签名。</li>
 <li> <b>ESIGN</b> :个人印章类型。</li>
 <li> <b>IMG_ESIGN</b>  : 图片印章。该类型支持用户在签署将上传的PNG格式的图片作为签名。</li>

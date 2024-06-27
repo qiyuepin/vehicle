@@ -79,8 +79,9 @@ use TencentCloud\Essbasic\V20210526\Models as Models;
 注：
 - 使用此接口生成链接，需要提前开通 `使用手机号验证签署方身份` 功能，在 `腾讯电子签网页端-企业设置-拓展服务` 中可以找到。
 - 参与人点击链接后需短信验证码才能查看合同内容。
-- 企业用户批量签署，需要传OrganizationName（参与方所在企业名称）参数生成签署链接，`请确保此企业已完成腾讯电子签企业认证`。暂时仅支持给`自建应用集成企业` 生成员工批签链接，不支持子客企业。
-- 个人批量签署，签名区`仅支持手写签名`。
+- 企业用户批量签署，需要传OrganizationName（参与方所在企业名称）参数生成签署链接，<font color="red">请确保此企业已完成腾讯电子签企业认证</font>。暂时仅支持给<font color="red">自建应用集成企业</font>生成员工批签链接，不支持子客企业。
+- 生成批量签署链接时，合同目标参与方状态需为<font color="red">待签署</font>状态。
+- 个人批量签署进行的合同的签名区， 全部变成<font color="red">手写签名</font>（不管合同里边设置的签名限制）来进行。
  * @method Models\ChannelCreateBoundFlowsResponse ChannelCreateBoundFlows(Models\ChannelCreateBoundFlowsRequest $req) 此接口（ChannelCreateBoundFlows）用于子客企业领取未归属给员工的合同，将合同领取给当前员工，合同不能重复领取。
 
 
@@ -137,47 +138,8 @@ use TencentCloud\Essbasic\V20210526\Models as Models;
 ![image](https://qcloudimg.tencent-cloud.cn/raw/bf86248a2c163228c4e894cf5926af69/ChannelCreateFlowByFiles.png)
 
 **可以作为发起方和签署方的角色列表**
-<table>
-<thead>
-<tr>
-<th>场景编号</th>
-<th>可作为发起方类型</th>
-<th>可作为签署方的类型</th>
-</tr>
-</thead>
+<table>     <thead>     <tr>         <th>场景编号</th>         <th>发起方</th>         <th>签署方</th>         <th>补充</th>     </tr>     </thead>     <tbody>     <tr>         <td>场景一</td>         <td>子企业A的员工</td>         <td>子企业A的员工</td>         <td>子企业是通过<a href="https://qian.tencent.com/developers/partnerApis/accounts/CreateConsoleLoginUrl" target="_blank">CreateConsoleLoginUrl</a>生成子客登录链接注册的企业</td>     </tr>     <tr>         <td>场景二</td>         <td>子企业A的员工</td>         <td>子企业B(不指定经办人走领取逻辑)</td>         <td>领取的逻辑可以参考文档<a href="https://qian.tencent.com/developers/partner/dynamic_signer" target="_blank">动态签署方</a> </td>     </tr>     <tr>         <td>场景三</td>         <td>子企业A的员工</td>         <td>子企业B的员工</td>         <td>-</td>     </tr>     <tr>         <td>场景四</td>         <td>子企业A的员工</td>         <td>个人</td>         <td>就是自然人，不是企业员工</td>     </tr>     <tr>         <td>场景五</td>         <td>子企业A的员工</td>         <td>SaaS平台企业员工</td>         <td>SaaS平台企业是通过<a href="https://qian.tencent.cn/console/company-register" target="_blank">https://qian.tencent.cn/console/company-register</a>链接注册的企业</td>     </tr>     </tbody> </table>
 
-<tbody>
-<tr>
-<td>场景一</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业A员工</td>
-</tr>
-
-<tr>
-<td>场景二</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业B(不指定经办人)</td>
-</tr>
-
-<tr>
-<td>场景三</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业B员工</td>
-</tr>
-
-<tr>
-<td>场景四</td>
-<td>第三方子企业A员工</td>
-<td>个人/自然人</td>
-</tr>
-
-<tr>
-<td>场景五</td>
-<td>第三方子企业A员工</td>
-<td>SaaS平台企业员工</td>
-</tr>
-</tbody>
-</table>
 
 **注**: 
 `1. 发起合同时候,  作为发起方的第三方子企业A员工的企业和员工必须经过实名, 而作为签署方的第三方子企业A员工/个人/自然人/SaaS平台企业员工/第三方子企业B员工企业中的企业和个人/员工可以未实名`
@@ -421,7 +383,7 @@ use TencentCloud\Essbasic\V20210526\Models as Models;
 <li>原合同个人类型参与人必须是解除协议的参与人，<code>不能更换其他第三方个人</code>参与解除协议。</li>
 <li>如果原合同企业参与人无法参与解除协议，可以指定同企业具有同等权限的<code>企业员工代为处理</code>。</li>
 <li>发起解除协议同发起其他企业合同一样，也会参与合同<code>扣费</code>，扣费标准同其他类型合同。</li>
-<li>在解除协议发起之后，原合同的状态将转变为解除中。一旦解除协议签署完毕，原合同及解除协议均变为已解除状态。</li>
+<li>在解除协议签署完毕后，原合同及解除协议均变为已解除状态。</li>
 <li>非原合同企业参与人发起解除协议时，需要有<code>解除合同的权限</code>。</li>
 </ul>
  * @method Models\ChannelCreateRoleResponse ChannelCreateRole(Models\ChannelCreateRoleRequest $req) 此接口（ChannelCreateRole）用来创建企业自定义角色。
@@ -661,47 +623,11 @@ Web链接访问后，会根据子客企业(**Agent中ProxyOrganizationOpenId表�
 ![image](https://qcloudimg.tencent-cloud.cn/raw/e193519d4383fa74782a9e19147ef01a/CreateFlowsByTemplates.png)
 
 ###  二. 可以作为发起方和签署方的角色列表
-<table>
-<thead>
-<tr>
-<th>场景编号</th>
-<th>可作为发起方类型</th>
-<th>可作为签署方的类型</th>
-</tr>
-</thead>
 
-<tbody>
-<tr>
-<td>场景一</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业A员工</td>
-</tr>
+<table>     <thead>     <tr>         <th>场景编号</th>         <th>发起方</th>         <th>签署方</th>         <th>补充</th>     </tr>     </thead>     <tbody>     <tr>         <td>场景一</td>         <td>子企业A的员工</td>         <td>子企业A的员工</td>         <td>子企业是通过<a href="https://qian.tencent.com/developers/partnerApis/accounts/CreateConsoleLoginUrl" target="_blank">CreateConsoleLoginUrl</a>生成子客登录链接注册的企业</td>     </tr>     <tr>         <td>场景二</td>         <td>子企业A的员工</td>         <td>子企业B(不指定经办人走领取逻辑)</td>         <td>领取的逻辑可以参考文档<a href="https://qian.tencent.com/developers/partner/dynamic_signer" target="_blank">动态签署方</a> </td>     </tr>     <tr>         <td>场景三</td>         <td>子企业A的员工</td>         <td>子企业B的员工</td>         <td>-</td>     </tr>     <tr>         <td>场景四</td>         <td>子企业A的员工</td>         <td>个人</td>         <td>就是自然人，不是企业员工</td>     </tr>     <tr>         <td>场景五</td>         <td>子企业A的员工</td>         <td>SaaS平台企业员工</td>         <td>SaaS平台企业是通过<a href="https://qian.tencent.cn/console/company-register" target="_blank">https://qian.tencent.cn/console/company-register</a>链接注册的企业</td>     </tr>     </tbody> </table>
 
-<tr>
-<td>场景二</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业B(不指定经办人)</td>
-</tr>
 
-<tr>
-<td>场景三</td>
-<td>第三方子企业A员工</td>
-<td>第三方子企业B员工</td>
-</tr>
 
-<tr>
-<td>场景四</td>
-<td>第三方子企业A员工</td>
-<td>个人/自然人</td>
-</tr>
-
-<tr>
-<td>场景五</td>
-<td>第三方子企业A员工</td>
-<td>SaaS平台企业员工</td>
-</tr>
-</tbody>
-</table>
 
 ### 三. 填充模板中定义的填写控件
 模板中配置的<font color="red">发起人填充控件</font>可以通过本接口的**FormFields数组**字段填充
@@ -796,8 +722,9 @@ Web链接访问后，会根据子客企业(**Agent中ProxyOrganizationOpenId表�
 
 - 对于单个企业的查询，通过**指定子客的唯一标识**来查询该子客的企业信息
 - 对于整个应用下所有企业的查询，**不需要指定子客的唯一标识**，直接查询整个应用下所有子客企业的企业信息
- * @method Models\DescribeChannelSealPolicyWorkflowUrlResponse DescribeChannelSealPolicyWorkflowUrl(Models\DescribeChannelSealPolicyWorkflowUrlRequest $req) 制定渠道分支客户的印刷申请审批微型应用程序链接，链接模式（通过H5触发微型应用程序或通过APP跳转进行查看）。
-此刻，代理参数中的OpenId 必须为审批者的openId，生成的链接必须由该用户启动，其他用户则无审批权限。
+ * @method Models\DescribeChannelSealPolicyWorkflowUrlResponse DescribeChannelSealPolicyWorkflowUrl(Models\DescribeChannelSealPolicyWorkflowUrlRequest $req) 生成用印申请审批链接，审批人可以通过此链接进入小程序进行审批。
+ p.s.
+Agent参数中的OpenId 必须为审批者的openId，且链接必须由审批人打开。
  * @method Models\DescribeExtendedServiceAuthDetailResponse DescribeExtendedServiceAuthDetail(Models\DescribeExtendedServiceAuthDetailRequest $req) 查询企业扩展服务的授权详情（列表），当前支持查询以下内容：
 
 1. **企业自动签**
@@ -830,12 +757,14 @@ Web链接访问后，会根据子客企业(**Agent中ProxyOrganizationOpenId表�
 **注意**:   
 有两种开通权限的途径
 
-**第一种**:   需第三方应用的子企业登录控制台进行授权,  授权在**企业中心**的**授权管理**区域,  界面如下图
+**第一种**:   需第三方应用的子企业登录控制台进行授权,  授权在**企业中心**的**授权管理**区域,  界面如下图。
 授权过程需要**子企业超管**扫描跳转到电子签小程序签署<<渠道端下载渠道子客合同功能授权委托书>>
 
 ![image](https://qcloudimg.tencent-cloud.cn/raw/8b483dfebdeafac85051279406944048.png)
 
-**第二种**: 第三方应用的配置接口打开全第三个应用下的所有自己起开通, 需要**渠道方企业的超管**扫描二维码跳转到电子签小程序签署 <<渠道端下载渠道子客合同功能开通知情同意书>>
+**第二种**: 渠道方企业在**企业应用管理**的配置界面打开需要配置的应用，点击**应用扩展服务**开通此功能，需要**渠道方企业的超管**扫描二维码跳转到电子签小程序签署 <<渠道端下载渠道子客合同功能开通知情同意书>>
+注: 
+1. `请注意如果第三方应用的子客主动关闭了渠道端下载渠道子客合同功能开关，那么渠道方开通了此功能也无法下载子客的合同文件`
 ![image](https://qcloudimg.tencent-cloud.cn/raw/238979ef51dd381ccbdbc755a593debc/channel_DescribeResourceUrlsByFlows_appilications2.png)
  * @method Models\DescribeTemplatesResponse DescribeTemplates(Models\DescribeTemplatesRequest $req) 通过此接口（DescribeTemplates）查询该第三方平台子客企业在电子签拥有的有效模板，不包括第三方平台模板。
 

@@ -65,6 +65,29 @@ use TencentCloud\Ess\V20201111\Models as Models;
 ![image](https://qcloudimg.tencent-cloud.cn/raw/1f9f07fea6a70766cd286e0d58682ee2.png)
 
 3. <font color='red'>只有撤销没有参与方签署过或只有自动签署签署过的合同，才会返还合同额度。</font>
+ * @method Models\CreateBatchOrganizationRegistrationTasksResponse CreateBatchOrganizationRegistrationTasks(Models\CreateBatchOrganizationRegistrationTasksRequest $req) 本接口（CreateBatchOrganizationRegistrationTasks）用于批量创建企业认证链接
+该接口为异步提交任务接口,需要跟查询企业批量认证链接(DescribeBatchOrganizationRegistrationUrls) 配合使用.
+
+批量创建链接有以下限制：
+
+1. 单次最多创建10个企业。
+2. 一天同一家企业最多创建8000家企业。
+3. 同一批创建的企业不能重复 其中包括 企业名称，企业统一信用代码
+4. 跳转到小程序的实现，参考微信官方文档（分为全屏、半屏两种方式），如何配置也可以请参考: 跳转电子签小程序配置
+
+注：
+
+1. **此接口需要购买单独的实名套餐包方可调用，如有需求请联系对接人员评估**
+  
+2. 如果生成的链接是APP链接，跳转到小程序的实现，参考微信官方文档（分为<a href="https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html">全屏</a>、<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html">半屏</a>两种方式），如何配置也可以请参考: <a href="https://qian.tencent.com/developers/company/openwxminiprogram">跳转电子签小程序配置</a>
+  
+
+**腾讯电子签小程序的AppID 和 原始Id如下:**
+
+| 小程序 | AppID | 原始ID |
+| --- | --- | --- |
+| 腾讯电子签（正式版） | wxa023b292fd19d41d | gh_da88f6188665 |
+| 腾讯电子签Demo | wx371151823f6f3edf | gh_39a5d3de69fa |
  * @method Models\CreateBatchQuickSignUrlResponse CreateBatchQuickSignUrl(Models\CreateBatchQuickSignUrlRequest $req) 该接口用于发起合同后，生成个人用户的批量签署链接, 暂时不支持企业端签署。
 **注意：**
 1. 该接口目前仅支持签署人类型是**个人签署方的批量签署场景**(ApproverType=1)。
@@ -74,14 +97,13 @@ use TencentCloud\Ess\V20201111\Models as Models;
 5. 该接口返回的签署链接适用于APP集成的场景，支持APP打开或浏览器直接打开，**不支持微信小程序嵌入**。
 跳转到小程序的实现，参考微信官方文档(分为<a href="https://developers.weixin.qq.com/miniprogram/dev/api/navigate/wx.navigateToMiniProgram.html">全屏</a>、<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/openEmbeddedMiniProgram.html">半屏</a>两种方式)，如何配置也可以请参考: <a href="https://qian.tencent.com/developers/company/openwxminiprogram">跳转电子签小程序配置</a>。
 6. 因h5涉及人脸身份认证能力基于慧眼人脸核身，对Android和iOS系统均有一定要求， 因此<font color='red'>App嵌入H5签署合同需要按照慧眼提供的<a href="https://cloud.tencent.com/document/product/1007/61076">慧眼人脸核身兼容性文档</a>做兼容性适配</font>。
- * @method Models\CreateBatchSignUrlResponse CreateBatchSignUrl(Models\CreateBatchSignUrlRequest $req) 通过此接口，创建小程序批量签署链接，个人/企业员工点击此链接即可跳转小程序进行批量签署。
-请确保生成链接时候的身份信息和签署合同参与方的信息保持一致。
+ * @method Models\CreateBatchSignUrlResponse CreateBatchSignUrl(Models\CreateBatchSignUrlRequest $req) 通过此接口，可以创建小程序批量签署链接，个人/企业员工可通过此链接跳转至小程序进行批量签署。请确保生成链接时的身份信息与签署合同参与方的信息保持一致。
 
-注：
-- 使用此接口生成链接，需要提前开通 `使用手机号验证签署方身份` 功能，在 `腾讯电子签网页端-企业设置-拓展服务` 中可以找到。
-- 参与人点击链接后需短信验证码才能查看合同内容。
-- 企业用户批量签署，需要传OrganizationName（参与方所在企业名称）参数生成签署链接，`请确保此企业已完成腾讯电子签企业认证`。
-- 个人批量签署，签名区`仅支持手写签名`。
+注意事项：
+- 使用此接口生成链接，需要贵企业先开通 <font color="red">使用手机号验证签署方身份 </font>功能。您可以在 <b>【腾讯电子签网页端】->【企业设置】->【拓展服务】</b>中找到该功能。
+- 生成批量签署链接时，<font color="red">合同目标参与方的状态必须为<b>待签署</b>状态</font>。签署人点击链接后需要输入短信验证码才能查看合同内容。
+- 企业员工批量签署链接：需要传入签署方所在企业名称，用户名字和手机号（或者身份证件信息）参数来生成签署链接。<font color="red">该签署方企业必须已完成腾讯电子签企业认证</font>
+- 个人批量签署链接：需要传入签署方用户名字和手机号（或者身份证件信息）参数来生成签署链接。个人批量签署进行的合同的签名区， 全部变成<font color="red">手写签名</font>（不管合同里边设置的签名限制）来进行。
  * @method Models\CreateConvertTaskApiResponse CreateConvertTaskApi(Models\CreateConvertTaskApiRequest $req) 此接口（CreateConvertTaskApi）用来将word、excel、html、图片、txt类型文件转换为PDF文件。<br />
 前提条件：源文件已经通过 <a href="https://qian.tencent.com/developers/companyApis/templatesAndFiles/UploadFiles" target="_blank">文件上传接口</a>完成上传，并得到了源文件的资源Id。<br />
 适用场景1：已经上传了一个word文件，希望将该word文件转换成pdf文件后发起合同
@@ -230,6 +252,11 @@ use TencentCloud\Ess\V20201111\Models as Models;
 注：
 -  合同**发起后就会扣减合同的额度**, 只有撤销没有参与方签署过或只有自动签署签署过的合同，才会返还合同额度。（**过期，拒签，签署完成，解除完成等状态不会返还额度**）
 - **静默（自动）签署不支持合同签署方存在填写**功能
+
+
+<font color="red">相关视频指引</font> <br>
+1. <a href="https://dyn.ess.tencent.cn/guide/apivideo/ess_uploadfiles.mp4" target="_blank">上传用于合同发起的PDF文件代码编写示例</a><br>
+2.  <a href="https://dyn.ess.tencent.cn/guide/apivideo/ess-CreateFlowByFiles.mp4" target="_blank">用PDF文件创建签署流程编写示例</a><br>
  * @method Models\CreateFlowEvidenceReportResponse CreateFlowEvidenceReport(Models\CreateFlowEvidenceReportRequest $req) 提交申请出证报告任务并返回报告ID。
 
 注意：
@@ -324,7 +351,7 @@ use TencentCloud\Ess\V20201111\Models as Models;
 <tr>
 <td>普通saas员工</td>
 <td>将Employees中的DisplayName设置员工的名字，Mobile设置成员工的手机号</td>
-<td>发送短信通知员工（短信中带有认证加入企业的链接）   ![image]() </td>
+<td>发送短信通知员工（短信中带有认证加入企业的链接）  </td>
 </tr>
 <tr>
 <td>企微员工</td>
@@ -360,6 +387,13 @@ use TencentCloud\Ess\V20201111\Models as Models;
 适用场景4：主企业代理子企业操作的场景，需要设置Agent参数，并且ProxyOrganizationId设置为子企业的id即可。
 
 注意事项：SaaS角色和集团角色对应的权限树是不一样的。
+ * @method Models\CreateIntegrationSubOrganizationActiveRecordResponse CreateIntegrationSubOrganizationActiveRecord(Models\CreateIntegrationSubOrganizationActiveRecordRequest $req) 通过此接口，创建子企业激活记录，集团企业管理员可针对未激活的成员企业进行激活。
+激活子企业时请保证子企业 lisence 充足。
+这个操作与页面端激活成员企业操作类似
+![image](https://qcloudimg.tencent-cloud.cn/raw/c4e76fbac92e4ce451a03601c964793b.png)
+
+p.s.
+此接口只能用于激活，不能用于续期。
  * @method Models\CreateIntegrationUserRolesResponse CreateIntegrationUserRoles(Models\CreateIntegrationUserRolesRequest $req) 此接口用于赋予员工指定的角色权限，如需解绑请使用 DeleteIntegrationRoleUsers 接口。
  * @method Models\CreateMultiFlowSignQRCodeResponse CreateMultiFlowSignQRCode(Models\CreateMultiFlowSignQRCodeRequest $req) 此接口（CreateMultiFlowSignQRCode）用于创建一码多签签署码。
 
@@ -377,11 +411,18 @@ use TencentCloud\Ess\V20201111\Models as Models;
 
 签署码的样式如下图:
 ![image](https://qcloudimg.tencent-cloud.cn/raw/27317cf5aacb094fb1dc6f94179a5148.png )
+ * @method Models\CreateOrganizationAuthUrlResponse CreateOrganizationAuthUrl(Models\CreateOrganizationAuthUrlRequest $req) 本接口（CreateOrganizationAuthUrl）用于生成创建企业认证链接。
+用于业务方系统自己生成认证链接进行跳转.而不用电子签自带的生成链接
+
+注： **此接口需要购买单独的实名套餐包方可调用，如有需求请联系对接人员评估**
  * @method Models\CreateOrganizationBatchSignUrlResponse CreateOrganizationBatchSignUrl(Models\CreateOrganizationBatchSignUrlRequest $req) 使用此接口，您可以创建企业批量签署链接，员工只需点击链接即可跳转至控制台进行批量签署。<br/>
 附注：
-- 员工必须在企业下完成实名认证，且需作为批量签署合同的签署方。
-- 如有UserId，应以UserId为主要标识；如果没有UserId，则必须填写Name和Mobile信息。
-- 仅支持待签署状态的合同生成签署链接。
+- 员工必须需作为批量签署合同的签署方，or或签合同的候选人之一。
+- 对于本方企业：如有UserId，应以UserId为主要标识；如果没有UserId，则必须填写Name和Mobile信息。
+- 若要生成他发企业签署链接：应传RecipientIds，且制定的合同必须是接口调用方发起的。
+- 支持待签署、待填写状态的合同生成签署链接。
+ * @method Models\CreateOrganizationGroupInvitationLinkResponse CreateOrganizationGroupInvitationLink(Models\CreateOrganizationGroupInvitationLinkRequest $req) 生成集团加入链接，分享至子企业超管或者法人，子企业管理员可通过链接加入集团。
+注意:调用当前接口的企业 必须为集团企业。如何成为集团企业可以参考下面的文档[集团操作文档](https://qian.tencent.com/document/86707)
  * @method Models\CreateOrganizationInfoChangeUrlResponse CreateOrganizationInfoChangeUrl(Models\CreateOrganizationInfoChangeUrlRequest $req) 此接口（CreateOrganizationInfoChangeUrl）用于创建企业信息变更链接，支持创建企业超管变更链接或企业基础信息变更链接，通过入参ChangeType指定。
 
 
@@ -440,7 +481,7 @@ use TencentCloud\Ess\V20201111\Models as Models;
 <li>原合同个人类型参与人必须是解除协议的参与人，<code>不能更换其他第三方个人</code>参与解除协议。</li>
 <li>如果原合同企业参与人无法参与解除协议，可以指定同企业具有同等权限的<code>企业员工代为处理</code>。</li>
 <li>发起解除协议同发起其他企业合同一样，也会参与合同<code>扣费</code>，扣费标准同其他类型合同。</li>
-<li>在解除协议发起之后，原合同的状态将转变为解除中。一旦解除协议签署完毕，原合同及解除协议均变为已解除状态。</li>
+<li>在解除协议签署完毕后，原合同及解除协议均变为已解除状态。</li>
 <li>非原合同企业参与人发起解除协议时，需要有<code>解除合同的权限</code>。</li>
 </ul>
  * @method Models\CreateSchemeUrlResponse CreateSchemeUrl(Models\CreateSchemeUrlRequest $req) 获取跳转至腾讯电子签小程序的签署链接
@@ -479,6 +520,13 @@ use TencentCloud\Ess\V20201111\Models as Models;
 <li>链接有效期默认7天，<code>最多30天</code>。</li>
 <li>该接口的链接适用于<code>小程序</code>端。</li>
 <li>该接口不会扣除您的合同套餐，暂不参与计费。</li></ul>
+ * @method Models\CreateUserMobileChangeUrlResponse CreateUserMobileChangeUrl(Models\CreateUserMobileChangeUrlRequest $req) 该接口会生成一个手机号变更的链接，用户可以通过该链接进入电子签系统进行手机号的变更。
+该接口支持员工和个人端手机号的变更。
+ * @method Models\CreateUserVerifyUrlResponse CreateUserVerifyUrl(Models\CreateUserVerifyUrlRequest $req) 客户可以主动调用生成实名链接去做C端用户实名，会对实名的用户进行打标记为调用链接客户的用户
+使用场景：
+用户集成场景
+使用限制：
+此接口需要购买单独的实名套餐包方可调用，如有需求请联系对接人员评估
  * @method Models\CreateWebThemeConfigResponse CreateWebThemeConfig(Models\CreateWebThemeConfigRequest $req) 用来设置本企业嵌入式页面个性化主题配置（例如是否展示电子签logo、定义主题色等），设置后获取的web签署界面都会使用此配置进行展示。
 
 如果多次调用，会以最后一次的配置为准
@@ -505,6 +553,12 @@ use TencentCloud\Ess\V20201111\Models as Models;
 3. 未实名的员工可以直接离职，不用交接合同
  * @method Models\DeleteIntegrationRoleUsersResponse DeleteIntegrationRoleUsers(Models\DeleteIntegrationRoleUsersRequest $req) 解绑员工与对应角色的关系，如需绑定请使用 CreateIntegrationUserRoles 接口。
  * @method Models\DeleteSealPoliciesResponse DeleteSealPolicies(Models\DeleteSealPoliciesRequest $req) 本接口（DeleteSealPolicies）用于撤销企业员工持有的印章权限
+ * @method Models\DescribeBatchOrganizationRegistrationUrlsResponse DescribeBatchOrganizationRegistrationUrls(Models\DescribeBatchOrganizationRegistrationUrlsRequest $req) 此接口用于获取企业批量认证异步任务的状态及结果。
+
+前提条件：已调用 CreateBatchOrganizationRegistrationTasks创建企业批量认证链接任务接口，并得到了任务Id。
+
+异步任务的处理完成时间视当前已提交的任务量、任务的复杂程度等因素决定，正常情况下 3~5 秒即可完成，但也可能需要更长的时间
+ * @method Models\DescribeBillUsageResponse DescribeBillUsage(Models\DescribeBillUsageRequest $req) 通过此接口（DescribeBillUsage）查询该企业的套餐套餐使用情况。
  * @method Models\DescribeBillUsageDetailResponse DescribeBillUsageDetail(Models\DescribeBillUsageDetailRequest $req) 通过此接口（DescribeBillUsageDetail）查询该企业的套餐消耗详情。
  * @method Models\DescribeCancelFlowsTaskResponse DescribeCancelFlowsTask(Models\DescribeCancelFlowsTaskRequest $req) 通过[获取批量撤销签署流程腾讯电子签小程序链接](https://qian.tencent.com/developers/companyApis/operateFlows/CreateBatchCancelFlowUrl)发起批量撤销任务后，可通过此接口查询批量撤销任务的结果。
  * @method Models\DescribeExtendedServiceAuthDetailResponse DescribeExtendedServiceAuthDetail(Models\DescribeExtendedServiceAuthDetailRequest $req) 查询企业扩展服务的授权详情（列表），当前支持查询以下内容：
@@ -596,6 +650,8 @@ use TencentCloud\Ess\V20201111\Models as Models;
  * @method Models\DescribeUserAutoSignStatusResponse DescribeUserAutoSignStatus(Models\DescribeUserAutoSignStatusRequest $req) 通过此接口获取个人用户自动签的开通状态。
 
 注意: `处方单等特殊场景专用，此接口为白名单功能，使用前请联系对接的客户经理沟通。`
+ * @method Models\DescribeUserVerifyStatusResponse DescribeUserVerifyStatus(Models\DescribeUserVerifyStatusRequest $req) 用于客户企业在调用生成[C端用户实名链接（CreateUserVerifyUrl）](https://qian.tencent.com/developers/companyApis/users/CreateUserVerifyUrl)接口之前判断C端用户是否实名，如果已经实名，就不需要再次调用生成C端链接接口去实名
+注意：此接口仅会返回当前员工是否通过[C端用户实名链接（CreateUserVerifyUrl）](https://qian.tencent.com/developers/companyApis/users/CreateUserVerifyUrl)所实名的员工是否实名，并不会返回个人用户自己在电子签进行实名的状况
  * @method Models\DisableUserAutoSignResponse DisableUserAutoSign(Models\DisableUserAutoSignRequest $req) 通过此接口可以关闭个人用户自动签功能。
 无需对应的用户刷脸等方式同意即可关闭。
 
@@ -718,6 +774,9 @@ use TencentCloud\Ess\V20201111\Models as Models;
 HttpProfile httpProfile = new HttpProfile();
 httpProfile.setEndpoint("file.test.ess.tencent.cn");
 ```
+
+<font color="red">相关视频指引</font> <br>
+1. <a href="https://dyn.ess.tencent.cn/guide/apivideo/ess_uploadfiles.mp4" target="_blank">上传用于合同发起的PDF文件代码编写示例</a><br>
  * @method Models\VerifyPdfResponse VerifyPdf(Models\VerifyPdfRequest $req) 对合同流程文件进行数字签名验证，判断数字签名是否有效，合同文件内容是否被篡改。
  */
 

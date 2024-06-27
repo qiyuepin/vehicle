@@ -42,10 +42,8 @@ use TencentCloud\Common\AbstractModel;
 2 高清
 3 全高清
 直播开始后不允许修改。
- * @method integer getMaxMicNumber() 获取设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。
-取值范围[0,16]，当取值为0时表示当前课堂/直播，不支持连麦互动。
- * @method void setMaxMicNumber(integer $MaxMicNumber) 设置设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。
-取值范围[0,16]，当取值为0时表示当前课堂/直播，不支持连麦互动。
+ * @method integer getMaxMicNumber() 获取设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
+ * @method void setMaxMicNumber(integer $MaxMicNumber) 设置设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
  * @method integer getAutoMic() 获取进入房间时是否自动连麦。可以有以下取值：
 0 不自动连麦（默认值）
 1 自动连麦
@@ -95,13 +93,15 @@ video 纯视频
  * @method integer getIsGradingRequiredPostClass() 获取开启课后评分。 0：不开启(默认)  1：开启
  * @method void setIsGradingRequiredPostClass(integer $IsGradingRequiredPostClass) 设置开启课后评分。 0：不开启(默认)  1：开启
  * @method integer getRoomType() 获取房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 （预留参数、暂未开放)
+注：大班课的布局(layout)只有三分屏
  * @method void setRoomType(integer $RoomType) 设置房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 （预留参数、暂未开放)
+注：大班课的布局(layout)只有三分屏
  * @method integer getRecordLayout() 获取录制模板。仅可修改还未开始的房间。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
  * @method void setRecordLayout(integer $RecordLayout) 设置录制模板。仅可修改还未开始的房间。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
  * @method integer getEndDelayTime() 获取拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
  * @method void setEndDelayTime(integer $EndDelayTime) 设置拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
- * @method integer getLiveType() 获取直播方式：0 常规模式（默认）1 回放直播模式（伪直播）
- * @method void setLiveType(integer $LiveType) 设置直播方式：0 常规模式（默认）1 回放直播模式（伪直播）
+ * @method integer getLiveType() 获取直播方式：0 常规模式（默认）1 回放直播模式（伪直播）。 目前支持从回放直播模式（伪直播）改为常规模式，不支持从常规模式改为回放直播模式（伪直播）
+ * @method void setLiveType(integer $LiveType) 设置直播方式：0 常规模式（默认）1 回放直播模式（伪直播）。 目前支持从回放直播模式（伪直播）改为常规模式，不支持从常规模式改为回放直播模式（伪直播）
  * @method string getRecordLiveUrl() 获取伪直播链接
  * @method void setRecordLiveUrl(string $RecordLiveUrl) 设置伪直播链接
  * @method integer getEnableAutoStart() 获取是否自动开始上课：0 不自动上课（默认） 1 自动上课 live_type=1的时候有效
@@ -153,8 +153,7 @@ class ModifyRoomRequest extends AbstractModel
     public $Resolution;
 
     /**
-     * @var integer 设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。
-取值范围[0,16]，当取值为0时表示当前课堂/直播，不支持连麦互动。
+     * @var integer 设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
      */
     public $MaxMicNumber;
 
@@ -224,6 +223,7 @@ video 纯视频
 
     /**
      * @var integer 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 （预留参数、暂未开放)
+注：大班课的布局(layout)只有三分屏
      */
     public $RoomType;
 
@@ -238,7 +238,7 @@ video 纯视频
     public $EndDelayTime;
 
     /**
-     * @var integer 直播方式：0 常规模式（默认）1 回放直播模式（伪直播）
+     * @var integer 直播方式：0 常规模式（默认）1 回放直播模式（伪直播）。 目前支持从回放直播模式（伪直播）改为常规模式，不支持从常规模式改为回放直播模式（伪直播）
      */
     public $LiveType;
 
@@ -275,8 +275,7 @@ video 纯视频
 2 高清
 3 全高清
 直播开始后不允许修改。
-     * @param integer $MaxMicNumber 设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。
-取值范围[0,16]，当取值为0时表示当前课堂/直播，不支持连麦互动。
+     * @param integer $MaxMicNumber 设置房间/课堂同时最大可与老师进行连麦互动的人数，该参数支持正式上课/开播前调用修改房间修改。小班课取值范围[0,16]，大班课取值范围[0,1]，当取值为0时表示当前课堂/直播，不支持连麦互动。
      * @param integer $AutoMic 进入房间时是否自动连麦。可以有以下取值：
 0 不自动连麦（默认值）
 1 自动连麦
@@ -302,9 +301,10 @@ video 纯视频
      * @param integer $VideoOrientation 横竖屏。0：横屏开播（默认值）; 1：竖屏开播，当前仅支持移动端的纯视频类型
      * @param integer $IsGradingRequiredPostClass 开启课后评分。 0：不开启(默认)  1：开启
      * @param integer $RoomType 房间类型: 0 小班课（默认值）; 1 大班课; 2 1V1 （预留参数、暂未开放)
+注：大班课的布局(layout)只有三分屏
      * @param integer $RecordLayout 录制模板。仅可修改还未开始的房间。录制模板枚举值参考：https://cloud.tencent.com/document/product/1639/89744
      * @param integer $EndDelayTime 拖堂时间：单位分钟，0为不限制(默认值), -1为不能拖堂，大于0为拖堂的时间，最大值120分钟
-     * @param integer $LiveType 直播方式：0 常规模式（默认）1 回放直播模式（伪直播）
+     * @param integer $LiveType 直播方式：0 常规模式（默认）1 回放直播模式（伪直播）。 目前支持从回放直播模式（伪直播）改为常规模式，不支持从常规模式改为回放直播模式（伪直播）
      * @param string $RecordLiveUrl 伪直播链接
      * @param integer $EnableAutoStart 是否自动开始上课：0 不自动上课（默认） 1 自动上课 live_type=1的时候有效
      * @param string $RecordScene 录制自定义场景，仅recordlayout=9的时候此参数有效,数据内容为用户自定义场景参数，数据格式为json键值对方式，其中键值对的value为string类型。

@@ -51,27 +51,31 @@ use TencentCloud\Common\AbstractModel;
  * @method float getSizeUsed() 获取该字段已废弃。请使用腾讯云可观测平台API 接口 [GetMonitorData](https://cloud.tencent.com/document/product/248/31014) 获取实例已使用的内存容量。
  * @method void setSizeUsed(float $SizeUsed) 设置该字段已废弃。请使用腾讯云可观测平台API 接口 [GetMonitorData](https://cloud.tencent.com/document/product/248/31014) 获取实例已使用的内存容量。
  * @method integer getType() 获取实例类型。
-- 2：Redis 2.8内存版（标准架构）。
-- 3：CKV 3.2内存版（标准架构）。
-- 4：CKV 3.2内存版（集群架构）。
-- 5：Redis 2.8内存版（单机）。
-- 6：Redis 4.0内存版（标准架构）。
-- 7：Redis 4.0内存版（集群架构）。
-- 8：Redis 5.0内存版（标准架构）。
-- 9：Redis 5.0内存版（集群架构）。
-- 15：Redis 6.2内存版（标准架构）。
-- 16：Redis 6.2内存版（集群架构）。
+- 2：Redis 2.8 内存版（标准架构）。
+- 3：CKV 3.2 内存版（标准架构）。
+- 4：CKV 3.2 内存版（集群架构）。
+- 5：Redis 2.8 内存版（单机）。
+- 6：Redis 4.0 内存版（标准架构）。
+- 7：Redis 4.0 内存版（集群架构）。
+- 8：Redis 5.0 内存版（标准架构）。
+- 9：Redis 5.0 内存版（集群架构）。
+- 15：Redis 6.2 内存版（标准架构）。
+- 16：Redis 6.2 内存版（集群架构）。
+- 17：Redis 7.0 内存版（标准架构）。
+- 18：Redis 7.0 内存版（集群架构）。
  * @method void setType(integer $Type) 设置实例类型。
-- 2：Redis 2.8内存版（标准架构）。
-- 3：CKV 3.2内存版（标准架构）。
-- 4：CKV 3.2内存版（集群架构）。
-- 5：Redis 2.8内存版（单机）。
-- 6：Redis 4.0内存版（标准架构）。
-- 7：Redis 4.0内存版（集群架构）。
-- 8：Redis 5.0内存版（标准架构）。
-- 9：Redis 5.0内存版（集群架构）。
-- 15：Redis 6.2内存版（标准架构）。
-- 16：Redis 6.2内存版（集群架构）。
+- 2：Redis 2.8 内存版（标准架构）。
+- 3：CKV 3.2 内存版（标准架构）。
+- 4：CKV 3.2 内存版（集群架构）。
+- 5：Redis 2.8 内存版（单机）。
+- 6：Redis 4.0 内存版（标准架构）。
+- 7：Redis 4.0 内存版（集群架构）。
+- 8：Redis 5.0 内存版（标准架构）。
+- 9：Redis 5.0 内存版（集群架构）。
+- 15：Redis 6.2 内存版（标准架构）。
+- 16：Redis 6.2 内存版（集群架构）。
+- 17：Redis 7.0 内存版（标准架构）。
+- 18：Redis 7.0 内存版（集群架构）。
  * @method integer getAutoRenewFlag() 获取实例是否设置自动续费标识。<ul><li>1：设置自动续费。</li><li>0：未设置自动续费。</li></ul>
  * @method void setAutoRenewFlag(integer $AutoRenewFlag) 设置实例是否设置自动续费标识。<ul><li>1：设置自动续费。</li><li>0：未设置自动续费。</li></ul>
  * @method string getDeadlineTime() 获取包年包月计费实例到期的时间。
@@ -188,9 +192,9 @@ use TencentCloud\Common\AbstractModel;
 注意：此字段可能返回 null，表示取不到有效值。
  * @method void setCurrentProxyVersion(string $CurrentProxyVersion) 设置实例当前Proxy版本。
 注意：此字段可能返回 null，表示取不到有效值。
- * @method string getCurrentRedisVersion() 获取实例当前Cache小版本。
+ * @method string getCurrentRedisVersion() 获取实例当前Cache小版本。如果实例加入全球复制组，显示全球复制的内核版本。
 注意：此字段可能返回 null，表示取不到有效值。
- * @method void setCurrentRedisVersion(string $CurrentRedisVersion) 设置实例当前Cache小版本。
+ * @method void setCurrentRedisVersion(string $CurrentRedisVersion) 设置实例当前Cache小版本。如果实例加入全球复制组，显示全球复制的内核版本。
 注意：此字段可能返回 null，表示取不到有效值。
  * @method string getUpgradeProxyVersion() 获取实例可升级Proxy版本。
 注意：此字段可能返回 null，表示取不到有效值。
@@ -199,6 +203,10 @@ use TencentCloud\Common\AbstractModel;
  * @method string getUpgradeRedisVersion() 获取实例可升级Cache小版本。
 注意：此字段可能返回 null，表示取不到有效值。
  * @method void setUpgradeRedisVersion(string $UpgradeRedisVersion) 设置实例可升级Cache小版本。
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method string getBackupMode() 获取备份模式：- SecondLevelBackup   秒级备份- NormalLevelBackup    普通备份
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method void setBackupMode(string $BackupMode) 设置备份模式：- SecondLevelBackup   秒级备份- NormalLevelBackup    普通备份
 注意：此字段可能返回 null，表示取不到有效值。
  */
 class InstanceSet extends AbstractModel
@@ -276,16 +284,18 @@ class InstanceSet extends AbstractModel
 
     /**
      * @var integer 实例类型。
-- 2：Redis 2.8内存版（标准架构）。
-- 3：CKV 3.2内存版（标准架构）。
-- 4：CKV 3.2内存版（集群架构）。
-- 5：Redis 2.8内存版（单机）。
-- 6：Redis 4.0内存版（标准架构）。
-- 7：Redis 4.0内存版（集群架构）。
-- 8：Redis 5.0内存版（标准架构）。
-- 9：Redis 5.0内存版（集群架构）。
-- 15：Redis 6.2内存版（标准架构）。
-- 16：Redis 6.2内存版（集群架构）。
+- 2：Redis 2.8 内存版（标准架构）。
+- 3：CKV 3.2 内存版（标准架构）。
+- 4：CKV 3.2 内存版（集群架构）。
+- 5：Redis 2.8 内存版（单机）。
+- 6：Redis 4.0 内存版（标准架构）。
+- 7：Redis 4.0 内存版（集群架构）。
+- 8：Redis 5.0 内存版（标准架构）。
+- 9：Redis 5.0 内存版（集群架构）。
+- 15：Redis 6.2 内存版（标准架构）。
+- 16：Redis 6.2 内存版（集群架构）。
+- 17：Redis 7.0 内存版（标准架构）。
+- 18：Redis 7.0 内存版（集群架构）。
      */
     public $Type;
 
@@ -500,7 +510,7 @@ class InstanceSet extends AbstractModel
     public $CurrentProxyVersion;
 
     /**
-     * @var string 实例当前Cache小版本。
+     * @var string 实例当前Cache小版本。如果实例加入全球复制组，显示全球复制的内核版本。
 注意：此字段可能返回 null，表示取不到有效值。
      */
     public $CurrentRedisVersion;
@@ -516,6 +526,12 @@ class InstanceSet extends AbstractModel
 注意：此字段可能返回 null，表示取不到有效值。
      */
     public $UpgradeRedisVersion;
+
+    /**
+     * @var string 备份模式：- SecondLevelBackup   秒级备份- NormalLevelBackup    普通备份
+注意：此字段可能返回 null，表示取不到有效值。
+     */
+    public $BackupMode;
 
     /**
      * @param string $InstanceName 实例名称。
@@ -534,16 +550,18 @@ class InstanceSet extends AbstractModel
      * @param float $Size 实例内存容量大小。单位：MB，1MB=1024KB。
      * @param float $SizeUsed 该字段已废弃。请使用腾讯云可观测平台API 接口 [GetMonitorData](https://cloud.tencent.com/document/product/248/31014) 获取实例已使用的内存容量。
      * @param integer $Type 实例类型。
-- 2：Redis 2.8内存版（标准架构）。
-- 3：CKV 3.2内存版（标准架构）。
-- 4：CKV 3.2内存版（集群架构）。
-- 5：Redis 2.8内存版（单机）。
-- 6：Redis 4.0内存版（标准架构）。
-- 7：Redis 4.0内存版（集群架构）。
-- 8：Redis 5.0内存版（标准架构）。
-- 9：Redis 5.0内存版（集群架构）。
-- 15：Redis 6.2内存版（标准架构）。
-- 16：Redis 6.2内存版（集群架构）。
+- 2：Redis 2.8 内存版（标准架构）。
+- 3：CKV 3.2 内存版（标准架构）。
+- 4：CKV 3.2 内存版（集群架构）。
+- 5：Redis 2.8 内存版（单机）。
+- 6：Redis 4.0 内存版（标准架构）。
+- 7：Redis 4.0 内存版（集群架构）。
+- 8：Redis 5.0 内存版（标准架构）。
+- 9：Redis 5.0 内存版（集群架构）。
+- 15：Redis 6.2 内存版（标准架构）。
+- 16：Redis 6.2 内存版（集群架构）。
+- 17：Redis 7.0 内存版（标准架构）。
+- 18：Redis 7.0 内存版（集群架构）。
      * @param integer $AutoRenewFlag 实例是否设置自动续费标识。<ul><li>1：设置自动续费。</li><li>0：未设置自动续费。</li></ul>
      * @param string $DeadlineTime 包年包月计费实例到期的时间。
      * @param string $Engine 引擎：社区版Redis、腾讯云CKV。
@@ -602,11 +620,13 @@ class InstanceSet extends AbstractModel
 注意：此字段可能返回 null，表示取不到有效值。
      * @param string $CurrentProxyVersion 实例当前Proxy版本。
 注意：此字段可能返回 null，表示取不到有效值。
-     * @param string $CurrentRedisVersion 实例当前Cache小版本。
+     * @param string $CurrentRedisVersion 实例当前Cache小版本。如果实例加入全球复制组，显示全球复制的内核版本。
 注意：此字段可能返回 null，表示取不到有效值。
      * @param string $UpgradeProxyVersion 实例可升级Proxy版本。
 注意：此字段可能返回 null，表示取不到有效值。
      * @param string $UpgradeRedisVersion 实例可升级Cache小版本。
+注意：此字段可能返回 null，表示取不到有效值。
+     * @param string $BackupMode 备份模式：- SecondLevelBackup   秒级备份- NormalLevelBackup    普通备份
 注意：此字段可能返回 null，表示取不到有效值。
      */
     function __construct()
@@ -859,6 +879,10 @@ class InstanceSet extends AbstractModel
 
         if (array_key_exists("UpgradeRedisVersion",$param) and $param["UpgradeRedisVersion"] !== null) {
             $this->UpgradeRedisVersion = $param["UpgradeRedisVersion"];
+        }
+
+        if (array_key_exists("BackupMode",$param) and $param["BackupMode"] !== null) {
+            $this->BackupMode = $param["BackupMode"];
         }
     }
 }

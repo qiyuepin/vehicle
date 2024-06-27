@@ -25,7 +25,7 @@ use TencentCloud\Ims\V20201229\Models as Models;
 /**
  * @method Models\CreateImageModerationAsyncTaskResponse CreateImageModerationAsyncTask(Models\CreateImageModerationAsyncTaskRequest $req) 本接口用于提交图片文件进行异步智能审核任务。使用前请您使用腾讯云主账号登录控制台 [开通图片内容安全服务](https://console.cloud.tencent.com/cms/image/package) 并调整好对应的业务配置。
 ### 接口使用说明：
-- 前往“[内容安全控制台-图片内容安全](https://console.cloud.tencent.com/cms/image/package)”开启使用图片内容安全服务，首次开通服务的用户可免费领用试用套餐包，包含**1万张图片**识别额度，有效期为1个月。
+- 前往“[内容安全控制台-图片内容安全](https://console.cloud.tencent.com/cms/image/package)”开启使用图片内容安全服务，首次开通服务的用户可免费领用试用套餐包，包含**3000张图片**识别额度，有效期为15天。
 - 该接口为收费接口，计费方式敬请参见 [腾讯云图片内容安全定价](https://cloud.tencent.com/product/ims/pricing)。
 
 ### 接口功能说明：
@@ -59,13 +59,12 @@ use TencentCloud\Ims\V20201229\Models as Models;
 
 ### 接口调用说明：
 - 图片文件大小支持：**文件 < 5M**
-- 图片尺寸支持：**长或者宽 >50分辨率**和**长或者宽<10000分辨率**
+- 图片默认尺寸支持：**长或者宽 >50分辨率**和**长或者宽<10000分辨率**
 - 图片文件分辨率支持：建议**分辨率大于256x256**，否则可能会影响识别效果；
 - 图片文件支持格式：PNG、JPG、JPEG、BMP、GIF、WEBP格式；
 - 图片文件链接支持的传输协议：HTTP、HTTPS；
 - 若传入图片文件的访问链接，则需要注意**图片下载时间限制为3秒**，为保障被检测图片的稳定性和可靠性，建议您使用腾讯云COS存储或者CDN缓存等；
-- 默认接口请求频率限制：**100次/秒**，超过此调用频率则会报错。
--审核列表中，排序是按照用户通过API接口上传调用的时间进行排序；
+
 
 <div class="rno-api-explorer" style="margin-bottom:20px">
     <div class="rno-api-explorer-inner">

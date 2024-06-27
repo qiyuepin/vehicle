@@ -26,6 +26,18 @@ use TencentCloud\Common\AbstractModel;
  * @method void setSourceIp(string $SourceIp) 设置vip
  * @method integer getSourcePort() 获取vport
  * @method void setSourcePort(integer $SourcePort) 设置vport
+ * @method string getBrokerIp() 获取broker地址
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method void setBrokerIp(string $BrokerIp) 设置broker地址
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method string getVpcId() 获取VPC ID信息
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method void setVpcId(string $VpcId) 设置VPC ID信息
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method string getSubnetId() 获取子网ID信息
+注意：此字段可能返回 null，表示取不到有效值。
+ * @method void setSubnetId(string $SubnetId) 设置子网ID信息
+注意：此字段可能返回 null，表示取不到有效值。
  */
 class PrometheusDTO extends AbstractModel
 {
@@ -45,9 +57,33 @@ class PrometheusDTO extends AbstractModel
     public $SourcePort;
 
     /**
+     * @var string broker地址
+注意：此字段可能返回 null，表示取不到有效值。
+     */
+    public $BrokerIp;
+
+    /**
+     * @var string VPC ID信息
+注意：此字段可能返回 null，表示取不到有效值。
+     */
+    public $VpcId;
+
+    /**
+     * @var string 子网ID信息
+注意：此字段可能返回 null，表示取不到有效值。
+     */
+    public $SubnetId;
+
+    /**
      * @param string $Type export类型（jmx_export\node_export）
      * @param string $SourceIp vip
      * @param integer $SourcePort vport
+     * @param string $BrokerIp broker地址
+注意：此字段可能返回 null，表示取不到有效值。
+     * @param string $VpcId VPC ID信息
+注意：此字段可能返回 null，表示取不到有效值。
+     * @param string $SubnetId 子网ID信息
+注意：此字段可能返回 null，表示取不到有效值。
      */
     function __construct()
     {
@@ -72,6 +108,18 @@ class PrometheusDTO extends AbstractModel
 
         if (array_key_exists("SourcePort",$param) and $param["SourcePort"] !== null) {
             $this->SourcePort = $param["SourcePort"];
+        }
+
+        if (array_key_exists("BrokerIp",$param) and $param["BrokerIp"] !== null) {
+            $this->BrokerIp = $param["BrokerIp"];
+        }
+
+        if (array_key_exists("VpcId",$param) and $param["VpcId"] !== null) {
+            $this->VpcId = $param["VpcId"];
+        }
+
+        if (array_key_exists("SubnetId",$param) and $param["SubnetId"] !== null) {
+            $this->SubnetId = $param["SubnetId"];
         }
     }
 }

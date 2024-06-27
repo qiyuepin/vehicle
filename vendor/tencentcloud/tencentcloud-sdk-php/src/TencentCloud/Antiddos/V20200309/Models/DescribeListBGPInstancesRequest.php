@@ -61,6 +61,11 @@ use TencentCloud\Common\AbstractModel;
  * @method integer getFilterPlanCntFlag() 获取是否商业模式优化-普惠版 0: 包含商业模式优化-普惠版 1: 只查询商业模式优化-普惠版 
 
  * @method void setFilterPlanCntFlag(integer $FilterPlanCntFlag) 设置是否商业模式优化-普惠版 0: 包含商业模式优化-普惠版 1: 只查询商业模式优化-普惠版 
+
+ * @method integer getFilterTransRegionFlag() 获取是否跨区域产品 0: 不包含跨区域产品 1: 中国大陆跨区域产品 2: 非中国大陆跨区域产品 3: 包含全部
+ * @method void setFilterTransRegionFlag(integer $FilterTransRegionFlag) 设置是否跨区域产品 0: 不包含跨区域产品 1: 中国大陆跨区域产品 2: 非中国大陆跨区域产品 3: 包含全部
+ * @method array getFilterZoneIdList() 获取zoenid列表
+ * @method void setFilterZoneIdList(array $FilterZoneIdList) 设置zoenid列表
  */
 class DescribeListBGPInstancesRequest extends AbstractModel
 {
@@ -166,6 +171,16 @@ class DescribeListBGPInstancesRequest extends AbstractModel
     public $FilterPlanCntFlag;
 
     /**
+     * @var integer 是否跨区域产品 0: 不包含跨区域产品 1: 中国大陆跨区域产品 2: 非中国大陆跨区域产品 3: 包含全部
+     */
+    public $FilterTransRegionFlag;
+
+    /**
+     * @var array zoenid列表
+     */
+    public $FilterZoneIdList;
+
+    /**
      * @param integer $Offset 页起始偏移，取值为(页码-1)*一页条数
      * @param integer $Limit 一页条数，当Limit=0时，默认一页条数为20;最大取值为100
      * @param string $FilterIp IP搜索
@@ -186,6 +201,9 @@ class DescribeListBGPInstancesRequest extends AbstractModel
      * @param array $FilterAssetIpList 资产IP数组
      * @param integer $FilterBasicPlusFlag 是否包含基础防护增强版 0: 不包含 1: 包含
      * @param integer $FilterPlanCntFlag 是否商业模式优化-普惠版 0: 包含商业模式优化-普惠版 1: 只查询商业模式优化-普惠版 
+
+     * @param integer $FilterTransRegionFlag 是否跨区域产品 0: 不包含跨区域产品 1: 中国大陆跨区域产品 2: 非中国大陆跨区域产品 3: 包含全部
+     * @param array $FilterZoneIdList zoenid列表
      */
     function __construct()
     {
@@ -279,6 +297,14 @@ class DescribeListBGPInstancesRequest extends AbstractModel
 
         if (array_key_exists("FilterPlanCntFlag",$param) and $param["FilterPlanCntFlag"] !== null) {
             $this->FilterPlanCntFlag = $param["FilterPlanCntFlag"];
+        }
+
+        if (array_key_exists("FilterTransRegionFlag",$param) and $param["FilterTransRegionFlag"] !== null) {
+            $this->FilterTransRegionFlag = $param["FilterTransRegionFlag"];
+        }
+
+        if (array_key_exists("FilterZoneIdList",$param) and $param["FilterZoneIdList"] !== null) {
+            $this->FilterZoneIdList = $param["FilterZoneIdList"];
         }
     }
 }
