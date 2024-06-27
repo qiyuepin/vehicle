@@ -18,7 +18,7 @@
                 <el-tabs style="height: 200px;">
                     <el-tab-pane label="基本信息">
                         <el-form-item label="事故时间">
-                            <el-input v-model="formData.accident_time" type="date" placeholder="选择日期"></el-input>
+                            <el-input v-model="formData.accident_time" type="date" placeholder="选择日期"  max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="事故地点" prop="accident_place">
                             <el-input v-model="formData.accident_place" clearable placeholder="事故地点"></el-input>

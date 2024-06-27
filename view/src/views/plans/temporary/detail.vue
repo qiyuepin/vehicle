@@ -45,34 +45,27 @@
             <el-descriptions-item><template slot="label">装货预计等待时长</template>{{formData.load_waiting_time}}</el-descriptions-item>
             <el-descriptions-item><template slot="label">装货备注</template>{{formData.load_waiting_remark}}</el-descriptions-item>
             <!-- <el-descriptions-item><template slot="label">装货检斤单</template>{{formData.load_weight_inspection}}</el-descriptions-item> -->
-            <el-descriptions-item><template slot="label">装货检斤单</template>
-              <!-- {{formData.load_weight_inspection}} -->
-              <!-- <el-image
-                    style="width: 40px; height: 40px"
-                    :src="scope.row.card_front"
-                    :preview-src-list="[scope.row.card_front]"
-                    slot-scope="scope">
-            </el-image> -->
-              <el-image
-                v-if="formData.load_weight_inspection != '' && formData.load_weight_inspection != null"
-                style="width: 60px; height: 60px"
-                :src="formData.load_weight_inspection"
-                :preview-src-list="[formData.load_weight_inspection]"
-                  class="event_img" >
-              </el-image>
+            <el-descriptions-item label="装货检斤单">
+                <div class="demo-image__preview">
+                <el-image 
+                    style="width: 100px; height: 100px"
+                    :src="load_weight_inspection[0]" 
+                    :preview-src-list="load_weight_inspection">
+                </el-image>
+                </div>
             </el-descriptions-item>
             <el-descriptions-item><template slot="label">装货数量</template>{{formData.load_product_quantity}}</el-descriptions-item>
             <el-descriptions-item><template slot="label">卸货预计等待时长</template>{{formData.unload_wait_time}}</el-descriptions-item>
             <el-descriptions-item><template slot="label">卸货备注</template>{{formData.unload_wait_remark}}</el-descriptions-item>
             <!-- <el-descriptions-item><template slot="label">卸货检斤单5</template>{{formData.unload_weight_inspection}}</el-descriptions-item> -->
-            <el-descriptions-item><template slot="label">卸货检斤单</template>
-              <el-image
-                v-if="formData.unload_weight_inspection != '' && formData.unload_weight_inspection != null"
-                style="width: 60px; height: 60px"
-                :src="formData.unload_weight_inspection"
-                :preview-src-list="[formData.unload_weight_inspection]"
-                  class="event_img" >
-              </el-image>
+            <el-descriptions-item label="卸货检斤单">
+                <div class="demo-image__preview">
+                <el-image 
+                    style="width: 100px; height: 100px"
+                    :src="unload_weight_inspection[0]" 
+                    :preview-src-list="unload_weight_inspection">
+                </el-image>
+                </div>
             </el-descriptions-item>
             <!-- <el-table-column
                   prop="driving_license"
@@ -172,8 +165,10 @@ data() {
       escort_name: '',
       load_factory: [],
       load_address: '',
+      load_weight_inspection: '',
       unload_address: '',
       unload_factory: '',
+      unload_weight_inspection: '',
       edit_unload_factory: '',
       product_quantity: '',
       product_name:'',
@@ -221,11 +216,11 @@ methods: {
             this.formData.diesel_oil = response.diesel_oil
             this.formData.load_waiting_time = response.load_waiting_time
             this.formData.load_waiting_remark = response.load_waiting_remark
-            this.formData.load_weight_inspection = response.load_weight_inspection
+            // this.formData.load_weight_inspection = response.load_weight_inspection
             this.formData.load_product_quantity = response.load_product_quantity
             this.formData.unload_wait_time = response.unload_wait_time
             this.formData.unload_wait_remark = response.unload_wait_remark
-            this.formData.unload_weight_inspection = response.unload_weight_inspection
+            // this.formData.unload_weight_inspection = response.unload_weight_inspection
             this.formData.unload_product_quantity = response.unload_product_quantity
             this.formData.back_mileage = response.back_mileage
             this.formData.driver_status = response.driver_status
@@ -235,6 +230,8 @@ methods: {
             this.formData.create_time = response.create_time
             this.formData.update_time = response.update_time
             this.formData.back_mileage_img = response.back_mileage_img
+            this.load_weight_inspection = response.load_weight_inspection!=null?response.load_weight_inspection.split(',').map(item => item.trim()):'';
+            this.unload_weight_inspection = response.unload_weight_inspection!=null?response.unload_weight_inspection.split(',').map(item => item.trim()):'';
         }
     })
   }

@@ -57,10 +57,10 @@ import inputDirective from './directive/input/install';
 // window._AMapSecurityConfig = {
 //   securityJsCode:'b64b7df6be939d822d7380f63fb22f31',
 // }
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: SocketIO (process.env.VUE_APP_WS_URL+'?X-Access-Appid='+defaultSettings.appid,{transports: ['websocket']}),
-}))
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: SocketIO (process.env.VUE_APP_WS_URL+'?X-Access-Appid='+defaultSettings.appid,{transports: ['websocket']}),
+// }))
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

@@ -57,13 +57,13 @@
                                       onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
                                       v-on:input="clearNoNum(formData.carhead_weight)"
                                       @blur.native.capture="clearnumber(formData.carhead_weight)" v-input.float="2"
-                                       style="width: 150px">
+                                       >
                                      </el-input>
                             <span>（ t ）保留两位小数</span>
                         </el-form-item>
                         <el-form-item label="道路运输证号" prop="transport_cert">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输12位入道路运输证号"
-                                      style="width: 200px" ></el-input>
+                                       ></el-input>
                         </el-form-item>
                         <el-form-item label="排放等级" prop="discharge_level">
                             <el-select v-model="formData.discharge_level" filterable  clearable placeholder="请选择排放等级">
@@ -83,26 +83,26 @@
                         </el-form-item>
                         <el-form-item label="注册日期">
                             <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"
-                                      style="width: 150px;"></el-input>
+                                      max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="已运营时间">
                             <el-label > {{ years }}</el-label>
                         </el-form-item>
                         <el-form-item label="强制报废日期">
                           <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                                    max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="检验有效期">
                           <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                                    max="9999-12-31"></el-input>
                         </el-form-item>
-                        <el-form-item label="营运证有效期">
+                        <el-form-item label="营运证有效期"  max="9999-12-31">
                           <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择营运证有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                                  ></el-input>
                         </el-form-item>
                         <el-form-item label="交强险有效期">
                           <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期" :class="{ datestatusinput: formData.traffic_status ? false : true}"
-                                    style="width: 150px;"></el-input>
+                                    max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="动力源" prop="power_supply">
                             <el-select v-model="formData.power_supply" filterable  clearable placeholder="请选择动力源">
@@ -197,7 +197,7 @@ export default {
       },
       formData: {
         id: 0,
-          Vaildplate: '',
+        Vaildplate: '',
         carhead_plate: '',
         carhead_brand: '',
         carhead_weight: '',
@@ -234,13 +234,13 @@ export default {
                 return ''
             }
             else if (yearStr === 0 && monthStr > 0) {
-                return monthStr + '月'
+                return monthStr + '个月'
             }
             else if (yearStr < 0 || monthStr < 0) {
                 return ''
             }
             else{
-                return yearStr + '年' + ' ' + monthStr + '月'
+                return yearStr + '年' + ' ' + monthStr + '个月'
             }
         }
     },
@@ -353,6 +353,10 @@ export default {
       this.formData.power_supply = ''
       this.formData.carbody_picture = []
       this.formData.Vaildplate = ''
+      this.formData.scrapp_status = true
+      this.formData.inspection_status = true
+      this.formData.validity_status = true
+      this.formData.traffic_status = true
       this.$refs.Image_carbody_picture.uploadFileList = []
       this.$refs.Image_driving_license.uploadFileList = []
     },
@@ -464,5 +468,8 @@ export default {
     ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
         -webkit-box-shadow: none;
         box-shadow: none;
+    }
+    ::v-deep .el-input{
+      width: 200px;
     }
 </style>

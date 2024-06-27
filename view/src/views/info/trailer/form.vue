@@ -52,7 +52,7 @@
                                       onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
                                       v-on:input="clearNoNum(formData.trailer_weight,index,indexs)"
                                       @blur.native.capture="clearnumber(formData.trailer_weight,index,indexs)" v-input.float="2"
-                                       style="width: 150px">
+                                      >
                                      </el-input><span>（ t ）保留两位小数</span>
                         </el-form-item>
                         <el-form-item label="容积" prop="trailer_volume">
@@ -62,7 +62,7 @@
                                        onkeyup="value=value.replace(/[^\d^\.]+/g,'')"
                                        v-on:input="clearNoNumvolume(formData.trailer_volume,index,indexs)"
                                        @blur.native.capture="clearnumbervolume(formData.trailer_volume,index,indexs)" v-input.float="1"
-                                       style="width: 150px">
+                                       >
                             </el-input>
                             <span>（ m³ ）保留一位小数</span>
                         </el-form-item>
@@ -105,9 +105,11 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="注册日期">
-                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"></el-input>
+                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期" max="9999-12-31"></el-input>
                         </el-form-item>
-
+                        <el-form-item label="已运营时间">
+                            <el-label > {{ years }}</el-label>
+                        </el-form-item>
 
                         <!-- <el-form-item label="压力等级" prop="trailer_pressure">
                           <el-radio-group v-model="formData.trailer_pressure">
@@ -129,16 +131,18 @@
 
 
                         <el-form-item label="强制报废日期">
-                          <el-input v-model="formData.scrapp_time" type="date" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}"></el-input>
+                          <el-input v-model="formData.scrapp_time" type="date" max="9999-12-31" clearable placeholder="选择强制报废日期" :class="{ datestatusinput: formData.scrapp_status ? false : true}" >
+
+                          </el-input>
                         </el-form-item>
                         <el-form-item label="检验有效期">
-                          <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"></el-input>
+                          <el-input v-model="formData.inspection_time" type="date" max="9999-12-31" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}" ></el-input>
                         </el-form-item>
                         <el-form-item label="营运证有效期">
-                          <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择营运证有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"></el-input>
+                          <el-input v-model="formData.validity_time" type="date" max="9999-12-31" clearable placeholder="选择营运证有效期" :class="{ datestatusinput: formData.validity_status ? false : true}" ></el-input>
                         </el-form-item>
                         <el-form-item label="罐检报告有效期">
-                          <el-input v-model="formData.frame_time" type="date" clearable placeholder="选择罐检报告有效期" :class="{ datestatusinput: formData.frame_status ? false : true}"></el-input>
+                          <el-input v-model="formData.frame_time" type="date" max="9999-12-31" clearable placeholder="选择罐检报告有效期" :class="{ datestatusinput: formData.frame_status ? false : true}" ></el-input>
                         </el-form-item>
                         <el-form-item label="行驶证" prop="driving_license">
                             <!-- <MultiImage ref="Image_driving_license" v-model="formData.driving_license"></MultiImage> -->
@@ -175,6 +179,7 @@ import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
 import { validCert, validPlate } from '@/utils/validate'
+import moment from 'moment'
 
 export default {
   name: "AdminForm",
@@ -252,6 +257,28 @@ export default {
         scrapp_status: true
       },
     }
+  },
+  computed: {
+      years() {
+          const now = new Date()
+          const valueStart = this.formData.regist_time === null ? 0 : this.formData.regist_time
+          const valueEnd = this.formData.regist_time === null? 0 : now
+          const yearStr = moment(valueEnd).diff(moment(valueStart), 'years')
+          const monthStr = moment(valueEnd).diff(moment(valueStart), 'months') % 12
+
+          if (yearStr === 0 && monthStr === 0) {
+              return ''
+          }
+          else if (yearStr === 0 && monthStr > 0) {
+              return monthStr + '个月'
+          }
+          else if (yearStr < 0 || monthStr < 0) {
+              return ''
+          }
+          else{
+              return yearStr + '年' + ' ' + monthStr + '个月'
+          }
+      }
   },
   created() {
     this.getcarscope();
@@ -504,5 +531,7 @@ export default {
         -webkit-box-shadow: none;
         box-shadow: none;
     }
-
+    ::v-deep .el-input{
+      width: 200px;
+    }
 </style>

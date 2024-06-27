@@ -18,7 +18,7 @@
                 <el-tabs style="height: 200px;">
                     <el-tab-pane label="基本信息">
                         <el-form-item label="违章时间">
-                          <el-input v-model="formData.regulation_time" type="date" placeholder="选择日期"></el-input>
+                          <el-input v-model="formData.regulation_time" type="date" placeholder="选择日期"  max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="违章地点" prop="regulation_place">
                             <el-input v-model="formData.regulation_place" clearable placeholder="违章地点"></el-input>

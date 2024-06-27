@@ -82,8 +82,8 @@
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="排序" prop="plan_type">
-                          <el-input v-model="formData.plan_type" clearable></el-input>
+                      <el-form-item label="排序" prop="plan_order">
+                          <el-input v-model="formData.plan_order" clearable></el-input>
                       </el-form-item>
 
 
@@ -179,7 +179,8 @@ data() {
       period_id: '',
       trailer_status: '',
       platform: 'pc',
-      plan_type: 0
+      plan_type: 0,
+      plan_order: 0
     },
   }
 },
@@ -279,6 +280,7 @@ methods: {
     this.formData.period_id = ''
     this.formData.trailer_status = ''
     this.formData.plan_type = 0
+    this.formData.plan_order = 0
   },
   getnormalinfo(id){
     getnormalinfo({id:id}).then(response=>{
@@ -302,6 +304,8 @@ methods: {
             this.formData.end_periodic = response.end_periodic
             this.formData.trailer_status = response.trailer_status
             this.formData.plan_type = response.plan_type
+            this.formData.plan_order = response.plan_order
+            
         }
     })
   },

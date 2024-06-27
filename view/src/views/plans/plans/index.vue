@@ -2,15 +2,15 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="驾驶员|厂家名称|挂车号" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="货品名|厂家名称" clearable></el-input>
           </el-form-item>
-          <el-form-item label="任务类别">
+          <!-- <el-form-item label="任务类别">
               <el-select v-model="query.plan_type" placeholder="选择类别" clearable>
                   <el-option label="运输任务" value="0"></el-option>
                   <el-option label="装货任务" value="1"></el-option>
                   <el-option label="卸货任务" value="2"></el-option>
               </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
                   <el-option label="未完成" value="0"></el-option>
@@ -27,7 +27,7 @@
         <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
         <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
         <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-        <el-button @click="exportExcel" type="primary" size="mini">导出</el-button>
+        <el-button @click="exportplansExcel" type="primary" size="mini">导出</el-button>
           <!-- <el-tooltip class="item" effect="dark" content="map" placement="top">
               <el-button type="success"  size="mini" @click="handlemap">map</el-button>
           </el-tooltip> -->
@@ -161,8 +161,8 @@
 
 
           <el-table-column
-                  prop="create_time"
-                  label="创建时间"
+                  prop="update_time"
+                  label="更新时间"
                   align="center"
                   width="200">
               <template slot-scope="scope">
@@ -239,8 +239,7 @@ import myForm from './form.vue'
 import detail from './detail.vue'
 import planDist from './dist.vue'
 import { getArrByKey } from '@/utils'
-import FileSaver from "file-saver";
-import XLSX from "xlsx";
+import { exportExcel } from '@/utils/export'
 
 export default {
 name: 'plans',
@@ -275,6 +274,11 @@ data() {
       limit: 10,
       keywords: '',
       status: ''
+    },
+    excelquery: {
+      keywords: '',
+      type: 'excel',
+      status: ''
     }
   }
 },
@@ -292,27 +296,44 @@ methods: {
         }
         this.loading = false
     })
-  },
-  exportExcel () {
-    var xlsxParam = { raw: true }
-    var wb = XLSX.utils.table_to_book(
-      document.querySelector('#datatable'),
-      xlsxParam
-    )
-    var wbout = XLSX.write(wb, {
-      bookType: 'xlsx',
-      bookSST: true,
-      type: 'array'
+    this.excelquery.keywords = this.excelquery.keywords
+    this.excelquery.status = this.excelquery.status
+    getplans(this.excelquery).then(response => {
+        if(response !== undefined){
+          console.log(response)
+            this.excelData = response
+        }
     })
-    try {
-      FileSaver.saveAs(
-        new Blob([wbout], { type: 'application/octet-stream' }),
-        '临时任务.xlsx'
-      )
-    } catch (e) {
-      if (typeof console !== 'undefined') console.log(e, wbout)
+  },
+  exportplansExcel () {
+    this.getplans();
+    const data = this.excelData.map((item) => {
+      // 创建一个新的对象，包含原对象的所有键值对以及新的参数
+      return {
+        id: item.id,
+        "状态": this.status(item.status),
+        "始发任务": item.start_periodic==1?"是":"否",
+        "货品名称": item.product_name,
+        "货品数量": item.product_quantity,
+        "装货厂家": item.load_factory,
+        "装货厂家地址": item.load_address,
+        "卸货厂家": item.unload_factory,
+        "卸货厂家地址": item.unload_address,
+        "创建人": item.initiator,
+        "更新时间": item.update_time
+      };
+    });
+
+    exportExcel(data,"运输计划");
+  },
+  status(statusnum) {
+    if(statusnum == 0){
+      return "未完成";
     }
-    return wbout
+    else if(statusnum == 1){
+      return "完成";
+    }
+    
   },
   //搜索
   handleSearch() {

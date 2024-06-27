@@ -38,11 +38,11 @@
                                     placeholder="请输入从业资格证号"  maxLength='18'></el-input>
                       </el-form-item>
                       <el-form-item label="是否离职" prop="escort_status">
-                            <el-radio-group v-model="formData.escort_status">
-                              <el-radio v-model="formData.escort_status" label="2">是</el-radio>
-                              <el-radio v-model="formData.escort_status" label="0">否</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
+                          <el-radio-group v-model="formData.escort_status">
+                            <el-radio v-model="formData.escort_status" label="2">是</el-radio>
+                            <el-radio v-model="formData.escort_status" label="0">否</el-radio>
+                          </el-radio-group>
+                      </el-form-item>
                       <el-form-item label="入职时间">
                         <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
                       </el-form-item>

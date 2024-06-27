@@ -39,7 +39,11 @@ class CostService extends BaseService
             if(isset($param['status'])&&$param['status'] !=''){
                 $where[] = ['status','=',$param['status']];
             }
+            if(isset($param['driver_name'])&&$param['driver_name'] !=''){
+                $where[] = ['driver_name','=',$param['driver_name']];
+            }
             // dump($param);die;
+            // dump($where);die;
             if(isset($param['platform'])&&$param['platform'] == "pc"){//电脑端
 
                 $data = Db::name("admin_carplan_period")->where($where)->order(['create_time'=>'desc'])
@@ -118,7 +122,7 @@ class CostService extends BaseService
             }
             // $sql = Db::name("admin_cost")->order(['create_time'=>'desc'])
             //     ->fetchsql()->select();
-            // dump($where);
+            
             if(isset($param['platform'])&&$param['platform'] == "pc"){
                 $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
@@ -150,7 +154,7 @@ class CostService extends BaseService
             // }
             $param['cost_creater'] = Admin::where('id',$userid)->value('username');
             // $param['cost_creater'] = $userInfo['username'];
-            dump($param);die;
+            // dump($param);die;
             $res = Cost::create($param);
             if(!$res){
                 throw new \Exception('新增失败');

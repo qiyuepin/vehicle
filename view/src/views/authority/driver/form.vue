@@ -56,7 +56,7 @@
                                       placeholder="请输入从业资格证号" maxLength='18'></el-input>
                         </el-form-item>
                         <el-form-item label="入职时间">
-                          <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
+                          <el-input v-model="formData.employ_time" type="date" placeholder="选择日期" max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="是否具有押运员资格证" >
                             <el-radio-group v-model="formData.is_escort">

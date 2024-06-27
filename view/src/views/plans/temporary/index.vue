@@ -2,7 +2,7 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="驾驶员|厂家名称|挂车号" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="驾驶员|厂家名称|挂车号|货品名" clearable></el-input>
           </el-form-item>
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
@@ -25,7 +25,7 @@
           <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-          <el-button @click="exportExcel" type="primary" size="mini">导出</el-button>
+          <el-button @click="exporttemporaryExcel" type="primary" size="mini">导出</el-button>
           <!-- <el-button type="success"  size="mini" @click="handlemap">map</el-button> -->
       </el-row>
       <el-table
@@ -78,7 +78,8 @@
                 <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
-                <el-button  v-else size="mini" @click="handleDetail(scope.row)">待确认</el-button>
+                <el-button  v-else-if="scope.row.status === 8"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 异常</el-button>
+                <el-button  v-else size="mini" @click="handleDetail(scope.row)">待接单</el-button>
                 <!-- <span style="color: #67C23A;" v-if="scope.row.status === 0" >回库</span>
                 <span style="color: #409EFF;" v-else-if="scope.row.status === 1" >在途</span>
                 <span style="color: #409EFF;" v-else-if="scope.row.status === 2" >装货</span>
@@ -167,11 +168,17 @@
                   show-overflow-tooltip>
           </el-table-column>
           
-          
+          <el-table-column
+                  prop="initiator"
+                  label="创建人"
+                  align="center"
+                  width="100"
+                  show-overflow-tooltip>
+          </el-table-column>
           
           <el-table-column
-                  prop="create_time"
-                  label="创建时间"
+                  prop="update_time"
+                  label="更新时间"
                   align="center"
                   width="200">
               <template slot-scope="scope">
@@ -233,8 +240,9 @@ import { gettemporary, delnormal, gettemporaryinfo, getnormalinfo } from '@/api/
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
-import FileSaver from "file-saver";
-import XLSX from "xlsx";
+// import FileSaver from "file-saver";
+// import XLSX from "xlsx";
+import { exportExcel } from '@/utils/export'
 
 export default {
 name: 'Admin',
@@ -246,6 +254,7 @@ data() {
   return {
     buttonDisabled: true,
     tableData: [],
+    excelData: [],
     multipleSelection: null,
     loading: true,
     searchShow: false,
@@ -254,6 +263,11 @@ data() {
       page: 1,
       limit: 10,
       keywords: '',
+      status: ''
+    },
+    excelquery: {
+      keywords: '',
+      type: 'excel',
       status: ''
     }
   }
@@ -272,27 +286,63 @@ methods: {
         }
         this.loading = false
     })
-  },
-  exportExcel () {
-    var xlsxParam = { raw: true }
-    var wb = XLSX.utils.table_to_book(
-      document.querySelector('#datatable'),
-      xlsxParam
-    )
-    var wbout = XLSX.write(wb, {
-      bookType: 'xlsx',
-      bookSST: true,
-      type: 'array'
+    this.excelquery.keywords = this.excelquery.keywords
+    this.excelquery.status = this.excelquery.status
+    gettemporary(this.excelquery).then(response => {
+        if(response !== undefined){
+          console.log(response)
+            this.excelData = response
+        }
     })
-    try {
-      FileSaver.saveAs(
-        new Blob([wbout], { type: 'application/octet-stream' }),
-        '临时任务.xlsx'
-      )
-    } catch (e) {
-      if (typeof console !== 'undefined') console.log(e, wbout)
+  },
+  exporttemporaryExcel () {
+    this.gettemporary();
+    const data = this.excelData.map((item) => {
+      // 创建一个新的对象，包含原对象的所有键值对以及新的参数
+      return {
+        id: item.id,
+        "状态": this.status(item.status,item.driver_status),
+        "挂车": item.trailer_num,
+        "驾驶员": item.driver_name,
+        "押运员": item.escort_name,
+        "货品名称": item.product_name,
+        "货品数量": item.product_quantity,
+        "装货厂家": item.load_factory,
+        "装货厂家地址": item.load_address,
+        "卸货厂家": item.unload_factory,
+        "卸货厂家地址": item.unload_address,
+        "创建人": item.initiator,
+        "更新时间": item.update_time
+      };
+    });
+
+    exportExcel(data,"临时任务");
+  },
+  status(statusnum,driver_status) {
+    if(driver_status == 2){
+      return "已完成";
     }
-    return wbout
+    else if(statusnum == 0){
+      return "回库";
+    }
+    else if(statusnum == 1){
+      return "在途";
+    }
+    else if(statusnum == 2){
+      return "装货";
+    }
+    else if(statusnum == 3){
+      return "装货完成";
+    }
+    else if(statusnum == 4){
+      return "卸货";
+    }
+    else if(statusnum == 5){
+      return "卸货完成";
+    }
+    else{
+      return "待接单";
+    }
   },
   //搜索
   handleSearch() {
