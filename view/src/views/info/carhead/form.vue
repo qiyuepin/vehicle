@@ -96,9 +96,9 @@
                           <el-input v-model="formData.inspection_time" type="date" clearable placeholder="选择检验有效期" :class="{ datestatusinput: formData.inspection_status ? false : true}"
                                     max="9999-12-31"></el-input>
                         </el-form-item>
-                        <el-form-item label="营运证有效期"  max="9999-12-31">
+                        <el-form-item label="营运证有效期" >
                           <el-input v-model="formData.validity_time" type="date" clearable placeholder="选择营运证有效期" :class="{ datestatusinput: formData.validity_status ? false : true}"
-                                  ></el-input>
+                                    max="9999-12-31"></el-input>
                         </el-form-item>
                         <el-form-item label="交强险有效期">
                           <el-input v-model="formData.traffic_time" type="date" clearable placeholder="选择交强险有效期" :class="{ datestatusinput: formData.traffic_status ? false : true}"

@@ -86,10 +86,10 @@ data() {
 
 
   const validatePhone = (rule, value, callback) => {
-    if (!validPhone(value)) {
-      callback(new Error('请输入正确的手机号'))
+    if (value && !validPhone(value)) {
+        callback(new Error('请输入正确的手机号'));
     } else {
-      callback()
+        callback();
     }
   }
   const validCard = (rule, value, callback) => {
@@ -120,7 +120,7 @@ data() {
       id_card: [{ required: true, trigger: 'blur', validator: validCard}],
       cert_card_num: [{ required: true, trigger: 'blur', validator: validcertCard}],
       phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-      phone2: [{ required: true, trigger: 'blur', validator: validatePhone }],
+      phone2: [{ trigger: 'blur', validator: validatePhone }],
     },
     formData: {
       id: 0,

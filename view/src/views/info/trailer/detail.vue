@@ -232,7 +232,7 @@ export default {
         console.log(response.transport_license)
           if(response !== undefined){
             
-              this.title = '车头信息详情'
+              this.title = '挂车信息详情'
               this.formData.id = response.id
               this.formData.trailer_plate = response.trailer_plate
               this.formData.trailer_brand = response.trailer_brand

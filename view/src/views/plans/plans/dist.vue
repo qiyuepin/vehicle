@@ -305,7 +305,7 @@ methods: {
           console.log('response.start_periodic---'+response.start_periodic)
             this.title = '分配驾驶员'
             this.formData.id = response.id
-            this.formData.info_id = response.info_id
+            // this.formData.info_id = response.info_id
             this.formData.product_name = response.product_name
             //修改 No.8 start
             //this.formData.product_quantity = response.product_quantity

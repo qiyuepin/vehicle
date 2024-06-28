@@ -108,12 +108,8 @@
               width="110">
               <template slot-scope="scope">
                 
-                <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >回库</span>
-                <span style="color: #e6a23c;" v-else-if="scope.row.trailer_status === 1" >装货</span>
-                <span style="color: #f56c6c;" v-else-if="scope.row.trailer_status === 2" >卸货</span>
-                <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 3" >在途</span>
-                <span style="color: #909399;" v-else-if="scope.row.trailer_status === 4" >停运</span>
-                <span style="color: #909399;" v-else >-</span>
+                <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
+                <span style="color: #e6a23c;" v-else-if="scope.row.trailer_status === 1" >重车</span>
                 <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
               </template>
           </el-table-column>
