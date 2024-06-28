@@ -676,7 +676,11 @@ class PlanService extends BaseService
             // $initiator = $author['name'];
             $userid = $this->getValue($Authorization);
             $initiator = Admin::where('id',$userid)->value('username');
+            $plansbefore = Plans::where('start_periodic',$param['start_periodic'])->where('status',0)->where('product_name',$param['product_name'])->where('load_factory',$param['load_factory'])->where('unload_factory',$param['unload_factory'])->count();
             
+            if($plansbefore>1){
+                return $this->error('已有两条相同，未完成的运输计划');
+            }
             $currentYear = date('Y');
             $currentMonth = date('m');
             $month_id = Plans::where('start_periodic',1)->where('month',$currentMonth)->order(['id'=>'desc'])->find();
@@ -1255,7 +1259,7 @@ class PlanService extends BaseService
                 // "PhoneNumberSet" => array( "15041726679" ),
                 "PhoneNumberSet" => array( $phone ),
                 "SmsSdkAppId" => "1400908125",
-                "SignName" => "大连钰波科技有限公司",
+                "SignName" => "大连xxx有限公司",
                 "TemplateId" => "2148739",
                 "TemplateParamSet" => array( $drivername, $loadfactory, $unloadfactory )
             );
