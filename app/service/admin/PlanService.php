@@ -1259,7 +1259,7 @@ class PlanService extends BaseService
                 // "PhoneNumberSet" => array( "15041726679" ),
                 "PhoneNumberSet" => array( $phone ),
                 "SmsSdkAppId" => "1400908125",
-                "SignName" => "大连xxx有限公司",
+                "SignName" => "大连钰波科技有限公司",
                 "TemplateId" => "2148739",
                 "TemplateParamSet" => array( $drivername, $loadfactory, $unloadfactory )
             );
