@@ -51,6 +51,7 @@ return [
         'admin/info/getcartrailer',
         'admin/info/addcartrailer',
         'admin/info/editcartrailer',
+        'admin/info/delcartrailer',
         'admin/info/getcartrailerInfo',
         'admin/info/getescort',
         'admin/info/addescort',

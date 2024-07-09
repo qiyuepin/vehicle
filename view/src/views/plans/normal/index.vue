@@ -44,12 +44,12 @@
                   width="40"
                   :selectable="isSelected">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="id"
                   label="ID"
                   align="center"
                   width="80">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
                   prop="plan_order"
                   label="排序"
@@ -99,7 +99,7 @@
           </el-table-column>
           <el-table-column
               prop="start_periodic"
-              label="新周期"
+              label="始发任务"
               align="center"
               width="110">
               <template slot-scope="scope">

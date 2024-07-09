@@ -43,6 +43,12 @@ export function validPlate(str) {
   return reg.test(str);
 }
 
+export function validTrailerPlate(str) {
+
+  // let input = str.replace(/^吉B/, '');
+  const reg = /^[A-Z]{1}\d{3}$/;
+  return reg.test(str);
+}
 /**
  * 验证身份证号码的合法性
  * @param {string} str - 待验证的身份证号码

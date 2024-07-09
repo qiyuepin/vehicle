@@ -43,12 +43,12 @@
                   width="40"
                   :selectable="isSelected">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="id"
                   label="ID"
                   align="center"
                   width="80">
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column
                   prop="escort_status"
                   label="状态"

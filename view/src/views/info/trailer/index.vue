@@ -313,7 +313,7 @@
 
 <script>
 
-import { getcartrailer, deltrailer } from '@/api/Info.js'
+import { getcartrailer, delcartrailer } from '@/api/Info.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import Pouring from './pouring.vue'
@@ -466,12 +466,13 @@ export default {
     },
     //删除
     handleDelete(ids){
-      this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+      this.$confirm('您确定要删除该挂车吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         delcartrailer({ ids: ids }).then(response => {
+          console.log(ids)
           this.getcartrailer()
           this.$message({
             type: 'success',

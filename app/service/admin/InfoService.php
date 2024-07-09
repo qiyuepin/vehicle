@@ -521,9 +521,10 @@ class InfoService extends BaseService
         try{
             Db::startTrans();
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
-            $res = Driver::whereIn('id',$param['ids'])->delete();
+            $res = Cartrailer::whereIn('id',$param['ids'])->delete();
+            // Cartrailer::whereIn('id',$param['ids'])->select();
             if(!$res){
-                throw new \Exception('删除违章失败');
+                throw new \Exception('删除失败');
             }
 
             Db::commit();

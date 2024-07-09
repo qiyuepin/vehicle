@@ -27,6 +27,8 @@
                             >
                               <template v-slot:prepend>吉B</template>
                             </el-input>
+                            
+                            <label for="">挂</label>
                         </el-form-item>
 
                         <!-- <el-form-item label="品牌" prop="trailer_brand">
@@ -105,7 +107,7 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="注册日期">
-                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期" max="9999-12-31"></el-input>
+                            <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期" max="9999-12-31"  @change="handleregistDateChange"></el-input>
                         </el-form-item>
                         <el-form-item label="已运营时间">
                             <el-label > {{ years }}</el-label>
@@ -178,7 +180,7 @@ import { addcartrailer, editcartrailer, getcartrailerInfo, getcarscope, gettrail
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
-import { validCert, validPlate } from '@/utils/validate'
+import { validCert, validPlate, validTrailerPlate } from '@/utils/validate'
 import moment from 'moment'
 
 export default {
@@ -198,11 +200,26 @@ export default {
         callback()
       }
     }
+    // const validatePlate = (rule, value, callback) => {
+    //   console.log(value)
+    //   const newplate = '吉B ' + value;
+    //   if (!validPlate(value)) {
+    //     callback(new Error('请输入正确车牌号（吉B（固定）+1字母+3数字）'))
+    //   } else {
+
+    //     console.log(newplate)
+    //     this.$nextTick(() => {
+    //       this.formData.trailer_plate = newplate;
+    //     });
+    //     callback()
+    //   }
+    // }
+
     const validatePlate = (rule, value, callback) => {
       console.log(value)
-      const newplate = '吉B ' + value;
-      if (!validPlate(value)) {
-        callback(new Error('请输入正确车牌号（吉B（固定）+1字母+4数字）'))
+      const newplate = '吉B ' + value + '挂';
+      if (!validTrailerPlate(value)) {
+        callback(new Error('请输入正确车牌号（吉B（固定）+1字母+3数字）'))
       } else {
 
         console.log(newplate)
@@ -278,6 +295,8 @@ export default {
           else{
               return yearStr + '年' + ' ' + monthStr + '个月'
           }
+          
+          
       }
   },
   created() {
@@ -288,6 +307,24 @@ export default {
     this.gettrailerkeepwarm();
   },
   methods: {
+    handleregistDateChange(value){
+ 
+      let registTime = new Date(value);
+
+      let scrappTime = new Date(registTime.getFullYear() + 10, registTime.getMonth(), registTime.getDate());
+
+      scrappTime = this.formatDate(scrappTime);
+
+      // 将结果赋值给 this.formData.scrapp_time
+      this.formData.scrapp_time = scrappTime;
+    },
+    formatDate(date) {
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+      let day = date.getDate().toString().padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+    },
       clearNoNum(value) {
           if (value) {
               let value1 = parseFloat(value);

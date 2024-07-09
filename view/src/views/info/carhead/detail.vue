@@ -301,11 +301,11 @@ export default {
 
               this.formData.carhead_scope_name = response.carhead_scope_name
             //   this.formData.carhead_scope.push(...response.carhead_scope);
-              this.formData.regist_time = new Date(response.regist_time).toISOString().slice(0,10)
-              this.formData.scrapp_time = new Date(response.scrapp_time).toISOString().slice(0,10)
-              this.formData.inspection_time = new Date(response.inspection_time).toISOString().slice(0,10)
-              this.formData.validity_time = new Date(response.validity_time).toISOString().slice(0,10)
-              this.formData.traffic_time = new Date(response.traffic_time).toISOString().slice(0,10)
+              this.formData.regist_time = response.regist_time?new Date(response.regist_time).toISOString().slice(0,10):''
+              this.formData.scrapp_time = response.scrapp_time?new Date(response.scrapp_time).toISOString().slice(0,10):''
+              this.formData.inspection_time = response.inspection_time?new Date(response.inspection_time).toISOString().slice(0,10):''
+              this.formData.validity_time = response.validity_time?new Date(response.validity_time).toISOString().slice(0,10):''
+              this.formData.traffic_time = response.traffic_time?new Date(response.traffic_time).toISOString().slice(0,10):''
               this.carbody_picture = response.carbody_picture.split(',').map(item => item.trim());
               this.driving_license = response.driving_license.split(',').map(item => item.trim());
               console.log(this.driving_license)
