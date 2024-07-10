@@ -39,8 +39,8 @@
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="任务分配">
 
-                      <el-form-item label="挂车/驾驶员" prop="info_id">
-                          <el-select v-model="formData.info_id" filterable  placeholder="请选择挂车/驾驶员" @change="infoChanged">
+                      <el-form-item label="车头/驾驶员" prop="info_id">
+                          <el-select v-model="formData.info_id" filterable  placeholder="请选择车头/驾驶员" @change="infoChanged">
                             <el-option
                               v-for="item in infolist"
                               :key="item.value"

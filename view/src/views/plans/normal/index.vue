@@ -103,11 +103,11 @@
               align="center"
               width="110">
               <template slot-scope="scope">
-             
+
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
                 <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
-    
+
               </template>
           </el-table-column>
           <el-table-column
@@ -116,7 +116,7 @@
               align="center"
               width="110">
               <template slot-scope="scope">
-       
+
                 <el-tag v-if="scope.row.fixed === 0" type="info">非固定</el-tag>
                 <el-tag v-else-if="scope.row.fixed === 1" type="success">固定</el-tag>
               </template>
@@ -199,7 +199,7 @@
                   width="100"
                   show-overflow-tooltip>
           </el-table-column>
-          
+
           <el-table-column
                   prop="update_time"
                   label="更新时间"
@@ -217,10 +217,10 @@
                   min-width="160">
               <template slot-scope="scope">
                   <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  
+
                   <el-button v-if="scope.row.driver_status==3" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
                   <el-button v-else size="mini" type="danger" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">作废</el-button>
-  
+
 
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
@@ -485,6 +485,7 @@ methods: {
       console.log(555)
       deltemporary({ id: id, status: 3 - status }).then(response => {
         this.tableData[index]['status'] = 3 - status
+          this.handleReload()
         this.$message({
           type: 'success',
           message: handlerMsg + '成功!'

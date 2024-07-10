@@ -18,8 +18,8 @@
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="基本信息">
 
-                      <el-form-item label="车辆/人员" prop="info_id">
-                          <el-select v-model="formData.info_id" filterable  placeholder="请选择车辆/人员" @change="infoChanged">
+                      <el-form-item label="车头/人员" prop="info_id">
+                          <el-select v-model="formData.info_id" filterable  placeholder="请选择车头/人员" @change="infoChanged">
                             <el-option
                               v-for="item in infolist"
                               :key="item.value"
@@ -45,7 +45,10 @@
                           <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
                       </el-form-item> -->
                       <el-form-item label="货品名称" prop="product_name">
-                          <el-select v-model="formData.product_name" filterable  clearable placeholder="请选择货品名称">
+                          <el-select v-model="formData.product_name" filterable  clearable placeholder="请选择货品名称"
+                                     @blur="selectBlur"
+                                     @clear="selectClear"
+                                     @change="selectChange">
                             <el-option
                               v-for="item in productlist"
                               :key="item.value"
@@ -194,6 +197,24 @@ destroyed () {
     }
   },
 methods: {
+    selectBlur(e) {
+        // 意见类型
+        console.log(e)
+        if (e.target.value !== '') {
+            console.log(e.target.value)
+            this.formData.product_name = e.target.value;
+            console.log(this.formData.product_name)
+            this.$forceUpdate();   // 强制更新
+        }
+    },
+    selectClear() {
+        this.formData.product_name = '';
+        this.$forceUpdate();
+    },
+    selectChange(val) {
+        this.formData.product_name = val;
+        this.$forceUpdate();
+    },
   getproduct(){
       getproduct().then(response => {
           console.log(response.data)
@@ -305,7 +326,7 @@ methods: {
             this.formData.trailer_status = response.trailer_status
             this.formData.plan_type = response.plan_type
             this.formData.plan_order = response.plan_order
-            
+
         }
     })
   },

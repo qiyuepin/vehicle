@@ -333,7 +333,7 @@ methods: {
     else if(statusnum == 1){
       return "完成";
     }
-    
+
   },
   //搜索
   handleSearch() {
@@ -418,7 +418,7 @@ methods: {
   },
   //删除
   handleDelete(ids){
-    this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+    this.$confirm('您确定要删除该计划吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
