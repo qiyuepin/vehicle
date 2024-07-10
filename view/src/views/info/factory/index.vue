@@ -10,18 +10,13 @@
             </el-form-item>
         </el-form>
         <el-row style="margin-bottom: 10px;">
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+            <!-- <el-tooltip class="item" effect="dark" content="刷新" placement="top">
                 <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="搜索" placement="top">
-                <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-            </el-tooltip>
+            </el-tooltip> -->
+            <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
+            <el-button type="success" v-permission="'admin.info.addfactory'" size="mini" @click="handleAdd">新增</el-button>
+            <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
+            <el-button type="danger" v-permission="'admin.info.delfactory'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -71,7 +66,7 @@
                     prop="name"
                     label="厂家名称"
                     align="center"
-                    width="220">
+                    width="220" show-overflow-tooltip>
             </el-table-column>
             <el-table-column
                     prop="contact"
@@ -89,7 +84,7 @@
                     prop="address"
                     label="厂家地址"
                     align="center"
-                    width="250">
+                    width="250" show-overflow-tooltip>
             </el-table-column>
             <el-table-column
                     prop="location"
@@ -99,14 +94,13 @@
             </el-table-column>
 
             <el-table-column
+                    v-if="hasPermission('admin.info.addfactory')"
                     fixed="right"
                     label="操作"
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                        <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
-                    </el-tooltip>
+                  <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button>
                     <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                         <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                     </el-tooltip>
@@ -148,6 +142,7 @@
 <script>
 
 import { getfactory, delfactory, getfactoryinfo } from '@/api/Info.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
@@ -179,6 +174,9 @@ export default {
     this.getfactory();
   },
   methods: {
+    hasPermission(permission) {
+      return checkPermission(permission);
+    },
     //查询列表
     getfactory() {
       this.loading = true
@@ -270,7 +268,7 @@ export default {
     // },
     //删除
     handleDelete(ids){
-      this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+      this.$confirm('您确定要删除该厂家吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

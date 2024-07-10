@@ -51,8 +51,8 @@
                     <div class="demo-image__preview">
                     <el-image 
                         style="width: 100px; height: 100px"
-                        :src="driving_license[0]" 
-                        :preview-src-list="driving_license">
+                        :src="driving_license[0]?driving_license[0]:noImage" 
+                        :preview-src-list="driving_license?driving_license:noImage">
                     </el-image>
                     </div>
                 </el-descriptions-item>
@@ -60,8 +60,8 @@
                     <div class="demo-image__preview">
                     <el-image 
                         style="width: 100px; height: 100px"
-                        :src="formData.transport_license[0]" 
-                        :preview-src-list="formData.transport_license">
+                        :src="formData.transport_license[0]?formData.transport_license[0]:noImage" 
+                        :preview-src-list="formData.transport_license?formData.transport_license:noImage">
                     </el-image>
                     </div>
                 </el-descriptions-item>
@@ -131,7 +131,7 @@
 import { getcartrailerInfo, getcarscope} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
-
+import noImage from '@/assets/no_images/none.png';
 
 
 export default {
@@ -142,6 +142,7 @@ export default {
   },
   data() {
     return {
+      noImage,
       openpdf:'',
       dialogVisible:false,
       title:'',

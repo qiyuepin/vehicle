@@ -19,7 +19,7 @@
         </el-form>
         <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="success" v-permission="'auth.admin.add'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
@@ -130,62 +130,97 @@
                     label="身份证正面"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.card_front"
                         :preview-src-list="[scope.row.card_front]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.card_front ? scope.row.card_front : noImage"
+                    :preview-src-list="[scope.row.card_front ? scope.row.card_front : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="card_back"
                     label="身份证反面"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.card_back"
                         :preview-src-list="[scope.row.card_back]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.card_back ? scope.row.card_back : noImage"
+                    :preview-src-list="[scope.row.card_back ? scope.row.card_back : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="driver_card_front"
                     label="驾驶证正面"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.driver_card_front"
                         :preview-src-list="[scope.row.driver_card_front]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.driver_card_front ? scope.row.driver_card_front : noImage"
+                    :preview-src-list="[scope.row.driver_card_front ? scope.row.driver_card_front : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="driver_card_back"
                     label="驾驶证反面"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.driver_card_back"
                         :preview-src-list="[scope.row.driver_card_back]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.driver_card_back ? scope.row.driver_card_back : noImage"
+                    :preview-src-list="[scope.row.driver_card_back ? scope.row.driver_card_back : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="cert_front"
                     label="从业资格证正面"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.cert_front"
                         :preview-src-list="[scope.row.cert_front]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.cert_front ? scope.row.cert_front : noImage"
+                    :preview-src-list="[scope.row.cert_front ? scope.row.cert_front : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="cert_back"
                     label="从业资格证反面"
                     align="center"
@@ -196,7 +231,7 @@
                         :preview-src-list="[scope.row.cert_back]"
                         slot-scope="scope">
                 </el-image>
-            </el-table-column>
+            </el-table-column> -->
             
             <el-table-column
                     prop="status"
@@ -251,26 +286,37 @@
                     <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
+                    v-if="hasColumnPermission"
                     fixed="right"
                     label="操作"
                     align="center"
                     min-width="150">
-                <template slot-scope="scope">
+                <template slot-scope="scope" v-permission="'auth.admin.edit'"> 
                   <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  <el-button size="mini" v-if="scope.row.status==1" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
-                  <el-button size="mini" v-if="scope.row.status==2" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
-                    <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
-                                   circle @click="handleDelete([scope.row.id])"></el-button>
-                    </el-tooltip> -->
-                    <!-- <el-tooltip class="item" effect="dark" content="违章信息" placement="top">
-                        <el-button size="mini" type="danger" v-permission="'admin.driver.regulation'"  icon="el-icon-warning-outline" circle @click="handleRegulation([scope.row.id])"></el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="事故信息" placement="top">
-                        <el-button size="mini" type="danger" v-permission="'admin.driver.accident'" icon="el-icon-warning" circle @click="handleAccident([scope.row.id])"></el-button>
-                    </el-tooltip> -->
+                  <el-button size="mini" v-if="scope.row.status==1" type="success" v-permission="'auth.admin.edit'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
+                  <el-button size="mini" v-if="scope.row.status==2" type="warning" v-permission="'auth.admin.edit'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
                 </template>
+            </el-table-column> -->
+            <!-- <el-table-column
+       
+            v-if="hasPermission('auth.admin.edit')"
+      prop="create_time"
+      label="姓名"
+      width="180"
+    ></el-table-column> -->
+            <el-table-column
+              v-if="hasPermission('auth.admin.edit')"
+              fixed="right"
+              label="操作"
+              align="center"
+              min-width="150"
+            >
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary"  @click="handleEdit(scope.row)">编辑</el-button>
+                <el-button size="mini" v-if="scope.row.status==1" type="success"  :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
+                <el-button size="mini" v-if="scope.row.status==2" type="warning"  :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
+              </template>
             </el-table-column>
         </el-table>
         <!--分页-->
@@ -294,8 +340,10 @@
 <script>
 
 import { getdriverList, changeStatus,deleteAdmin } from '@/api/admin.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import { getArrByKey } from '@/utils'
+import noImage from '@/assets/no_images/none.png';
 
 export default {
   name: 'Admin',
@@ -304,12 +352,14 @@ export default {
   },
   data() {
     return {
+      noImage,
       buttonDisabled: true,
       tableData: [],
       multipleSelection: null,
       loading: true,
       searchShow: false,
       total: 0,
+      showOperation: false,
       query: {
         page: 1,
         limit: 10,
@@ -321,7 +371,24 @@ export default {
   created() {
     this.getdriverList();
   },
+
   methods: {
+    hasPermission(permission) {
+      
+      console.log(checkPermission(permission))
+      // console.log(this.$router)
+      // 根据权限检查逻辑返回是否有权限
+      return checkPermission(permission);
+    },
+    // checkPermission(permission) {
+    //   console.log('checkPermission'+permission)
+    //   const userPermissions = this.$store.state.user.permissions;
+    //   console.log(userPermissions)
+    //   // return userPermissions.includes(permission);
+    //   // 实际权限检查的逻辑
+    //   // 这里可以是你的实际权限逻辑，例如基于 Vuex 的权限管理
+    //   return true; // 示例总是返回 true，实际应根据你的实现修改
+    // },
     //查询列表
     getdriverList() {
       this.loading = true

@@ -31,11 +31,12 @@
                     </el-form-item>
                     <el-form-item label="厂家地址" prop="load_address">
                       <!-- <el-input id="mapInput" type="text" value="请输入关键字：(选定后搜索)" onfocus='this.value=""' placeholder="请输入活动地址" /> -->
-                      <div id="container">
-                        <div class="search">
+                      <div id="mapdiv">
+                        <div class="searchbutton">
                           <input type="input" placeholder="请输入关键字" v-model="keyWord" />
                           <button type="button" @click="onSearch">搜索</button>
                         </div>
+                        <div id="container"></div>
                       </div>
                       
                       <div id="panel"></div>
@@ -353,7 +354,7 @@ methods: {
     min-height: 300px;
     background: pink;
   }
-  .search {
+  .searchbutton {
     z-index: 100;
     position: absolute;
     top: 5px;

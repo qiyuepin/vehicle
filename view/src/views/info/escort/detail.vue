@@ -132,7 +132,7 @@
 import { getcarheadInfo, getcarscope} from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
-
+import noImage from '@/assets/no_images/none.png';
 
 
 export default {
@@ -143,6 +143,7 @@ export default {
   },
   data() {
     return {
+      noImage,
       title:'',
       dialog: false,
       carhead_scope: [],

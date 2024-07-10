@@ -13,6 +13,7 @@ use think\facade\Cache;
 use think\facade\Db;
 use think\facade\Log;
 use app\model\Driver;
+use app\model\Info;
 
 /**
  * AdminService
@@ -129,7 +130,7 @@ class AdminService extends BaseService
     }
 
     public function adddriverAdmin($param=[]){
-        // dump($param['group']);
+        
         // foreach($param['group'] as $group_id){
 
         //     dump($group_id);
@@ -141,18 +142,14 @@ class AdminService extends BaseService
             $param['password'] = md5($param['halt'].$param['password'].$param['halt']);
             // $param['sign'] = $param['autograph'];
             unset($param['id']);
-            // $res = Admin::create($param)->fetchsql();
-            // $query = DB::table('admin')->insert($param);dump($query);die;
-            // $sql = $query->toSql();
-            // dd($sql);
-            // dump($param);die;
+            $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
             $res = Admin::create($param);
-
+          
             if(!$res){
-                throw new \Exception('新增管理员失败');
+                throw new \Exception('新增失败');
             }
             $uid = $res -> id;
-        
+            // dump($uid);die;
             // 确保 'group' 字段存在且为数组
             foreach($param['group'] as $group_id){
                 $res = AuthGroupAccess::create(['uid'=>$uid,'group_id'=>$group_id]);
@@ -253,6 +250,12 @@ class AdminService extends BaseService
             Db::startTrans();
             //删除管理员
             // $res = Admin::whereIn('id',$param['ids'])->delete();
+            foreach($param['ids'] as $key =>  $value){
+                $exit = Info::where('driver_id',$value)->value('driver_name');
+                if($exit){
+                    return $this->error('人员车辆匹配里面有"'.$exit.'"，无法删除');
+                }
+            }
             $res = Admin::destroy($param['ids']);
             if(!$res){
                 throw new \Exception('删除管理员失败');
