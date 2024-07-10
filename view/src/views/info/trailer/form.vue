@@ -20,15 +20,16 @@
 
                         <el-form-item label="车牌号" prop="Vaildplate">
                             <!-- <el-input v-model="formData.trailer_plate" clearable placeholder="请输入车牌号"></el-input> -->
+                            
                             <el-input
                               v-model="formData.Vaildplate"
                               placeholder="请输入车牌号"
                               :maxlength="5"
                             >
                               <template v-slot:prepend>吉B</template>
+                              <template v-slot:append>挂</template>
                             </el-input>
-                            
-                            <label for="">挂</label>
+
                         </el-form-item>
 
                         <!-- <el-form-item label="品牌" prop="trailer_brand">
@@ -219,7 +220,7 @@ export default {
       console.log(value)
       const newplate = '吉B ' + value + '挂';
       if (!validTrailerPlate(value)) {
-        callback(new Error('请输入正确车牌号（吉B（固定）+1字母+3数字）'))
+        callback(new Error('请输入正确车牌号（吉B（固定）+1字母+3数字）+挂'))
       } else {
 
         console.log(newplate)
@@ -484,11 +485,11 @@ export default {
               this.formData.transport_cert = response.transport_cert
 
               this.formData.trailer_scope.push(...response.trailer_scope);
-              this.formData.regist_time = new Date(response.regist_time).toISOString().slice(0,10)
-              this.formData.scrapp_time = new Date(response.scrapp_time).toISOString().slice(0,10)
-              this.formData.inspection_time = new Date(response.inspection_time).toISOString().slice(0,10)
-              this.formData.validity_time = new Date(response.validity_time).toISOString().slice(0,10)
-              this.formData.frame_time = new Date(response.frame_time).toISOString().slice(0,10)
+              this.formData.regist_time = response.regist_time?new Date(response.regist_time).toISOString().slice(0,10):''
+              this.formData.scrapp_time = response.scrapp_time?new Date(response.scrapp_time).toISOString().slice(0,10):''
+              this.formData.inspection_time = response.inspection_time?new Date(response.inspection_time).toISOString().slice(0,10):''
+              this.formData.validity_time = response.validity_time?new Date(response.validity_time).toISOString().slice(0,10):''
+              this.formData.frame_time = response.frame_time?new Date(response.frame_time).toISOString().slice(0,10):''
               // this.formData.driving_license = response.driving_license
               // this.$refs.Image_driving_license.uploadFileList.push(...response.driving_license);
               // this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {

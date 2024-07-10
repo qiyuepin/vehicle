@@ -19,7 +19,8 @@
                     <el-tab-pane label="基本信息">
                         <el-form-item label="选择角色" prop="group">
                             <el-checkbox-group v-model="formData.group">
-                                <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-if="item.type == 1">{{item.title}}</el-checkbox>
+                                <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-if="item.type == 1 || item.type == 3">{{item.title}}</el-checkbox>
+                                <!-- <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-else-if="item.type == 3">{{item.title}}</el-checkbox> -->
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="用户名" prop="username">

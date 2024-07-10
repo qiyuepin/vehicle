@@ -107,7 +107,7 @@
 
 import { getRole, adddriverAdmin, editdriverAdmin,getdriverInfo } from '@/api/admin.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import { validUsername, validIDCard, validPhone, validPassword } from '@/utils/validate'
+import { validUsername, validIDCard, validPhonenumber, validPassword } from '@/utils/validate'
 
 export default {
   name: "AdminForm",
@@ -158,7 +158,7 @@ export default {
     }
 
     const validatePhone = (rule, value, callback) => {
-      if (value && !validPhone(value)) {
+      if (value && !validPhonenumber(value)) {
           callback(new Error('请输入正确的手机号'));
       } else {
           callback();
@@ -282,7 +282,7 @@ export default {
               this.formData.id_card_num = response.id_card_num
               this.formData.dirver_card_num = response.dirver_card_num
               this.formData.cert_card_num = response.cert_card_num
-              this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)
+              this.formData.employ_time = response.employ_time?new Date(response.employ_time).toISOString().slice(0,10):''
               this.is_escort = response.is_escort
               this.formData.escort_cert = response.escort_cert
               this.$refs.Image_escort_cert.imgUrl = response.escort_cert

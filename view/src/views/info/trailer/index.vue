@@ -11,10 +11,10 @@
         </el-form>
         <el-row style="margin-bottom: 10px;">
             <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-            <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+            <el-button type="success" v-permission="'admin.info.addtrailer'" size="mini" @click="handleAdd">新增</el-button>
             <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
             <el-button @click="handlePouring" size="mini" style="background-color: #12bbab;border-color: #12bbab;color: #FFFFFF;">倒料</el-button>
-            <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+            <el-button type="danger" v-permission="'admin.info.deltrailer'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -206,12 +206,19 @@
                     label="行驶证"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.driving_licenses[0].url"
                         :preview-src-list="[scope.row.driving_licenses[0].url]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.driving_licenses[0].url ? scope.row.driving_licenses[0].url : noImage"
+                    :preview-src-list="[scope.row.driving_licenses[0].url ? scope.row.driving_licenses[0].url : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="transport_license"
@@ -224,6 +231,18 @@
                         :preview-src-list="[scope.row.transport_license]"
                         slot-scope="scope">
                 </el-image>
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.transport_license ? scope.row.transport_license : noImage"
+                    :preview-src-list="[scope.row.transport_license ? scope.row.transport_license : noImage]">
+                  </el-image>
+                  <!-- <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.transport_license ? scope.row.transport_license : './assets/no_images/none.png'"
+                    :preview-src-list="[scope.row.transport_license ? scope.row.transport_license : './assets/no_images/none.png']">
+                  </el-image> -->
+                </template>
             </el-table-column>
             <!-- <el-table-column
                     prop="pot_report"
@@ -278,12 +297,13 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    v-if="hasPermission('admin.info.addfactory')"
                     fixed="right"
                     label="操作"
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -314,10 +334,12 @@
 <script>
 
 import { getcartrailer, delcartrailer } from '@/api/Info.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import Pouring from './pouring.vue'
 import { getArrByKey } from '@/utils'
+import noImage from '@/assets/no_images/none.png';
 
 export default {
   name: 'Admin',
@@ -328,6 +350,7 @@ export default {
   },
   data() {
     return {
+      noImage,
       dialogVisible: false,
       openpdf: '',
       buttonDisabled: true,
@@ -349,6 +372,9 @@ export default {
     this.getcartrailer();
   },
   methods: {
+    hasPermission(permission) {
+      return checkPermission(permission);
+    },
     handlePreview(openPdf){
       console.log(openPdf)
       this.openpdf = openPdf;

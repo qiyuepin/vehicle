@@ -186,55 +186,60 @@ class InfoService extends BaseService
             if(empty($Carhead)){
                 throw new \Exception('信息不存在');
             }
- 
+            $param['inspection_time'] = $param['inspection_time']!=''?$param['inspection_time']:null;
+            $param['validity_time'] = $param['validity_time']!=''?$param['validity_time']:null;
+            $param['traffic_time'] = $param['traffic_time']!=''?$param['traffic_time']:null;
+            $param['regist_time'] = $param['validity_time']!=''?$param['regist_time']:null;
+            $param['scrapp_time'] = $param['scrapp_time']!=''?$param['scrapp_time']:null;
             $param['type'] = 1;
-            // dump($param['driving_license']);die;
-            if(isset($param['driving_license']) && is_array($param['driving_license'])){
-                
-                $driving_license = array();
-                foreach($param['driving_license'] as $value){
-                    // dump($value['url']);die;
-                    $driving_license[]= isset($value['url'])?$value['url']:$value;
-                }
-            }else{
-
-                $driving_license = $param['driving_license'];
-            }
-
-            if (isset($driving_license) && is_array($driving_license)) {
-                $param['driving_license'] = implode(',', $driving_license);
-  
-            } else {
-               
-            }
-            //经营范围 start
-            if (isset($param['carhead_scope']) && is_array($param['carhead_scope'])) {
-                $param['carhead_scope'] = implode(',', $param['carhead_scope']);
-            } else {
-
-            }
-            //经营范围 end
-
+    
             //车体照片 start
-            if(isset($param['carbody_picture']) && is_array($param['carbody_picture'])){
-
+            if(is_array($param['carbody_picture'][0])){
+       
                 $carbody_picture = array();
-                foreach($param['carbody_picture'] as $value){
-                    // dump($value['url']);die;
+                foreach($param['carbody_picture'] as $key => $value){
                     $carbody_picture[]= isset($value['url'])?$value['url']:$value;
                 }
             }else{
 
                 $carbody_picture = $param['carbody_picture'];
             }
-
+            
             if (isset($carbody_picture) && is_array($carbody_picture)) {
                 $param['carbody_picture'] = implode(',', $carbody_picture);
-
+            } else {
+            }
+            //车体照片 end
+    
+            if(is_array($param['driving_license']) && count($param['driving_license']) > 0 && is_array($param['driving_license'][0])){
+            
+                $driving_license = array();
+                foreach($param['driving_license'] as $key => $value){
+                    // $driving_license[]= $value['url'];
+                    $driving_license[]= isset($value['url'])?$value['url']:$value;
+                }
+            }else{
+                
+                $driving_license = $param['driving_license'];
+            }
+          
+            if (isset($driving_license) && is_array($driving_license)) {
+                $param['driving_license'] = implode(',', $driving_license);
+            } else {
+            }
+            
+            //经营范围 start
+            if (isset($param['carhead_scope']) && is_array($param['carhead_scope'])) {
+                $param['carhead_scope'] = implode(',', $param['carhead_scope']);
             } else {
 
             }
-            //车体照片 end
+            // dump($param);
+            //经营范围 end
+
+            // Carhead::update($param,['id'=>$param['id']]);
+         
+            
    
             // Db::name('admin_info_notice')->where('carhead_plate',$param['carhead_plate'])->update(['isread'=>1]);
             // $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
@@ -271,6 +276,12 @@ class InfoService extends BaseService
     public function delcarhead($param=[]){
         try{
             Db::startTrans();
+            foreach($param['ids'] as $key =>  $value){
+                $exit = Info::where('head_id',$value)->value('head_num');
+                if($exit){
+                    return $this->error('人员车辆匹配里面有"'.$exit.'"，无法删除');
+                }
+            }
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
             $res = Carhead::whereIn('id',$param['ids'])->delete();
             if(!$res){
@@ -301,7 +312,7 @@ class InfoService extends BaseService
                 $items = $trailer_scope->toArray();
 
                 $itemNames = array_column($items, 'name');
-                // dump($value['driving_license']);die;
+                
                 $data['data'][$key]['trailer_scope'] = implode(', ', $itemNames);
                 if($value['driving_license']!=null){
                     $driving_license = explode(',', $value['driving_license']);
@@ -313,15 +324,16 @@ class InfoService extends BaseService
                     
                     $data['data'][$key]['driving_licenses'][0]['url']='';
                 }
-                
+                // dump($value['scrapp_time']);
                 // scrapp_time,inspection_time,validity_time,frame_time
                 // $scrapp_time = \DateTime::createFromFormat('Y-m-d', $value['scrapp_time']);
                 $data['data'][$key]['date_status'] = 0;
                 $data['data'][$key]['scrapp_status'] = $value['scrapp_time']?$this->diffdate($value['scrapp_time']):true;
-                $data['data'][$key]['inspection_status'] = $value['scrapp_time']?$this->diffdate($value['inspection_time']):true;
-                $data['data'][$key]['validity_status'] = $value['scrapp_time']?$this->diffdate($value['validity_time']):true;
-                $data['data'][$key]['frame_status'] = $value['scrapp_time']?$this->diffdate($value['frame_time']):true;
+                $data['data'][$key]['inspection_status'] = $value['inspection_time']?$this->diffdate($value['inspection_time']):true;
+                $data['data'][$key]['validity_status'] = $value['validity_time']?$this->diffdate($value['validity_time']):true;
+                $data['data'][$key]['frame_status'] = $value['frame_time']?$this->diffdate($value['frame_time']):true;
                 // dump($data);die;
+                
                 if($data['data'][$key]['scrapp_status']==false){
                     $data['data'][$key]['date_status'] = $data['data'][$key]['date_status']+1;
                 }
@@ -441,7 +453,11 @@ class InfoService extends BaseService
             if(empty($Cartrailer)){
                 throw new \Exception('信息不存在');
             }
- 
+            $param['regist_time'] = $param['regist_time'] != ''?$param['regist_time']:null;
+            $param['scrapp_time'] = $param['scrapp_time'] != ''?$param['scrapp_time']:null;
+            $param['inspection_time'] = $param['inspection_time'] != ''?$param['inspection_time']:null;
+            $param['validity_time'] = $param['validity_time'] != ''?$param['validity_time']:null;
+            $param['frame_time'] = $param['frame_time'] != ''?$param['frame_time']:null;
             $param['type'] = 1;
             if (isset($param['trailer_scope']) && is_array($param['trailer_scope'])) {
                 $param['trailer_scope'] = implode(',', $param['trailer_scope']);
@@ -465,26 +481,26 @@ class InfoService extends BaseService
             } else {
             }
             
-            $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
-            $newTimestamp = strtotime('+30 days', time());
+            // $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
+            // $newTimestamp = strtotime('+30 days', time());
             // dump($newTimestamp);
 
-            if(isset($exitnotice) && strtotime($param['scrapp_time']) > $newTimestamp){
-                // dump('111');
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('scrapp_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
-            if(isset($exitnotice) && strtotime($param['inspection_time']) > $newTimestamp){
-                // dump('111');
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('inspection_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
-            if(isset($exitnotice) && strtotime($param['validity_time']) > $newTimestamp){
-                // dump('111');
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('validity_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
-            if(isset($exitnotice) && strtotime($param['frame_time']) > $newTimestamp){
-                // dump('111');
-                Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('frame_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            }
+            // if(isset($exitnotice) && strtotime($param['scrapp_time']) > $newTimestamp){
+            //     // dump('111');
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('scrapp_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
+            // if(isset($exitnotice) && strtotime($param['inspection_time']) > $newTimestamp){
+            //     // dump('111');
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('inspection_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
+            // if(isset($exitnotice) && strtotime($param['validity_time']) > $newTimestamp){
+            //     // dump('111');
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('validity_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
+            // if(isset($exitnotice) && strtotime($param['frame_time']) > $newTimestamp){
+            //     // dump('111');
+            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('frame_time','<>',null)->update(['deal'=>1,'isread'=>1]);
+            // }
             // die;
             // dump($param['driving_license']);die;
             // foreach($param['driving_license'] as $key => $value){
@@ -520,7 +536,13 @@ class InfoService extends BaseService
     public function delcartrailer($param=[]){
         try{
             Db::startTrans();
-            // dump(Driver::whereIn('id',$param['ids'])->find());die;
+            foreach($param['ids'] as $key =>  $value){
+                $exit = Info::where('trailer_id',$value)->value('trailer_num');
+                if($exit){
+                    return $this->error('人员车辆匹配里面有"'.$exit.'"，无法删除');
+                }
+            }
+            // dump(Cartrailer::whereIn('id',$param['ids'])->find());die;
             $res = Cartrailer::whereIn('id',$param['ids'])->delete();
             // Cartrailer::whereIn('id',$param['ids'])->select();
             if(!$res){

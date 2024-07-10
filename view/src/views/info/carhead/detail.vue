@@ -101,19 +101,29 @@
 
                 <el-descriptions-item label="行驶证">
                     <div class="demo-image__preview">
-                    <el-image
+                    <!-- <el-image
                         style="width: 100px; height: 100px"
                         :src="driving_license[0]"
                         :preview-src-list="driving_license">
+                    </el-image> -->
+                    <el-image 
+                        style="width: 100px; height: 100px"
+                        :src="driving_license[0]?driving_license[0]:noImage" 
+                        :preview-src-list="driving_license?driving_license:noImage">
                     </el-image>
                     </div>
                 </el-descriptions-item>
                 <el-descriptions-item label="道路运输证">
                     <div class="demo-image__preview">
-                    <el-image
+                    <!-- <el-image
                         style="width: 100px; height: 100px"
                         :src="formData.transport_license[0]"
                         :preview-src-list="formData.transport_license">
+                    </el-image> -->
+                    <el-image 
+                        style="width: 100px; height: 100px"
+                        :src="formData.transport_license[0]?formData.transport_license[0]:noImage" 
+                        :preview-src-list="formData.transport_license?formData.transport_license:noImage">
                     </el-image>
                     </div>
                 </el-descriptions-item>
@@ -170,6 +180,7 @@ import UploadImage from '@/components/Upload/SingleImage'
 import MultiImage from '@/components/Upload/MultiImage'
 import UploadPdf from '@/components/Upload/SinglePdf'
 import moment from "moment/moment";
+import noImage from '@/assets/no_images/none.png';
 
 
 export default {
@@ -181,6 +192,7 @@ export default {
   },
   data() {
     return {
+      noImage,
       openPdf:'',
       title:'',
       dialog: false,

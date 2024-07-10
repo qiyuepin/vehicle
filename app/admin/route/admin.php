@@ -140,7 +140,7 @@ Route::group('/',function(){
         Route::post('addcartrailer','Info/addcartrailer');//创建挂车信息
         Route::post('editcartrailer','Info/editcartrailer');//修改挂车信息
         Route::get('getcartrailerInfo','Info/getcartrailerInfo');//挂车信息详情
-        Route::get('delcartrailer','Info/delcartrailer');//挂车删除
+        Route::post('delcartrailer','Info/delcartrailer');//挂车删除
         Route::get('getinfolist','Info/getinfolist');//匹配信息
         Route::post('addinfo','Info/addinfo');//创建匹配信息
         Route::post('editinfo','Info/editinfo');//修改匹配信息

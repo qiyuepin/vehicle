@@ -83,7 +83,7 @@
                         </el-form-item>
                         <el-form-item label="注册日期">
                             <el-input v-model="formData.regist_time" type="date" clearable placeholder="选择注册日期"
-                                      max="9999-12-31"></el-input>
+                                      max="9999-12-31" @change="handleregistDateChange"></el-input>
                         </el-form-item>
                         <el-form-item label="已运营时间">
                             <el-label > {{ years }}</el-label>
@@ -251,6 +251,24 @@ export default {
       this.getpowersupply()
   },
   methods: {
+      handleregistDateChange(value){
+        
+        let registTime = new Date(value);
+
+        let scrappTime = new Date(registTime.getFullYear() + 10, registTime.getMonth(), registTime.getDate());
+
+        scrappTime = this.formatDate(scrappTime);
+
+        // 将结果赋值给 this.formData.scrapp_time
+        this.formData.scrapp_time = scrappTime;
+      },
+      formatDate(date) {
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+        let day = date.getDate().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+      },
       clearNoNum(value) {
           if (value) {
               let value1 = parseFloat(value);
@@ -357,8 +375,8 @@ export default {
       this.formData.inspection_status = true
       this.formData.validity_status = true
       this.formData.traffic_status = true
-      this.$refs.Image_carbody_picture.uploadFileList = []
-      this.$refs.Image_driving_license.uploadFileList = []
+      // this.$refs.Image_carbody_picture.uploadFileList = []
+      // this.$refs.Image_driving_license.uploadFileList = []
     },
     getcarheadInfo(id){
       getcarheadInfo({id:id}).then(response => {
@@ -376,11 +394,11 @@ export default {
               //     this.formData.carhead_scope.push(item)
               // })
               this.formData.carhead_scope.push(...response.carhead_scope);
-              this.formData.regist_time = new Date(response.regist_time).toISOString().slice(0,10)
-              this.formData.scrapp_time = new Date(response.scrapp_time).toISOString().slice(0,10)
-              this.formData.inspection_time = new Date(response.inspection_time).toISOString().slice(0,10)
-              this.formData.validity_time = new Date(response.validity_time).toISOString().slice(0,10)
-              this.formData.traffic_time = new Date(response.traffic_time).toISOString().slice(0,10)
+              this.formData.regist_time = response.regist_time?new Date(response.regist_time).toISOString().slice(0,10):''
+              this.formData.scrapp_time = response.scrapp_time?new Date(response.scrapp_time).toISOString().slice(0,10):''
+              this.formData.inspection_time = response.inspection_time?new Date(response.inspection_time).toISOString().slice(0,10):''
+              this.formData.validity_time = response.validity_time?new Date(response.validity_time).toISOString().slice(0,10):''
+              this.formData.traffic_time = response.traffic_time?new Date(response.traffic_time).toISOString().slice(0,10):''
               // this.formData.driving_license = response.driving_license
               // this.$refs.Image_driving_license.uploadFileList.push(...response.driving_license);
               // this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {

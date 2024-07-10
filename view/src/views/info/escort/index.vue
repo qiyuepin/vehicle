@@ -125,39 +125,60 @@
                   label="身份证正面"
                   align="center"
                   width="150">
-              <el-image
+              <!-- <el-image
                       style="width: 40px; height: 30px"
                       :src="scope.row.card_front"
                       :preview-src-list="[scope.row.card_front]"
                       slot-scope="scope">
-              </el-image>
+              </el-image> -->
+              <template slot-scope="scope">
+                <el-image
+                  style="width: 40px; height: 30px"
+                  :src="scope.row.card_front ? scope.row.card_front : noImage"
+                  :preview-src-list="[scope.row.card_front ? scope.row.card_front : noImage]">
+                </el-image>
+              </template>
           </el-table-column>
           <el-table-column
                   prop="card_back"
                   label="身份证反面"
                   align="center"
                   width="150">
-              <el-image
+              <!-- <el-image
                       style="width: 40px; height: 30px"
                       :src="scope.row.card_back"
                       :preview-src-list="[scope.row.card_back]"
                       slot-scope="scope">
-              </el-image>
+              </el-image> -->
+              <template slot-scope="scope">
+                <el-image
+                  style="width: 40px; height: 30px"
+                  :src="scope.row.card_back ? scope.row.card_back : noImage"
+                  :preview-src-list="[scope.row.card_back ? scope.row.card_back : noImage]">
+                </el-image>
+              </template>
           </el-table-column>
          
           <el-table-column
                   prop="cert_front"
-                  label="从业资格证正面"
+                  label="从业资格证"
                   align="center"
                   width="150">
-              <el-image
+              <!-- <el-image
                       style="width: 40px; height: 30px"
                       :src="scope.row.cert_front"
                       :preview-src-list="[scope.row.cert_front]"
                       slot-scope="scope">
-              </el-image>
+              </el-image> -->
+              <template slot-scope="scope">
+                <el-image
+                  style="width: 40px; height: 30px"
+                  :src="scope.row.cert_front ? scope.row.cert_front : noImage"
+                  :preview-src-list="[scope.row.cert_front ? scope.row.cert_front : noImage]">
+                </el-image>
+              </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="cert_back"
                   label="从业资格证反面"
                   align="center"
@@ -168,7 +189,7 @@
                       :preview-src-list="[scope.row.cert_back]"
                       slot-scope="scope">
               </el-image>
-          </el-table-column>
+          </el-table-column> -->
           
           
           
@@ -184,12 +205,13 @@
               </template>
           </el-table-column>
           <el-table-column
+                  v-if="hasPermission('admin.info.addescort')"
                   fixed="right"
                   label="操作"
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
-                  <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="primary"  @click="handleEdit(scope.row)">编辑</el-button>
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -230,8 +252,10 @@
 <script>
 
 import { getescort,delescort } from '@/api/Info.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import { getArrByKey } from '@/utils'
+import noImage from '@/assets/no_images/none.png';
 
 export default {
 name: 'Admin',
@@ -240,6 +264,7 @@ components: {
 },
 data() {
   return {
+    noImage,
     buttonDisabled: true,
     tableData: [],
     multipleSelection: null,
@@ -258,6 +283,9 @@ created() {
   this.getescort();
 },
 methods: {
+  hasPermission(permission) {
+    return checkPermission(permission);
+  },
   //查询列表
   getescort() {
     this.loading = true
