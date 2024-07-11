@@ -32,7 +32,7 @@ use TencentCloud\Common\Credential;
 use TencentCloud\Common\Profile\ClientProfile;
 use TencentCloud\Common\Profile\HttpProfile;
 use app\traits\TokenTrait;
-
+use Carbon\Carbon;
 
 class PlanService extends BaseService
 {
@@ -138,11 +138,21 @@ class PlanService extends BaseService
             if(isset($param['keywords'])&&$param['keywords']){
                 $where[] = ['driver_name|trailer_num|load_factory|unload_factory','like','%'.$param['keywords'].'%'];
             }
-            if(isset($param['status'])){
+            if(isset($param['status']) && $param['status'] != ''){
                 
                 if($param['status'] == 'null'){
                     $where['status'] = null;
-                }elseif($param['status'] != ''){
+                    $where['driver_status'] = 0;
+                }elseif($param['status'] == 6){
+                    $where['status'] = null;
+                    $where['driver_status'] = 1;
+                }elseif($param['status'] == 7){
+                    $where['status'] = null;
+                    $where['driver_status'] = 3;
+                }elseif($param['status'] == 8){
+                    $where['status'] = 8;
+                    $where['driver_status'] = 4;
+                }elseif($param['status'] < 6){
                     $where['status'] = $param['status'];
                 }
 
@@ -151,7 +161,8 @@ class PlanService extends BaseService
                 $data = Plan::where($where)->order(['plan_order'=>'desc'])->select()->toArray();
             }
             else{
-                $data = Plan::where($where)->order(['plan_order'=>'desc'])
+                
+                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
             }
             // $data = Plan::where($where)->order(['plan_order'=>'desc','id'=>'desc'])
@@ -221,9 +232,12 @@ class PlanService extends BaseService
                     ->find();
             $Plan = Plan::where('driver_name', $param['driver_name'])
                     ->where('driver_status', 1)
-                    // ->order('id', 'desc')
+                    // ->order('plan_order', 'desc')
                     ->find();
-            
+            $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
+                return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
+            }
             $currentYear = date('Y');
             $currentMonth = date('m');
             // dump($currentYear);
@@ -388,11 +402,21 @@ class PlanService extends BaseService
             if(isset($param['keywords'])&&$param['keywords']){
                 $where[] = ['driver_name|trailer_num|load_factory|unload_factory','like','%'.$param['keywords'].'%'];
             }
-            if(isset($param['status'])){
+            if(isset($param['status']) && $param['status'] != ''){
                 
                 if($param['status'] == 'null'){
                     $where['status'] = null;
-                }elseif($param['status'] != ''){
+                    $where['driver_status'] = 0;
+                }elseif($param['status'] == 6){
+                    $where['status'] = null;
+                    $where['driver_status'] = 1;
+                }elseif($param['status'] == 7){
+                    $where['status'] = null;
+                    $where['driver_status'] = 3;
+                }elseif($param['status'] == 8){
+                    $where['status'] = 8;
+                    $where['driver_status'] = 4;
+                }elseif($param['status'] < 6){
                     $where['status'] = $param['status'];
                 }
 
@@ -446,58 +470,32 @@ class PlanService extends BaseService
         }
     }
 
-    public function addtemporary0($param=[]){
-        
-        try{
-            Db::startTrans();
 
-            $param['type'] = 2;
-            if (isset($param['trailer_scope']) && is_array($param['trailer_scope'])) {
-                $param['trailer_scope'] = implode(',', $param['trailer_scope']);
-            } else {
-            }
-            
-            if (isset($param['driving_license']) && is_array($param['driving_license'])) {
-                $param['driving_license'] = implode(',', $param['driving_license']);
-            } else {
-            }
-
-            $res = Plan::create($param);
-            // dump($res);
-            if(!$res){
-                throw new \Exception('新增失败');
-            }
-     
-            Db::commit();
-            return $this->success([],'新增成功');
-    
-            
-        }catch (\Exception $exception){
-            Db::rollback();
-            $this->recordLog($exception);
-            return $this->error();
-        }
-    }
     public function addtemporary($param=[],$Authorization){
    
         try{
             Db::startTrans();
 
             $Plan = Plan::where('driver_name', $param['driver_name'])
-                    ->order('plan_order', 'desc')
+                    // ->order('plan_order', 'desc')
+                    ->where('driver_status', 1)
                     // ->order('id', 'desc')
                     ->find();
             // dump($Plan);die;
+            $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
+                return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
+            }
             $currentYear = date('Y');
             $currentMonth = date('m');
             // dump($currentYear);
             // dump($currentMonth);
-            if($Plan['driver_status'] > 1){
-                $param['driver_status'] = 1;
+            if($Plan){
+                $param['driver_status'] = 0;
                 
             }
             else{
-                $param['driver_status'] = 0;
+                $param['driver_status'] = 1;
             }
 
 
@@ -557,6 +555,7 @@ class PlanService extends BaseService
         try{
             Db::startTrans();
             $Plan = Plan::where('id',$param['id'])->find();
+            
             if(empty($Plan)){
                 throw new \Exception('信息不存在');
             }
@@ -585,14 +584,40 @@ class PlanService extends BaseService
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
             $driver_status['driver_status'] = 3;
             $id = Plan::where('id',$param['id'])->find();
-            $Plan = Plan::where('driver_name',$id['driver_name'])->where('driver_status',0)->order(['plan_type'=>'desc','id'=>'asc'])->find();
+            $Plan = Plan::where('driver_name',$id['driver_name'])->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
             
-            // dump($Plan);die;
+            
             if(isset($Plan)){
                 $new['driver_status'] = 1;
                 // Plan::where('id',$Plan['id'])->update($driver_status);
                 Plan::update($new,['id'=>$Plan['id']]);
+                $phone = Admin::where('username',$id['driver_name'])->value('phone');
+                $cid = Admin::where('username',$id['driver_name'])->value('user_cid');
+                if($Plan->plan_type == 0){
+                    $plantype = "常规任务";
+                    $planmsg = "从".$Plan->load_factory."出发到".$Plan->unload_factory;
+                }
+                else if($Plan->plan_type == 1){
+                    $plantype = "装货任务";
+                    $planmsg = "从".$Plan->load_factory."出发装货";
+                }
+                else if($Plan->plan_type == 2){
+                    $plantype = "卸货任务";
+                    $planmsg = "到".$Plan->unload_factory."卸货";
+                }
+                // dump($Plan['id']);
+                // dump($cid);
+                // dump($Plan['load_factory']);
+                // die;
+                $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory']);
+                $r = $this->pushToSingleByCids($Plan['id'],$cid,$plantype,$planmsg);
+                Db::commit();
+                $res = Plan::update($driver_status,['id'=>$param['id']]);
+                if($r['code'] == 0){
+                    return $this->success(['msg' => '成功']);
+                }
             }
+            // dump($Plan);die;
             $res = Plan::update($driver_status,['id'=>$param['id']]);
             // $res = Plan::whereIn('id',$param['ids'])->delete();
             if(!$res){
@@ -825,18 +850,22 @@ class PlanService extends BaseService
         try{
             Db::startTrans();
             $where['driver_name']=$param['driver_name'];
-            $Plan = Plan::where($where)->order(['plan_order'=>'desc','id'=>'desc'])->find();//上一条进行的任务
+            $Plan = Plan::where($where)->where('driver_status','<',2)->order(['plan_order'=>'desc'])->find();//上一条进行的任务
             // $plans = Plans::where('id',$param['id'])->get()->toArray();
             $periodPlan = Plan::where($where)->where('period_id',$param['period_id'].'-'.$param['driver_name'])->where('start_periodic',1)->where('plan_type',0)->order(['plan_order'=>'desc'])->find();
              //dump($param['product_quantity']);
             $plan0 = Plans::find($param['id']);
             $plans = $plan0 ? $plan0->toArray() : null;
-            // dump($Plan['id']);
+            $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
+                return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
+            }
+            // dump($trailer);die;
             if(!empty($periodPlan)){
                 $plans['escort_name'] = $periodPlan['escort_name'];
                 $plans['head_num'] = $periodPlan['head_num'];
             }
-
+            
             if(isset($Plan) && $Plan['driver_status'] > 1){//如果上一个任务已完成，则现在的任务直接变为进行中
                 $plans['driver_status'] = 1;
                 // $param['status'] = 1;
@@ -870,6 +899,8 @@ class PlanService extends BaseService
             $plans['product_quantity'] = $param['product_quantity'];
             $plans['driver_name'] = $param['driver_name'];
             $plans['trailer_num'] = $param['trailer_num'];
+            $plans['head_num'] = $param['head_num'];
+            $plans['escort_name'] = $param['escort_name'];
             $plans['plans_id'] = $param['id'];
             $plans['trailer_status'] = $periodPlan['trailer_status'];
             $phone = Admin::where('username',$param['driver_name'])->value('phone');
@@ -904,7 +935,7 @@ class PlanService extends BaseService
             // $res = Plans::update($param,['id'=>$param['id']]);
             // dump($plans);die;
             // $r = $this->pushToSingleByCids();
-            //     dump($r);die;
+            // dump($plans);die;
             $plans['fixed'] = 1;
             $res = Plan::create($plans);
             if($plans['driver_status'] == 1){
@@ -1020,7 +1051,7 @@ class PlanService extends BaseService
             //     $param['driver_status'] = 0;
             // }
             if(!$res){
-                throw new \Exception('删除违章失败');
+                throw new \Exception('删除失败');
             }
 
             Db::commit();
@@ -1038,7 +1069,7 @@ class PlanService extends BaseService
         try{
             $where = $param;
             $where['driver_name'] = $name;
-            
+            // dump($param);die;
             // if(isset($param['keywords'])&&$param['keywords']){
             //     $where[] = ['trailer_plate|trailer_brand','like','%'.$param['keywords'].'%'];
             // }
@@ -1054,9 +1085,13 @@ class PlanService extends BaseService
             //     // $where['driver_status'] = array('gt',1);
             //     $where['driver_status']  = array('2','3');
             // }
-
-            // dump($plan);die;
-            $data = Plan::where($where)->order(['create_time'=>'desc'])->select();
+            // dump($where);die;
+            if (in_array("0", $param['driver_status'])) {
+                $data = Plan::where($where)->order(['plan_order'=>'desc'])->select();
+            } else {
+                $data = Plan::where($where)->order(['id'=>'desc','plan_order'=>'desc'])->select();
+            }
+            // $data = Plan::where($where)->order(['id'=>'desc','plan_order'=>'desc'])->select();
             // dump($data);die;
             $count = count($data);
             
@@ -1096,7 +1131,7 @@ class PlanService extends BaseService
             // $last['start_periodic'] = 1;
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
             $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条任务信息
-
+            // dump($lastplan);die;
             if (isset($param['status'])) {
                 if($lastplan['plan_type'] == 0){
                     $plantype = "常规任务";
@@ -1111,7 +1146,7 @@ class PlanService extends BaseService
                     $planmsg = "到".$lastplan['unload_factory']."卸货";
                 }
                 // dump($Plan);
-                // dump($lastplan);die;
+                // dump($Plan['status']);die;
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
                 if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
@@ -1139,12 +1174,12 @@ class PlanService extends BaseService
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 4
                     $param['driver_status'] = 1;
                     
-                } else if ($param['status'] == 0 || $Plan['status'] == 8) {
+                } else if ($param['status'] == 0 && $Plan['status'] == 8) {
                     $param['driver_status'] = 4;
                 } else if ($param['status'] == 0) {
                     $param['driver_status'] = 2;
                     $test = Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->find();
-                    // dump($Plan['period_id']);
+                    // dump($Plan['period_id']);die;
                     // dump($test);die;
                     Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['status'=>2]);
                     // dump($lastplan);die;
@@ -1188,12 +1223,22 @@ class PlanService extends BaseService
                     $head['head_status'] = Carhead::where(['carhead_plate' => $Plan['carhead_plate']])->value('head_status');
                     $escort['escort_status'] = Escort::where(['name' => $escort_name])->value('escort_status');
                 }
-                // dump($driver);die;
+                
                 $trailer['trailer_plate'] = $Plan['trailer_num'];
+                $trailerexit = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->find();
+                // dump($trailerexit['product_quantity']);
+                // dump($Plan);
+                if($trailerexit['product_name'] == $Plan['product_name']){
+                    $load_product_quantity = $trailerexit['product_quantity'] + $Plan['load_product_quantity'];
+                }else{
+                    $load_product_quantity = $Plan['load_product_quantity'];
+                }
+                // dump($load_product_quantity);
+                // dump($Plan);die;
                 $trailerdata['product_name'] = $Plan['product_name'];
                 if ($param['status'] == 3) {
                     $trailerdata['trailer_status'] = 1;
-                    $trailerdata['product_quantity'] = $param['load_product_quantity'];
+                    $trailerdata['product_quantity'] = $load_product_quantity;
                     $trailerdata['product_name'] = $Plan['product_name'];
                 } elseif ($param['status'] == 5 && $Plan['plan_type'] == 0) {
                     $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');

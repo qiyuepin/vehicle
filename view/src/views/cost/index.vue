@@ -18,7 +18,7 @@
       </el-form>
       <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="success" v-permission="'admin.cost.addcost'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <!-- <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button> -->
           <el-button @click="exportExcel" type="primary" size="mini">导出所有费用</el-button>
@@ -104,7 +104,7 @@
               align="center"
               width="220">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" v-permission="'admin.cost.editcost'" plain  @click="costlist(scope.row)">{{ scope.row.period_id_driver }}</el-button>
+                <el-button size="mini" type="primary"  plain  @click="costlist(scope.row)">{{ scope.row.period_id_driver }}</el-button>
  
               </template>
           </el-table-column>

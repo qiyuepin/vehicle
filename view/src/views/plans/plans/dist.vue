@@ -238,16 +238,18 @@ methods: {
   infoChanged() {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
-      console.log(selectedinfo)
-      // this.formData.head_num = selectedinfo.head_num;
+      // console.log(selectedinfo)
+      this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
       this.formData.trailer_status = selectedinfo.trailer_status;
+      this.formData.escort_name = selectedinfo.escort_name;
     } else {
-      // this.formData.head_num = '';
+      this.formData.head_num = '';
       this.formData.trailer_num = '';
       this.formData.driver_name = '';
       this.formData.trailer_status = '';
+      this.formData.escort_name = '';
     }
     // this.load_address = this.load_factory.factory;
   },

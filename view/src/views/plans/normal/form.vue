@@ -41,10 +41,10 @@
                       <el-form-item label="trailer_status" prop="trailer_status" style="display: none;">
                           <el-input v-model="formData.trailer_status" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item>
-                      <!-- <el-form-item label="货品名称" prop="product_name">
-                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
-                      </el-form-item> -->
                       <el-form-item label="货品名称" prop="product_name">
+                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
+                      </el-form-item>
+                      <!-- <el-form-item label="货品名称" prop="product_name">
                           <el-select v-model="formData.product_name" filterable  clearable placeholder="请选择货品名称"
                                      @blur="selectBlur"
                                      @clear="selectClear"
@@ -56,7 +56,7 @@
                               :value="item.product_name">
                             </el-option>
                           </el-select>
-                      </el-form-item>
+                      </el-form-item> -->
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
                           <span>（ t ）</span>
@@ -236,13 +236,13 @@ methods: {
   infoChanged() {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
-      console.log(selectedinfo)
-      // this.formData.head_num = selectedinfo.head_num;
+      // console.log(selectedinfo)
+      this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
       this.formData.period_id = selectedinfo.period_id;
       this.formData.trailer_status = selectedinfo.trailer_status;
-      // this.formData.escort_name = selectedinfo.escort_name;
+      this.formData.escort_name = selectedinfo.escort_name;
     } else {
       this.formData.head_num = '';
       this.formData.trailer_num = '';

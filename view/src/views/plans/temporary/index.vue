@@ -7,12 +7,15 @@
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
                   <el-option label="待接单" value=null></el-option>
+                  <el-option label="进行中" value="6"></el-option>
                   <el-option label="回库" value='0'/>
                   <el-option label="在途" value="1"></el-option>
                   <el-option label="装货" value="2"></el-option>
                   <el-option label="装货完成" value="3"></el-option>
                   <el-option label="卸货" value="4"></el-option>
                   <el-option label="卸货完成" value="5"></el-option>
+                  <el-option label="已作废" value="7"></el-option>
+                  <el-option label="异常" value="8"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item>
@@ -22,9 +25,9 @@
       </el-form>
       <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="success" v-permission="'admin.plans.addtemporary'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-          <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+          <el-button type="danger" v-permission="'admin.plans.deltemporary'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
           <el-button @click="exporttemporaryExcel" type="primary" size="mini">导出</el-button>
           <!-- <el-button type="success"  size="mini" @click="handlemap">map</el-button> -->
       </el-row>
@@ -72,6 +75,8 @@
                 <el-tag type="info" v-else-if="scope.row.status === 5">在途</el-tag>
                 <el-tag type="info" v-else >空闲</el-tag> -->
                 <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 3"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 1 && scope.row.status === null"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
                 <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
                 <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
@@ -187,13 +192,16 @@
               </template>
           </el-table-column>
           <el-table-column
+                  v-if="hasPermission('admin.plans.addtemporary')"
                   fixed="right"
                   label="操作"
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
 
-                  <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button v-if="scope.row.driver_status==3" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
+                  <el-button v-else size="mini" type="danger" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">作废</el-button>
 
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
@@ -237,6 +245,7 @@
 <script>
 
 import { gettemporary, delnormal, gettemporaryinfo, getnormalinfo } from '@/api/plan.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
@@ -276,6 +285,9 @@ created() {
   this.gettemporary();
 },
 methods: {
+  hasPermission(permission) {
+    return checkPermission(permission);
+  },
   //查询列表
   gettemporary() {
     this.loading = true

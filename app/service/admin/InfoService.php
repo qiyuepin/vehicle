@@ -453,6 +453,11 @@ class InfoService extends BaseService
             if(empty($Cartrailer)){
                 throw new \Exception('信息不存在');
             }
+            if($param['product_quantity'] == 0){
+                $param['trailer_status'] = 0;
+            }else if($param['product_quantity'] > 0){
+                $param['trailer_status'] = 1;
+            }
             $param['regist_time'] = $param['regist_time'] != ''?$param['regist_time']:null;
             $param['scrapp_time'] = $param['scrapp_time'] != ''?$param['scrapp_time']:null;
             $param['inspection_time'] = $param['inspection_time'] != ''?$param['inspection_time']:null;

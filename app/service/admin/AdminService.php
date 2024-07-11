@@ -130,7 +130,7 @@ class AdminService extends BaseService
     }
 
     public function adddriverAdmin($param=[]){
-        
+
         // foreach($param['group'] as $group_id){
 
         //     dump($group_id);
@@ -143,8 +143,17 @@ class AdminService extends BaseService
             // $param['sign'] = $param['autograph'];
             unset($param['id']);
             $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
+            $phone = Admin::where('phone',$param['phone'])->find();
+            if($phone){
+                return $this->error('手机号"'.$param['phone'].'"已存在');
+            }
+            $username = Admin::where('username',$param['username'])->find();
+            if($username){
+                return $this->error('用户名"'.$param['username'].'"已存在');
+            }
+            // dump($phone);die;
             $res = Admin::create($param);
-          
+            
             if(!$res){
                 throw new \Exception('新增失败');
             }

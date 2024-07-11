@@ -69,6 +69,14 @@
                             </el-input>
                             <span>（ m³ ）保留一位小数</span>
                         </el-form-item>
+                        <el-form-item label="货品名称" prop="product_name">
+                            <el-input v-model="formData.product_name" clearable></el-input>
+                        </el-form-item>
+                    
+                        <el-form-item label="货品数量" prop="product_quantity">
+                          <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
+                          <span>（ t ）</span>
+                        </el-form-item>
                         <el-form-item label="道路运输证号" prop="transport_cert">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输入12位道路运输证号" maxLength='12'></el-input>
                         </el-form-item>
@@ -524,6 +532,9 @@ export default {
               this.formData.inspection_status  = response.inspection_status
               this.formData.validity_status  = response.validity_status
               this.formData.frame_status  = response.frame_status
+
+              this.formData.product_name = response.product_name
+              this.formData.product_quantity = response.product_quantity
           }
       })
     },
@@ -570,6 +581,9 @@ export default {
         box-shadow: none;
     }
     ::v-deep .el-input{
+      width: 200px;
+    }
+    ::v-deep .el-input-number{
       width: 200px;
     }
 </style>

@@ -7,12 +7,15 @@
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
                   <el-option label="待接单" value=null></el-option>
+                  <el-option label="进行中" value="6"></el-option>
                   <el-option label="回库" value='0'/>
                   <el-option label="在途" value="1"></el-option>
                   <el-option label="装货" value="2"></el-option>
                   <el-option label="装货完成" value="3"></el-option>
                   <el-option label="卸货" value="4"></el-option>
                   <el-option label="卸货完成" value="5"></el-option>
+                  <el-option label="已作废" value="7"></el-option>
+                  <el-option label="异常" value="8"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item>
@@ -87,6 +90,7 @@
                 <span style="color: #F56C6C;"  @click="handleDetail(scope.row)" v-else >待接单</span> -->
                 <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
                 <el-button  v-else-if="scope.row.driver_status === 3"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 1 && scope.row.status === null"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
                 <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
                 <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
@@ -211,6 +215,7 @@
               </template>
           </el-table-column>
           <el-table-column
+                  v-if="hasPermission('admin.plans.addplan')"
                   fixed="right"
                   label="操作"
                   align="center"
@@ -264,6 +269,7 @@
 <script>
 
 import { getnormal, delnormal, getnormalinfo, deltemporary } from '@/api/plan.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import test from './test.vue'
@@ -302,6 +308,9 @@ created() {
   this.getnormal();
 },
 methods: {
+  hasPermission(permission) {
+    return checkPermission(permission);
+  },
   //查询列表
   getnormal() {
     this.loading = true

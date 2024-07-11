@@ -172,6 +172,7 @@
           </el-table-column>
 
           <el-table-column
+                  v-if="hasPermission('admin.plans.addplan')"
                   fixed="right"
                   label="操作"
                   align="center"
@@ -235,6 +236,7 @@
 <script>
 
 import { getplans, delplan, getplansinfo, editplan, addhisplan } from '@/api/plan.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
 import planDist from './dist.vue'
@@ -286,6 +288,9 @@ created() {
   this.getplans();
 },
 methods: {
+  hasPermission(permission) {
+    return checkPermission(permission);
+  },
   //查询列表
   getplans() {
     this.loading = true

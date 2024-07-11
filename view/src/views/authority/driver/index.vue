@@ -306,7 +306,7 @@
       width="180"
     ></el-table-column> -->
             <el-table-column
-              v-if="hasPermission('auth.admin.edit')"
+              v-if="hasPermission('auth.admin.add')"
               fixed="right"
               label="操作"
               align="center"

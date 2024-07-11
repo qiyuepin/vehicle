@@ -40,11 +40,17 @@
                   :selectable="isSelected">
           </el-table-column>
           <el-table-column
+                    prop="id"
+                    label="ID"
+                    align="center"
+                    width="80">
+            </el-table-column>
+          <!-- <el-table-column
                 label="id"
                   type="index"
                   align="center"
                   width="80">
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column
                   prop="escort_status"
                   label="状态"
@@ -142,6 +148,7 @@
               </template>
           </el-table-column>
           <el-table-column
+                  v-if="hasPermission('admin.info.addinfo')"
                   fixed="right"
                   label="操作"
                   align="center"
@@ -190,6 +197,7 @@
 <script>
 
 import { getinfolist, getinfo,delinfo } from '@/api/Info.js'
+import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import { getArrByKey } from '@/utils'
 
@@ -218,6 +226,9 @@ created() {
   this.getinfolist();
 },
 methods: {
+  hasPermission(permission) {
+    return checkPermission(permission);
+  },
   //查询列表
   getinfolist() {
     this.loading = true
