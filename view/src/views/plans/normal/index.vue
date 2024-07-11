@@ -426,7 +426,12 @@ methods: {
     if (raw.username === this.$store.getters.username) {
       return false
     } else {
-      return true
+        if(raw.driver_status === 2) {
+            return false
+        } else {
+            return true
+        }
+
     }
   },
   //按钮是否可禁用

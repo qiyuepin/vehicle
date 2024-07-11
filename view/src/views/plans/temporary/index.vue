@@ -167,7 +167,7 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-          
+
           <el-table-column
                   prop="initiator"
                   label="创建人"
@@ -175,7 +175,7 @@
                   width="100"
                   show-overflow-tooltip>
           </el-table-column>
-          
+
           <el-table-column
                   prop="update_time"
                   label="更新时间"
@@ -192,9 +192,9 @@
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
-                  
+
                   <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
-                  
+
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -230,7 +230,7 @@
       <!--表单-->
       <myForm ref="myAttr" @updateRow="handleReload"/>
       <detail ref="myAttrdetail" @updateRow="handleReload"/>
- 
+
   </div>
 </template>
 
@@ -397,7 +397,11 @@ methods: {
     if (raw.username === this.$store.getters.username) {
       return false
     } else {
-      return true
+        if(raw.driver_status === 2) {
+            return false
+        } else {
+            return true
+        }
     }
   },
   //按钮是否可禁用
