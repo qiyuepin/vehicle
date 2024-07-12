@@ -19,9 +19,9 @@
         </el-form>
         <el-row style="margin-bottom: 10px;">
           <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-          <el-button type="success" v-permission="'auth.admin.add'" size="mini" @click="handleAdd">新增</el-button>
+          <el-button type="success" v-permission="'auth.admin.adddiiver'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-          <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+          <el-button type="danger" v-permission="'auth.admin.deldriver'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         </el-row>
         <el-table
                 ref="multipleTable"
@@ -324,7 +324,7 @@
       width="180"
     ></el-table-column> -->
             <el-table-column
-              v-if="hasPermission('auth.admin.add')"
+              v-if="hasPermission('auth.admin.adddriver')"
               fixed="right"
               label="操作"
               align="center"
