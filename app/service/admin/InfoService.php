@@ -194,7 +194,7 @@ class InfoService extends BaseService
             $param['type'] = 1;
     
             //车体照片 start
-            if(is_array($param['carbody_picture'][0])){
+            if(is_array($param['carbody_picture']) && count($param['carbody_picture']) > 0 && is_array($param['carbody_picture'][0])){
        
                 $carbody_picture = array();
                 foreach($param['carbody_picture'] as $key => $value){
@@ -234,7 +234,7 @@ class InfoService extends BaseService
             } else {
 
             }
-            // dump($param);
+            
             //经营范围 end
 
             // Carhead::update($param,['id'=>$param['id']]);

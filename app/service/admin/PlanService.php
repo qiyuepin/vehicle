@@ -138,7 +138,7 @@ class PlanService extends BaseService
         try{
             $where['plan_type'] = 0;
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['driver_name|trailer_num|load_factory|unload_factory','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
             if(isset($param['status']) && $param['status'] != ''){
                 
@@ -402,7 +402,7 @@ class PlanService extends BaseService
             // $where = [];
             $where['plan_type'] = array('1','2');
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['driver_name|trailer_num|load_factory|unload_factory','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
             if(isset($param['status']) && $param['status'] != ''){
                 
@@ -868,18 +868,22 @@ class PlanService extends BaseService
                 $plans['escort_name'] = $periodPlan['escort_name'];
                 $plans['head_num'] = $periodPlan['head_num'];
             }
-            
-            if(isset($Plan) && $Plan['driver_status'] > 1){//如果上一个任务已完成，则现在的任务直接变为进行中
+            $exitPlan = Plan::where($where)->where('driver_status',1)->find();
+            if(!isset($exitPlan)){//如果上一个任务已完成，则现在的任务直接变为进行中
                 $plans['driver_status'] = 1;
                 // $param['status'] = 1;
                 // dump('555');
             }
-            else if(isset($Plan) && $Plan['driver_status'] < 2){
-                if($Plan['driver_status'] == 1 && $Plan['status'] == 5){//如果完成，更新下一个任务状态为进行中
+            else if(isset($Plan) && $exitPlan['driver_status'] < 2){
+                if($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 5){//如果完成，更新下一个任务状态为进行中
                     $plans['driver_status'] = 1;
                     // Plan::where(['id'=>$Plan['id']])->update(['driver_status => 2']);
                     // Plan::update(['driver_status => 2'],['id'=>$param['id']]);
                     Plan::where('id', $Plan['id'])->update(['driver_status' => 2]);
+                }elseif($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 8){//如果完成，更新下一个任务状态为进行中
+                    $plans['driver_status'] = 1;
+
+                    Plan::where('id', $Plan['id'])->update(['driver_status' => 4]);
                 }else{
                     $plans['driver_status'] = 0;
                 }
