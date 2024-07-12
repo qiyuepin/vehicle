@@ -237,12 +237,19 @@
                     label="押运员资格证"
                     align="center"
                     width="150">
-                <el-image
+                <!-- <el-image
                         style="width: 40px; height: 30px"
                         :src="scope.row.escort_cert"
                         :preview-src-list="[scope.row.escort_cert]"
                         slot-scope="scope">
-                </el-image>
+                </el-image> -->
+                <template slot-scope="scope">
+                  <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.cert_front ? scope.row.cert_front : noImage"
+                    :preview-src-list="[scope.row.cert_front ? scope.row.cert_front : noImage]">
+                  </el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="status"
