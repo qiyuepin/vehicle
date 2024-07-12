@@ -176,8 +176,7 @@ data() {
       info_id: [{ required: true, trigger: 'blur'}],
       product_name: [{ required: true,message: '请填写货品名称', trigger: 'blur'}],
       product_quantity: [{ required: true,message: '请填写货品数量',  trigger: 'blur'}],
-      load_factory: [{ required: true,message: '请填写装货厂家', trigger: 'blur'}],
-      unload_factory: [{ required: true,message: '请填写卸货厂家', trigger: 'blur'}],
+   
       plan_type: [{ required: true,message: '请选择任务类别', trigger: 'blur'}],
     },
     formData: {
@@ -233,10 +232,10 @@ methods: {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
       console.log(selectedinfo)
-      // this.formData.head_num = selectedinfo.head_num;
+      this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
-      // this.formData.escort_name = selectedinfo.escort_name;
+      this.formData.escort_name = selectedinfo.escort_name;
     } else {
       this.formData.head_num = '';
       this.formData.trailer_num = '';

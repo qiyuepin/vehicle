@@ -63,7 +63,7 @@
                         </el-form-item>
                         <el-form-item label="道路运输证号" prop="transport_cert">
                             <el-input v-model="formData.transport_cert" clearable placeholder="请输12位入道路运输证号"
-                                       ></el-input>
+                            maxLength='12'></el-input>
                         </el-form-item>
                         <el-form-item label="排放等级" prop="discharge_level">
                             <el-select v-model="formData.discharge_level" filterable  clearable placeholder="请选择排放等级">
@@ -375,8 +375,8 @@ export default {
       this.formData.inspection_status = true
       this.formData.validity_status = true
       this.formData.traffic_status = true
-      // this.$refs.Image_carbody_picture.uploadFileList = []
-      // this.$refs.Image_driving_license.uploadFileList = []
+      this.$refs.Image_carbody_picture.uploadFileList = []
+      this.$refs.Image_driving_license.uploadFileList = []
     },
     getcarheadInfo(id){
       getcarheadInfo({id:id}).then(response => {

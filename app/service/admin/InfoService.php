@@ -453,7 +453,8 @@ class InfoService extends BaseService
             if(empty($Cartrailer)){
                 throw new \Exception('信息不存在');
             }
-            if($param['product_quantity'] == 0){
+            
+            if($param['product_quantity'] == '0'){
                 $param['trailer_status'] = 0;
             }else if($param['product_quantity'] > 0){
                 $param['trailer_status'] = 1;
@@ -468,8 +469,8 @@ class InfoService extends BaseService
                 $param['trailer_scope'] = implode(',', $param['trailer_scope']);
             } else {
             }
-            
-            if(is_array($param['driving_license'][0])){
+            // dump($param['driving_license']);die;
+            if(is_array($param['driving_license']) && count($param['driving_license']) > 0 && is_array($param['driving_license'][0])){
        
                 $driving_license = array();
                 foreach($param['driving_license'] as $key => $value){
@@ -486,41 +487,7 @@ class InfoService extends BaseService
             } else {
             }
             
-            // $exitnotice = Db::name('admin_info_notice')->where('car_id',$param['id'])->where('deal',0)->find();
-            // $newTimestamp = strtotime('+30 days', time());
-            // dump($newTimestamp);
-
-            // if(isset($exitnotice) && strtotime($param['scrapp_time']) > $newTimestamp){
-            //     // dump('111');
-            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('scrapp_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            // }
-            // if(isset($exitnotice) && strtotime($param['inspection_time']) > $newTimestamp){
-            //     // dump('111');
-            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('inspection_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            // }
-            // if(isset($exitnotice) && strtotime($param['validity_time']) > $newTimestamp){
-            //     // dump('111');
-            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('validity_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            // }
-            // if(isset($exitnotice) && strtotime($param['frame_time']) > $newTimestamp){
-            //     // dump('111');
-            //     Db::name('admin_info_notice')->where('car_id',$param['id'])->where('trailer_plate',$param['trailer_plate'])->where('deal',0)->where('frame_time','<>',null)->update(['deal'=>1,'isread'=>1]);
-            // }
-            // die;
-            // dump($param['driving_license']);die;
-            // foreach($param['driving_license'] as $key => $value){
-            //     // $driving_license[]= $value['url'];
-            //     dump($value);
-            //     $param['driving_license'] = implode(',', $value);
-            // }
-            // $param['driving_license'] = implode(',', $param['driving_license']);
-            // dump($param['driving_license']);die;
-            // if (isset($driving_license) && is_array($driving_license)) {
-            //     $param['driving_license'] = implode(',', $driving_license);
-            // } else {
-            // }
-            // dump($param['driving_license']);die;
-            // dump($param);die;
+            // dump($param['product_quantity']);die;
             $res = Cartrailer::update($param,['id'=>$param['id']]);
             if(!$res){
                 throw new \Exception('新增管理员失败');

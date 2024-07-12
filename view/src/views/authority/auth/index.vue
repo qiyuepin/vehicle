@@ -4,9 +4,9 @@
 
           <el-button type="warning" size="mini" @click="handleReload">刷新</el-button>
 
-          <!-- <el-button type="success" size="mini" v-permission="'auth.auth.add'" @click="handleAdd">新增</el-button>
+          <el-button type="success" size="mini" v-permission="'auth.auth.add'" @click="handleAdd">新增</el-button>
 
-          <el-button type="danger" size="mini" v-permission="'auth.auth.delete'" :disabled="buttonDisabled" @click="handleDeleteAll">删除</el-button> -->
+          <el-button type="danger" size="mini" v-permission="'auth.auth.delete'" :disabled="buttonDisabled" @click="handleDeleteAll">删除</el-button>
 
         </el-row>
         <el-table
@@ -77,7 +77,7 @@
                     width="180"
                     label="路由地址">
             </el-table-column>
-            <!-- <el-table-column
+            <el-table-column
                     fixed="right"
                     label="操作"
                     align="center"
@@ -86,7 +86,7 @@
                     <el-button size="mini" type="primary" v-permission="'auth.auth.edit'" @click="handleEdit(scope.row)">编辑</el-button>
                     <el-button size="mini" type="danger"  v-permission="'auth.auth.delete'"  @click="handleDelete([scope.row.id])">删除</el-button>
                 </template>
-            </el-table-column> -->
+            </el-table-column>
         </el-table>
         <!--表单-->
         <myForm ref="myAttr" @updateRow="handleReload"/>

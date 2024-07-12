@@ -255,11 +255,11 @@ export default {
               this.formData.trailer_keepwarm = response.trailer_keepwarm
               this.formData.trailer_scope_name = response.trailer_scope_name
             //   this.formData.trailer_scope.push(...response.trailer_scope);
-              this.formData.regist_time = new Date(response.regist_time).toISOString().slice(0,10)
-              this.formData.scrapp_time = new Date(response.scrapp_time).toISOString().slice(0,10)
-              this.formData.inspection_time = new Date(response.inspection_time).toISOString().slice(0,10)
-              this.formData.validity_time = new Date(response.validity_time).toISOString().slice(0,10)
-              this.formData.frame_time = new Date(response.frame_time).toISOString().slice(0,10)
+              this.formData.regist_time = response.regist_time?new Date(response.regist_time).toISOString().slice(0,10):''
+              this.formData.scrapp_time = response.scrapp_time?new Date(response.scrapp_time).toISOString().slice(0,10):''
+              this.formData.inspection_time = response.inspection_time?new Date(response.inspection_time).toISOString().slice(0,10):''
+              this.formData.validity_time = response.validity_time?new Date(response.validity_time).toISOString().slice(0,10):''
+              this.formData.frame_time = response.frame_time?new Date(response.frame_time).toISOString().slice(0,10):''
               this.driving_license = response.driving_license.split(',').map(item => item.trim());
               // console.log(this.driving_license)
               this.formData.transport_license = response.transport_license.split(',').map(item => item.trim());

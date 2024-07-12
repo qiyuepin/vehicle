@@ -114,7 +114,9 @@ class PlanService extends BaseService
                 // $info = $head.'-'.$trailer.'-'.$driver.'-'.$escort;
                 $test = Info::cartrailer($value['trailer_status']);
                 // dump($trailer['trailer_status']);die;
-                $info = $trailer['trailer_plate'].'-'.$driver;
+                // dump($head);die;
+           
+                $info = $head.'-'.$driver;
                 $data[$key]['info'] = $info;
                 $data[$key]['driver_name'] = $driver;
                 $data[$key]['escort_name'] = $escort;
@@ -481,7 +483,7 @@ class PlanService extends BaseService
                     ->where('driver_status', 1)
                     // ->order('id', 'desc')
                     ->find();
-            // dump($Plan);die;
+            
             $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
             if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
                 return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
@@ -507,7 +509,8 @@ class PlanService extends BaseService
             // $param['dispatcher'] = $userInfo['username'];
 
             $userid = $this->getValue($Authorization);
-            $param['dispatcher'] = Admin::where('id',$userid)->value('username');
+            $param['initiator'] = Admin::where('id',$userid)->value('username');
+            // dump($param);die;
             if(isset($param['id'])){
                 unset($param['id']);
             }
@@ -935,7 +938,7 @@ class PlanService extends BaseService
             // $res = Plans::update($param,['id'=>$param['id']]);
             // dump($plans);die;
             // $r = $this->pushToSingleByCids();
-            // dump($plans);die;
+            
             $plans['fixed'] = 1;
             $res = Plan::create($plans);
             if($plans['driver_status'] == 1){
@@ -953,11 +956,13 @@ class PlanService extends BaseService
                     $plantype = "卸货任务";
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
+
                 $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+
                 Db::commit();
                 if($r['code'] == 0){
-                    return $this->success(['msg' => '分配成功']);
+                    return $this->success(['msg' => '分配1成功']);
                 }
             }
             // die;
@@ -1124,6 +1129,11 @@ class PlanService extends BaseService
             if(empty($Plan)){
                 throw new \Exception('信息不存在');
             }
+            $trailer = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->find();
+            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $Plan['product_name']){
+                return $this->error('货品名称与挂车现有货品不同，请联系调度员调整');
+            }
+
             // $last['period_id'] = $Plan['period_id'];
             // $last['status'] = 0;
             $last['driver_status'] = 0;
@@ -1131,6 +1141,7 @@ class PlanService extends BaseService
             // $last['start_periodic'] = 1;
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
             $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条任务信息
+            // dump($param['status']);
             // dump($lastplan);die;
             if (isset($param['status'])) {
                 if($lastplan['plan_type'] == 0){
@@ -1176,6 +1187,13 @@ class PlanService extends BaseService
                     
                 } else if ($param['status'] == 0 && $Plan['status'] == 8) {
                     $param['driver_status'] = 4;
+                    if($lastplan !== null){//如果下一条数据存在且不是新周期
+                        Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
+                        $id = $lastplan['id'];
+                        $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
+                        $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    }
                 } else if ($param['status'] == 0) {
                     $param['driver_status'] = 2;
                     $test = Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->find();
@@ -1309,7 +1327,6 @@ class PlanService extends BaseService
                 "TemplateParamSet" => array( $drivername, $loadfactory, $unloadfactory )
             );
             $req->fromJsonString(json_encode($params));
-        
             // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
             $resp = $client->SendSms($req);
             return $resp->toJsonString();

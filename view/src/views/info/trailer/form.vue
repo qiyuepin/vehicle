@@ -69,7 +69,7 @@
                             </el-input>
                             <span>（ m³ ）保留一位小数</span>
                         </el-form-item>
-                        <el-form-item label="货品名称" prop="product_name">
+                        <el-form-item label="货品名称">
                             <el-input v-model="formData.product_name" clearable></el-input>
                         </el-form-item>
                     
@@ -280,7 +280,9 @@ export default {
         frame_status: true,
         validity_status: true,
         inspection_status: true,
-        scrapp_status: true
+        scrapp_status: true,
+        product_name:'',
+        product_quantity:'',
       },
     }
   },
@@ -466,6 +468,8 @@ export default {
       this.formData.cargo_insurance = ''
       this.formData.trailer_designcode = ''
       this.formData.trailer_keepwarm = ''
+      this.formData.product_name = ''
+      this.formData.product_quantity = ''
       // this.$refs.Image_driving_license.uploadFileList=[]
       // this.$refs.Image_driving_license.uploadFiles=''
       this.formData.frame_status = true,
@@ -473,7 +477,7 @@ export default {
       this.formData.inspection_status = true,
       this.formData.scrapp_status = true,
       this.formData.Vaildplate = ''
-        this.$refs.Image_driving_license.uploadFileList = []
+      this.$refs.Image_driving_license.uploadFileList = []
     },
     getcartrailerInfo(id){
       getcartrailerInfo({id:id}).then(response=>{
