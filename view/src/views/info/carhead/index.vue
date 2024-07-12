@@ -476,7 +476,7 @@ export default {
     },
     //删除
     handleDelete(ids){
-      this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+      this.$confirm('您确定要删除该车头吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

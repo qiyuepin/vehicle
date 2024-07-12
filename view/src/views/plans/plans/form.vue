@@ -101,7 +101,7 @@
                             <el-radio :label=0 :disabled="formData.plan_type !== 0">否</el-radio>
                           </el-radio-group>
                       </el-form-item> -->
-                      <el-form-item label="新计费周期" prop="start_periodic">
+                      <el-form-item label="始发任务" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
                             <el-radio :label=1 >是</el-radio>
                             <el-radio :label=0 >否</el-radio>
@@ -279,7 +279,7 @@ export default {
         showForm() {
             this.dialog = true
             this.drawerShow = true
-            this.title = '新增任务'
+            this.title = '新增计划'
             this.resetData()
         },
         resetData() {

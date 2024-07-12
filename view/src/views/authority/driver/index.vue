@@ -203,7 +203,7 @@
             </el-table-column>
             <el-table-column
                     prop="cert_front"
-                    label="从业资格证正面"
+                    label="从业资格证面"
                     align="center"
                     width="150">
                 <!-- <el-image
@@ -232,7 +232,18 @@
                         slot-scope="scope">
                 </el-image>
             </el-table-column> -->
-            
+            <el-table-column
+                    prop="escort_cert"
+                    label="押运员资格证"
+                    align="center"
+                    width="150">
+                <el-image
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.escort_cert"
+                        :preview-src-list="[scope.row.escort_cert]"
+                        slot-scope="scope">
+                </el-image>
+            </el-table-column>
             <el-table-column
                     prop="status"
                     label="违章信息"

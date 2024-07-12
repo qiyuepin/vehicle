@@ -158,8 +158,8 @@ class AdminService extends BaseService
                 throw new \Exception('新增失败');
             }
             $uid = $res -> id;
-            // dump($uid);die;
-            // 确保 'group' 字段存在且为数组
+            // dump($param['group']);die;
+            $param['group']=[3];
             foreach($param['group'] as $group_id){
                 $res = AuthGroupAccess::create(['uid'=>$uid,'group_id'=>$group_id]);
                 if(!$res){
@@ -411,15 +411,17 @@ class AdminService extends BaseService
             }else{
                 unset($param['password']);
             }
-            // $param['sign'] = $param['autograph'];
+            $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
+            
             $res = Admin::update($param,['id'=>$param['id']]);
             if(!$res){
                 throw new \Exception('编辑失败');
             }
             $res = AuthGroupAccess::where('uid',$param['id'])->delete();
-            if(!$res){
-                throw new \Exception('删除关联表失败');
-            }
+            // if(!$res){
+            //     throw new \Exception('删除关联表失败');
+            // }dump($param);die;
+            
             foreach($param['group'] as $group_id){
                 $res = AuthGroupAccess::create(['uid'=>$param['id'],'group_id'=>$group_id]);
                 if(!$res){

@@ -17,11 +17,13 @@
                      style="width: 100%;">
                 <el-tabs style="height: 200px;">
                     <el-tab-pane label="基本信息">
-                        <el-form-item label="选择角色" prop="group">
-                            <el-checkbox-group v-model="formData.group">
+                        <el-form-item label="角色">
+                            <!-- <el-checkbox-group v-model="formData.group">
                                 <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" v-if="item.type == 2">{{item.title}}</el-checkbox>
-                            </el-checkbox-group>
+                            </el-checkbox-group> -->
+                            <el-input  clearable value="驾驶员" disabled></el-input>
                         </el-form-item>
+
                         <el-form-item label="用户名" prop="username">
                             <el-input v-model="formData.username" clearable placeholder="请输入2-10个字符"></el-input>
                         </el-form-item>
@@ -82,12 +84,12 @@
                         <el-form-item label="驾驶证反面" prop="driver_card_back">
                             <UploadImage ref="Image_driver_card_back" v-model="formData.driver_card_back"></UploadImage>
                         </el-form-item>
-                        <el-form-item label="从业资格证正面" prop="cert_front">
+                        <el-form-item label="从业资格证" prop="cert_front">
                             <UploadImage ref="Image_cert_front" v-model="formData.cert_front"></UploadImage>
                         </el-form-item>
-                        <el-form-item label="从业资格证反面" prop="cert_back">
+                        <!-- <el-form-item label="从业资格证反面" prop="cert_back">
                             <UploadImage ref="Image_cert_back" v-model="formData.cert_back"></UploadImage>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="押运员资格证" prop="escort_cert">
                             <UploadImage ref="Image_escort_cert" v-model="formData.escort_cert"></UploadImage>
                         </el-form-item>
@@ -133,7 +135,7 @@ export default {
     }
     
     const validCard = (rule, value, callback) => {
-      console.log(value)
+      // console.log(value)
       if (!validIDCard(value)) {
         callback(new Error('请输入正确身份证号（18位数字）'))
       } else {
@@ -141,7 +143,7 @@ export default {
       }
     }
     const validdriverCard = (rule, value, callback) => {
-      console.log(value)
+      // console.log(value)
       if (!validIDCard(value)) {
         callback(new Error('请输入正确驾驶证号（18位数字）'))
       } else {
@@ -178,7 +180,7 @@ export default {
       roles: [],
       drawerShow:false,
       saveRules: {
-        group: [{ required: true, trigger: 'blur',validator: validateGroup }],
+
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         id_card_num: [{ required: true, trigger: 'blur', validator: validCard}],
         dirver_card_num: [{ required: true, trigger: 'blur', validator: validdriverCard}],
@@ -259,12 +261,14 @@ export default {
       this.formData.id_card_num = ''
       this.formData.dirver_card_num = ''
       this.formData.cert_card_num = ''
-      // this.$refs.Image_card_front.imgUrl = ''
-      // this.$refs.Image_card_back.imgUrl = ''
-      // this.$refs.Image_driver_card_front.imgUrl = ''
-      // this.$refs.Image_driver_card_back.imgUrl = ''
-      // this.$refs.Image_cert_front.imgUrl = ''
-      // this.$refs.Image_cert_back.imgUrl = ''
+      this.formData.employ_time = ''
+      this.$refs.Image_card_front.imgUrl = ''
+      this.$refs.Image_card_back.imgUrl = ''
+      this.$refs.Image_driver_card_front.imgUrl = ''
+      this.$refs.Image_driver_card_back.imgUrl = ''
+      this.$refs.Image_cert_front.imgUrl = ''
+
+      this.$refs.Image_escort_cert.imgUrl = ''
     },
     getdriverInfo(id){
       getdriverInfo({id:id}).then(response=>{
@@ -298,6 +302,7 @@ export default {
               this.$refs.Image_cert_front.imgUrl = response.cert_front
               this.formData.cert_back = response.cert_back
               this.$refs.Image_cert_back.imgUrl = response.cert_back
+              // this.formData.group = response.group
               response.roles.forEach((item,_) => {
                   this.formData.group.push(item.id)
               })
