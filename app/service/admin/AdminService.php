@@ -407,7 +407,12 @@ class AdminService extends BaseService
             }
             
             $param['word'] = $param['password'];
+
             if($param['password']){
+               
+                if(strlen($param['password']) < 6){
+                    return $this->error('密码必须大于等于6位');
+                }
                 $param['password'] = md5($admin['halt'].$param['password'].$admin['halt']);
             }else{
                 unset($param['password']);
