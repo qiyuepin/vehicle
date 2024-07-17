@@ -405,30 +405,37 @@ class AdminService extends BaseService
             if(empty($admin)){
                 throw new \Exception('管理员不存在');
             }
+            
             $param['word'] = $param['password'];
             if($param['password']){
                 $param['password'] = md5($admin['halt'].$param['password'].$admin['halt']);
             }else{
                 unset($param['password']);
             }
-            $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
+            if(isset($param['employ_time'])){
+                $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
+            }
             
+            // dump($param);die;
             $res = Admin::update($param,['id'=>$param['id']]);
             if(!$res){
                 throw new \Exception('编辑失败');
             }
-            $res = AuthGroupAccess::where('uid',$param['id'])->delete();
-            // if(!$res){
-            //     throw new \Exception('删除关联表失败');
-            // }dump($param);die;
-            
-            foreach($param['group'] as $group_id){
-                $res = AuthGroupAccess::create(['uid'=>$param['id'],'group_id'=>$group_id]);
-                if(!$res){
-                    throw new \Exception('新增关联表失败');
+            if(isset($param['group'])){
+                $res = AuthGroupAccess::where('uid',$param['id'])->delete();
+                // if(!$res){
+                //     throw new \Exception('删除关联表失败');
+                // }dump($param);die;
+                
+                foreach($param['group'] as $group_id){
+                    $res = AuthGroupAccess::create(['uid'=>$param['id'],'group_id'=>$group_id]);
+                    if(!$res){
+                        throw new \Exception('新增关联表失败');
+                    }
                 }
+                Cache::delete('adminInfo:'.$param['id']);
             }
-            Cache::delete('adminInfo:'.$param['id']);
+            
             Db::commit();
             return $this->success([],'编辑成功');
         }catch (\Exception $exception){
