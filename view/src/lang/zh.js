@@ -1,6 +1,9 @@
 export default {
   route: {
-    home: '系统首页',
+      // 【YB分类整理】问题描述20240726-2 No.83 顺序调整 by baolei start
+    //home: '系统首页',
+      home: '七星智运',
+      // 【YB分类整理】问题描述20240726-2 No.83 顺序调整 by baolei end
     authority: '权限管理',
     auth_admin:'管理员列表',
     auth_role:'角色列表',
@@ -18,7 +21,10 @@ export default {
     link_blog: '博客外链',
     plans: '任务管理',
     plans_plans: '运输计划',
-    plans_normal: '常规任务',
+    // 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei start
+    // plans_normal: '常规任务',
+    plans_normal: '运输任务',
+    // 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei end
     plans_temporary: '临时任务',
     auth_admin_driver: '驾驶员管理',
     driver: '驾驶员信息',

@@ -36,19 +36,32 @@
                     align="center"
                     width="80">
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                prop="trailer_status"-->
+<!--                label="挂车状态"-->
+<!--                align="center"-->
+<!--                width="110">-->
+<!--                <template slot-scope="scope">-->
 
+<!--                  <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>-->
+<!--                  <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 1" >重车</span>-->
+<!--                  &lt;!&ndash; <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> &ndash;&gt;-->
+<!--                </template>-->
+<!--            </el-table-column>-->
             <el-table-column
                 prop="trailer_status"
-                label="挂车状态"
+                label="状态"
                 align="center"
                 width="110">
                 <template slot-scope="scope">
 
-                  <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
-                  <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 1" >重车</span>
-                  <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
+                    <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
+                    <span style="color: #409EFF;" v-else-if="scope.row.trailer_status === 1" >重车</span>
+                    <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
                 </template>
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei end         -->
             <el-table-column
                 prop="date_status"
                 label="是否超期"
@@ -71,56 +84,100 @@
                     </el-button>
                 </template>
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei start         -->
             <el-table-column
-                    prop="trailer_brand"
-                    label="品牌"
-                    align="center"
-                    width="120">
+                prop="trailer_material"
+                label="罐体材质"
+                align="center"
+                width="120">
             </el-table-column>
             <el-table-column
-                    prop="trailer_weight"
-                    label="自重"
-                    align="center"
-                    width="150"
-                    :formatter="formatWeight">
+                prop="trailer_volume"
+                label="容积"
+                align="center"
+                width="150"
+                :formatter="formatvolume">
             </el-table-column>
             <el-table-column
-                    prop="trailer_volume"
-                    label="容积"
-                    align="center"
-                    width="150"
-                    :formatter="formatvolume">
+                prop="trailer_designcode"
+                label="设计代码"
+                align="center"
+                width="120">
             </el-table-column>
+            <el-table-column
+                prop="trailer_keepwarm"
+                label="保温性能"
+                align="center"
+                width="120">
+            </el-table-column>
+<!--            <el-table-column-->
+<!--                    prop="trailer_brand"-->
+<!--                    label="品牌"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--                    prop="trailer_weight"-->
+<!--                    label="自重"-->
+<!--                    align="center"-->
+<!--                    width="150"-->
+<!--                    :formatter="formatWeight">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--                    prop="trailer_volume"-->
+<!--                    label="容积"-->
+<!--                    align="center"-->
+<!--                    width="150"-->
+<!--                    :formatter="formatvolume">-->
+<!--            </el-table-column>-->
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei end         -->
             <el-table-column
                     prop="transport_cert"
                     label="道路运输证号"
                     align="center"
                     width="200">
             </el-table-column>
-            <el-table-column
-                    prop="trailer_material"
-                    label="罐体材质"
-                    align="center"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="trailer_designcode"
-                    label="设计代码"
-                    align="center"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="trailer_keepwarm"
-                    label="保温性能"
-                    align="center"
-                    width="120">
-            </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                    prop="trailer_material"-->
+<!--                    label="罐体材质"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--                    prop="trailer_designcode"-->
+<!--                    label="设计代码"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--                    prop="trailer_keepwarm"-->
+<!--                    label="保温性能"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei end         -->
             <el-table-column
                     prop="trailer_scope"
                     label="经营范围"
                     align="center"
                     width="200">
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei start         -->
+            <el-table-column
+                prop="trailer_brand"
+                label="品牌"
+                align="center"
+                width="120">
+            </el-table-column>
+            <el-table-column
+                prop="trailer_weight"
+                label="自重"
+                align="center"
+                width="150"
+                :formatter="formatWeight">
+            </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.81 顺序调整 by baolei end         -->
             <el-table-column
                     prop="product_name"
                     label="货品名称"

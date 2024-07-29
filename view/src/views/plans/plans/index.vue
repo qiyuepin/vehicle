@@ -136,6 +136,15 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei start         -->
+          <el-table-column
+              prop="unload_factory"
+              label="卸货厂家"
+              align="center"
+              width="200"
+              show-overflow-tooltip>
+          </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei end         -->
           <el-table-column
                   prop="load_address"
                   label="装货厂家地址"
@@ -143,13 +152,15 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-                  prop="unload_factory"
-                  label="卸货厂家"
-                  align="center"
-                  width="200"
-                  show-overflow-tooltip>
-          </el-table-column>
+<!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="unload_factory"-->
+<!--                  label="卸货厂家"-->
+<!--                  align="center"-->
+<!--                  width="200"-->
+<!--                  show-overflow-tooltip>-->
+<!--          </el-table-column>-->
+<!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei end         -->
           <el-table-column
                   prop="unload_address"
                   label="卸货厂家地址"

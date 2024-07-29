@@ -58,12 +58,20 @@
                   <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
                 </template>
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.78 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                    prop="username"-->
+<!--                    label="用户名"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
             <el-table-column
-                    prop="username"
-                    label="用户名"
-                    align="center"
-                    width="120">
+                prop="username"
+                label="姓名"
+                align="center"
+                width="120">
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.78 顺序调整 by baolei end         -->
             <!-- <el-table-column
                     prop="nickname"
                     label="昵称"
@@ -76,31 +84,40 @@
                     align="center"
                     width="120">
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.78 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                    prop="phone2"-->
+<!--                    label="手机号2"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
             <el-table-column
-                    prop="phone2"
-                    label="手机号2"
-                    align="center"
-                    width="120">
+                prop="phone2"
+                label="备用手机号"
+                align="center"
+                width="120">
             </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.78 顺序调整 by baolei end         -->
             <el-table-column
                     prop="id_card_num"
                     label="身份证号"
                     align="center"
                     width="200">
             </el-table-column>
-            <el-table-column
-                    prop="dirver_card_num"
-                    label="驾驶证号"
-                    align="center"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="id_card_num"
-                    label="从业资格证号"
-                    align="center"
-                    width="200">
-            </el-table-column>
-
+            <!-- 【YB分类整理】问题描述20240726-2 No.78 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                    prop="dirver_card_num"-->
+<!--                    label="驾驶证号"-->
+<!--                    align="center"-->
+<!--                    width="200">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--                    prop="id_card_num"-->
+<!--                    label="从业资格证号"-->
+<!--                    align="center"-->
+<!--                    width="200">-->
+<!--            </el-table-column>-->
+            <!-- 【YB分类整理】问题描述20240726-2 No.78 顺序调整 by baolei end         -->
             <el-table-column
                     prop="employ_time"
                     label="入职时间"
@@ -310,14 +327,14 @@
                     label="操作"
                     align="center"
                     min-width="150">
-                <template slot-scope="scope" v-permission="'auth.admin.edit'"> 
+                <template slot-scope="scope" v-permission="'auth.admin.edit'">
                   <el-button size="mini" type="primary" v-permission="'auth.admin.edit'"  @click="handleEdit(scope.row)">编辑</el-button>
                   <el-button size="mini" v-if="scope.row.status==1" type="success" v-permission="'auth.admin.edit'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   <el-button size="mini" v-if="scope.row.status==2" type="warning" v-permission="'auth.admin.edit'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
                 </template>
             </el-table-column> -->
             <!-- <el-table-column
-       
+
             v-if="hasPermission('auth.admin.edit')"
       prop="create_time"
       label="姓名"
@@ -392,7 +409,7 @@ export default {
 
   methods: {
     hasPermission(permission) {
-      
+
       console.log(checkPermission(permission))
       // console.log(this.$router)
       // 根据权限检查逻辑返回是否有权限

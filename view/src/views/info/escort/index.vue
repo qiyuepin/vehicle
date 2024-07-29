@@ -61,19 +61,19 @@
                 <el-tag type="success"  v-if="scope.row.escort_status === '0'" >空闲</el-tag>
                 <el-tag type="danger" v-else-if="scope.row.escort_status === '1'">出车</el-tag>
                 <el-tag type="info" v-else >离职</el-tag>
-                  <!-- <el-button 
-                      v-if="scope.row.escort_status === '0'" 
+                  <!-- <el-button
+                      v-if="scope.row.escort_status === '0'"
                       type="success"  size="mini" plain>
                       空闲
                   </el-button> -->
-                  
-                  <!-- <el-button 
-                      v-else-if="scope.row.escort_status === '1'" 
+
+                  <!-- <el-button
+                      v-else-if="scope.row.escort_status === '1'"
                       type="warning"  size="mini" plain>
                       出车
                   </el-button>
-                  <el-button 
-                      v-else 
+                  <el-button
+                      v-else
                       size="mini" round>
                       离职
                   </el-button> -->
@@ -91,25 +91,34 @@
                   align="center"
                   width="120">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.79 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="phone2"-->
+<!--                  label="手机号2"-->
+<!--                  align="center"-->
+<!--                  width="120">-->
+<!--          </el-table-column>-->
           <el-table-column
-                  prop="phone2"
-                  label="手机号2"
-                  align="center"
-                  width="120">
+              prop="phone2"
+              label="备用手机号"
+              align="center"
+              width="120">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.79 顺序调整 by baolei end         -->
           <el-table-column
                   prop="id_card"
                   label="身份证号"
                   align="center"
                   width="200">
           </el-table-column>
-          <el-table-column
-                  prop="cert_card_num"
-                  label="从业资格证号"
-                  align="center"
-                  width="200">
-          </el-table-column>
-
+          <!-- 【YB分类整理】问题描述20240726-2 No.79 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="cert_card_num"-->
+<!--                  label="从业资格证号"-->
+<!--                  align="center"-->
+<!--                  width="200">-->
+<!--          </el-table-column>-->
+          <!-- 【YB分类整理】问题描述20240726-2 No.79 顺序调整 by baolei end         -->
           <el-table-column
                   prop="employ_time"
                   label="入职时间"
@@ -158,7 +167,7 @@
                 </el-image>
               </template>
           </el-table-column>
-         
+
           <el-table-column
                   prop="cert_front"
                   label="从业资格证"
@@ -190,10 +199,10 @@
                       slot-scope="scope">
               </el-image>
           </el-table-column> -->
-          
-          
-          
-          
+
+
+
+
           <el-table-column
                   prop="create_time"
                   label="创建时间"

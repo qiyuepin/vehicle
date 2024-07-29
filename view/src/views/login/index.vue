@@ -2,10 +2,23 @@
     <div class="login-container">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
                  label-position="left">
-
+            <!-- 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei start         -->
+            <div>
+                <h3 align="center">
+                    <el-image
+                        style="width: 120px; height: 120px;"
+                        :src="indexLogo">
+                    </el-image>
+                </h3>
+            </div>
+            <!-- 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei end         -->
             <div class="title-container">
+
                 <h3 class="title">
-                    后台管理系统
+                    <!-- 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei start         -->
+<!--                    后台管理系统-->
+                    七星智运综合管理系统
+                    <!-- 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei end         -->
                 </h3>
             </div>
 
@@ -91,6 +104,9 @@
 import { validUsername, validPassword } from '@/utils/validate'
 import { captcha } from '@/api/user'
 import { getToken } from '@/utils/auth'
+// 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei start
+import indexLogo from '@/assets/index/qixing_logo.png';
+// 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei end
 export default {
   name: 'Login',
   data() {
@@ -123,7 +139,10 @@ export default {
       showDialog: false,
       redirect: undefined,
       otherQuery: {},
-      img: ''
+      img: '', // 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei
+      // 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei start
+      indexLogo
+      // 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei end
     }
   },
   watch: {
@@ -182,7 +201,10 @@ export default {
             .then(() => {
               this.$notify({
                 title: '登录成功',
-                message: '欢迎您登录后台管理系统',
+                // 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei start
+                // message: '欢迎您登录后台管理系统',
+                message: '欢迎您登录七星智运综合管理系统',
+                // 【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei end
                 type: 'success'
               })
               console.log(this.redirect)

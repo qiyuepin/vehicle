@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="footer">Copyright © </div>
+        <!-- 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei start         -->
+<!--        <div class="footer">Copyright © </div>-->
+        <div class="footer">Copyright © Qi Xing Transportation Co.,Ltd..All Rights Reserved </div>
+        <!-- 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei end         -->
     </div>
 </template>
 

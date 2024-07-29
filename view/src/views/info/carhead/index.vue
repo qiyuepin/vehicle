@@ -78,23 +78,12 @@
                     align="center"
                     width="120">
             </el-table-column> -->
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei start         -->
             <el-table-column
-                    prop="carhead_brand"
-                    label="品牌"
-                    align="center"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="carhead_weight"
-                    label="自重"
-                    align="center"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="transport_cert"
-                    label="道路运输证号"
-                    align="center"
-                    width="200">
+                prop="power_supply"
+                label="动力源"
+                align="center"
+                width="200">
             </el-table-column>
             <el-table-column
                 prop="discharge_level"
@@ -102,13 +91,53 @@
                 align="center"
                 width="200">
             </el-table-column>
+<!--            <el-table-column-->
+<!--                    prop="carhead_brand"-->
+<!--                    label="品牌"-->
+<!--                    align="center"-->
+<!--                    width="120">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--                    prop="carhead_weight"-->
+<!--                    label="自重"-->
+<!--                    align="center"-->
+<!--                    width="200">-->
+<!--            </el-table-column>-->
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei end         -->
+            <el-table-column
+                    prop="transport_cert"
+                    label="道路运输证号"
+                    align="center"
+                    width="200">
+            </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                prop="discharge_level"-->
+<!--                label="排放等级"-->
+<!--                align="center"-->
+<!--                width="200">-->
+<!--            </el-table-column>-->
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei end         -->
             <el-table-column
                     prop="carhead_scope"
                     label="经营范围"
                     align="center"
                     width="200">
             </el-table-column>
-
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei start         -->
+            <el-table-column
+                prop="carhead_brand"
+                label="品牌"
+                align="center"
+                width="120">
+            </el-table-column>
+            <el-table-column
+                prop="carhead_weight"
+                label="自重"
+                align="center"
+                width="200">
+            </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei end         -->
             <el-table-column
                     prop="regist_time"
                     label="注册日期"
@@ -169,12 +198,14 @@
                     <span style="margin-left: 10px" :class="{ datestatus: scope.row.traffic_status ? false : true}" v-text="scope.row.traffic_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column
-                prop="power_supply"
-                label="动力源"
-                align="center"
-                width="200">
-            </el-table-column>
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei start         -->
+<!--            <el-table-column-->
+<!--                prop="power_supply"-->
+<!--                label="动力源"-->
+<!--                align="center"-->
+<!--                width="200">-->
+<!--            </el-table-column>-->
+            <!-- 【YB分类整理】问题描述20240726-2 No.80 顺序调整 by baolei end         -->
             <el-table-column
                     prop="driving_license"
                     label="行驶证"

@@ -120,8 +120,10 @@
               align="center"
               width="110">
               <template slot-scope="scope">
-
-                <el-tag v-if="scope.row.fixed === 0" type="info">非固定</el-tag>
+                  <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei start         -->
+<!--                <el-tag v-if="scope.row.fixed === 0" type="info">非固定</el-tag>-->
+                  <el-tag v-if="scope.row.fixed === 0" type="info">临时</el-tag>
+                  <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei end         -->
                 <el-tag v-else-if="scope.row.fixed === 1" type="success">固定</el-tag>
               </template>
           </el-table-column>
@@ -196,14 +198,22 @@
                   width="100"
                   show-overflow-tooltip>
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="dispatcher"-->
+<!--                  label="分配人"-->
+<!--                  align="center"-->
+<!--                  width="100"-->
+<!--                  show-overflow-tooltip>-->
+<!--          </el-table-column>-->
           <el-table-column
-                  prop="dispatcher"
-                  label="分配人"
-                  align="center"
-                  width="100"
-                  show-overflow-tooltip>
+              prop="dispatcher"
+              label="调度人"
+              align="center"
+              width="100"
+              show-overflow-tooltip>
           </el-table-column>
-
+          <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei start         -->
           <el-table-column
                   prop="update_time"
                   label="更新时间"

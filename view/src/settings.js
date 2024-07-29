@@ -1,5 +1,8 @@
 module.exports = {
-  title: '后台管理系统',
+  //   【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei start
+  // title: '后台管理系统',
+  title: '七星智运综合管理系统',
+  //   【YB分类整理】问题描述20240726-2 No.85 顺序调整 by baolei end
 
   appid: 'ty9fd2848a039ab554',
 

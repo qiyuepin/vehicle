@@ -13,9 +13,9 @@
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-
-        <lang-select class="right-menu-item hover-effect" />
-
+          <!-- 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei start         -->
+<!--        <lang-select class="right-menu-item hover-effect" />-->
+          <!-- 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei end         -->
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover" @command="handleCommand">
@@ -39,16 +39,19 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import LangSelect from '@/components/LangSelect'
-
+// 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei start
+// import LangSelect from '@/components/LangSelect'
+// 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei end
 export default {
   components: {
     Breadcrumb,
     Hamburger,
     Screenfull,
     SizeSelect,
-    Search,
-    LangSelect
+    Search// ,【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei
+    // 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei start
+    // LangSelect
+    // 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei end
   },
   computed: {
     ...mapGetters([
