@@ -36,7 +36,10 @@ export function getLanguage() {
       return locale
     }
   }
-  return 'en'
+  // 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei start
+  // return 'en'
+  return 'zh'
+  // 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei end
 }
 const i18n = new VueI18n({
   // set locale
