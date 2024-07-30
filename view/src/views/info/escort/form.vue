@@ -17,7 +17,7 @@
                    style="width: 100%;">
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="基本信息">
-                
+
                       <el-form-item label="姓名" prop="name">
                           <el-input v-model="formData.name" clearable placeholder="请输入姓名"></el-input>
                       </el-form-item>
@@ -25,7 +25,7 @@
                       <el-form-item label="手机号" prop="phone">
                           <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
                       </el-form-item>
- 
+
                       <el-form-item label="手机号2" prop="phone2">
                           <el-input v-model="formData.phone2" clearable placeholder="请输入正确的手机号"></el-input>
                       </el-form-item>
@@ -164,7 +164,10 @@ methods: {
     this.formData.card_back = ''
     this.formData.cert_front = ''
     this.formData.cert_back = ''
-    this.formData.escort_status = ''
+      // 【YB分类整理】问题描述20240726 No.31 顺序调整 by baolei start
+      // this.formData.escort_status = ''
+    this.formData.escort_status = '0'
+      // 【YB分类整理】问题描述20240726 No.31 顺序调整 by baolei end
     this.$refs.Image_card_front.imgUrl = ''
     this.$refs.Image_card_back.imgUrl = ''
     this.$refs.Image_cert_front.imgUrl = ''

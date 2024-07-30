@@ -30,6 +30,18 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
+                      <!-- 【YB分类整理】问题描述20240726 No.37 顺序调整 by baolei start         -->
+                      <el-form-item label="挂车" prop="trailer_id">
+                          <el-select v-model="formData.trailer_id" filterable  placeholder="请选择挂车">
+                              <el-option
+                                  v-for="item in trailerlist"
+                                  :key="item.value"
+                                  :label="item.trailer_plate"
+                                  :value="item.id">
+                              </el-option>
+                          </el-select>
+                      </el-form-item>
+                      <!-- 【YB分类整理】问题描述20240726 No.37 顺序调整 by baolei end         -->
                       <el-form-item label="驾驶员" prop="driver_id">
                           <el-select v-model="formData.driver_id" filterable  placeholder="请选择驾驶员">
                             <el-option
@@ -50,17 +62,18 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      <el-form-item label="挂车" prop="trailer_id">
-                          <el-select v-model="formData.trailer_id" filterable  placeholder="请选择挂车">
-                            <el-option
-                              v-for="item in trailerlist"
-                              :key="item.value"
-                              :label="item.trailer_plate"
-                              :value="item.id">
-                            </el-option>
-                          </el-select>
-                      </el-form-item>
-
+                      <!-- 【YB分类整理】问题描述20240726 No.37 顺序调整 by baolei start         -->
+<!--                      <el-form-item label="挂车" prop="trailer_id">-->
+<!--                          <el-select v-model="formData.trailer_id" filterable  placeholder="请选择挂车">-->
+<!--                            <el-option-->
+<!--                              v-for="item in trailerlist"-->
+<!--                              :key="item.value"-->
+<!--                              :label="item.trailer_plate"-->
+<!--                              :value="item.id">-->
+<!--                            </el-option>-->
+<!--                          </el-select>-->
+<!--                      </el-form-item>-->
+                      <!-- 【YB分类整理】问题描述20240726 No.37 顺序调整 by baolei start         -->
                       <!-- <el-form-item label="驾驶员" prop="driver_id">
                           <el-input v-model="formData.name" clearable placeholder="请输入姓名"></el-input>
                       </el-form-item>
@@ -72,7 +85,7 @@
                           <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
                       </el-form-item> -->
 
-                     
+
                   </el-tab-pane>
               </el-tabs>
           </el-form>
@@ -94,7 +107,7 @@ import { addinfo, editinfo, getinfo, getcarlist } from '@/api/Info.js'
 export default {
 name: "myForm",
 components: {
-  
+
 },
 data() {
   return {

@@ -20,7 +20,7 @@
 
                         <el-form-item label="车牌号" prop="Vaildplate">
                             <!-- <el-input v-model="formData.trailer_plate" clearable placeholder="请输入车牌号"></el-input> -->
-                            
+
                             <el-input
                               v-model="formData.Vaildplate"
                               placeholder="请输入车牌号"
@@ -72,7 +72,7 @@
                         <el-form-item label="货品名称">
                             <el-input v-model="formData.product_name" clearable></el-input>
                         </el-form-item>
-                    
+
                         <el-form-item label="货品数量" prop="product_quantity">
                           <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
                           <span>（ t ）</span>
@@ -251,7 +251,9 @@ export default {
       saveRules: {
         Vaildplate: [{ required: true, trigger: 'blur', validator: validatePlate }],
         // transport_cert: [{ required: true, message: '道路运输证', trigger: 'blur'}],
-        transport_cert: [{ required: true, trigger: 'blur', validator: validateCert }]
+        // 【YB分类整理】问题描述20240726 No.32 顺序调整 by baolei start
+        // transport_cert: [{ required: true, trigger: 'blur', validator: validateCert }]
+        // 【YB分类整理】问题描述20240726 No.32 顺序调整 by baolei end
         // transport_cert: [{ validator: validateCert, message: '道路运输证必须是12位数字', trigger: 'blur'}]
       },
       formData: {
@@ -306,8 +308,8 @@ export default {
           else{
               return yearStr + '年' + ' ' + monthStr + '个月'
           }
-          
-          
+
+
       }
   },
   created() {
@@ -319,7 +321,7 @@ export default {
   },
   methods: {
     handleregistDateChange(value){
- 
+
       let registTime = new Date(value);
 
       let scrappTime = new Date(registTime.getFullYear() + 10, registTime.getMonth(), registTime.getDate());

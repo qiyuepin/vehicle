@@ -88,8 +88,9 @@
 
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
-                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
-
+                <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei start         -->
+<!--                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>-->
+                  <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei end         -->
               </template>
           </el-table-column>
 
@@ -478,7 +479,11 @@ methods: {
   //启用禁用操作
   handleStatus(index, id, status) {
     let handlerMsg = status === 1 ? '完成' : '未完成';
-    this.$confirm('您确定改任务已完成吗?', '温馨提示', {
+    // 【YB分类整理】问题描述20240726 No.43 顺序调整 by baolei start
+    const confirmTmp = '您确定改任务为' + (status === 1 ? '未完成' : '完成') + '吗?'
+    // this.$confirm('您确定改任务已完成吗?', '温馨提示', {
+      this.$confirm(confirmTmp, '温馨提示', {
+    // 【YB分类整理】问题描述20240726 No.43 顺序调整 by baolei end
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'

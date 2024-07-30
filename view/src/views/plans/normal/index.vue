@@ -91,8 +91,10 @@
                 <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
                 <el-button  v-else-if="scope.row.driver_status === 3"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
                 <el-button  v-else-if="scope.row.driver_status === 1 && scope.row.status === null"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
-                <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
-                <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
+                  <!-- 【YB分类整理】问题描述20240726 No.53 顺序调整 by baolei start         -->
+<!--                <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>-->
+<!--                <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>-->
+                  <!-- 【YB分类整理】问题描述20240726 No.53 顺序调整 by baolei end         -->
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
                 <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
@@ -110,8 +112,9 @@
 
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
-                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>
-
+                  <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei start        -->
+<!--                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>-->
+                  <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei end        -->
               </template>
           </el-table-column>
           <el-table-column
