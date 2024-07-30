@@ -327,8 +327,10 @@ methods: {
         "更新时间": item.update_time
       };
     });
-
-    exportExcel(data,"临时任务");
+// 【YB分类整理】问题描述20240726-2 No.65 顺序调整 by baolei start
+    // exportExcel(data,"临时任务");
+      exportExcel(data,"装卸任务");
+// 【YB分类整理】问题描述20240726-2 No.65 顺序调整 by baolei end
   },
   status(statusnum,driver_status) {
     if(driver_status == 2){

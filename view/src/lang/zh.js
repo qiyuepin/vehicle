@@ -25,7 +25,10 @@ export default {
     // plans_normal: '常规任务',
     plans_normal: '运输任务',
     // 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei end
-    plans_temporary: '临时任务',
+    // 【YB分类整理】问题描述20240726-2 No.65 顺序调整 by baolei start
+    // plans_temporary: '临时任务',
+      plans_temporary: '装卸任务',
+   // 【YB分类整理】问题描述20240726-2 No.65 顺序调整 by baolei end
     auth_admin_driver: '驾驶员管理',
     driver: '驾驶员信息',
     admin_driver_regulation: '违章列表',
