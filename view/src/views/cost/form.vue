@@ -17,7 +17,7 @@
                    style="width: 100%;">
               <el-tabs style="height: 200px;">
                   <el-tab-pane label="基本信息">
-                
+
                       <el-form-item label="驾驶员" prop="driver_id">
                           <el-select v-model="formData.driver_id" filterable  placeholder="请选择驾驶员"  @change="driverChanged">
                             <el-option
@@ -122,7 +122,10 @@ data() {
       cost_money: '',
       trailer_num: '',
       year: '',
-      type_name: ''
+      type_name: '', //【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei
+        // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
+        head_num:''
+        // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
     },
   }
 },
@@ -155,7 +158,7 @@ methods: {
         if(response !== undefined){
           console.log(response.data)
           this.driverlist = response.driver
-          // 
+          //
         }
     })
   },
@@ -171,7 +174,7 @@ methods: {
     } else {
 
     }
-  
+
   },
   periodChanged() {
     const selectedinfo = this.period_idlist.find(item => item.id === this.formData.period_id);
@@ -180,8 +183,11 @@ methods: {
       this.formData.period_id_driver = selectedinfo.period_id_driver;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.year = selectedinfo.year;
+      // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
+        this.formData.head_num = selectedinfo.head_num;
+        // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
       console.log(this.formData)
-  
+
     } else {
 
     }
@@ -219,7 +225,7 @@ methods: {
             this.formData.cost_money = response.cost_money
             this.formData.cost_img = response.cost_img
             this.$refs.Image_cost_img.imgUrl = response.cost_img
-          
+
         }
     })
   },

@@ -264,6 +264,9 @@ class PlanService extends BaseService
             $param['fixed'] = 0;
             $userid = $this->getValue($Authorization);
             $param['initiator'] = Admin::where('id',$userid)->value('username');
+            // 【YB分类整理】问题描述20240726-2 74 by baolei start
+            $param['dispatcher'] = $param['initiator'];
+            // 【YB分类整理】问题描述20240726-2 74 by baolei end
             if(isset($param['id'])){
                 unset($param['id']);
             }
@@ -927,7 +930,9 @@ class PlanService extends BaseService
             $period['trailer_num'] = $plans['trailer_num'];
             $period['month'] = $plans['month'];
             $period['year'] = $plans['year'];
-            
+            // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
+            $period['head_num'] = $plans['head_num'];
+            // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
             
             $periodid = Db::name('admin_carplan_period')->where($period)->find();
             // dump($periodid);die;
@@ -1213,11 +1218,15 @@ class PlanService extends BaseService
                         $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
                     }
                     // 如果有下一个任务，则将当前任务的 driver_status 更新为 2
-                    
-                } else if ($param['status'] == 3 && $Plan['unload_factory'] == null) {
+                    // 【YB分类整理】问题描述20240726-2 68 by baolei start
+//                } else if ($param['status'] == 3 && $Plan['unload_factory'] == null) {
+                } else if ($param['status'] == 3 && $Plan['plan_type'] == 1) {
+                    // 【YB分类整理】问题描述20240726-2 68 by baolei start
                     // 如果 unload_factory 为空，将当前任务的 status 更新为 5，并将当前任务的 driver_status 更新为 2，
                     // 同时将上一个任务的 driver_status 更新为 1
-                    $param['status'] = 5;
+                    // 【YB分类整理】问题描述20240726-2 68 by baolei start
+                    /*$param['status'] = 5;*/
+                    // 【YB分类整理】问题描述20240726-2 68 by baolei end
                     if ($lastplan != null && $lastplan['start_periodic'] == 0) {
                         $param['driver_status'] = 2;
                         // Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
@@ -1228,6 +1237,11 @@ class PlanService extends BaseService
                         $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
                     }
                 }
+                // 【YB分类整理】问题描述20240726-2 68 by baolei start
+                else if ($param['status'] == 3 && $Plan['plan_type'] == 2) {
+                    $param['status'] = 4;
+                }
+                // 【YB分类整理】问题描述20240726-2 68 by baolei end
                 // dump($param);die;
                 $carhead_plate = isset($param['head_num'])?$param['head_num']:$firstPlan['head_num'];
                 $escort_name = isset($param['escort_name'])?$param['escort_name']:$firstPlan['escort_name'];
@@ -1256,7 +1270,7 @@ class PlanService extends BaseService
                     $load_product_quantity = $Plan['load_product_quantity'];
                 }
                 // dump($load_product_quantity);
-                // dump($Plan);die;
+//                 dump($Plan);die;
                 $trailerdata['product_name'] = $Plan['product_name'];
                 if ($param['status'] == 3) {
                     $trailerdata['trailer_status'] = 1;

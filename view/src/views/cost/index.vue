@@ -58,6 +58,14 @@
                   align="center"
                   width="80">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
+          <el-table-column
+              prop="month"
+              label="月份"
+              align="center"
+              width="80">
+          </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
           <el-table-column
                   prop="total"
                   label="总金额"
@@ -74,19 +82,19 @@
                 <el-tag type="primary" v-else-if="scope.row.status === 1">进行中</el-tag>
                 <el-tag type="success" v-else-if="scope.row.status === 2">已结束</el-tag>
                 <el-tag type="info" v-else >-</el-tag>
-                  <!-- <el-button 
-                      v-if="scope.row.cost_status === '0'" 
+                  <!-- <el-button
+                      v-if="scope.row.cost_status === '0'"
                       type="success"  size="mini" plain>
                       空闲
                   </el-button> -->
-                  
-                  <!-- <el-button 
-                      v-else-if="scope.row.cost_status === '1'" 
+
+                  <!-- <el-button
+                      v-else-if="scope.row.cost_status === '1'"
                       type="warning"  size="mini" plain>
                       出车
                   </el-button>
-                  <el-button 
-                      v-else 
+                  <el-button
+                      v-else
                       size="mini" round>
                       离职
                   </el-button> -->
@@ -105,35 +113,44 @@
               width="220">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary"  plain  @click="costlist(scope.row)">{{ scope.row.period_id_driver }}</el-button>
- 
+
               </template>
           </el-table-column>
-          
-          
-          <el-table-column
-                  prop="initiator"
-                  label="创建人"
-                  align="center"
-                  width="120">
-          </el-table-column>
-          <el-table-column
-                  prop="dispatcher"
-                  label="分配人"
-                  align="center"
-                  width="120">
-          </el-table-column>
+
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="initiator"-->
+<!--                  label="创建人"-->
+<!--                  align="center"-->
+<!--                  width="120">-->
+<!--          </el-table-column>-->
+<!--          <el-table-column-->
+<!--                  prop="dispatcher"-->
+<!--                  label="分配人"-->
+<!--                  align="center"-->
+<!--                  width="120">-->
+<!--          </el-table-column>-->
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
           <el-table-column
                   prop="driver_name"
                   label="驾驶员"
                   align="center"
                   width="150">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="trailer_num"-->
+<!--                  label="挂车号"-->
+<!--                  align="center"-->
+<!--                  width="150">-->
+<!--          </el-table-column>-->
           <el-table-column
-                  prop="trailer_num"
-                  label="挂车号"
-                  align="center"
-                  width="150">
+              prop="head_num"
+              label="车号"
+              align="center"
+              width="200">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
           <!-- <el-table-column
                   prop="head_num"
                   label="车头号"
@@ -147,8 +164,8 @@
                   width="200">
           </el-table-column> -->
 
-          
-          
+
+
           <el-table-column
                   prop="create_time"
                   label="创建时间"
@@ -159,9 +176,10 @@
                   <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
               </template>
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
           <el-table-column
                   fixed="right"
-                  label="操作"
+                  label=""
                   align="center"
                   min-width="150">
               <template slot-scope="scope">
@@ -184,6 +202,7 @@
                   </el-tooltip> -->
               </template>
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
       </el-table>
       <!--分页-->
       <div class="pagination-container">
@@ -254,7 +273,7 @@ methods: {
         }
         this.loading = false
     });
-    
+
     this.excelquery.keywords = this.query.keywords
     this.excelquery.status = this.query.status
     console.log(this.excelquery)
@@ -262,11 +281,11 @@ methods: {
         if(response !== undefined){
           this.excelData = response
         }
-    }) 
+    })
   },
   getexcel() {
 
-    
+
   },
   //搜索
   handleSearch() {
@@ -336,7 +355,7 @@ methods: {
     console.log("raw.id--"+raw.id);
     // this.$refs.myAttr.costlist(raw[0])
     this.$router.push({ path: '/costlist/index', query: { period_id: raw.id }});
-    
+
     // this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
   },
   exportExcel () {
@@ -349,7 +368,10 @@ methods: {
         "其他类别": item.other_type,
         "费用金额": item.cost_money,
         "驾驶员": item.driver_name,
-        "挂车号": item.trailer_num,
+          // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
+        // "挂车号": item.trailer_num,
+          "车号": item.head_num,
+          //【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
         "费用照片": item.cost_img,
         "备注": item.remark,
         "添加人": item.cost_creater
@@ -362,7 +384,7 @@ methods: {
     // 构建 Workbook
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(data);
-   
+
 
     // 添加图片
     data.forEach((item, index) => {

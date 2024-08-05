@@ -214,8 +214,10 @@ class CostService extends BaseService
             if(isset($param['driver_name'])){
                 $driver['driver_name'] = $param['driver_name'];
             }
-            
-            $data = Db::name("admin_carplan_period")->where($driver)->order(['create_time'=>'desc'])->field('id,period_id_driver,trailer_num,year')->select()->toArray();
+            // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
+            // $data = Db::name("admin_carplan_period")->where($driver)->order(['create_time'=>'desc'])->field('id,period_id_driver,trailer_num,year')->select()->toArray();
+            $data = Db::name("admin_carplan_period")->where($driver)->order(['create_time'=>'desc'])->field('id,period_id_driver,trailer_num,year,head_num')->select()->toArray();
+            // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
             return $this->success($data);
             // return $this->success($info->toArray());
         }catch (\Exception $exception){

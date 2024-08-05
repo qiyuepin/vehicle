@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
-          <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>
-          </el-form-item>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
+<!--          <el-form-item label="关键字">-->
+<!--              <el-input v-model="query.keywords" placeholder="用户名|昵称|手机号|邮箱" clearable></el-input>-->
+<!--          </el-form-item>-->
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
           <el-form-item label="费用类别">
               <!-- <el-select v-model="query.status" placeholder="选择类别" clearable>
                   <el-option label="全部" value="0"/>
@@ -60,7 +62,7 @@
                   align="center"
                   width="80">
           </el-table-column>
-          
+
           <!-- <el-table-column
               prop="period_id_driver"
               label="费用周期"
@@ -68,7 +70,7 @@
               width="220">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" v-permission="'admin.cost.editcost'" plain  @click="costlist(scope.row)">{{ scope.row.period_id_driver }}</el-button>
- 
+
               </template>
           </el-table-column> -->
           <el-table-column
@@ -95,12 +97,20 @@
                   align="center"
                   width="150">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
+<!--          <el-table-column-->
+<!--                  prop="trailer_num"-->
+<!--                  label="挂车号"-->
+<!--                  align="center"-->
+<!--                  width="150">-->
+<!--          </el-table-column>-->
           <el-table-column
-                  prop="trailer_num"
-                  label="挂车号"
-                  align="center"
-                  width="150">
+              prop="head_num"
+              label="车号"
+              align="center"
+              width="150">
           </el-table-column>
+          <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
           <!-- <el-table-column
                   prop="head_num"
                   label="车头号"
@@ -113,7 +123,7 @@
                   align="center"
                   width="150">
           </el-table-column> -->
-          
+
           <el-table-column
                   prop="cost_img"
                   label="费用照片1"
@@ -145,7 +155,7 @@
                   align="center"
                   width="200">
           </el-table-column>
-          
+
           <el-table-column
                   prop="create_time"
                   label="创建时间"
@@ -275,7 +285,7 @@ methods: {
             // this.tableData = response.data
             // this.total = response.total
         }
-        
+
     })
   },
   exportExcel() {
@@ -289,7 +299,9 @@ methods: {
         "其他类别": item.other_type,
         "费用金额": item.cost_money,
         "驾驶员": item.driver_name,
-        "挂车号": item.trailer_num,
+          // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
+        "车号": item.head_num,
+          // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
         "费用照片": item.cost_img,
         "备注": item.remark,
         "添加人": item.cost_creater
