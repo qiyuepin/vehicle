@@ -513,6 +513,9 @@ class PlanService extends BaseService
 
             $userid = $this->getValue($Authorization);
             $param['initiator'] = Admin::where('id',$userid)->value('username');
+            // 【YB分类整理】问题描述20240726-2 68 by baolei start
+            $param['dispatcher']=$param['initiator'];
+            // 【YB分类整理】问题描述20240726-2 68 by baolei end
             // dump($param);die;
             if(isset($param['id'])){
                 unset($param['id']);
