@@ -21,7 +21,7 @@
                           <el-input v-model="formData.phone" clearable placeholder="请输入正确的手机号"></el-input>
                       </el-form-item> -->
                       <el-form-item label="车头" prop="head_id">
-                          <el-select v-model="formData.head_id" filterable  placeholder="请选择车头">
+                          <el-select v-model="formData.head_id" filterable  placeholder="请选择车头" disabled>
                             <el-option
                               v-for="item in headlist"
                               :key="item.value"

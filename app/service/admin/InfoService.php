@@ -747,25 +747,63 @@ class InfoService extends BaseService
             if(empty($info)){
                 throw new \Exception('信息不存在');
             }
-            $head = Info::where('head_id',$param['head_id'])->where('id', '<>', $param['id'])->find();
-            if($head){
-                return $this->error('车头已存在，请删除历史记录');
+            // $head = Info::where('head_id',$param['head_id'])->where('id', '<>', $param['id'])->find();
+            // if($head){
+            //     return $this->error('车头已存在，请删除历史记录');
+            // }
+            // $driver = Info::where('driver_id',$param['driver_id'])->where('id', '<>', $param['id'])->find();
+            // if($driver){
+            //     return $this->error('驾驶员已存在，请删除历史记录');
+            // }
+            // $trailer = Info::where('trailer_id',$param['trailer_id'])->where('id', '<>', $param['id'])->find();
+            // if($trailer){
+            //     return $this->error('挂车已存在，请删除历史记录');
+            // }
+            // $escort = Info::where('escort_id',$param['escort_id'])->where('id', '<>', $param['id'])->find();
+            // if($escort){
+            //     return $this->error('押运员已存在，请删除历史记录');
+            // }
+            if (isset($param['trailer_id']))
+            {
+                    
+                //输入的车头是否存在于人员车辆匹配中
+                $exit_trailer_num = Info::where('trailer_id',$param['trailer_id'])->find();
+                if($info['trailer_id'] != $param['trailer_id'] && $exit_trailer_num){
+                    //将原有$param['trailer_num']的info信息置为空
+                    Info::where('id',$exit_trailer_num['id'])->update(['trailer_num'=>null,'trailer_id'=>null]);
+                }
+
+                $param['trailer_num'] = Cartrailer::where('id',$param['trailer_id'])->value('trailer_plate');
+
             }
-            $driver = Info::where('driver_id',$param['driver_id'])->where('id', '<>', $param['id'])->find();
-            if($driver){
-                return $this->error('驾驶员已存在，请删除历史记录');
+            
+            if (isset($param['escort_id'])){
+                
+             
+                //输入的车头是否存在于人员车辆匹配中
+                $exit_escort_name = Info::where('escort_id',$param['escort_id'])->find();
+                if($info['escort_id'] != $param['escort_id'] && $exit_escort_name){
+                    //将原有$param['escort_name']的info信息置为空
+                    Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
+                }
+                // dump(Escort::where('id',$param['escort_id'])->value('escort_name'));die;
+                $param['escort_name'] = Escort::where('id',$param['escort_id'])->value('username');
             }
-            $trailer = Info::where('trailer_id',$param['trailer_id'])->where('id', '<>', $param['id'])->find();
-            if($trailer){
-                return $this->error('挂车已存在，请删除历史记录');
+            // dump($param);die;
+            if (isset($param['driver_id'])){
+                
+               
+                //输入的车头是否存在于人员车辆匹配中
+                $exit_driver_name = Info::where('driver_id',$param['driver_id'])->find();
+                if($info['driver_id'] != $param['driver_id'] && $exit_driver_name){
+                    //将原有$param['driver_name']的info信息置为空
+                    Info::where('id',$exit_driver_name['id'])->update(['driver_name'=>null,'driver_id'=>null]);
+                }
+                $param['driver_name'] = Db::name('admin')->where('id',$param['driver_id'])->value('username');
             }
-            $escort = Info::where('escort_id',$param['escort_id'])->where('id', '<>', $param['id'])->find();
-            if($escort){
-                return $this->error('押运员已存在，请删除历史记录');
-            }
-            $param['driver_name'] = Db::name('admin')->where('id',$param['driver_id'])->value('username');
-            $param['head_num'] = Carhead::where('id',$param['head_id'])->value('carhead_plate');
-            $param['trailer_num'] = Cartrailer::where('id',$param['trailer_id'])->value('trailer_plate');
+            // $param['driver_name'] = Db::name('admin')->where('id',$param['driver_id'])->value('username');
+            // $param['head_num'] = Carhead::where('id',$param['head_id'])->value('carhead_plate');
+            // $param['trailer_num'] = Cartrailer::where('id',$param['trailer_id'])->value('trailer_plate');
             $res = Info::update($param,['id'=>$param['id']]);
             if(!$res){
                 throw new \Exception('编辑失败');
@@ -803,8 +841,8 @@ class InfoService extends BaseService
         $period_id = null;
         try{
             
-            $data['driver'] = Db::name('admin')->where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
-            $driver = Db::name('admin')->where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
+            $data['driver'] = Admin::where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
+            $driver = Admin::where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
             $trailer = [];
             if(isset($param['trailer']) && $param['trailer']){
                 $trailer['trailer_status'] = $param['trailer'];

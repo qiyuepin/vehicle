@@ -33,6 +33,7 @@ use TencentCloud\Common\Profile\ClientProfile;
 use TencentCloud\Common\Profile\HttpProfile;
 use app\traits\TokenTrait;
 use Carbon\Carbon;
+use TencentCloud\Ic\V20190307\Models\CardInfo;
 
 class PlanService extends BaseService
 {
@@ -591,12 +592,13 @@ class PlanService extends BaseService
         try{
             Db::startTrans();
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
-            $driver_status['driver_status'] = 3;
+            
             $id = Plan::where('id',$param['id'])->find();
             $Plan = Plan::where('driver_name',$id['driver_name'])->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
             
             
             if(isset($Plan)){
+                $driver_status['driver_status'] = 3;
                 $new['driver_status'] = 1;
                 // Plan::where('id',$Plan['id'])->update($driver_status);
                 Plan::update($new,['id'=>$Plan['id']]);
@@ -626,7 +628,13 @@ class PlanService extends BaseService
                     return $this->success(['msg' => '成功']);
                 }
             }
+            else{
+                $driver_status['driver_status'] = 1;
+                $driver_status['status'] = 9;
+            }
             // dump($Plan);die;
+            // Carhead::where('carhead_plate',$id['head_num'])->update(['head_status'=>3]);
+            Carhead::where('carhead_plate',$id['head_num'])->update(['head_status'=>3]);
             $res = Plan::update($driver_status,['id'=>$param['id']]);
             // $res = Plan::whereIn('id',$param['ids'])->delete();
             if(!$res){
@@ -915,6 +923,7 @@ class PlanService extends BaseService
             $plans['head_num'] = $param['head_num'];
             $plans['escort_name'] = $param['escort_name'];
             $plans['plans_id'] = $param['id'];
+            $plans['info_id'] = $param['info_id'];
             $plans['trailer_status'] = $periodPlan['trailer_status'];
             $phone = Admin::where('username',$param['driver_name'])->value('phone');
             // dump($param);
@@ -1168,7 +1177,44 @@ class PlanService extends BaseService
                     $plantype = "卸货任务";
                     $planmsg = "到".$lastplan['unload_factory']."卸货";
                 }
-                // dump($Plan);
+                // 新增驾驶员修改挂车、押运员之后更新人员车辆匹配
+                // if (isset($param['head_num']) && $param['status'] == 1){
+                    
+                //     $head_num = Info::where('id',$Plan['info_id'])->value('head_num');
+                //     //输入的车头是否存在于人员车辆匹配中
+                //     $exit_head_num = Info::where('head_num',$param['head_num'])->find();
+                //     if($head_num != $param['head_num'] && $exit_head_num){
+                //         //将原有$param['head_num']的info信息置为空
+                //         Info::where('id',$exit_head_num['id'])->update(['head_num'=>null,'head_id'=>null]);
+                //     }
+                //     Info::where('id',$Plan['info_id'])->update(['head_num'=>$param['head_num'],'head_id'=>$exit_head_num['head_id']]);
+                // }
+                if (isset($param['trailer_num']) && $param['status'] == 1){
+                    
+                    $trailer_num = Info::where('id',$Plan['info_id'])->find();
+                    //输入的车头是否存在于人员车辆匹配中
+                    $exit_trailer_num = Info::where('trailer_num',$param['trailer_num'])->find();
+                    if($trailer_num['trailer_num'] != $param['trailer_num'] && $exit_trailer_num){
+                        //将原有$param['trailer_num']的info信息置为空
+                        Info::where('id',$exit_trailer_num['id'])->update(['trailer_num'=>null,'trailer_id'=>null]);
+                    }
+                    // dump($exit_trailer_num['trailer_id']);die;
+                    Info::where('id',$Plan['info_id'])->update(['trailer_num'=>$param['trailer_num'],'trailer_id'=>$exit_trailer_num['trailer_id']]);
+                }
+                if (isset($param['escort_name']) && $param['status'] == 1){
+                    
+                    $escort_name = Info::where('id',$Plan['info_id'])->find();
+                    //输入的车头是否存在于人员车辆匹配中
+                    $exit_escort_name = Info::where('escort_name',$param['escort_name'])->find();
+                    if($escort_name['escort_name'] != $param['escort_name'] && $exit_escort_name){
+                        //将原有$param['escort_name']的info信息置为空
+                        Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
+                    }
+                    // dump($exit_escort_name['escort_id']);die;
+                    Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$exit_escort_name['escort_id']]);
+                }
+                // dump($head_num);
+                // die;
                 // dump($Plan['status']);die;
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
                 if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1) {
@@ -1199,6 +1245,15 @@ class PlanService extends BaseService
                     
                 } else if ($param['status'] == 0 && $Plan['status'] == 8) {
                     $param['driver_status'] = 4;
+                    if($lastplan !== null){//如果下一条数据存在且不是新周期
+                        Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
+                        $id = $lastplan['id'];
+                        $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
+                        $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    }
+                }  else if ($param['status'] == 0 && $Plan['status'] == 9) {
+                    $param['driver_status'] = 3;
                     if($lastplan !== null){//如果下一条数据存在且不是新周期
                         Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
                         $id = $lastplan['id'];
