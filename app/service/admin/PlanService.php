@@ -139,7 +139,7 @@ class PlanService extends BaseService
         try{
             $where['plan_type'] = 0;
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['driver_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
             if(isset($param['status']) && $param['status'] != ''){
                 
@@ -245,9 +245,13 @@ class PlanService extends BaseService
             $currentMonth = date('m');
             // dump($currentYear);
             // dump($currentMonth);
-            if($Plan){
+            
+            if($Plan && in_array($Plan['status'], [5, 8, 9])){
+                $param['driver_status'] = 1;
+                Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
+            }
+            else if($Plan){
                 $param['driver_status'] = 0;
-                
             }
             else{
                 $param['driver_status'] = 1;
@@ -406,7 +410,7 @@ class PlanService extends BaseService
             // $where = [];
             $where['plan_type'] = array('1','2');
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['driver_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
             if(isset($param['status']) && $param['status'] != ''){
                 
@@ -496,9 +500,12 @@ class PlanService extends BaseService
             $currentMonth = date('m');
             // dump($currentYear);
             // dump($currentMonth);
-            if($Plan){
+            if($Plan && in_array($Plan['status'], [5, 8, 9])){
+                $param['driver_status'] = 1;
+                Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
+            }
+            else if($Plan){
                 $param['driver_status'] = 0;
-                
             }
             else{
                 $param['driver_status'] = 1;
@@ -934,6 +941,13 @@ class PlanService extends BaseService
     
             $period['period_id'] = $plans['period_id'];
             $period_id = $plans['period_id']?$plans['period_id'].'-'.$param['driver_name']:null;
+            if($period_id != null){
+                $oldperiod = Plan::where('driver_name',$param['driver_name'])->where('period_id','like','%'.$plans['period_id'].'%')->count();
+                $count = $oldperiod<10?'0'.$oldperiod:$oldperiod;
+                $count++;
+                $period_id = $period_id.'-'.$count;
+            }
+            // dump($period_id);die;
             $plans['period_id'] = $period_id;
 
             // $period['period_id'] = $plans['period_id'];
@@ -1163,7 +1177,14 @@ class PlanService extends BaseService
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
             $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条任务信息
             // dump($param['status']);
-            // dump($lastplan);die;
+            
+            if (isset($param['mileage'])) {
+                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['start_mile'=>$param['mileage']]);
+            }
+            if (isset($param['end_mile'])) {
+                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['back_mileage'=>$param['end_mile']]);
+            }
+            // dump($param);die;
             if (isset($param['status'])) {
                 if($lastplan['plan_type'] == 0){
                     $plantype = "常规任务";
@@ -1300,6 +1321,16 @@ class PlanService extends BaseService
                     $param['status'] = 4;
                 }
                 // 【YB分类整理】问题描述20240726-2 68 by baolei end
+                else if ($param['status'] == 3 && $Plan['plan_type'] == 0) {
+                    // dump($Plan);die;
+                    $quantity = Db::name('admin_carplans')->where('id',$Plan['plans_id'])->find();
+                    if($quantity){
+                        $product_quantity = $quantity['product_quantity']-30>0?$quantity['product_quantity']-30:0;
+                        Db::name('admin_carplans')->where('id',$Plan['plans_id'])->update(['product_quantity'=> $product_quantity]);
+                    }
+                    
+                    // dump(999);die;
+                }
                 // dump($param);die;
                 $carhead_plate = isset($param['head_num'])?$param['head_num']:$firstPlan['head_num'];
                 $escort_name = isset($param['escort_name'])?$param['escort_name']:$firstPlan['escort_name'];
@@ -1337,14 +1368,14 @@ class PlanService extends BaseService
                 } elseif ($param['status'] == 5 && $Plan['plan_type'] == 0) {
                     $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
                     $quantity = $product_quantity - $param['unload_product_quantity'];
-                    $trailerdata['product_quantity'] = $quantity;
-                    $trailerdata['trailer_status'] = ($quantity > 0.2) ? 1 : 0;
+                    $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : 0;
+                    $trailerdata['trailer_status'] = ($quantity > 0.3) ? 1 : 0;
            
                 } elseif ($param['status'] == 5 && $Plan['plan_type'] == 2) {
                     $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
                     $quantity = $product_quantity - $param['unload_product_quantity'];
-                    $trailerdata['product_quantity'] = $quantity;
-                    $trailerdata['trailer_status'] = ($quantity > 0.2) ? 1 : 0;
+                    $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : 0;
+                    $trailerdata['trailer_status'] = ($quantity > 0.3) ? 1 : 0;
                     
                 } else {
                     $trailer['trailer_status'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('trailer_status');

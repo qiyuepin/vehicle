@@ -2,7 +2,7 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="驾驶员|厂家名称|挂车号|车头" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="驾驶员|货品名称|厂家名称|挂车号|车头" clearable></el-input>
           </el-form-item>
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
@@ -334,8 +334,8 @@ methods: {
         }
         this.loading = false
     })
-    this.excelquery.keywords = this.excelquery.keywords
-    this.excelquery.status = this.excelquery.status
+    this.excelquery.keywords = this.query.keywords
+    this.excelquery.status = this.query.status
     getnormal(this.excelquery).then(response => {
         if(response !== undefined){
           console.log(response)

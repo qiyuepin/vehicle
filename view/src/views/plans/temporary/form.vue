@@ -40,6 +40,13 @@
                       <!-- <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item> -->
+
+                      <el-form-item label="任务类别" prop="plan_type">
+                          <el-radio-group v-model="formData.plan_type"  @change="handlePlanTypeChange">
+                            <el-radio :label=1>装车任务</el-radio>
+                            <el-radio :label=2>卸车任务</el-radio>
+                          </el-radio-group>
+                      </el-form-item>
                       <el-form-item label="货品名称" prop="product_name">
                           <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
                       </el-form-item>
@@ -70,8 +77,18 @@
                           </el-select>
                       </el-form-item> -->
                       <el-form-item label="装货厂家" prop="load_factory">
-                          <el-input v-model="formData.load_factory" clearable placeholder="装货厂家"></el-input>
+                          <el-select v-model="formData.load_factory" filterable  clearable placeholder="请选择装货厂家" @change="loadFactoryChanged">
+                            <el-option
+                              v-for="item in factorylist"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.name">
+                            </el-option>
+                          </el-select>
                       </el-form-item>
+                      <!-- <el-form-item label="装货厂家" prop="load_factory">
+                          <el-input v-model="formData.load_factory" clearable placeholder="装货厂家"></el-input>
+                      </el-form-item> -->
                       <el-form-item label="装货地址" prop="load_address">
                           <el-input v-model="formData.load_address" clearable placeholder="请输入装货地址"></el-input>
                       </el-form-item>
@@ -89,18 +106,23 @@
                             </el-option>
                           </el-select>
                       </el-form-item> -->
-                      <el-form-item label="卸货厂家" prop="unload_factory">
+                      <!-- <el-form-item label="卸货厂家" prop="unload_factory">
                           <el-input v-model="formData.unload_factory" clearable placeholder="卸货厂家"></el-input>
+                      </el-form-item> -->
+                      <el-form-item label="卸货厂家" prop="unload_factory">
+                          <el-select v-model="formData.unload_factory" filterable clearable placeholder="请选择卸货厂家" @change="unloadFactoryChanged">
+                            <el-option
+                              v-for="item in factorylist"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.name">
+                            </el-option>
+                          </el-select>
                       </el-form-item>
                       <el-form-item label="卸货地址" prop="unload_address">
                           <el-input v-model="formData.unload_address" clearable placeholder="请输入卸货地址"></el-input>
                       </el-form-item>
-                      <el-form-item label="任务类别" prop="plan_type" >
-                          <el-radio-group v-model="formData.plan_type">
-                            <el-radio :label=1>装车任务</el-radio>
-                            <el-radio :label=2>卸车任务</el-radio>
-                          </el-radio-group>
-                      </el-form-item>
+                      
                       <el-form-item label="排序" prop="plan_order">
                           <el-input v-model="formData.plan_order" clearable></el-input>
                       </el-form-item>
@@ -130,7 +152,7 @@
 <script>
 
 import { addtemporary, edittemporary, gettemporaryinfo, getplaninfo } from '@/api/plan.js'
-import { getproduct } from '@/api/Info.js'
+import { getproduct, getcartrailerInfo } from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
@@ -189,6 +211,7 @@ data() {
       unload_factory: '',
       unload_address: '',
       head_num: '',
+      trailer_id: '',
       trailer_num: '',
       driver_name: '',
       escort_name: '',
@@ -210,6 +233,30 @@ destroyed () {
     }
   },
 methods: {
+  handlePlanTypeChange(value) {
+    // value 为当前选中的 radio 的 label 值
+    console.log('选中的任务类别：', value);
+    
+    // 可根据选中的任务类别执行其他逻辑
+    if (value === 1) {
+      // 执行装车任务相关逻辑
+    } else if (value === 2) {
+      console.log('挂车：', this.formData.trailer_id);
+      this.getcartrailerInfo(this.formData.trailer_id);
+    }
+  },
+  getcartrailerInfo(id){
+      getcartrailerInfo({id:id}).then(response=>{
+ 
+          if(response !== undefined){
+              console.log(response)
+              console.log(response.product_name)
+              console.log(response.product_quantity)
+              this.formData.product_name = response.product_name;
+              this.formData.product_quantity = response.product_quantity;
+          }
+      })
+    },
   getproduct(){
       getproduct().then(response => {
           console.log(response.data)
@@ -233,15 +280,24 @@ methods: {
     if (selectedinfo) {
       console.log(selectedinfo)
       this.formData.head_num = selectedinfo.head_num;
+      this.formData.trailer_id = selectedinfo.trailer_id;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
       this.formData.escort_name = selectedinfo.escort_name;
     } else {
       this.formData.head_num = '';
+      this.formData.trailer_id = '';
       this.formData.trailer_num = '';
       this.formData.driver_name = '';
       this.formData.escort_name = '';
     }
+    if(this.formData.plan_type == 2){
+      this.getcartrailerInfo(this.formData.trailer_id);
+    }else{
+      this.formData.product_name = '';
+      this.formData.product_quantity = '';
+    }
+    
     // this.load_address = this.load_factory.factory;
   },
   loadFactoryChanged() {

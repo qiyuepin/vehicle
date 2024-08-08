@@ -65,9 +65,43 @@ class CostService extends BaseService
                 // dump($group);die;
                 // $where[] = ['status','=',$param['status']];
                 $data = Db::name("admin_cost")->where('period_id_driver','in',$group)->select()->toArray();
+                // $period = '';
                 // foreach($data as $key => $value ){
-                //     $data[$key]['total'] = Cost::where('period_id_driver',$value['period_id_driver'])->sum('cost_money');
+                //     if($value['period_id_driver'] != $period){
+                //         $period = $value['period_id_driver'];
+                //         $data[$key]['start_mile'] = Db::name("admin_carplan_period")->where('period_id_driver',$value['period_id_driver'])->value('start_mile');
+                //         $data[$key]['end_mile'] = Db::name("admin_carplan_period")->where('period_id_driver',$value['period_id_driver'])->value('end_mile');
+                //     }
                 // }
+                $newData = []; // 新数组用于存放处理后的数据
+
+foreach ($data as $key => $value) {
+    // 获取当前 period_id_driver 对应的 start_mile 和 end_mile
+    $start_mile = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('start_mile');
+    $end_mile = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('end_mile');
+
+    // 判断是否需要新增数组元素
+    if ($key === 0 || $value['period_id_driver'] !== $data[$key - 1]['period_id_driver']) {
+        // 如果是第一个元素或者当前 period_id_driver 不同于前一个元素的 period_id_driver，则新增数组元素
+        // $newValue = $value; // 复制原始数据到新数组元素
+        $newValue['period_id_driver'] = $value['period_id_driver'];
+        $newValue['start_mile'] = $start_mile; // 添加 start_mile
+        $newValue['end_mile'] = $end_mile; // 添加 end_mile
+        $newData[] = $newValue; // 将新元素添加到新数组中
+        $newData[] = $value;
+    } else {
+        // 如果当前 period_id_driver 与前一个元素的 period_id_driver 相同，直接将原始数据添加到新数组中
+        $newData[] = $value;
+    }
+}
+
+// 如果需要将处理后的数据重新赋值给原始数组 $data，可以使用以下语句
+$data = $newData;
+
+                
+
+
+
             }
             // dump($data);die;
 

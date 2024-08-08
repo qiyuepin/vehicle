@@ -374,7 +374,8 @@ methods: {
           //【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
         "费用照片": item.cost_img,
         "备注": item.remark,
-        "添加人": item.cost_creater
+        "始发里程": item.start_mile,
+        "回库里程": item.end_mile
       };
     });
 
