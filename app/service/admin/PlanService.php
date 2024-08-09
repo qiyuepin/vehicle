@@ -601,7 +601,7 @@ class PlanService extends BaseService
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
             
             $id = Plan::where('id',$param['id'])->find();
-            $Plan = Plan::where('driver_name',$id['driver_name'])->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
+            $Plan = Plan::where('driver_name',$id['driver_name'])->where('start_periodic',0)->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
             
             
             if(isset($Plan)){
@@ -677,7 +677,7 @@ class PlanService extends BaseService
                     $data = Plans::where($where)->order(['create_time'=>'desc'])->select()->toArray();
                 }else{
 
-                    $data = Plan::where($where)->order(['create_time'=>'desc'])->select()->toArray();
+                    $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
 
                 }
             }else{
@@ -943,8 +943,9 @@ class PlanService extends BaseService
             $period_id = $plans['period_id']?$plans['period_id'].'-'.$param['driver_name']:null;
             if($period_id != null){
                 $oldperiod = Plan::where('driver_name',$param['driver_name'])->where('period_id','like','%'.$plans['period_id'].'%')->count();
+                
+                $oldperiod++;
                 $count = $oldperiod<10?'0'.$oldperiod:$oldperiod;
-                $count++;
                 $period_id = $period_id.'-'.$count;
             }
             // dump($period_id);die;
@@ -992,7 +993,7 @@ class PlanService extends BaseService
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
 
-                $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+                // $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
 
                 Db::commit();
@@ -1175,7 +1176,8 @@ class PlanService extends BaseService
             $last['driver_name'] = $Plan['driver_name'];
             // $last['start_periodic'] = 1;
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
-            $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条任务信息
+            $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
+            $newplan = Plan::where('driver_name',$Plan['driver_name'])->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
             // dump($param['status']);
             
             if (isset($param['mileage'])) {
@@ -1227,6 +1229,7 @@ class PlanService extends BaseService
                     $escort_name = Info::where('id',$Plan['info_id'])->find();
                     //输入的车头是否存在于人员车辆匹配中
                     $exit_escort_name = Info::where('escort_name',$param['escort_name'])->find();
+
                     if($escort_name['escort_name'] != $param['escort_name'] && $exit_escort_name){
                         //将原有$param['escort_name']的info信息置为空
                         Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
@@ -1266,7 +1269,11 @@ class PlanService extends BaseService
                     
                 } else if ($param['status'] == 0 && $Plan['status'] == 8) {
                     $param['driver_status'] = 4;
-                    if($lastplan !== null){//如果下一条数据存在且不是新周期
+                    Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['status'=>2]);
+                    if($lastplan !== null){//如果下一条数据存在
+                        if($lastplan['start_periodic'] == 1){
+                            Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
+                        }
                         Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
@@ -1275,7 +1282,11 @@ class PlanService extends BaseService
                     }
                 }  else if ($param['status'] == 0 && $Plan['status'] == 9) {
                     $param['driver_status'] = 3;
-                    if($lastplan !== null){//如果下一条数据存在且不是新周期
+                    Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['status'=>2]);
+                    if($lastplan !== null){//如果下一条数据存在
+                        if($lastplan['start_periodic'] == 1){
+                            Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
+                        }
                         Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
@@ -1285,11 +1296,14 @@ class PlanService extends BaseService
                 } else if ($param['status'] == 0) {
                     $param['driver_status'] = 2;
                     $test = Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->find();
-                    // dump($Plan['period_id']);die;
+                    // dump($lastplan['period_id']);die;
                     // dump($test);die;
                     Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['status'=>2]);
                     // dump($lastplan);die;
-                    if($lastplan !== null){//如果下一条数据存在且不是新周期
+                    if($lastplan !== null){//如果下一条数据存在
+                        if($lastplan['start_periodic'] == 1){
+                            Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
+                        }
                         Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
@@ -1408,7 +1422,7 @@ class PlanService extends BaseService
     function SDKsendSms($phone, $drivername, $loadfactory, $unloadfactory) {
         try {
             
-            // echo Env::get('MSGSDK.TENCENT_SMS_APPID');die;
+            // echo Env::get('MSGSDK.TENCENT_SMS_APPKEY');die;
             $APPID = Env::get('MSGSDK.TENCENT_SMS_APPID');
             $APPKEY = Env::get('MSGSDK.TENCENT_SMS_APPKEY');
             $cred = new Credential($APPID, $APPKEY);
@@ -1436,6 +1450,7 @@ class PlanService extends BaseService
             $req->fromJsonString(json_encode($params));
             // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
             $resp = $client->SendSms($req);
+            
             return $resp->toJsonString();
             // 输出json格式的字符串回包
             print_r($resp->toJsonString());

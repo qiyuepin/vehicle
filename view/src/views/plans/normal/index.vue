@@ -100,6 +100,7 @@
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
                 <el-button  v-else-if="scope.row.status === 8"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 异常</el-button>
+                <el-button  v-else-if="scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 作废</el-button>
                 <el-button  v-else size="mini" @click="handleDetail(scope.row)">待接单</el-button>
               </template>
           </el-table-column>

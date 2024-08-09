@@ -787,7 +787,8 @@ class InfoService extends BaseService
                     Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
                 }
                 // dump(Escort::where('id',$param['escort_id'])->value('escort_name'));die;
-                $param['escort_name'] = Escort::where('id',$param['escort_id'])->value('username');
+                $param['escort_name'] = Escort::where('id',$param['escort_id'])->value('name');
+                // dump($param['escort_id']);die;
             }
             // dump($param);die;
             if (isset($param['driver_id'])){
