@@ -32,11 +32,11 @@
               style="width: 100%"
               v-loading="loading"
               @selection-change="handleSelectionChange">
-          <el-table-column
+          <!-- <el-table-column
                   type="selection"
                   width="40"
                   :selectable="isSelected">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
                   prop="id"
                   label="ID"
@@ -110,7 +110,7 @@
               prop="period_id_driver"
               label="费用周期"
               align="center"
-              width="220">
+              width="230">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary"  plain  @click="costlist(scope.row)">{{ scope.row.period_id_driver }}</el-button>
 
@@ -176,14 +176,23 @@
                   <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
               </template>
           </el-table-column>
+          <el-table-column
+                  prop="status"
+                  label="操作"
+                  align="center"
+                  width="200">
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary" v-if="scope.row.status!=2"  @click="handleDelete([scope.row.id])">结束周期</el-button>
+              </template>
+          </el-table-column>
           <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
           <el-table-column
                   fixed="right"
                   label=""
                   align="center"
-                  min-width="150">
+                  width="150">
               <template slot-scope="scope">
-                  <!-- <el-button size="mini" type="primary" v-permission="'admin.cost.editcost'"  @click="handleEdit(scope.row)">上传费用</el-button> -->
+                  
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                   </el-tooltip>
@@ -417,16 +426,16 @@ methods: {
   },
   //删除
   handleDelete(ids){
-    this.$confirm('您确定要删除该用户吗?', '温馨提示', {
+    this.$confirm('您确定要结束该周期吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delcost({ ids: ids }).then(response => {
+      delcost({ ids: ids, type:'finish' }).then(response => {
         this.getcost()
         this.$message({
           type: 'success',
-          message: '删除成功!'
+          message: '编辑成功!'
         });
       })
     }).catch(() => {

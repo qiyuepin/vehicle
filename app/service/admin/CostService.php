@@ -287,12 +287,22 @@ $data = $newData;
      */
     public function delcost($param=[]){
         try{
-            //删除广告
-            $res = Cost::whereIn('id',$param['ids'])->delete();
-            if(!$res){
-                throw new \Exception('删除广告失败');
+            
+            if($param['type'] == 'delete'){
+                $res = Cost::whereIn('id',$param['ids'])->delete();
+                if(!$res){
+                    throw new \Exception('删除失败');
+                }
+                return $this->success([],'删除成功');
+            }elseif($param['type'] == 'finish'){
+                $res = Db::name('admin_carplan_period')->whereIn('id',$param['ids'])->update(['status'=>2]);
+                // dump($res);die;
+                if(!$res){
+                    throw new \Exception('修改失败');
+                }
+                return $this->success([],'修改成功');
             }
-            return $this->success([],'删除成功');
+            
         }catch (\Exception $exception){
             $this->recordLog($exception);
             return $this->error();

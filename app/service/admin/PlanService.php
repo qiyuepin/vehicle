@@ -250,6 +250,10 @@ class PlanService extends BaseService
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1){
+                $param['driver_status'] = 1;
+                Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
+            }
             else if($Plan){
                 $param['driver_status'] = 0;
             }
@@ -501,6 +505,10 @@ class PlanService extends BaseService
             // dump($currentYear);
             // dump($currentMonth);
             if($Plan && in_array($Plan['status'], [5, 8, 9])){
+                $param['driver_status'] = 1;
+                Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
+            }
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
@@ -993,7 +1001,7 @@ class PlanService extends BaseService
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
 
-                // $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+                $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
 
                 Db::commit();
@@ -1227,17 +1235,19 @@ class PlanService extends BaseService
                 if (isset($param['escort_name']) && $param['status'] == 1){
                     
                     $escort_name = Info::where('id',$Plan['info_id'])->find();
+                    // dump($escort_name);
                     //输入的车头是否存在于人员车辆匹配中
                     $exit_escort_name = Info::where('escort_name',$param['escort_name'])->find();
 
-                    if($escort_name['escort_name'] != $param['escort_name'] && $exit_escort_name){
+                    if(($escort_name['escort_name'] != $param['escort_name']) && $exit_escort_name){
+                        // dump($exit_escort_name);
                         //将原有$param['escort_name']的info信息置为空
                         Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
                     }
-                    // dump($exit_escort_name['escort_id']);die;
+                    // dump($Plan['info_id']);die;
                     Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$exit_escort_name['escort_id']]);
                 }
-                // dump($head_num);
+                // dump($param);
                 // die;
                 // dump($Plan['status']);die;
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');

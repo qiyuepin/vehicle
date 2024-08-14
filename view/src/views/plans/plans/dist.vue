@@ -53,10 +53,13 @@
                           <el-input v-model="formData.head_num" clearable placeholder="请输入车头"></el-input>
                       </el-form-item> -->
                       <el-form-item label="挂车" prop="trailer_num">
-                          <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车"></el-input>
+                          <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车" disabled></el-input>
                       </el-form-item>
-                      <el-form-item label="驾驶员" prop="driver_name">
+                      <!-- <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
+                      </el-form-item> -->
+                      <el-form-item label="押运员" prop="escort_name">
+                          <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员" disabled></el-input>
                       </el-form-item>
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>

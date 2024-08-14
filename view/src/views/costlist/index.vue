@@ -476,7 +476,7 @@ methods: {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      delcost({ ids: ids }).then(response => {
+      delcost({ ids: ids, type:'delete' }).then(response => {
         this.getcostlist()
         this.$message({
           type: 'success',
