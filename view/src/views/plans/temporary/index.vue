@@ -77,13 +77,13 @@
                 <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
                 <el-button  v-else-if="scope.row.driver_status === 3"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
                 <el-button  v-else-if="scope.row.driver_status === 1 && scope.row.status === null"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
-                <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>
-                <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>
+
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
                 <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
                 <el-button  v-else-if="scope.row.status === 8"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 异常</el-button>
+                <el-button  v-else-if="scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 作废</el-button>
                 <el-button  v-else size="mini" @click="handleDetail(scope.row)">待接单</el-button>
                 <!-- <span style="color: #67C23A;" v-if="scope.row.status === 0" >回库</span>
                 <span style="color: #409EFF;" v-else-if="scope.row.status === 1" >在途</span>
@@ -314,6 +314,7 @@ methods: {
       return {
         id: item.id,
         "状态": this.status(item.status,item.driver_status),
+        "车头": item.head_num,
         "挂车": item.trailer_num,
         "驾驶员": item.driver_name,
         "押运员": item.escort_name,
@@ -336,6 +337,12 @@ methods: {
     if(driver_status == 2){
       return "已完成";
     }
+    else if(driver_status == 3){
+      return "已作废";
+    }
+    else if(driver_status == 1 && statusnum == null){
+      return "进行中";
+    }
     else if(statusnum == 0){
       return "回库";
     }
@@ -353,6 +360,12 @@ methods: {
     }
     else if(statusnum == 5){
       return "卸货完成";
+    }
+    else if(statusnum == 8){
+      return "异常";
+    }
+    else if(statusnum == 9){
+      return "作废";
     }
     else{
       return "待接单";

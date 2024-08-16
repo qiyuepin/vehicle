@@ -687,8 +687,10 @@ class InfoService extends BaseService
         // dump($param);
         try{
             $info = Info::where('id',$param['id'])->find();
-            
-        
+            $driver = Admin::where('id',$info['driver_id'])->value('status');
+            if($driver == 1){
+                $info['driver_name']='';
+            }
    
             if(empty($info)){
                 return $this->error('信息不存在');
@@ -842,8 +844,8 @@ class InfoService extends BaseService
         $period_id = null;
         try{
             
-            $data['driver'] = Admin::where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
-            $driver = Admin::where(['type' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
+            $data['driver'] = Admin::where(['type' => 2,'status' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
+            $driver = Admin::where(['type' => 2,'status' => 2])->field('id,username,status,type,driver_status')->select()->toArray();
             $trailer = [];
             if(isset($param['trailer']) && $param['trailer']){
                 $trailer['trailer_status'] = $param['trailer'];

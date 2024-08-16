@@ -161,7 +161,7 @@ class PlanService extends BaseService
 
             }
             if(isset($param['type']) && $param['type'] == "excel"){
-                $data = Plan::where($where)->order(['plan_order'=>'desc'])->select()->toArray();
+                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
             }
             else{
                 
@@ -436,10 +436,10 @@ class PlanService extends BaseService
 
             }
             if(isset($param['type']) && $param['type'] == "excel"){
-                $data = Plan::where($where)->order(['plan_order'=>'desc'])->select()->toArray();
+                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
             }
             else{
-                $data = Plan::where($where)->order(['plan_order'=>'desc'])
+                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
             }
             // dump($param);die;
@@ -938,15 +938,15 @@ class PlanService extends BaseService
             $plans['head_num'] = $param['head_num'];
             $plans['escort_name'] = $param['escort_name'];
             $plans['plans_id'] = $param['id'];
-            $plans['info_id'] = $param['info_id'];
+            $plans['info_id'] = isset($param['info_id'])?$param['info_id']:'';
             $plans['trailer_status'] = $periodPlan['trailer_status'];
             $phone = Admin::where('username',$param['driver_name'])->value('phone');
-            // dump($param);
+            
             // dump($phone);
             $userid = $this->getValue($Authorization);
             // $initiator = Admin::where('id',$userid)->value('username');
             $plans['dispatcher'] = Admin::where('id',$userid)->value('username');
-    
+           
             $period['period_id'] = $plans['period_id'];
             $period_id = $plans['period_id']?$plans['period_id'].'-'.$param['driver_name']:null;
             if($period_id != null){
@@ -989,7 +989,7 @@ class PlanService extends BaseService
                 $id = $res->id;
                 $cid = Admin::where('username',$param['driver_name'])->value('user_cid');
                 if($res->plan_type == 0){
-                    $plantype = "常规任务";
+                    $plantype = "运输任务";
                     $planmsg = "从".$res->load_factory."出发到".$res->unload_factory;
                 }
                 else if($res->plan_type == 1){
@@ -1000,7 +1000,7 @@ class PlanService extends BaseService
                     $plantype = "卸货任务";
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
-
+                // dump($plans);die;
                 $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
 
@@ -1457,10 +1457,11 @@ class PlanService extends BaseService
                 "TemplateId" => "2148739",
                 "TemplateParamSet" => array( $drivername, $loadfactory, $unloadfactory )
             );
+            dump($params);
             $req->fromJsonString(json_encode($params));
             // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
             $resp = $client->SendSms($req);
-            
+            dump($resp->toJsonString());die;
             return $resp->toJsonString();
             // 输出json格式的字符串回包
             print_r($resp->toJsonString());

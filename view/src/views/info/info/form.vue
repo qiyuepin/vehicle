@@ -173,8 +173,9 @@ methods: {
         if(response !== undefined){
             this.title = '编辑'
             this.formData.id = response.id
-            this.formData.driver_id = response.driver_id
-            this.formData.escort_id = response.escort_id
+            this.formData.driver_id = response.driver_name?response.driver_id:''
+
+            this.formData.escort_id = response.escort_name?response.escort_id:''
             this.formData.head_id = response.head_id
             this.formData.trailer_id = response.trailer_id
         }

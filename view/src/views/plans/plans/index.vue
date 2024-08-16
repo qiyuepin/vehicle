@@ -492,7 +492,7 @@ methods: {
         this.tableData[index]['status'] = 1 - status
         this.$message({
           type: 'success',
-          message: handlerMsg + '成功!'
+          message: '成功!'
         });
       })
     }).catch(() => {

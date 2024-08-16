@@ -353,6 +353,7 @@ methods: {
         "状态": this.status(item.status,item.driver_status),
         "始发任务": item.start_periodic==1?"是":"否",
         "任务类别": item.fixed==1?"固定":"非固定",
+        "车头": item.head_num,
         "挂车": item.trailer_num,
         "驾驶员": item.driver_name,
         "押运员": item.escort_name,
@@ -368,11 +369,17 @@ methods: {
       };
     });
 
-    exportExcel(data,"常规任务");
+    exportExcel(data,"运输任务");
   },
   status(statusnum,driver_status) {
     if(driver_status == 2){
       return "已完成";
+    }
+    else if(driver_status == 3){
+      return "已作废";
+    }
+    else if(driver_status == 1 && statusnum == null){
+      return "进行中";
     }
     else if(statusnum == 0){
       return "回库";
@@ -391,6 +398,12 @@ methods: {
     }
     else if(statusnum == 5){
       return "卸货完成";
+    }
+    else if(statusnum == 8){
+      return "异常";
+    }
+    else if(statusnum == 9){
+      return "作废";
     }
     else{
       return "待接单";
