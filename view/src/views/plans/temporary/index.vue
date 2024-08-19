@@ -15,6 +15,7 @@
                   <el-option label="卸货" value="4"></el-option>
                   <el-option label="卸货完成" value="5"></el-option>
                   <el-option label="已作废" value="7"></el-option>
+                  <el-option label="已完成" value="10"></el-option>
                   <el-option label="异常" value="4"></el-option>
               </el-select>
           </el-form-item>
@@ -74,8 +75,9 @@
                 <el-tag type="info" v-else-if="scope.row.status === 4">卸货</el-tag>
                 <el-tag type="info" v-else-if="scope.row.status === 5">在途</el-tag>
                 <el-tag type="info" v-else >空闲</el-tag> -->
-                <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
-                <el-button  v-else-if="scope.row.driver_status === 3 || scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-if="scope.row.driver_status === 3 || scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 4"  type="info"  size="mini" plain @click="handleDetail(scope.row)">异常</el-button>
                 <el-button  v-else-if="scope.row.driver_status === 1 && scope.row.status === null"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
 
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
@@ -244,7 +246,7 @@
 
 <script>
 
-import { gettemporary, delnormal, gettemporaryinfo, getnormalinfo } from '@/api/plan.js'
+import { gettemporary, delnormal, gettemporaryinfo, deltemporary } from '@/api/plan.js'
 import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
 import detail from './detail.vue'
@@ -334,7 +336,10 @@ methods: {
 // 【YB分类整理】问题描述20240726-2 No.65 顺序调整 by baolei end
   },
   status(statusnum,driver_status) {
-    if(driver_status == 2){
+    if(statusnum == 9){
+      return "已作废";
+    }
+    else if(driver_status == 2){
       return "已完成";
     }
     else if(driver_status == 3){
@@ -366,9 +371,6 @@ methods: {
     }
     else if(statusnum == 8){
       return "异常";
-    }
-    else if(statusnum == 9){
-      return "作废";
     }
     else{
       return "待接单";
@@ -481,14 +483,16 @@ methods: {
   },
   //启用禁用操作
   handleStatus(index, id, status) {
-    let handlerMsg = status === 1 ? '启用' : '禁用';
-    this.$confirm('您确定要' + handlerMsg + '该用户吗?', '温馨提示', {
+    let handlerMsg = status === 3 ? '已终止' : '终止';
+    this.$confirm('您确定要' + handlerMsg + '该任务吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      changeStatus({ id: id, status: 3 - status }).then(response => {
+      console.log(555)
+      deltemporary({ id: id, status: 3 - status }).then(response => {
         this.tableData[index]['status'] = 3 - status
+          this.handleReload()
         this.$message({
           type: 'success',
           message: handlerMsg + '成功!'
@@ -501,6 +505,27 @@ methods: {
       });
     })
   }
+  // handleStatus(index, id, status) {
+  //   let handlerMsg = status === 1 ? '作废' : '禁用';
+  //   this.$confirm('您确定要' + handlerMsg + '该用户吗?', '温馨提示', {
+  //     confirmButtonText: '确定',
+  //     cancelButtonText: '取消',
+  //     type: 'warning'
+  //   }).then(() => {
+  //     changeStatus({ id: id, status: 3 - status }).then(response => {
+  //       this.tableData[index]['status'] = 3 - status
+  //       this.$message({
+  //         type: 'success',
+  //         message: handlerMsg + '成功!'
+  //       });
+  //     })
+  //   }).catch(() => {
+  //     this.$message({
+  //       type: 'info',
+  //       message: '已取消操作'
+  //     });
+  //   })
+  // }
 },
 }
 </script>

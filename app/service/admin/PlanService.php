@@ -209,6 +209,7 @@ class PlanService extends BaseService
                     // $where['status'] = null;
                     // $where['driver_status'] = 3;
                     // $whereOr['status'] = 9;
+                    // $where[] = ['status', '=', null];
                     $where[] = ['driver_status', '=', 3];
                     $whereOr[] = ['status', '=', 9];
                 }elseif($param['status'] == 4){
@@ -218,8 +219,13 @@ class PlanService extends BaseService
                     // $whereOr['driver_status'] = 4;
                     $where[] = ['status', '=', 8];
                     $where[] = ['driver_status', '=', 1];
-                    $whereOr[] = ['status', '=', 8];
-                    $whereOr[] = ['driver_status', '=', 1];
+                    $whereOr[] = ['status', '=', 0];
+                    $whereOr[] = ['driver_status', '=', 4];
+                }elseif($param['status'] == 10){
+                    $where[] = ['driver_status', '=', 2];
+                    $whereOr[] = ['driver_status', '=', 2];
+                    // $where['status'] = $param['status'];
+                    // $whereOr['status'] = $param['status'];
                 }elseif($param['status'] < 6){
                     $where[] = ['status', '=', $param['status']];
                     $whereOr[] = ['status', '=', $param['status']];
@@ -583,8 +589,13 @@ class PlanService extends BaseService
                     // $whereOr['driver_status'] = 4;
                     $where[] = ['status', '=', 8];
                     $where[] = ['driver_status', '=', 1];
-                    $whereOr[] = ['status', '=', 8];
-                    $whereOr[] = ['driver_status', '=', 1];
+                    $whereOr[] = ['status', '=', 0];
+                    $whereOr[] = ['driver_status', '=', 4];
+                }elseif($param['status'] == 10){
+                    $where[] = ['driver_status', '=', 2];
+                    $whereOr[] = ['driver_status', '=', 2];
+                    // $where['status'] = $param['status'];
+                    // $whereOr['status'] = $param['status'];
                 }elseif($param['status'] < 6){
                     $where[] = ['status', '=', $param['status']];
                     $whereOr[] = ['status', '=', $param['status']];
@@ -593,7 +604,6 @@ class PlanService extends BaseService
                 }
             }
             if(isset($param['type']) && $param['type'] == "excel"){
-                // $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
                 $data = Plan::where(function ($query) use ($where) {
                     foreach ($where as $condition) {
                         $query->where($condition[0], $condition[1], $condition[2]);

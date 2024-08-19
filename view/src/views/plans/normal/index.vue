@@ -15,6 +15,7 @@
                   <el-option label="卸货" value="4"></el-option>
                   <el-option label="卸货完成" value="5"></el-option>
                   <el-option label="已作废" value="7"></el-option>
+                  <el-option label="已完成" value="10"></el-option>
                   <el-option label="异常" value="4"></el-option>
               </el-select>
           </el-form-item>
@@ -88,8 +89,9 @@
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
                 <span style="color: #F56C6C;"  @click="handleDetail(scope.row)" v-else >待接单</span> -->
-                <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
-                <el-button  v-else-if="scope.row.driver_status === 3 || scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-if="scope.row.driver_status === 3 || scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
+                
                 <el-button  v-else-if="scope.row.driver_status === 4"  type="info"  size="mini" plain @click="handleDetail(scope.row)">异常</el-button>
                 <el-button  v-else-if="(scope.row.driver_status === 1 && scope.row.status === null) || scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
                   <!-- 【YB分类整理】问题描述20240726 No.53 顺序调整 by baolei start         -->
