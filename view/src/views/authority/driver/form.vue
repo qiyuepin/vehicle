@@ -193,7 +193,7 @@ export default {
       formData: {
         id: 0,
         username: '',
-        group: [],
+        group: [3],
         driver_status:0,
         phone: '',
         phone2: '',
@@ -257,7 +257,7 @@ export default {
       this.formData.avatar = ''
       this.formData.password = ''
       this.formData.autograph = ''
-      this.formData.group = []
+      this.formData.group = [3]
       this.formData.id_card_num = ''
       this.formData.dirver_card_num = ''
       this.formData.cert_card_num = ''

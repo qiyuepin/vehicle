@@ -137,36 +137,135 @@ class PlanService extends BaseService
     public function getnormal($param=[]){
    
         try{
-            $where['plan_type'] = 0;
+            // $where['plan_type'] = 0;
+            // $whereOr['plan_type'] = 0;
+            $where[] = ['plan_type', '=', 0];
+            $whereOr[] = ['plan_type', '=', 0];
             if(isset($param['keywords'])&&$param['keywords']){
                 $where[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
+                $whereOr[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
+   
             if(isset($param['status']) && $param['status'] != ''){
                 
+                // if($param['status'] == 'null'){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 0;
+                // }elseif($param['status'] == 6){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 1;
+                // }elseif($param['status'] == 7){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 3;
+                // }elseif($param['status'] == 8){
+                //     $where['status'] = 8;
+                //     $where['driver_status'] = 4;
+                // }elseif($param['status'] < 6){
+                //     $where['status'] = $param['status'];
+                // }
+                // if($param['status'] == 'null'){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 0;
+                //     $whereOr['status'] = null;
+                //     $whereOr['driver_status'] = 0;
+                // }elseif($param['status'] == 6){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 1;
+                //     $whereOr['status'] = null;
+                //     $whereOr['driver_status'] = 1;
+                // }elseif($param['status'] == 7){
+                //     // $where['status'] = null;
+                //     $where['driver_status'] = 3;
+                //     $whereOr['status'] = 9;
+                //     // $whereOr['driver_status'] = 3;
+                // }elseif($param['status'] == 4){
+                //     $where['status'] = 8;
+                //     $where['driver_status'] = 1;
+                //     $whereOr['status'] = 0;
+                //     $whereOr['driver_status'] = 4;
+                // }elseif($param['status'] < 6){
+                //     $where['status'] = $param['status'];
+                //     $whereOr['status'] = $param['status'];
+                // }
                 if($param['status'] == 'null'){
-                    $where['status'] = null;
-                    $where['driver_status'] = 0;
+                    // $where['status'] = null;
+                    // $where['driver_status'] = 0;
+                    // $whereOr['status'] = null;
+                    // $whereOr['driver_status'] = 0;
+                    $where[] = ['status', '=', null];
+                    $where[] = ['driver_status', '=', 0];
+                    $whereOr[] = ['status', '=', null];
+                    $whereOr[] = ['driver_status', '=', 0];
                 }elseif($param['status'] == 6){
-                    $where['status'] = null;
-                    $where['driver_status'] = 1;
+                    // $where['status'] = null;
+                    // $where['driver_status'] = 1;
+                    // $whereOr['status'] = null;
+                    // $whereOr['driver_status'] = 1;
+                    $where[] = ['status', '=', null];
+                    $where[] = ['driver_status', '=', 1];
+                    $whereOr[] = ['status', '=', null];
+                    $whereOr[] = ['driver_status', '=', 1];
                 }elseif($param['status'] == 7){
-                    $where['status'] = null;
-                    $where['driver_status'] = 3;
-                }elseif($param['status'] == 8){
-                    $where['status'] = 8;
-                    $where['driver_status'] = 4;
+                    // $where['status'] = null;
+                    // $where['driver_status'] = 3;
+                    // $whereOr['status'] = 9;
+                    $where[] = ['driver_status', '=', 3];
+                    $whereOr[] = ['status', '=', 9];
+                }elseif($param['status'] == 4){
+                    // $where['status'] = 8;
+                    // $where['driver_status'] = 1;
+                    // $whereOr['status'] = 0;
+                    // $whereOr['driver_status'] = 4;
+                    $where[] = ['status', '=', 8];
+                    $where[] = ['driver_status', '=', 1];
+                    $whereOr[] = ['status', '=', 8];
+                    $whereOr[] = ['driver_status', '=', 1];
                 }elseif($param['status'] < 6){
-                    $where['status'] = $param['status'];
+                    $where[] = ['status', '=', $param['status']];
+                    $whereOr[] = ['status', '=', $param['status']];
+                    // $where['status'] = $param['status'];
+                    // $whereOr['status'] = $param['status'];
                 }
 
             }
             if(isset($param['type']) && $param['type'] == "excel"){
-                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
+                $data = Plan::where(function ($query) use ($where) {
+                    foreach ($where as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->whereOr(function ($query) use ($whereOr) {
+                    foreach ($whereOr as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->order(['driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])
+                ->select()->toArray();
             }
             else{
-                
-                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])
+                // dump($where);
+                // dump($whereOr);
+                // $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])
+                //     ->fetchsql()->select();dump($data);die;
+                $data = Plan::where(function ($query) use ($where) {
+                    foreach ($where as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->whereOr(function ($query) use ($whereOr) {
+                    foreach ($whereOr as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->order(['driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                // ->fetchsql()
+                // ->select();
+                // dump($data);die;
+                // $data = Plan::where($where)->whereOr($whereOr)->order(['driver_status'=>'asc','plan_order'=>'desc'])
+                //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                
+                
             }
             // $data = Plan::where($where)->order(['plan_order'=>'desc','id'=>'desc'])
             //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
@@ -287,7 +386,7 @@ class PlanService extends BaseService
                 $id = $res->id;
                 $cid = Admin::where('username',$param['driver_name'])->value('user_cid');
                 if($res->plan_type == 0){
-                    $plantype = "常规任务";
+                    $plantype = "运输任务";
                     $planmsg = "从".$res->load_factory."出发到".$res->unload_factory;
                 }
                 else if($res->plan_type == 1){
@@ -298,6 +397,7 @@ class PlanService extends BaseService
                     $plantype = "卸货任务";
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
+                // dump($cid);dump($plantype);die;
                 $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory']);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
                 Db::commit();
@@ -412,38 +512,120 @@ class PlanService extends BaseService
         
         try{
             // $where = [];
-            $where['plan_type'] = array('1','2');
+            // $where['plan_type'] = array('1','2');
+            // $whereOr['plan_type'] = array('1','2');
+            // $goods = array(1,2);
+            // $where['plan_type']=array("in",$goods);
+            // $whereOr['plan_type'] = array("in",$goods);
+            // $where = [
+            //     ['plan_type', 'IN', [1, 2]]
+            // ];
+            
+            // $whereOr = [
+            //     ['plan_type', 'IN', [1, 2]]
+            // ];
+            // $where = [];
+            // $whereOr = [];
+            $where[] = ['plan_type','in',[1,2]];
+            $whereOr[] = ['plan_type','in',[1,2]];
+            // dump($where);
             if(isset($param['keywords'])&&$param['keywords']){
                 $where[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
+                $whereOr[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
+            // dump($where);die;
             if(isset($param['status']) && $param['status'] != ''){
                 
+                // if($param['status'] == 'null'){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 0;
+                // }elseif($param['status'] == 6){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 1;
+                // }elseif($param['status'] == 7){
+                //     $where['status'] = null;
+                //     $where['driver_status'] = 3;
+                // }elseif($param['status'] == 8){
+                //     $where['status'] = 8;
+                //     $where['driver_status'] = 4;
+                // }elseif($param['status'] < 6){
+                //     $where['status'] = $param['status'];
+                // }
+                // dump($where);die;
                 if($param['status'] == 'null'){
-                    $where['status'] = null;
-                    $where['driver_status'] = 0;
+                    // $where['status'] = null;
+                    // $where['driver_status'] = 0;
+                    // $whereOr['status'] = null;
+                    // $whereOr['driver_status'] = 0;
+                    $where[] = ['status', '=', null];
+                    $where[] = ['driver_status', '=', 0];
+                    $whereOr[] = ['status', '=', null];
+                    $whereOr[] = ['driver_status', '=', 0];
                 }elseif($param['status'] == 6){
-                    $where['status'] = null;
-                    $where['driver_status'] = 1;
+                    // $where['status'] = null;
+                    // $where['driver_status'] = 1;
+                    // $whereOr['status'] = null;
+                    // $whereOr['driver_status'] = 1;
+                    $where[] = ['status', '=', null];
+                    $where[] = ['driver_status', '=', 1];
+                    $whereOr[] = ['status', '=', null];
+                    $whereOr[] = ['driver_status', '=', 1];
                 }elseif($param['status'] == 7){
-                    $where['status'] = null;
-                    $where['driver_status'] = 3;
-                }elseif($param['status'] == 8){
-                    $where['status'] = 8;
-                    $where['driver_status'] = 4;
+                    // $where['status'] = null;
+                    // $where['driver_status'] = 3;
+                    // $whereOr['status'] = 9;
+                    $where[] = ['driver_status', '=', 3];
+                    $whereOr[] = ['status', '=', 9];
+                }elseif($param['status'] == 4){
+                    // $where['status'] = 8;
+                    // $where['driver_status'] = 1;
+                    // $whereOr['status'] = 0;
+                    // $whereOr['driver_status'] = 4;
+                    $where[] = ['status', '=', 8];
+                    $where[] = ['driver_status', '=', 1];
+                    $whereOr[] = ['status', '=', 8];
+                    $whereOr[] = ['driver_status', '=', 1];
                 }elseif($param['status'] < 6){
-                    $where['status'] = $param['status'];
+                    $where[] = ['status', '=', $param['status']];
+                    $whereOr[] = ['status', '=', $param['status']];
+                    // $where['status'] = $param['status'];
+                    // $whereOr['status'] = $param['status'];
                 }
-
             }
             if(isset($param['type']) && $param['type'] == "excel"){
-                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
+                // $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
+                $data = Plan::where(function ($query) use ($where) {
+                    foreach ($where as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->whereOr(function ($query) use ($whereOr) {
+                    foreach ($whereOr as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->order(['driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])
+                ->select()->toArray();
             }
             else{
-                $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])
+               
+                // dump($where);
+                $data = Plan::where(function ($query) use ($where) {
+                    foreach ($where as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->whereOr(function ($query) use ($whereOr) {
+                    foreach ($whereOr as $condition) {
+                        $query->where($condition[0], $condition[1], $condition[2]);
+                    }
+                })
+                ->order(['driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                // dump($data);die;
             }
             // dump($param);die;
-            
+            // dump($whereOr);die;
                 
             return $this->success($data);
         }catch (\Exception $exception){
@@ -892,19 +1074,20 @@ class PlanService extends BaseService
             if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
                 return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
             }
-            // dump($trailer);die;
+            
             if(!empty($periodPlan)){
                 $plans['escort_name'] = $periodPlan['escort_name'];
                 $plans['head_num'] = $periodPlan['head_num'];
             }
             $exitPlan = Plan::where($where)->where('driver_status',1)->find();
+            // dump($exitPlan);die;
             if(!isset($exitPlan)){//如果上一个任务已完成，则现在的任务直接变为进行中
                 $plans['driver_status'] = 1;
                 // $param['status'] = 1;
                 // dump('555');
             }
             else if(isset($Plan) && $exitPlan['driver_status'] < 2){
-                if($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 5){//如果完成，更新下一个任务状态为进行中
+                if($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 5 && $exitPlan['start_periodic'] == 0){//如果完成，更新下一个任务状态为进行中
                     $plans['driver_status'] = 1;
                     // Plan::where(['id'=>$Plan['id']])->update(['driver_status => 2']);
                     // Plan::update(['driver_status => 2'],['id'=>$param['id']]);
@@ -1000,13 +1183,15 @@ class PlanService extends BaseService
                     $plantype = "卸货任务";
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
+                // dump($cid);dump($plantype);die;
                 // dump($plans);die;
-                $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+                // $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
 
                 Db::commit();
                 if($r['code'] == 0){
-                    return $this->success(['msg' => '分配1成功']);
+                    return $this->success(['msg' => '分配成功']);
                 }
             }
             // die;
@@ -1177,7 +1362,7 @@ class PlanService extends BaseService
             if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $Plan['product_name']){
                 return $this->error('货品名称与挂车现有货品不同，请联系调度员调整');
             }
-
+            //  dump($param);
             // $last['period_id'] = $Plan['period_id'];
             // $last['status'] = 0;
             $last['driver_status'] = 0;
@@ -1187,14 +1372,14 @@ class PlanService extends BaseService
             $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
             $newplan = Plan::where('driver_name',$Plan['driver_name'])->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
             // dump($param['status']);
-            
+            // dump($param);
             if (isset($param['mileage'])) {
                 Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['start_mile'=>$param['mileage']]);
             }
-            if (isset($param['end_mile'])) {
-                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['back_mileage'=>$param['end_mile']]);
+            if (isset($param['back_mileage'])) {
+                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['end_mile'=>$param['back_mileage']]);
             }
-            // dump($param);die;
+
             if (isset($param['status'])) {
                 if($lastplan['plan_type'] == 0){
                     $plantype = "常规任务";
@@ -1330,6 +1515,8 @@ class PlanService extends BaseService
                     // 【YB分类整理】问题描述20240726-2 68 by baolei start
                     /*$param['status'] = 5;*/
                     // 【YB分类整理】问题描述20240726-2 68 by baolei end
+
+                    
                     if ($lastplan != null && $lastplan['start_periodic'] == 0) {
                         $param['driver_status'] = 2;
                         // Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
@@ -1346,8 +1533,9 @@ class PlanService extends BaseService
                 }
                 // 【YB分类整理】问题描述20240726-2 68 by baolei end
                 else if ($param['status'] == 3 && $Plan['plan_type'] == 0) {
-                    // dump($Plan);die;
+                    
                     $quantity = Db::name('admin_carplans')->where('id',$Plan['plans_id'])->find();
+                    
                     if($quantity){
                         $product_quantity = $quantity['product_quantity']-30>0?$quantity['product_quantity']-30:0;
                         Db::name('admin_carplans')->where('id',$Plan['plans_id'])->update(['product_quantity'=> $product_quantity]);
@@ -1376,14 +1564,17 @@ class PlanService extends BaseService
                 $trailer['trailer_plate'] = $Plan['trailer_num'];
                 $trailerexit = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->find();
                 // dump($trailerexit['product_quantity']);
-                // dump($Plan);
-                if($trailerexit['product_name'] == $Plan['product_name']){
-                    $load_product_quantity = $trailerexit['product_quantity'] + $Plan['load_product_quantity'];
+                // dump($param);die;
+                if(isset($param['load_product_quantity']) && ($trailerexit['product_name'] == $Plan['product_name'])){
+                    $load_product_quantity = $trailerexit['product_quantity'] + $param['load_product_quantity'];
+                }elseif(isset($param['load_product_quantity'])){
+                    $load_product_quantity = $param['load_product_quantity'];
                 }else{
-                    $load_product_quantity = $Plan['load_product_quantity'];
+                    // $load_product_quantity = $Plan['load_product_quantity'];
                 }
-                // dump($load_product_quantity);
-//                 dump($Plan);die;
+                // dump($param);die;
+                
+
                 $trailerdata['product_name'] = $Plan['product_name'];
                 if ($param['status'] == 3) {
                     $trailerdata['trailer_status'] = 1;
@@ -1404,7 +1595,10 @@ class PlanService extends BaseService
                 } else {
                     $trailer['trailer_status'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('trailer_status');
                 }
-                           Carhead::update($head,['carhead_plate'=>$carhead_plate]);
+                // $t = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata)->fetchsql();
+                // dump('提交成功'.$trailerdata['product_quantity']);
+                // return $this->success([],'提交成功'.$load_product_quantity.'+'.$param['load_product_quantity']);
+                Carhead::update($head,['carhead_plate'=>$carhead_plate]);
                 Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata);
                 Escort::update($escort,['name'=>$escort_name]);
                 Admin::update($driver,['username'=>$Plan['driver_name']]);
@@ -1457,11 +1651,11 @@ class PlanService extends BaseService
                 "TemplateId" => "2148739",
                 "TemplateParamSet" => array( $drivername, $loadfactory, $unloadfactory )
             );
-            dump($params);
+            // dump($params);
             $req->fromJsonString(json_encode($params));
             // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
             $resp = $client->SendSms($req);
-            dump($resp->toJsonString());die;
+            // dump($resp->toJsonString());die;
             return $resp->toJsonString();
             // 输出json格式的字符串回包
             print_r($resp->toJsonString());

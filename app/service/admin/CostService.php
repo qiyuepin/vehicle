@@ -34,7 +34,7 @@ class CostService extends BaseService
         try{
             $where = [];
             if(isset($param['keywords'])&&$param['keywords']){
-                $where[] = ['driver_name|trailer_num','like','%'.$param['keywords'].'%'];
+                $where[] = ['driver_name|head_num','like','%'.$param['keywords'].'%'];
             }
             if(isset($param['status'])&&$param['status'] !=''){
                 $where[] = ['status','=',$param['status']];

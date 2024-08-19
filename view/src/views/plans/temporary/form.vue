@@ -37,6 +37,9 @@
                       <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
                       </el-form-item>
+                      <el-form-item label="费用周期" prop="period_id">
+                          <el-input v-model="formData.period_id" clearable placeholder="请输入费用周期"></el-input>
+                      </el-form-item>
                       <!-- <el-form-item label="押运员" prop="escort_name">
                           <el-input v-model="formData.escort_name" clearable placeholder="请输入押运员"></el-input>
                       </el-form-item> -->
@@ -284,12 +287,14 @@ methods: {
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
       this.formData.escort_name = selectedinfo.escort_name;
+      this.formData.period_id = selectedinfo.period_id;
     } else {
       this.formData.head_num = '';
       this.formData.trailer_id = '';
       this.formData.trailer_num = '';
       this.formData.driver_name = '';
       this.formData.escort_name = '';
+      this.formData.period_id = '';
     }
     if(this.formData.plan_type == 2){
       this.getcartrailerInfo(this.formData.trailer_id);

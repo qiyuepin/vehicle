@@ -2,7 +2,7 @@
   <div class="app-container">
       <el-form v-if="searchShow" :inline="true" :model="query" class="demo-form-inline" size="small">
           <el-form-item label="关键字">
-              <el-input v-model="query.keywords" placeholder="驾驶员|挂车号" clearable></el-input>
+              <el-input v-model="query.keywords" placeholder="驾驶员|车号" clearable></el-input>
           </el-form-item>
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
@@ -131,12 +131,7 @@
 <!--                  width="120">-->
 <!--          </el-table-column>-->
           <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
-          <el-table-column
-                  prop="driver_name"
-                  label="驾驶员"
-                  align="center"
-                  width="150">
-          </el-table-column>
+          
           <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start         -->
 <!--          <el-table-column-->
 <!--                  prop="trailer_num"-->
@@ -149,6 +144,12 @@
               label="车号"
               align="center"
               width="200">
+          </el-table-column>
+          <el-table-column
+                  prop="driver_name"
+                  label="驾驶员"
+                  align="center"
+                  width="150">
           </el-table-column>
           <!-- 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end         -->
           <!-- <el-table-column
@@ -376,10 +377,11 @@ methods: {
         "费用类别": item.type_name,
         "其他类别": item.other_type,
         "费用金额": item.cost_money,
+        "车号": item.head_num,
         "驾驶员": item.driver_name,
           // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
         // "挂车号": item.trailer_num,
-          "车号": item.head_num,
+          
           //【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
         "费用照片": item.cost_img,
         "备注": item.remark,

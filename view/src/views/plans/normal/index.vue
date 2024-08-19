@@ -8,14 +8,14 @@
               <el-select v-model="query.status" placeholder="选择状态" clearable>
                   <el-option label="待接单" value=null></el-option>
                   <el-option label="进行中" value="6"></el-option>
-                  <el-option label="回库" value='0'/>
-                  <el-option label="在途" value="1"></el-option>
+                  <!-- <el-option label="回库" value='0'/> -->
+                  <!-- <el-option label="在途" value="1"></el-option> -->
                   <el-option label="装货" value="2"></el-option>
                   <el-option label="装货完成" value="3"></el-option>
                   <el-option label="卸货" value="4"></el-option>
                   <el-option label="卸货完成" value="5"></el-option>
                   <el-option label="已作废" value="7"></el-option>
-                  <el-option label="异常" value="8"></el-option>
+                  <el-option label="异常" value="4"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item>
@@ -89,8 +89,9 @@
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
                 <span style="color: #F56C6C;"  @click="handleDetail(scope.row)" v-else >待接单</span> -->
                 <el-button  v-if="scope.row.driver_status === 2"  type="success"  size="mini" plain @click="handleDetail(scope.row)">已完成</el-button>
-                <el-button  v-else-if="scope.row.driver_status === 3"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
-                <el-button  v-else-if="scope.row.driver_status === 1 && scope.row.status === null"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 3 || scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)">已作废</el-button>
+                <el-button  v-else-if="scope.row.driver_status === 4"  type="info"  size="mini" plain @click="handleDetail(scope.row)">异常</el-button>
+                <el-button  v-else-if="(scope.row.driver_status === 1 && scope.row.status === null) || scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
                   <!-- 【YB分类整理】问题描述20240726 No.53 顺序调整 by baolei start         -->
 <!--                <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>-->
 <!--                <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>-->
@@ -100,7 +101,7 @@
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
                 <el-button  v-else-if="scope.row.status === 5"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 卸货完成</el-button>
                 <el-button  v-else-if="scope.row.status === 8"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 异常</el-button>
-                <el-button  v-else-if="scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 作废</el-button>
+                <!-- <el-button  v-else-if="scope.row.status === 9"  type="info"  size="mini" plain @click="handleDetail(scope.row)"> 作废</el-button> -->
                 <el-button  v-else size="mini" @click="handleDetail(scope.row)">待接单</el-button>
               </template>
           </el-table-column>
@@ -237,7 +238,7 @@
               <template slot-scope="scope">
                   <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
 
-                  <el-button v-if="scope.row.driver_status==3" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
+                  <el-button v-if="scope.row.driver_status === 3 || scope.row.status === 9" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
                   <el-button v-else size="mini" type="danger" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">作废</el-button>
 
 
@@ -352,7 +353,7 @@ methods: {
         id: item.id,
         "状态": this.status(item.status,item.driver_status),
         "始发任务": item.start_periodic==1?"是":"否",
-        "任务类别": item.fixed==1?"固定":"非固定",
+        "任务类别": item.fixed==1?"固定":"临时",
         "车头": item.head_num,
         "挂车": item.trailer_num,
         "驾驶员": item.driver_name,
@@ -381,12 +382,15 @@ methods: {
     else if(driver_status == 1 && statusnum == null){
       return "进行中";
     }
-    else if(statusnum == 0){
-      return "回库";
-    }
     else if(statusnum == 1){
-      return "在途";
+      return "进行中";
     }
+    // else if(statusnum == 0){
+    //   return "回库";
+    // }
+    // else if(statusnum == 1){
+    //   return "在途";
+    // }
     else if(statusnum == 2){
       return "装货";
     }

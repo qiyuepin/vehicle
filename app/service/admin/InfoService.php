@@ -189,7 +189,7 @@ class InfoService extends BaseService
             $param['inspection_time'] = $param['inspection_time']!=''?$param['inspection_time']:null;
             $param['validity_time'] = $param['validity_time']!=''?$param['validity_time']:null;
             $param['traffic_time'] = $param['traffic_time']!=''?$param['traffic_time']:null;
-            $param['regist_time'] = $param['validity_time']!=''?$param['regist_time']:null;
+            $param['regist_time'] = $param['regist_time']!=''?$param['regist_time']:null;
             $param['scrapp_time'] = $param['scrapp_time']!=''?$param['scrapp_time']:null;
             $param['type'] = 1;
     
@@ -691,7 +691,10 @@ class InfoService extends BaseService
             if($driver == 1){
                 $info['driver_name']='';
             }
-   
+            $escort = Escort::where('id',$info['escort_id'])->value('status');
+            if(!$escort){
+                $info['escort_name']='';
+            }
             if(empty($info)){
                 return $this->error('信息不存在');
             }
