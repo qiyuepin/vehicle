@@ -188,7 +188,9 @@
                     prop="product_quantity"
                     label="货品数量"
                     align="center"
-                    width="150">
+                    width="150"
+                    :formatter="formatQuantity"
+                    >
             </el-table-column>
 
             <!-- <el-table-column
@@ -429,6 +431,10 @@ export default {
     this.getcartrailer();
   },
   methods: {
+    formatQuantity(row, column, cellValue) {
+        const numberValue = parseFloat(cellValue);
+        return !isNaN(numberValue) ? numberValue.toFixed(2) : '';
+    },
     hasPermission(permission) {
       return checkPermission(permission);
     },

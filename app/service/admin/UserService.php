@@ -148,14 +148,14 @@ class UserService extends BaseService
      */
     public function saveInfo($id,$param){
         try{
+            // dump($param);die;
             $res = Admin::update([
                 'nickname' => $param['nickname'],
                 'phone' => $param['phone'],
-                'email' => $param['email'],
                 'avatar' => $param['avatar'],
                 'sign' => $param['signature']
             ],['id'=>$id]);
-            
+            // dump($res);die;
             if($res){
                 Cache::delete('adminInfo:'.$id);
                 return $this->success([],'保存成功');

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <el-col :span="8">
+      <!-- <el-col :span="8">
         <el-card class="info">
           <div class="top">
             <div class="avatar">
@@ -15,7 +15,7 @@
             <div class="left-box">
               <i class="el-icon-male" />
               <span v-text="author.gender==1?'男':author.gender==2?'女':'保密'"></span>
-            </div>
+            </div> 
             <div class="left-box">
               <i class="el-icon-magic-stick" />
               <span v-text="author.birthday"></span>
@@ -69,11 +69,11 @@
             </div>
           </div>
         </el-card>
-      </el-col>
+      </el-col> -->
       <el-col :span="16">
         <el-card class="content">
           <el-tabs value="first">
-            <el-tab-pane label="个人介绍" name="first">
+            <!-- <el-tab-pane label="个人介绍" name="first">
               <el-form  ref="authorForm" :model="author" :rules="authorRules" size="small" label-position="right"
                         label-width="90px"
                         style="width: 100%;">
@@ -156,8 +156,8 @@
                   <el-button type="primary" @click="saveAuthor">保 存</el-button>
                 </el-form-item>
               </el-form>
-            </el-tab-pane>
-            <el-tab-pane label="账号信息" name="second">
+            </el-tab-pane> -->
+            <el-tab-pane label="账号信息" name="first">
               <el-form  ref="infoForm" :model="user" :rules="infoRules" size="small" label-position="right"
                        label-width="90px"
                        style="width: 100%;">
@@ -175,14 +175,14 @@
                 <el-form-item label="手机号" prop="phone">
                   <el-input v-model="user.phone" clearable placeholder="请输入正确的手机号"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
+                <!-- <el-form-item label="邮箱" prop="email">
                   <el-input  v-model="user.email" clearable
                             placeholder="请输入正确的邮箱"></el-input>
-                </el-form-item>
-                <el-form-item label="个人签名">
+                </el-form-item> -->
+                <!-- <el-form-item label="个人签名">
                   <el-input v-model="user.signature" clearable
                             placeholder="请输入个人签名"></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="用户头像" prop="avatar">
                   <UploadImage ref="Image" v-model="user.avatar"></UploadImage>
                 </el-form-item>
@@ -215,7 +215,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane label="时间线" name="fourth">
+            <!-- <el-tab-pane label="时间线" name="fourth">
               <div class="block">
                 <el-timeline>
                   <el-timeline-item timestamp="2018/4/12" placement="top">
@@ -238,7 +238,7 @@
                   </el-timeline-item>
                 </el-timeline>
               </div>
-            </el-tab-pane>
+            </el-tab-pane> -->
           </el-tabs>
         </el-card>
       </el-col>
@@ -258,13 +258,7 @@ export default {
     UploadImage
   },
   data() {
-    const validateNickname = (rule, value, callback) => {
-      if (!validNickname(value)) {
-        callback(new Error('昵称必须是20个以内的中文字符'))
-      } else {
-        callback()
-      }
-    }
+
     const validatePhone = (rule, value, callback) => {
       if (!validPhone(value)) {
         callback(new Error('请输入正确的手机号'))
@@ -272,13 +266,7 @@ export default {
         callback()
       }
     }
-    const validateEmail = (rule, value, callback) => {
-      if (!validEmail(value)) {
-        callback(new Error('请输入正确的邮箱地址'))
-      } else {
-        callback()
-      }
-    }
+
     const validatePassword = (rule, value, callback) => {
       if (!validPassword(value)) {
         callback(new Error('登录密码必须是字母、数字、下划线组合，且长度6-18位'))
@@ -340,10 +328,7 @@ export default {
       inputValue:'',
       authorRules:{},
       infoRules: {
-        nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
-        avatar: [{ required: true, trigger: 'blur', message: '请上传头像' }]
+        phone: [{ required: true, trigger: 'blur', validator: validatePhone }]
       },
       passRules: {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],

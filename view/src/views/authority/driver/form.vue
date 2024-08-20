@@ -67,9 +67,13 @@
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="是否离职">
+                            <!-- <el-radio-group v-model="formData.driver_status">
+                                <el-radio v-model="formData.driver_status" :label="2">是</el-radio>
+                                <el-radio v-model="formData.driver_status" :label="0">否</el-radio>
+                            </el-radio-group> -->
                             <el-radio-group v-model="formData.driver_status">
-                                <el-radio :label="2">是</el-radio>
-                                <el-radio :label="0">否</el-radio>
+                              <el-radio v-model="formData.driver_status" label="2">是</el-radio>
+                              <el-radio v-model="formData.driver_status" label="0">否</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="身份证正面" prop="card_front">
@@ -249,7 +253,7 @@ export default {
     resetData(){
       this.formData.id = 0
       this.formData.username = ''
-      this.formData.driver_status = ''
+      this.formData.driver_status = '0'
       this.formData.phone = ''
       this.formData.phone2= ''
       this.formData.is_escort= ''

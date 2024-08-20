@@ -25,6 +25,7 @@ return [
         'admin/admin/getRole',
         'admin/auth/getRules',
         'admin/user/info',
+        'admin/user/saveInfo',
         'admin/user/author',
         'admin/admin/getdriverList',
         'admin/admin/adddriverAdmin',

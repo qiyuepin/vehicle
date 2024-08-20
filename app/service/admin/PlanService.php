@@ -1424,8 +1424,9 @@ class PlanService extends BaseService
                         //将原有$param['trailer_num']的info信息置为空
                         Info::where('id',$exit_trailer_num['id'])->update(['trailer_num'=>null,'trailer_id'=>null]);
                     }
-                    // dump($exit_trailer_num['trailer_id']);die;
-                    Info::where('id',$Plan['info_id'])->update(['trailer_num'=>$param['trailer_num'],'trailer_id'=>$exit_trailer_num['trailer_id']]);
+                    
+                    $trailer_num = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+                    Info::where('id',$Plan['info_id'])->update(['trailer_num'=>$param['trailer_num'],'trailer_id'=>$trailer_num['id']]);
                 }
                 if (isset($param['escort_name']) && $param['status'] == 1){
                     
@@ -1439,8 +1440,9 @@ class PlanService extends BaseService
                         //将原有$param['escort_name']的info信息置为空
                         Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
                     }
+                    $escort_name = Escort::where('name',$param['escort_name'])->find();
                     // dump($Plan['info_id']);die;
-                    Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$exit_escort_name['escort_id']]);
+                    Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name['id']]);
                 }
                 // dump($param);
                 // die;
