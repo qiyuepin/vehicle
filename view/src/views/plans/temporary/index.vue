@@ -345,6 +345,9 @@ methods: {
     else if(driver_status == 3){
       return "已作废";
     }
+    else if(driver_status == 4){
+      return "异常";
+    }
     else if(driver_status == 1 && statusnum == null){
       return "进行中";
     }

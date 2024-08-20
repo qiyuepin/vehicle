@@ -367,7 +367,7 @@ methods: {
         "卸货厂家": item.unload_factory,
         "卸货厂家地址": item.unload_address,
         "创建人": item.initiator,
-        "分配人": item.dispatcher,
+        "调度人": item.dispatcher,
         "更新时间": item.update_time
       };
     });
@@ -375,11 +375,17 @@ methods: {
     exportExcel(data,"运输任务");
   },
   status(statusnum,driver_status) {
-    if(driver_status == 2){
+    if(statusnum == 9){
+      return "已作废";
+    }
+    else if(driver_status == 2){
       return "已完成";
     }
     else if(driver_status == 3){
       return "已作废";
+    }
+    else if(driver_status == 4){
+      return "异常";
     }
     else if(driver_status == 1 && statusnum == null){
       return "进行中";
@@ -408,9 +414,7 @@ methods: {
     else if(statusnum == 8){
       return "异常";
     }
-    else if(statusnum == 9){
-      return "作废";
-    }
+    
     else{
       return "待接单";
     }

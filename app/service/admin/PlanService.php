@@ -877,7 +877,7 @@ class PlanService extends BaseService
                     $data = Plans::where($where)->order(['create_time'=>'desc'])->select()->toArray();
                 }else{
 
-                    $data = Plan::where($where)->order(['driver_status'=>'asc','plan_order'=>'desc'])->select()->toArray();
+                    $data = Plan::where($where)->order(['driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])->select()->toArray();
 
                 }
             }else{
@@ -1565,12 +1565,16 @@ class PlanService extends BaseService
                     $driver['driver_status'] = ($param['status'] == 0) ? 0 : 1;
                     $head['head_status'] = ($param['status'] == 0) ? 0 : $param['status']/2;
                     $escort['escort_status'] = ($param['status'] == 0) ? 0 : 1;
+                } elseif ($param['status'] == 8) {
+                    $driver['driver_status'] = Admin::where(['username' => $Plan['driver_name']])->value('driver_status');
+                    $head['head_status'] = 3;
+                    $escort['escort_status'] = Escort::where(['name' => $escort_name])->value('escort_status');
                 } else {
                     $driver['driver_status'] = Admin::where(['username' => $Plan['driver_name']])->value('driver_status');
-                    $head['head_status'] = Carhead::where(['carhead_plate' => $Plan['carhead_plate']])->value('head_status');
+                    $head['head_status'] = Carhead::where(['carhead_plate' => $Plan['head_num']])->value('head_status');
                     $escort['escort_status'] = Escort::where(['name' => $escort_name])->value('escort_status');
                 }
-                
+ 
                 $trailer['trailer_plate'] = $Plan['trailer_num'];
                 $trailerexit = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->find();
                 // dump($trailerexit['product_quantity']);
@@ -1591,22 +1595,24 @@ class PlanService extends BaseService
                     $trailerdata['product_quantity'] = $load_product_quantity;
                     $trailerdata['product_name'] = $Plan['product_name'];
                 } elseif ($param['status'] == 5 && $Plan['plan_type'] == 0) {
+                    
                     $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
                     $quantity = $product_quantity - $param['unload_product_quantity'];
-                    $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : 0;
+                    $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : null;
                     $trailerdata['trailer_status'] = ($quantity > 0.3) ? 1 : 0;
-           
+                    $trailerdata['product_name'] = ($quantity > 0.3) ? $Plan['product_name'] : null;
                 } elseif ($param['status'] == 5 && $Plan['plan_type'] == 2) {
                     $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
                     $quantity = $product_quantity - $param['unload_product_quantity'];
-                    $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : 0;
+                    $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : null;
                     $trailerdata['trailer_status'] = ($quantity > 0.3) ? 1 : 0;
-                    
+                    $trailerdata['product_name'] = ($quantity > 0.3) ? $Plan['product_name'] : null;
                 } else {
+                    // dump(99);die;
                     $trailer['trailer_status'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('trailer_status');
                 }
                 // $t = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata)->fetchsql();
-                // dump('提交成功'.$trailerdata['product_quantity']);
+                // dump($head);die;
                 // return $this->success([],'提交成功'.$load_product_quantity.'+'.$param['load_product_quantity']);
                 Carhead::update($head,['carhead_plate'=>$carhead_plate]);
                 Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata);
