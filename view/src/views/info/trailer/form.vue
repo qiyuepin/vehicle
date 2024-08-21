@@ -228,7 +228,7 @@ export default {
       console.log(value)
       const newplate = '吉B ' + value + '挂';
       if (!validTrailerPlate(value)) {
-        callback(new Error('请输入正确车牌号（吉B（固定）+1字母+3数字）+挂'))
+        callback(new Error('请输入正确车牌号（吉B（固定）+1大写字母+3数字）+挂'))
       } else {
 
         console.log(newplate)

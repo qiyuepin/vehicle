@@ -44,13 +44,13 @@
                           </el-radio-group>
                       </el-form-item>
                       <el-form-item label="入职时间">
-                        <el-input v-model="formData.employ_time" type="date" placeholder="选择日期"></el-input>
+                        <el-input v-model="formData.employ_time" type="date" placeholder="选择日期" max="9999-12-31"></el-input>
                       </el-form-item>
                       <el-form-item label="身份证正面" prop="card_front">
                           <UploadImage ref="Image_card_front" v-model="formData.card_front"></UploadImage>
                       </el-form-item>
                       <el-form-item label="身份证反面" prop="card_back">
-                          <UploadImage ref="Image_card_back"" v-model="formData.card_back"></UploadImage>
+                          <UploadImage ref="Image_card_back" v-model="formData.card_back"></UploadImage>
                       </el-form-item>
 
                       <el-form-item label="从业资格证正面" prop="cert_front">

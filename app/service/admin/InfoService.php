@@ -573,7 +573,7 @@ class InfoService extends BaseService
             Db::startTrans();
 
             // $param['escort_status'] = 0;
-
+            // dump($param);
             $res = Escort::create($param);
             // dump($res);
             if(!$res){
@@ -886,8 +886,36 @@ class InfoService extends BaseService
             }
             // return $this->success($data);
             $data['escort'] = Escort::where('escort_status','in',[0,1])->field('id,name,escort_status')->select();
-            $data['head'] = Carhead::where('head_status','in',[0,3])->field('id,carhead_plate,head_status')->select();
-            $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+            $data['head'] = Carhead::where('head_status','in',[0,1,2,3])->field('id,carhead_plate,head_status')->select();
+            // $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+            $info_trailer = Info::where('trailer_id',$param['trailer_id'])->find();
+            if($info_trailer){
+                $data['trailer'] = Cartrailer::alias('t')->join('admin_careinfo i','t.id=i.trailer_id')
+                ->join('admin_carhead h','h.id=i.head_id')->where('h.head_status',0)->field('t.id,t.trailer_plate,t.trailer_status,t.product_name,t.product_quantity')->select();
+            }else{
+                $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+            }
+            $trailerlist = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select()->toArray();
+            $newtrailer = [];
+            foreach ($trailerlist as $key=>$item) {
+                
+                $info_trailer = Info::where('trailer_id',$item['id'])->find();
+                $trailer_id = Info::where('id',$param['trailer_id'])->value('trailer_id');
+                if ($info_trailer) {
+                    $info_head = Info::where('trailer_id',$item['id'])->value('head_id');
+                    $head_status = Carhead::where('id',$info_head)->value('head_status');
+                    if($head_status == 0){
+                        $newtrailer[$key] = $item;
+                    }elseif($item['id'] == $trailer_id){
+                        // dump($item['id']);
+                        $newtrailer[$key] = $item;
+                    }
+                }else{
+                    $newtrailer[$key] = $item;
+                }
+            }
+            $data['trailer'] = $newtrailer;
+            // dump($newtrailer);die;
             if(isset($param['id']) && $param['id']){
                 $data['trailer'] = Cartrailer::where('id', '<>', $param['id'])
                     ->where(function($query) use ($param) {

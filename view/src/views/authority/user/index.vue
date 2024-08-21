@@ -59,24 +59,24 @@
                     align="center"
                     width="120">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="nickname"
                     label="昵称"
                     align="center"
                     width="120">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                     prop="phone"
                     label="手机号"
                     align="center"
                     width="120">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="email"
                     label="邮箱"
                     align="center"
                     width="200">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                     prop="status"
                     label="状态"

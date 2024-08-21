@@ -134,7 +134,7 @@ data() {
   }
 },
 created() {
-  this.getcarlist()
+  
 },
 methods: {
   getcarlist() {
@@ -180,6 +180,18 @@ methods: {
             this.formData.trailer_id = response.trailer_id
         }
     })
+  
+    getcarlist({trailer_id:id}).then(response => {
+        if(response !== undefined){
+          console.log(response.data)
+          this.driverlist = response.driver
+          this.headlist = response.head
+          this.escortlist = response.escort
+          this.trailerlist = response.trailer
+        }
+
+    })
+    
   },
   saveData() {
     this.$confirm('您确定要提交吗？', '温馨提示')

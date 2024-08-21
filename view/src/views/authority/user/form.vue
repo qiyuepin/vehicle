@@ -109,7 +109,7 @@ export default {
     // }
     const validatePassword = (rule, value, callback) => {
       if (!validPassword(value)) {
-        callback(new Error('登录密码必须是字母、数字、下划线组合，且长度6-18位'))
+        callback(new Error('登录密码必须大于6位'))
       } else {
         callback()
       }

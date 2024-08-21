@@ -1415,7 +1415,7 @@ class PlanService extends BaseService
                 //     }
                 //     Info::where('id',$Plan['info_id'])->update(['head_num'=>$param['head_num'],'head_id'=>$exit_head_num['head_id']]);
                 // }
-                if (isset($param['trailer_num']) && $param['status'] == 1){
+                if (isset($param['trailer_num']) && $param['status'] == 1 && $Plan['plan_type'] == 0){
                     
                     $trailer_num = Info::where('id',$Plan['info_id'])->find();
                     //输入的车头是否存在于人员车辆匹配中
@@ -1428,7 +1428,8 @@ class PlanService extends BaseService
                     $trailer_num = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
                     Info::where('id',$Plan['info_id'])->update(['trailer_num'=>$param['trailer_num'],'trailer_id'=>$trailer_num['id']]);
                 }
-                if (isset($param['escort_name']) && $param['status'] == 1){
+                
+                if (isset($param['escort_name']) && $param['status'] == 1 && $Plan['plan_type'] == 0){
                     
                     $escort_name = Info::where('id',$Plan['info_id'])->find();
                     // dump($escort_name);
@@ -1444,8 +1445,7 @@ class PlanService extends BaseService
                     // dump($Plan['info_id']);die;
                     Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name['id']]);
                 }
-                // dump($param);
-                // die;
+                
                 // dump($Plan['status']);die;
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
                 if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1) {
@@ -1555,7 +1555,7 @@ class PlanService extends BaseService
                     
                     // dump(999);die;
                 }
-                // dump($param);die;
+                
                 $carhead_plate = isset($param['head_num'])?$param['head_num']:$firstPlan['head_num'];
                 $escort_name = isset($param['escort_name'])?$param['escort_name']:$firstPlan['escort_name'];
                 // dump($firstPlan);die;

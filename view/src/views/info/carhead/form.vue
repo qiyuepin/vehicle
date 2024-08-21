@@ -171,7 +171,7 @@ export default {
           console.log(value)
           const newplate = '吉B ' + value;
           if (!validPlate(value)) {
-              callback(new Error('请输入正确车牌号（吉B（固定）+1字母+4数字）'))
+              callback(new Error('请输入正确车牌号（吉B（固定）+1大写字母+4数字）'))
           } else {
 
               console.log(newplate)
