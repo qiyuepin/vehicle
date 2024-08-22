@@ -1058,8 +1058,8 @@ class InfoService extends BaseService
             }
             else{
                 $oldproduct_quantity = $oldtrailer['product_quantity'] - $param['product_quantity'];
-                $old['product_quantity'] = $oldproduct_quantity>0.2 ? $oldproduct_quantity : 0;
-                $old['trailer_status'] = $oldproduct_quantity>0.2 ? 1 : 0;
+                $old['product_quantity'] = $oldproduct_quantity>0.3 ? $oldproduct_quantity : 0;
+                $old['trailer_status'] = $oldproduct_quantity>0.3 ? 1 : 0;
                 $new['product_quantity'] = $param['all_product_quantity'];
                 $new['product_name'] = $param['product_name'];
                 $new['trailer_status'] = 1;

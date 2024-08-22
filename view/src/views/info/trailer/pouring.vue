@@ -170,7 +170,7 @@ export default {
       this.formData.all_product_quantity = parseFloat(this.new_product_quantity) + parseFloat(this.formData.product_quantity);
     },
     getcarlist(){
-        getcarlist().then(response=>{
+        getcarlist({'trailer':1}).then(response=>{
             if(response !== undefined){
                 console.log(response.trailer)
                 this.oldlist = response.trailer;

@@ -198,7 +198,7 @@
                   fixed="right"
                   label="操作"
                   align="center"
-                  min-width="150">
+                  min-width="160">
               <template slot-scope="scope">
 
                   <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button>
@@ -316,6 +316,7 @@ methods: {
       return {
         id: item.id,
         "状态": this.status(item.status,item.driver_status),
+        "任务类别": this.type(item.plan_type),
         "车头": item.head_num,
         "挂车": item.trailer_num,
         "驾驶员": item.driver_name,
@@ -377,6 +378,14 @@ methods: {
     }
     else{
       return "待接单";
+    }
+  },
+  type(plan_type) {
+    if(plan_type == 1){
+      return "装车任务";
+    }
+    else if(plan_type == 2){
+      return "卸车任务";
     }
   },
   //搜索

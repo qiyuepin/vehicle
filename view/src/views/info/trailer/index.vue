@@ -77,7 +77,7 @@
                 prop="trailer_plate"
                 label="车（牌）号"
                 align="center"
-                width="120">
+                width="130">
                 <template slot-scope="scope">
                     <el-button size="mini"  @click="handleDetail(scope.row)">
                         {{ scope.row.trailer_plate }}

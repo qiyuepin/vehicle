@@ -25,7 +25,7 @@ use think\facade\Env;
 // 导入对应产品模块的client
 use TencentCloud\Sms\V20210111\SmsClient;
 // 导入要请求接口对应的Request类
-use TencentCloud\Sms\V20210111\Models\SendSmsRequest;
+// use TencentCloud\Sms\V20210111\Models\SendSmsRequest;
 use TencentCloud\Common\Exception\TencentCloudSDKException;
 use TencentCloud\Common\Credential;
 // 导入可选配置类
@@ -34,6 +34,14 @@ use TencentCloud\Common\Profile\HttpProfile;
 use app\traits\TokenTrait;
 use Carbon\Carbon;
 use TencentCloud\Ic\V20190307\Models\CardInfo;
+
+use AlibabaCloud\SDK\Dysmsapi\V20170525\Dysmsapi;
+use AlibabaCloud\Tea\Exception\TeaError;
+use AlibabaCloud\Tea\Utils\Utils;
+
+use Darabonba\OpenApi\Models\Config;
+use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\SendSmsRequest;
+use AlibabaCloud\Tea\Utils\Utils\RuntimeOptions;
 
 class PlanService extends BaseService
 {
@@ -329,7 +337,12 @@ class PlanService extends BaseService
     }
 
     public function addnormal($param=[],$Authorization){
-   
+        $currentHour = date('H');
+        if ($currentHour < 12) {
+            $time = '上午';
+        } else {
+            $time = '下午';
+        }
         try{
             Db::startTrans();
             // $Plan = Plan::where('driver_name',$param['driver_name'])->where('period_id',$param['period_id'])->order(['id'=>'desc'])->find();
@@ -404,7 +417,7 @@ class PlanService extends BaseService
                     $planmsg = "到".$res->unload_factory."卸货";
                 }
                 // dump($cid);dump($plantype);die;
-                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory']);
+                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory'],'SMS_472080097',$time);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
                 Db::commit();
                 if($r['code'] == 0){
@@ -440,6 +453,12 @@ class PlanService extends BaseService
         }
     }
     public function editnormal($param=[],$Authorization){
+        $currentHour = date('H');
+        if ($currentHour < 12) {
+            $time = '上午';
+        } else {
+            $time = '下午';
+        }
         try{
             Db::startTrans();
             $Plan = Plan::where('id',$param['id'])->find();
@@ -472,7 +491,7 @@ class PlanService extends BaseService
                 throw new \Exception('编辑失败');
             }
      
-            $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory']);
+            $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory'],'SMS_472080097',$time);
             $data = json_decode($sendmessage, true);
      
             $code = $data['SendStatusSet'][0]['Code'];
@@ -678,7 +697,14 @@ class PlanService extends BaseService
 
 
     public function addtemporary($param=[],$Authorization){
-   
+        $currentHour = date('H');
+        if ($currentHour < 12) {
+            $time = '上午';
+        } else {
+            $time = '下午';
+        }
+        // $this->SDKsendSms('18642646375', $param['driver_name'], $param['load_factory'], $param['unload_factory'],'SMS_472135128',$time);
+        // die;
         try{
             Db::startTrans();
 
@@ -738,12 +764,14 @@ class PlanService extends BaseService
                 if($res->plan_type == 1){
                     $plantype = "装货任务";
                     $planmsg = "从".$res->load_factory."出发装货";
+                    $SMSCODE = 'SMS_472135128';
                 }
                 else if($res->plan_type == 2){
                     $plantype = "卸货任务";
                     $planmsg = "到".$res->unload_factory."卸货";
+                    $SMSCODE = 'SMS_472095114';
                 }
-                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory']);
+                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory'],$SMSCODE,$time);
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
                 Db::commit();
                 if($r['code'] == 0){
@@ -796,6 +824,12 @@ class PlanService extends BaseService
 
   
     public function deltemporary($param=[]){
+        $currentHour = date('H');
+        if ($currentHour < 12) {
+            $time = '上午';
+        } else {
+            $time = '下午';
+        }
         try{
             Db::startTrans();
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
@@ -814,20 +848,24 @@ class PlanService extends BaseService
                 if($Plan->plan_type == 0){
                     $plantype = "常规任务";
                     $planmsg = "从".$Plan->load_factory."出发到".$Plan->unload_factory;
+                    $SMSCODE = 'SMS_472080097';
                 }
                 else if($Plan->plan_type == 1){
                     $plantype = "装货任务";
                     $planmsg = "从".$Plan->load_factory."出发装货";
+                    $SMSCODE = 'SMS_472095114';
                 }
                 else if($Plan->plan_type == 2){
                     $plantype = "卸货任务";
                     $planmsg = "到".$Plan->unload_factory."卸货";
+                    $SMSCODE = 'SMS_472135128';
                 }
                 // dump($Plan['id']);
                 // dump($cid);
                 // dump($Plan['load_factory']);
                 // die;
-                $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory']);
+                // $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory']);
+                $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory'],$SMSCODE,$time);
                 $r = $this->pushToSingleByCids($Plan['id'],$cid,$plantype,$planmsg);
                 Db::commit();
                 $res = Plan::update($driver_status,['id'=>$param['id']]);
@@ -836,7 +874,7 @@ class PlanService extends BaseService
                 }
             }
             else{
-                $driver_status['driver_status'] = 1;
+                // $driver_status['driver_status'] = 1;
                 $driver_status['status'] = 9;
             }
             // dump($Plan);die;
@@ -1070,6 +1108,12 @@ class PlanService extends BaseService
         }
     }
     public function distplan($param=[],$Authorization){
+        $currentHour = date('H');
+        if ($currentHour < 12) {
+            $time = '上午';
+        } else {
+            $time = '下午';
+        }
         
         try{
             Db::startTrans();
@@ -1184,23 +1228,29 @@ class PlanService extends BaseService
                 if($res->plan_type == 0){
                     $plantype = "运输任务";
                     $planmsg = "从".$res->load_factory."出发到".$res->unload_factory;
+                    $SMSCODE = 'SMS_472080097';
                 }
                 else if($res->plan_type == 1){
                     $plantype = "装货任务";
                     $planmsg = "从".$res->load_factory."出发装货";
+                    $SMSCODE = 'SMS_472135128';
                 }
                 else if($res->plan_type == 2){
                     $plantype = "卸货任务";
                     $planmsg = "到".$res->unload_factory."卸货";
+                    $SMSCODE = 'SMS_472095114';
                 }
-                // dump($cid);dump($plantype);die;
-                // dump($plans);die;
+                // dump($phone);dump($SMSCODE);die;
+                // dump($planmsg);die;
                 // $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
-                $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+                // $sendmessage = $this->SDKsendSms($phone, $param['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+                $sendSms_code = $this->SDKsendSms($phone, $param['driver_name'], $param['load_factory'], $param['unload_factory'],$SMSCODE,$time);
+
+                // dump($sendmessage);die;
                 $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
 
                 Db::commit();
-                if($r['code'] == 0){
+                if($sendSms_code == 'OK'){
                     return $this->success(['msg' => '分配成功']);
                 }
             }
@@ -1240,49 +1290,49 @@ class PlanService extends BaseService
             return $this->error();
         }
     }
-    public function sendnotice($plans,$phone){
-        try{
-            // $notice = $period;
-            $notice['period_id_driver'] = $plans['period_id'];
-            $notice['driver_name'] = $plans['driver_name'];
-            $notice['trailer_num'] = $plans['trailer_num'];
-            $notice['month'] = $plans['month'];
-            $notice['year'] = $plans['year'];
-            $notice['status'] = 0;
-            $notice['initiator'] = $plans['initiator'];
-            $notice['dispatcher'] = $plans['dispatcher'];
-            $notice['plan_id'] = $plans->id;
-            $notice['read'] = 0;
-            $notice['msg'] = "有新的任务分配";
-            $notice['load_factory'] = $plans['load_factory'];
-            $notice['unload_factory'] = $plans['unload_factory'];
-            $notice['plan_type'] = $plans['plan_type'];
-            $notice['platform'] = $plans['platform'];
-            $res = Db::name('admin_car_notice')->insert($notice);
-            $sendmessage = $this->SDKsendSms($phone, $plans['driver_name'], $plans['load_factory'], $plans['unload_factory']);
-            $data = json_decode($sendmessage, true);
-            $phone_number = $data['SendStatusSet'][0]['PhoneNumber'];
-            $code = $data['SendStatusSet'][0]['Code'];
-            // dump($sendmessage);die;
-            if(!$res){
-                throw new \Exception('分配失败');
-            }
-            $msg = '分配成功,已发送给手机号为：'.$phone.'的驾驶员'.$plans['driver_name'];
-            $appmsg = '已发送给'.$plans['driver_name'];
+    // public function sendnotice($plans,$phone){
+    //     try{
+    //         // $notice = $period;
+    //         $notice['period_id_driver'] = $plans['period_id'];
+    //         $notice['driver_name'] = $plans['driver_name'];
+    //         $notice['trailer_num'] = $plans['trailer_num'];
+    //         $notice['month'] = $plans['month'];
+    //         $notice['year'] = $plans['year'];
+    //         $notice['status'] = 0;
+    //         $notice['initiator'] = $plans['initiator'];
+    //         $notice['dispatcher'] = $plans['dispatcher'];
+    //         $notice['plan_id'] = $plans->id;
+    //         $notice['read'] = 0;
+    //         $notice['msg'] = "有新的任务分配";
+    //         $notice['load_factory'] = $plans['load_factory'];
+    //         $notice['unload_factory'] = $plans['unload_factory'];
+    //         $notice['plan_type'] = $plans['plan_type'];
+    //         $notice['platform'] = $plans['platform'];
+    //         $res = Db::name('admin_car_notice')->insert($notice);
+    //         $sendmessage = $this->SDKsendSms($phone, $plans['driver_name'], $plans['load_factory'], $plans['unload_factory']);
+    //         $data = json_decode($sendmessage, true);
+    //         $phone_number = $data['SendStatusSet'][0]['PhoneNumber'];
+    //         $code = $data['SendStatusSet'][0]['Code'];
+    //         // dump($sendmessage);die;
+    //         if(!$res){
+    //             throw new \Exception('分配失败');
+    //         }
+    //         $msg = '分配成功,已发送给手机号为：'.$phone.'的驾驶员'.$plans['driver_name'];
+    //         $appmsg = '已发送给'.$plans['driver_name'];
             
             
-            Db::commit();
-            if($code == 'Ok'){
-                return $this->success(['msg' => $msg,'appmsg' => $appmsg]);
-            }else{
-                return $this->success(['msg' => '分配成功,短信发送失败']);
-            }
-        }catch (\Exception $exception){
-            Db::rollback();
-            $this->recordLog($exception);
-            return $this->error();
-        }
-    }
+    //         Db::commit();
+    //         if($code == 'Ok'){
+    //             return $this->success(['msg' => $msg,'appmsg' => $appmsg]);
+    //         }else{
+    //             return $this->success(['msg' => '分配成功,短信发送失败']);
+    //         }
+    //     }catch (\Exception $exception){
+    //         Db::rollback();
+    //         $this->recordLog($exception);
+    //         return $this->error();
+    //     }
+    // }
     public function delplan($param=[]){
         try{
             Db::startTrans();
@@ -1350,7 +1400,12 @@ class PlanService extends BaseService
     }
 
     public function driver_sumitnormal($param=[],$Authorization){
-        // dump($param);
+        $currentHour = date('H');
+        if ($currentHour < 12) {
+            $time = '上午';
+        } else {
+            $time = '下午';
+        }
         try{
             Db::startTrans();
             // dump($param);die;
@@ -1394,15 +1449,19 @@ class PlanService extends BaseService
                 if($lastplan['plan_type'] == 0){
                     $plantype = "常规任务";
                     $planmsg = "从".$lastplan['load_factory']."出发到".$lastplan['unload_factory'];
+                    $SMSCODE = 'SMS_472080097';
                 }
                 else if($lastplan['plan_type'] == 1){
                     $plantype = "装货任务";
                     $planmsg = "从".$lastplan['load_factory']."出发装货";
+                    $SMSCODE = 'SMS_472135128';
                 }
                 else if($lastplan['plan_type'] == 2){
                     $plantype = "卸货任务";
                     $planmsg = "到".$lastplan['unload_factory']."卸货";
+                    $SMSCODE = 'SMS_472095114';
                 }
+
                 // 新增驾驶员修改挂车、押运员之后更新人员车辆匹配
                 // if (isset($param['head_num']) && $param['status'] == 1){
                     
@@ -1457,7 +1516,8 @@ class PlanService extends BaseService
                     $id = $lastplan['id'];
                     $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                     $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
-                    $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     
                 } else if ($param['status'] == 8 && $lastplan !== null && $lastplan['start_periodic'] != 1) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
@@ -1468,7 +1528,8 @@ class PlanService extends BaseService
                     $id = $lastplan['id'];
                     $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                     $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
-                    $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     
                 } else if ($param['status'] == 8) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 4
@@ -1485,7 +1546,8 @@ class PlanService extends BaseService
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                         $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
-                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     }
                 }  else if ($param['status'] == 0 && $Plan['status'] == 9) {
                     $param['driver_status'] = 3;
@@ -1498,7 +1560,8 @@ class PlanService extends BaseService
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                         $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
-                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     }
                 } else if ($param['status'] == 0) {
                     $param['driver_status'] = 2;
@@ -1515,11 +1578,12 @@ class PlanService extends BaseService
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                         $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
-                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     }
                     // 如果有下一个任务，则将当前任务的 driver_status 更新为 2
                     // 【YB分类整理】问题描述20240726-2 68 by baolei start
-//                } else if ($param['status'] == 3 && $Plan['unload_factory'] == null) {
+                    //  } else if ($param['status'] == 3 && $Plan['unload_factory'] == null) {
                 } else if ($param['status'] == 3 && $Plan['plan_type'] == 1) {
                     // 【YB分类整理】问题描述20240726-2 68 by baolei start
                     // 如果 unload_factory 为空，将当前任务的 status 更新为 5，并将当前任务的 driver_status 更新为 2，
@@ -1536,7 +1600,8 @@ class PlanService extends BaseService
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                         $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
-                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                        $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     }
                 }
                 // 【YB分类整理】问题描述20240726-2 68 by baolei start
@@ -1641,9 +1706,63 @@ class PlanService extends BaseService
         }
     }
 
-    function SDKsendSms($phone, $drivername, $loadfactory, $unloadfactory) {
+    public static function createClient($accessKeyId, $accessKeySecret)
+    {
+        $config = new Config([
+            // 您的 AccessKey ID
+            "accessKeyId" => $accessKeyId,
+            // 您的 AccessKey Secret
+            "accessKeySecret" => $accessKeySecret
+        ]);
+        // 访问的域名
+        $config->endpoint = "dysmsapi.aliyuncs.com";
+        return new Dysmsapi($config);
+    }
+    function SDKsendSms($phone, $drivername, $loadfactory, $unloadfactory, $templateCode, $time)
+    {
+        // dump($phone);die;
+        $Ali_SMS_APPID = Env::get('MSGSDK.Ali_SMS_APPID');
+        $Ali_SMS_APPKEY = Env::get('MSGSDK.Ali_SMS_APPKEY');
+
+        $client = self::createClient($Ali_SMS_APPID, $Ali_SMS_APPKEY);
+        $sendSmsRequest = new SendSmsRequest([
+            "phoneNumbers" => $phone,//接收短信的手机号码
+            "signName" => "七星智运",//短信签名名称。
+            "templateCode" => $templateCode,//短信模板CODE。
+            // "templateParam" => "{\"code\":\"0822\"}"//短信模板变量对应的实际值。
+            "templateParam" => json_encode(array('name' => $drivername,'time' => $time,'address1' => $loadfactory,'address2' => $unloadfactory))
+        ]);
+        $runtime = new RuntimeOptions([]);
+        // dump($sendSmsRequest);die;
         try {
+            //发送短信
+            $result = $client->sendSmsWithOptions($sendSmsRequest, $runtime);
             
+            if ($result->body->code == 'OK') {
+                //发送成功操作
+                // dump($result);die;
+                return $result->body->code;
+                // return true;
+            }else {
+                //发送失败操作
+                return $result->body->code;
+                // return false;
+            }
+        } catch (\Exception $error) {
+            // dump(999);die;
+            if (!($error instanceof TeaError)) {
+                $error = new TeaError([], $error->getMessage(), $error->getCode(), $error);
+                // return ["code" => $error->getCode(), "msg" => $error->getMessage()];
+            }
+ 
+            return false;
+        }
+    }
+ 
+
+    function SDKsendSms0($phone, $drivername, $loadfactory, $unloadfactory) {
+        try {
+            $client = self::createClient();
             // echo Env::get('MSGSDK.TENCENT_SMS_APPKEY');die;
             $APPID = Env::get('MSGSDK.TENCENT_SMS_APPID');
             $APPKEY = Env::get('MSGSDK.TENCENT_SMS_APPKEY');
@@ -1670,7 +1789,7 @@ class PlanService extends BaseService
                 "TemplateParamSet" => array( $drivername, $loadfactory, $unloadfactory )
             );
             // dump($params);
-            $req->fromJsonString(json_encode($params));
+            // $req->fromJsonString(json_encode($params));
             // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
             $resp = $client->SendSms($req);
             // dump($resp->toJsonString());die;
