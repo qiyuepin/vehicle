@@ -33,7 +33,14 @@
         "topthink/think-filesystem": "^2.0",
         "tencentcloud/tencentcloud-sdk-php": "^3.0",
         "getuilaboratory/getui-pushapi-php-client-v2": "dev-master",
-        "overtrue/pinyin": "^4.1"
+        "overtrue/pinyin": "^4.1",
+        "royfj/aliyun-openapi-php-sdk": "^1.0",
+        "aliyuncs/oss-sdk-php": "^2.7",
+        "alibabacloud/tea-utils": "0.2.19",
+        "alibabacloud/darabonba-openapi": "0.2.8",
+        "alibabacloud/endpoint-util": "0.1.0",
+        "alibabacloud/openapi-util": "0.1.13",
+        "alibabacloud/dysmsapi-20170525": "2.0.24"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

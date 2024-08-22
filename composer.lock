@@ -4,8 +4,618 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e7f3535005d9a46dc370609b7069f77",
+    "content-hash": "6a32a9ccc6b1e6ee29ee7f90bb5cc495",
     "packages": [
+        {
+            "name": "adbario/php-dot-notation",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adbario/php-dot-notation.git",
+                "reference": "081e2cca50c84bfeeea2e3ef9b2c8d206d80ccae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/081e2cca50c84bfeeea2e3ef9b2c8d206d80ccae",
+                "reference": "081e2cca50c84bfeeea2e3ef9b2c8d206d80ccae",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^5.5 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.7|^6.6|^7.5|^8.5|^9.5",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Adbar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riku Särkinen",
+                    "email": "riku@adbar.io"
+                }
+            ],
+            "description": "PHP dot notation access to arrays",
+            "homepage": "https://github.com/adbario/php-dot-notation",
+            "keywords": [
+                "ArrayAccess",
+                "dotnotation"
+            ],
+            "support": {
+                "issues": "https://github.com/adbario/php-dot-notation/issues",
+                "source": "https://github.com/adbario/php-dot-notation/tree/2.5.0"
+            },
+            "time": "2022-10-14T20:31:46+00:00"
+        },
+        {
+            "name": "alibabacloud/credentials",
+            "version": "1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aliyun/credentials-php.git",
+                "reference": "1d8383ceef695974a88a3859c42e235fd2e3981a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aliyun/credentials-php/zipball/1d8383ceef695974a88a3859c42e235fd2e3981a",
+                "reference": "1d8383ceef695974a88a3859c42e235fd2e3981a",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "adbario/php-dot-notation": "^2.2",
+                "alibabacloud/tea": "^3.0",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "ext-simplexml": "*",
+                "ext-xmlwriter": "*",
+                "guzzlehttp/guzzle": "^6.3|^7.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8",
+                "drupal/coder": "^8.3",
+                "ext-dom": "*",
+                "ext-pcre": "*",
+                "ext-sockets": "*",
+                "ext-spl": "*",
+                "mikey179/vfsstream": "^1.6",
+                "monolog/monolog": "^1.24",
+                "phpunit/phpunit": "^5.7|^6.6|^7.5",
+                "psr/cache": "^1.0",
+                "symfony/dotenv": "^3.4",
+                "symfony/var-dumper": "^3.4"
+            },
+            "suggest": {
+                "ext-sockets": "To use client-side monitoring"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\Credentials\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com",
+                    "homepage": "http://www.alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Credentials for PHP",
+            "homepage": "https://www.alibabacloud.com/",
+            "keywords": [
+                "alibaba",
+                "alibabacloud",
+                "aliyun",
+                "client",
+                "cloud",
+                "credentials",
+                "library",
+                "sdk",
+                "tool"
+            ],
+            "support": {
+                "issues": "https://github.com/aliyun/credentials-php/issues",
+                "source": "https://github.com/aliyun/credentials-php"
+            },
+            "time": "2023-04-11T02:12:12+00:00"
+        },
+        {
+            "name": "alibabacloud/darabonba-openapi",
+            "version": "0.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/darabonba-openapi.git",
+                "reference": "aabc61b3049caed6442ca332cf45d3b51af633ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/darabonba-openapi/zipball/aabc61b3049caed6442ca332cf45d3b51af633ef",
+                "reference": "aabc61b3049caed6442ca332cf45d3b51af633ef",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "alibabacloud/credentials": "^1.1",
+                "alibabacloud/gateway-spi": "^1",
+                "alibabacloud/openapi-util": "^0.1.10",
+                "alibabacloud/tea-utils": "^0.2.16",
+                "alibabacloud/tea-xml": "^0.2",
+                "php": ">5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darabonba\\OpenApi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud OpenApi Client",
+            "support": {
+                "issues": "https://github.com/alibabacloud-sdk-php/darabonba-openapi/issues",
+                "source": "https://github.com/alibabacloud-sdk-php/darabonba-openapi/tree/0.2.8"
+            },
+            "time": "2022-11-14T03:38:23+00:00"
+        },
+        {
+            "name": "alibabacloud/dysmsapi-20170525",
+            "version": "2.0.24",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/Dysmsapi-20170525.git",
+                "reference": "75d8a8c7259f53e58ba3330e004150841be6010d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/Dysmsapi-20170525/zipball/75d8a8c7259f53e58ba3330e004150841be6010d",
+                "reference": "75d8a8c7259f53e58ba3330e004150841be6010d",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "alibabacloud/darabonba-openapi": "^0.2.8",
+                "alibabacloud/endpoint-util": "^0.1.0",
+                "alibabacloud/openapi-util": "^0.1.10|^0.2.1",
+                "alibabacloud/tea-utils": "^0.2.19",
+                "php": ">5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\SDK\\Dysmsapi\\V20170525\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Dysmsapi (20170525) SDK Library for PHP",
+            "support": {
+                "source": "https://github.com/alibabacloud-sdk-php/Dysmsapi-20170525/tree/2.0.24"
+            },
+            "time": "2023-07-04T11:32:11+00:00"
+        },
+        {
+            "name": "alibabacloud/endpoint-util",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/endpoint-util.git",
+                "reference": "2058160738e1aa6191aedc927e318ba801bc86a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/endpoint-util/zipball/2058160738e1aa6191aedc927e318ba801bc86a6",
+                "reference": "2058160738e1aa6191aedc927e318ba801bc86a6",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0",
+                "symfony/var-dumper": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\Endpoint\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Endpoint Library for PHP",
+            "support": {
+                "source": "https://github.com/alibabacloud-sdk-php/endpoint-util/tree/0.1.0"
+            },
+            "time": "2020-04-02T04:21:55+00:00"
+        },
+        {
+            "name": "alibabacloud/gateway-spi",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/alibabacloud-gateway-spi.git",
+                "reference": "7440f77750c329d8ab252db1d1d967314ccd1fcb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/alibabacloud-gateway-spi/zipball/7440f77750c329d8ab252db1d1d967314ccd1fcb",
+                "reference": "7440f77750c329d8ab252db1d1d967314ccd1fcb",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "alibabacloud/credentials": "^1.1",
+                "php": ">5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darabonba\\GatewaySpi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Gateway SPI Client",
+            "support": {
+                "source": "https://github.com/alibabacloud-sdk-php/alibabacloud-gateway-spi/tree/1.0.0"
+            },
+            "time": "2022-07-14T05:31:35+00:00"
+        },
+        {
+            "name": "alibabacloud/openapi-util",
+            "version": "0.1.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/openapi-util.git",
+                "reference": "870e59984f05e104aa303c85b8214e339ba0a0ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/openapi-util/zipball/870e59984f05e104aa303c85b8214e339ba0a0ac",
+                "reference": "870e59984f05e104aa303c85b8214e339ba0a0ac",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "alibabacloud/tea": "^3.1",
+                "alibabacloud/tea-utils": "^0.2",
+                "lizhichao/one-sm": "^1.5",
+                "php": ">5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\OpenApiUtil\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud OpenApi Util",
+            "support": {
+                "issues": "https://github.com/alibabacloud-sdk-php/openapi-util/issues",
+                "source": "https://github.com/alibabacloud-sdk-php/openapi-util/tree/0.2.0"
+            },
+            "time": "2022-11-06T05:49:55+00:00"
+        },
+        {
+            "name": "alibabacloud/tea",
+            "version": "3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aliyun/tea-php.git",
+                "reference": "1619cb96c158384f72b873e1f85de8b299c9c367"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aliyun/tea-php/zipball/1619cb96c158384f72b873e1f85de8b299c9c367",
+                "reference": "1619cb96c158384f72b873e1f85de8b299c9c367",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "adbario/php-dot-notation": "^2.4",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "ext-simplexml": "*",
+                "ext-xmlwriter": "*",
+                "guzzlehttp/guzzle": "^6.3|^7.0",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "symfony/dotenv": "^3.4",
+                "symfony/var-dumper": "^3.4"
+            },
+            "suggest": {
+                "ext-sockets": "To use client-side monitoring"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\Tea\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com",
+                    "homepage": "http://www.alibabacloud.com"
+                }
+            ],
+            "description": "Client of Tea for PHP",
+            "homepage": "https://www.alibabacloud.com/",
+            "keywords": [
+                "alibabacloud",
+                "client",
+                "cloud",
+                "tea"
+            ],
+            "support": {
+                "issues": "https://github.com/aliyun/tea-php/issues",
+                "source": "https://github.com/aliyun/tea-php"
+            },
+            "time": "2023-05-16T06:43:41+00:00"
+        },
+        {
+            "name": "alibabacloud/tea-utils",
+            "version": "0.2.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/tea-utils.git",
+                "reference": "8dfc1a93e9415818e93a621b644abbb84981aea4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/tea-utils/zipball/8dfc1a93e9415818e93a621b644abbb84981aea4",
+                "reference": "8dfc1a93e9415818e93a621b644abbb84981aea4",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "alibabacloud/tea": "^3.1",
+                "php": ">5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\Tea\\Utils\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Tea Utils for PHP",
+            "support": {
+                "issues": "https://github.com/aliyun/tea-util/issues",
+                "source": "https://github.com/aliyun/tea-util"
+            },
+            "time": "2023-06-26T09:49:19+00:00"
+        },
+        {
+            "name": "alibabacloud/tea-xml",
+            "version": "0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/tea-xml.git",
+                "reference": "3e0c000bf536224eebbac913c371bef174c0a16a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/tea-xml/zipball/3e0c000bf536224eebbac913c371bef174c0a16a",
+                "reference": "3e0c000bf536224eebbac913c371bef174c0a16a",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "symfony/var-dumper": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\Tea\\XML\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Tea XML Library for PHP",
+            "support": {
+                "source": "https://github.com/alibabacloud-sdk-php/tea-xml/tree/0.2.4"
+            },
+            "time": "2022-08-02T04:12:58+00:00"
+        },
+        {
+            "name": "aliyuncs/oss-sdk-php",
+            "version": "v2.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
+                "reference": "ce5d34dae9868237a32248788ea175c7e9da14b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/ce5d34dae9868237a32248788ea175c7e9da14b1",
+                "reference": "ce5d34dae9868237a32248788ea175c7e9da14b1",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OSS\\": "src/OSS"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aliyuncs",
+                    "homepage": "http://www.aliyun.com"
+                }
+            ],
+            "description": "Aliyun OSS SDK for PHP",
+            "homepage": "http://www.aliyun.com/product/oss/",
+            "support": {
+                "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
+                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.7.1"
+            },
+            "time": "2024-02-28T11:22:18+00:00"
+        },
         {
             "name": "carbonphp/carbon-doctrine-types",
             "version": "1.0.0",
@@ -345,16 +955,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.8.1",
+            "version": "7.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "41042bc7ab002487b876a0683fc8dce04ddce104"
+                "reference": "d281ed313b989f213357e3be1a179f02196ac99b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/41042bc7ab002487b876a0683fc8dce04ddce104",
-                "reference": "41042bc7ab002487b876a0683fc8dce04ddce104",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d281ed313b989f213357e3be1a179f02196ac99b",
+                "reference": "d281ed313b989f213357e3be1a179f02196ac99b",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -365,8 +975,8 @@
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^1.5.3 || ^2.0.1",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
+                "guzzlehttp/promises": "^1.5.3 || ^2.0.3",
+                "guzzlehttp/psr7": "^2.7.0",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
                 "symfony/deprecation-contracts": "^2.2 || ^3.0"
@@ -377,9 +987,9 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
-                "php-http/client-integration-tests": "dev-master#2c025848417c1135031fdf9c728ee53d0a7ceaee as 3.0.999",
+                "guzzle/client-integration-tests": "3.0.2",
                 "php-http/message-factory": "^1.1",
-                "phpunit/phpunit": "^8.5.36 || ^9.6.15",
+                "phpunit/phpunit": "^8.5.39 || ^9.6.20",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
             },
             "suggest": {
@@ -457,7 +1067,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.8.1"
+                "source": "https://github.com/guzzle/guzzle/tree/7.9.2"
             },
             "funding": [
                 {
@@ -473,20 +1083,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-03T20:35:24+00:00"
+            "time": "2024-07-24T11:22:20+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "bbff78d96034045e58e13dedd6ad91b5d1253223"
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/bbff78d96034045e58e13dedd6ad91b5d1253223",
-                "reference": "bbff78d96034045e58e13dedd6ad91b5d1253223",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/67ab6e18aaa14d753cc148911d273f6e6cb6721e",
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -496,20 +1106,16 @@
                 ]
             },
             "require": {
-                "php": "^7.2.5 || ^8.0"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.2",
-                "phpunit/phpunit": "^8.5.36 || ^9.6.15"
+                "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": true,
-                    "forward-command": false
-                }
-            },
             "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
                 "psr-4": {
                     "GuzzleHttp\\Promise\\": "src/"
                 }
@@ -546,7 +1152,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.2"
+                "source": "https://github.com/guzzle/promises/tree/1.5.3"
             },
             "funding": [
                 {
@@ -562,20 +1168,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-03T20:19:20+00:00"
+            "time": "2023-05-21T12:31:43+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.6.2",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "45b30f99ac27b5ca93cb4831afe16285f57b8221"
+                "reference": "a70f5c95fb43bc83f07c9c948baa0dc1829bf201"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/45b30f99ac27b5ca93cb4831afe16285f57b8221",
-                "reference": "45b30f99ac27b5ca93cb4831afe16285f57b8221",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/a70f5c95fb43bc83f07c9c948baa0dc1829bf201",
+                "reference": "a70f5c95fb43bc83f07c9c948baa0dc1829bf201",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -596,8 +1202,8 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
-                "http-interop/http-factory-tests": "^0.9",
-                "phpunit/phpunit": "^8.5.36 || ^9.6.15"
+                "http-interop/http-factory-tests": "0.9.0",
+                "phpunit/phpunit": "^8.5.39 || ^9.6.20"
             },
             "suggest": {
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
@@ -668,7 +1274,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.6.2"
+                "source": "https://github.com/guzzle/psr7/tree/2.7.0"
             },
             "funding": [
                 {
@@ -684,7 +1290,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-03T20:05:35+00:00"
+            "time": "2024-07-18T11:15:46+00:00"
         },
         {
             "name": "league/flysystem",
@@ -841,17 +1447,77 @@
             "time": "2023-08-03T07:14:11+00:00"
         },
         {
-            "name": "nesbot/carbon",
-            "version": "2.72.3",
+            "name": "lizhichao/one-sm",
+            "version": "1.10",
             "source": {
                 "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "0c6fd108360c562f6e4fd1dedb8233b423e91c83"
+                "url": "https://github.com/lizhichao/sm.git",
+                "reference": "687a012a44a5bfd4d9143a0234e1060543be455a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/0c6fd108360c562f6e4fd1dedb8233b423e91c83",
-                "reference": "0c6fd108360c562f6e4fd1dedb8233b423e91c83",
+                "url": "https://api.github.com/repos/lizhichao/sm/zipball/687a012a44a5bfd4d9143a0234e1060543be455a",
+                "reference": "687a012a44a5bfd4d9143a0234e1060543be455a",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OneSm\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tanszhe",
+                    "email": "1018595261@qq.com"
+                }
+            ],
+            "description": "国密sm3",
+            "keywords": [
+                "php",
+                "sm3"
+            ],
+            "support": {
+                "issues": "https://github.com/lizhichao/sm/issues",
+                "source": "https://github.com/lizhichao/sm/tree/1.10"
+            },
+            "funding": [
+                {
+                    "url": "https://www.vicsdf.com/img/w.jpg",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.vicsdf.com/img/z.jpg",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-05-26T06:19:22+00:00"
+        },
+        {
+            "name": "nesbot/carbon",
+            "version": "2.72.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/briannesbitt/Carbon.git",
+                "reference": "afd46589c216118ecd48ff2b95d77596af1e57ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/afd46589c216118ecd48ff2b95d77596af1e57ed",
+                "reference": "afd46589c216118ecd48ff2b95d77596af1e57ed",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -891,8 +1557,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-3.x": "3.x-dev",
-                    "dev-master": "2.x-dev"
+                    "dev-master": "3.x-dev",
+                    "dev-2.x": "2.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -951,7 +1617,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-25T10:35:09+00:00"
+            "time": "2024-06-03T19:18:41+00:00"
         },
         {
             "name": "overtrue/pinyin",
@@ -1525,6 +2191,52 @@
             "time": "2021-11-10T09:47:35+00:00"
         },
         {
+            "name": "royfj/aliyun-openapi-php-sdk",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/royfj/aliyun-openapi-php-sdk.git",
+                "reference": "c745b10c3625f3969b4ccc7458689283f6886bcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/royfj/aliyun-openapi-php-sdk/zipball/c745b10c3625f3969b4ccc7458689283f6886bcc",
+                "reference": "c745b10c3625f3969b4ccc7458689283f6886bcc",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "aliyun-php-sdk-core/Config.php"
+                ],
+                "psr-4": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lgh",
+                    "email": "cvtest001@163.com"
+                }
+            ],
+            "description": "Fork from https://github.com/aliyun/aliyun-openapi-php-sdk",
+            "support": {
+                "source": "https://github.com/royfj/aliyun-openapi-php-sdk/tree/1.0.0"
+            },
+            "time": "2019-05-09T08:06:38+00:00"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.3.0",
             "source": {
@@ -1767,16 +2479,16 @@
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "a287ed7475f85bf6f61890146edbc932c0fff919"
+                "reference": "a6e83bdeb3c84391d1dfe16f42e40727ce524a5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/a287ed7475f85bf6f61890146edbc932c0fff919",
-                "reference": "a287ed7475f85bf6f61890146edbc932c0fff919",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/a6e83bdeb3c84391d1dfe16f42e40727ce524a5c",
+                "reference": "a6e83bdeb3c84391d1dfe16f42e40727ce524a5c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1837,7 +2549,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -1853,20 +2565,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-05-31T15:07:36+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "8c4ad05dd0120b6a53c1ca374dca2ad0a1c4ed92"
+                "reference": "bc45c394692b948b4d383a08d7753968bed9a83d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/8c4ad05dd0120b6a53c1ca374dca2ad0a1c4ed92",
-                "reference": "8c4ad05dd0120b6a53c1ca374dca2ad0a1c4ed92",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/bc45c394692b948b4d383a08d7753968bed9a83d",
+                "reference": "bc45c394692b948b4d383a08d7753968bed9a83d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1883,9 +2595,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -1927,7 +2636,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -1943,20 +2652,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "42292d99c55abe617799667f454222c54c60e229"
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/42292d99c55abe617799667f454222c54c60e229",
-                "reference": "42292d99c55abe617799667f454222c54c60e229",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1976,9 +2685,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -2016,7 +2722,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -2032,7 +2738,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-28T09:04:16+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -2201,16 +2907,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.36",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "4fdf34004f149cc20b2f51d7d119aa500caad975"
+                "reference": "deedcb3bb4669cae2148bc920eafd2b16dc7c046"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/4fdf34004f149cc20b2f51d7d119aa500caad975",
-                "reference": "4fdf34004f149cc20b2f51d7d119aa500caad975",
+                "url": "https://api.github.com/repos/symfony/process/zipball/deedcb3bb4669cae2148bc920eafd2b16dc7c046",
+                "reference": "deedcb3bb4669cae2148bc920eafd2b16dc7c046",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2249,7 +2955,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.36"
+                "source": "https://github.com/symfony/process/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -2265,20 +2971,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-12T15:49:53+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/translation",
-            "version": "v5.4.35",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "77d7d1e46f52827585e65e6cd6f52a2542e59c72"
+                "reference": "bb51d7f183756d1ac03f50ea47dc5726518cc7e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/77d7d1e46f52827585e65e6cd6f52a2542e59c72",
-                "reference": "77d7d1e46f52827585e65e6cd6f52a2542e59c72",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/bb51d7f183756d1ac03f50ea47dc5726518cc7e8",
+                "reference": "bb51d7f183756d1ac03f50ea47dc5726518cc7e8",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2352,7 +3058,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v5.4.35"
+                "source": "https://github.com/symfony/translation/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -2368,7 +3074,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T13:51:25+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/translation-contracts",
