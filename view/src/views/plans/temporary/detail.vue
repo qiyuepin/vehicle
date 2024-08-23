@@ -46,27 +46,28 @@
             <el-descriptions-item><template slot="label">装货备注</template>{{formData.load_waiting_remark}}</el-descriptions-item>
             <!-- <el-descriptions-item><template slot="label">装货检斤单</template>{{formData.load_weight_inspection}}</el-descriptions-item> -->
             <el-descriptions-item label="装货检斤单">
-                <div class="demo-image__preview">
-                <el-image 
-                    style="width: 100px; height: 100px"
-                    :src="load_weight_inspection[0]" 
-                    :preview-src-list="load_weight_inspection">
-                </el-image>
-                </div>
-            </el-descriptions-item>
+                  <div class="demo-image__preview" v-if="load_weight_inspection != '' && load_weight_inspection != null">
+                  <el-image 
+                  
+                      style="width: 100px; height: 100px"
+                      :src="load_weight_inspection[0]" 
+                      :preview-src-list="load_weight_inspection">
+                  </el-image>
+                  </div>
+              </el-descriptions-item>
             <el-descriptions-item><template slot="label">装货数量</template>{{formData.load_product_quantity}}</el-descriptions-item>
             <el-descriptions-item><template slot="label">卸货预计等待时长</template>{{formData.unload_wait_time}}</el-descriptions-item>
             <el-descriptions-item><template slot="label">卸货备注</template>{{formData.unload_wait_remark}}</el-descriptions-item>
             <!-- <el-descriptions-item><template slot="label">卸货检斤单5</template>{{formData.unload_weight_inspection}}</el-descriptions-item> -->
             <el-descriptions-item label="卸货检斤单">
-                <div class="demo-image__preview">
-                <el-image 
-                    style="width: 100px; height: 100px"
-                    :src="unload_weight_inspection[0]" 
-                    :preview-src-list="unload_weight_inspection">
-                </el-image>
-                </div>
-            </el-descriptions-item>
+                  <div class="demo-image__preview" v-if="unload_weight_inspection != ''">
+                  <el-image 
+                      style="width: 100px; height: 100px"
+                      :src="unload_weight_inspection[0]" 
+                      :preview-src-list="unload_weight_inspection">
+                  </el-image>
+                  </div>
+              </el-descriptions-item>
             <!-- <el-table-column
                   prop="driving_license"
                   label="行驶证"

@@ -162,7 +162,7 @@
                   prop="product_name"
                   label="货品名称"
                   align="center"
-                  width="200">
+                  width="220">
           </el-table-column>
           <el-table-column
                   prop="product_quantity"

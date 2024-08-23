@@ -917,6 +917,16 @@ class InfoService extends BaseService
                     }
                     $data['trailer'] = $newtrailer;
                 }
+            }elseif(isset($param['trailer_num']) && $param['trailer_num']){
+                
+                $nowtrailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+                if($nowtrailer['trailer_status'] == 1){
+                    // $data['trailer'] = Cartrailer::field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+                    $data['trailer'] = Cartrailer::where('product_name',$nowtrailer['product_name'])->whereOr('trailer_status',0)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+                }else{
+                    $data['trailer'] = Cartrailer::field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
+                }
+                
             }else{
                 $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
             }
