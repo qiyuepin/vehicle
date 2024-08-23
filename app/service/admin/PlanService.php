@@ -985,7 +985,7 @@ class PlanService extends BaseService
             else{
                 $param['periodic_times'] = 0;
             }
-            
+            // dump($param);die;
             if($param['start_periodic'] == '1' && $param['plan_type'] == 0){
                 if(empty($month_id)){
                     $max = 1;
@@ -993,17 +993,16 @@ class PlanService extends BaseService
                     $max = Plans::where('start_periodic',1)->where('month',$currentMonth)->count();
                     $max= $max+1;
                 }
-                // dump($max);die;
                 if($max<10){
                     $id = '00'.$max;
                 }
-                else if($max>10){
+                else if($max>=10){
                     $id = '0'.$max;
                 }
-                else if($max>100){
+                else if($max>=100){
                     $id = $max;
                 }
-                // dump($id);die;
+
                 $period['period_id'] = $currentYear.'-'.$currentMonth.'-'.$id;
                 $period['year']= $currentYear;
                 $period['month']= $currentMonth;
@@ -1114,7 +1113,7 @@ class PlanService extends BaseService
         } else {
             $time = '下午';
         }
-        
+        // $this->SDKsendSms('18642646375', $param['driver_name'], $param['load_factory'], $param['unload_factory'],'SMS_472135128',$time);
         try{
             Db::startTrans();
             $where['driver_name']=$param['driver_name'];
