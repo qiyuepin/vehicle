@@ -214,6 +214,7 @@ data() {
       unload_factory: '',
       unload_address: '',
       head_num: '',
+      period_id: '',
       trailer_id: '',
       trailer_num: '',
       driver_name: '',
@@ -344,6 +345,7 @@ methods: {
     this.formData.load_factory = ''
     this.formData.unload_address = ''
     this.formData.unload_factory = ''
+    this.formData.period_id = ''
     this.formData.head_num = ''
     this.formData.trailer_num = ''
     this.formData.driver_name = ''
@@ -370,7 +372,7 @@ methods: {
             this.formData.trailer_num = response.trailer_num
             this.formData.driver_name = response.driver_name
             this.formData.escort_name = response.escort_name
-
+            this.formData.period_id = response.period_id
             this.formData.start_periodic = response.start_periodic
 
             // this.formData.end_periodic = response.end_periodic
