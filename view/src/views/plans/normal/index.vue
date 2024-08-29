@@ -19,6 +19,17 @@
                   <el-option label="异常" value="4"></el-option>
               </el-select>
           </el-form-item>
+          <el-form-item label="日期">
+              <el-date-picker
+                v-model="query.date"
+                type="monthrange"
+                range-separator="至"
+                start-placeholder="开始月份"
+                end-placeholder="结束月份">
+              </el-date-picker>
+          </el-form-item>
+         
+
           <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
               <el-button type="warning" icon="el-icon-refresh-left" @click="handleReload">重置</el-button>
@@ -222,6 +233,13 @@
           </el-table-column>
           <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei start         -->
           <el-table-column
+              prop="period_id"
+              label="周期"
+              align="center"
+              width="150"
+              show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
                   prop="update_time"
                   label="更新时间"
                   align="center"
@@ -312,12 +330,14 @@ data() {
       page: 1,
       limit: 10,
       keywords: '',
-      status: ''
+      status: '',
+      date: ''
     },
     excelquery: {
       keywords: '',
       type: 'excel',
-      status: ''
+      status: '',
+      date: ''
     }
   }
 },
@@ -340,6 +360,7 @@ methods: {
     })
     this.excelquery.keywords = this.query.keywords
     this.excelquery.status = this.query.status
+    this.excelquery.date = this.query.date
     getnormal(this.excelquery).then(response => {
         if(response !== undefined){
           console.log(response)

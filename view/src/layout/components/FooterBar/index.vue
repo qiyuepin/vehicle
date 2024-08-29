@@ -2,7 +2,7 @@
     <div>
         <!-- 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei start         -->
 <!--        <div class="footer">Copyright © </div>-->
-        <div class="footer">Copyright © Qi Xing Transportation Co.,Ltd..All Rights Reserved </div>
+        <div class="footer">Copyright © 吉ICP备2024019604号-1</div>
         <!-- 【YB分类整理】问题描述20240726-2 No.84 顺序调整 by baolei end         -->
     </div>
 </template>

@@ -112,7 +112,7 @@ class PlanService extends BaseService
         // dump('111');die;
         try{
             // $data = Info::where('status','in','0,5,9')->select();
-            $data = Info::select();
+            $data = Info::where('driver_name','<>',null)->select();
             // dump($data);
             foreach($data as $key => $value){
                 $head = Info::carhead($value['head_id']);
@@ -153,7 +153,15 @@ class PlanService extends BaseService
                 $where[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
                 $whereOr[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
             }
-   
+            if(isset($param['date'])&&$param['date']){
+                $where[] = ['update_time','>',$param['date'][0]];
+                $where[] = ['update_time','<',$param['date'][1]];
+                $whereOr[] = ['update_time','>',$param['date'][0]];
+                $whereOr[] = ['update_time','<',$param['date'][1]];
+            }
+            // dump($param);
+            // dump($where);
+            // die;
             if(isset($param['status']) && $param['status'] != ''){
                 
                 // if($param['status'] == 'null'){
@@ -338,10 +346,16 @@ class PlanService extends BaseService
 
     public function addnormal($param=[],$Authorization){
         $currentHour = date('H');
-        if ($currentHour < 12) {
+        if ($currentHour >= 4 && $currentHour < 8) {
+            $time = '早上';
+        } elseif ($currentHour >= 8 && $currentHour < 11) {
             $time = '上午';
-        } else {
+        } elseif ($currentHour >= 11 && $currentHour < 13) {
+            $time = '中午';
+        } elseif ($currentHour >= 13 && $currentHour < 18) {
             $time = '下午';
+        } else {
+            $time = '晚上';
         }
         try{
             Db::startTrans();
@@ -355,10 +369,10 @@ class PlanService extends BaseService
                     ->where('driver_status', 1)
                     // ->order('plan_order', 'desc')
                     ->find();
-            $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
-            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
-                return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
-            }
+            // $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+            // if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
+            //     return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
+            // }
             $currentYear = date('Y');
             $currentMonth = date('m');
             // dump($currentYear);
@@ -454,10 +468,16 @@ class PlanService extends BaseService
     }
     public function editnormal($param=[],$Authorization){
         $currentHour = date('H');
-        if ($currentHour < 12) {
+        if ($currentHour >= 4 && $currentHour < 8) {
+            $time = '早上';
+        } elseif ($currentHour >= 8 && $currentHour < 11) {
             $time = '上午';
-        } else {
+        } elseif ($currentHour >= 11 && $currentHour < 13) {
+            $time = '中午';
+        } elseif ($currentHour >= 13 && $currentHour < 18) {
             $time = '下午';
+        } else {
+            $time = '晚上';
         }
         try{
             Db::startTrans();
@@ -557,6 +577,12 @@ class PlanService extends BaseService
             if(isset($param['keywords'])&&$param['keywords']){
                 $where[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
                 $whereOr[] = ['driver_name|product_name|trailer_num|load_factory|unload_factory|head_num','like','%'.$param['keywords'].'%'];
+            }
+            if(isset($param['date'])&&$param['date']){
+                $where[] = ['update_time','>',$param['date'][0]];
+                $where[] = ['update_time','<',$param['date'][1]];
+                $whereOr[] = ['update_time','>',$param['date'][0]];
+                $whereOr[] = ['update_time','<',$param['date'][1]];
             }
             // dump($where);die;
             if(isset($param['status']) && $param['status'] != ''){
@@ -698,10 +724,16 @@ class PlanService extends BaseService
 
     public function addtemporary($param=[],$Authorization){
         $currentHour = date('H');
-        if ($currentHour < 12) {
+        if ($currentHour >= 4 && $currentHour < 8) {
+            $time = '早上';
+        } elseif ($currentHour >= 8 && $currentHour < 11) {
             $time = '上午';
-        } else {
+        } elseif ($currentHour >= 11 && $currentHour < 13) {
+            $time = '中午';
+        } elseif ($currentHour >= 13 && $currentHour < 18) {
             $time = '下午';
+        } else {
+            $time = '晚上';
         }
         // $this->SDKsendSms('18642646375', $param['driver_name'], $param['load_factory'], $param['unload_factory'],'SMS_472135128',$time);
         // die;
@@ -714,10 +746,10 @@ class PlanService extends BaseService
                     // ->order('id', 'desc')
                     ->find();
             
-            $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
-            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
-                return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
-            }
+            // $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+            // if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
+            //     return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
+            // }
             $currentYear = date('Y');
             $currentMonth = date('m');
             // dump($currentYear);
@@ -825,10 +857,16 @@ class PlanService extends BaseService
   
     public function deltemporary($param=[]){
         $currentHour = date('H');
-        if ($currentHour < 12) {
+        if ($currentHour >= 4 && $currentHour < 8) {
+            $time = '早上';
+        } elseif ($currentHour >= 8 && $currentHour < 11) {
             $time = '上午';
-        } else {
+        } elseif ($currentHour >= 11 && $currentHour < 13) {
+            $time = '中午';
+        } elseif ($currentHour >= 13 && $currentHour < 18) {
             $time = '下午';
+        } else {
+            $time = '晚上';
         }
         try{
             Db::startTrans();
@@ -1108,10 +1146,17 @@ class PlanService extends BaseService
     }
     public function distplan($param=[],$Authorization){
         $currentHour = date('H');
-        if ($currentHour < 12) {
+        // $currentHour = 4;
+        if ($currentHour >= 4 && $currentHour < 8) {
+            $time = '早上';
+        } elseif ($currentHour >= 8 && $currentHour < 11) {
             $time = '上午';
-        } else {
+        } elseif ($currentHour >= 11 && $currentHour < 13) {
+            $time = '中午';
+        } elseif ($currentHour >= 13 && $currentHour < 18) {
             $time = '下午';
+        } else {
+            $time = '晚上';
         }
         // $this->SDKsendSms('18642646375', $param['driver_name'], $param['load_factory'], $param['unload_factory'],'SMS_472135128',$time);
         try{
@@ -1123,17 +1168,17 @@ class PlanService extends BaseService
              //dump($param['product_quantity']);
             $plan0 = Plans::find($param['id']);
             $plans = $plan0 ? $plan0->toArray() : null;
-            $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
-            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
-                return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
-            }
+            // $trailer = Cartrailer::where('trailer_plate',$param['trailer_num'])->find();
+            // if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $param['product_name']){
+            //     return $this->error('货品名称与挂车现有货品不同，请修改货品名称或者挂车信息');
+            // }
             
             if(!empty($periodPlan)){
                 $plans['escort_name'] = $periodPlan['escort_name'];
                 $plans['head_num'] = $periodPlan['head_num'];
             }
             $exitPlan = Plan::where($where)->where('driver_status',1)->find();
-            // dump($exitPlan);die;
+            
             if(!isset($exitPlan)){//如果上一个任务已完成，则现在的任务直接变为进行中
                 $plans['driver_status'] = 1;
                 // $param['status'] = 1;
@@ -1186,11 +1231,34 @@ class PlanService extends BaseService
             $period['period_id'] = $plans['period_id'];
             $period_id = $plans['period_id']?$plans['period_id'].'-'.$param['driver_name']:null;
             if($period_id != null){
-                $oldperiod = Plan::where('driver_name',$param['driver_name'])->where('period_id','like','%'.$plans['period_id'].'%')->count();
-                
-                $oldperiod++;
-                $count = $oldperiod<10?'0'.$oldperiod:$oldperiod;
-                $period_id = $period_id.'-'.$count;
+                // $oldperiod = Plan::where('driver_name',$param['driver_name'])->where('period_id','like','%'.$plans['period_id'].'%')->count();
+                $currentYear = (int)date('Y');
+                $currentMonth = (int)date('m');
+                // $oldperiod++;
+                // $count = $oldperiod<10?'0'.$oldperiod:$oldperiod;
+                // $period_id = $period_id.'-'.$count;
+                $countperiod = Plan::where('year',$currentYear)->where('month',$currentMonth)->count();
+                $maxperiod = Plan::where('year',$currentYear)->where('month',$currentMonth)->order('period_id', 'desc')->value('period_id');
+                if($maxperiod == null){
+                    $period_id = date('Y').'-'.date('m').'-001';
+                }
+                else{
+                    $lastmaxperiod = intval(substr($maxperiod, -3)) +1;
+                    if($lastmaxperiod<10){
+                        $period_num = '00'.$lastmaxperiod;
+                    }
+                    elseif($lastmaxperiod>=10 && $lastmaxperiod<100){
+                        $period_num = '0'.$lastmaxperiod;
+                    }
+                    $period_id = date('Y').'-'.date('m').'-'.$period_num;
+                }
+
+                // dump($maxperiod);
+
+                // dump($period_id);die;
+                // $countperiod++;
+                // $count = $countperiod<10?'0'.$countperiod:$countperiod;
+                // $period_id = $period_id.'-'.$count;
             }
             // dump($period_id);die;
             $plans['period_id'] = $period_id;
@@ -1207,7 +1275,7 @@ class PlanService extends BaseService
             
             $periodid = Db::name('admin_carplan_period')->where($period)->find();
             // dump($periodid);die;
-            if($periodid == null && $plans['plan_type'] == 0){
+            if($periodid == null && $plans['plan_type'] == 0 && $param['start_periodic'] == 1){
                 $period['initiator'] = $plans['initiator'];
                 $period['dispatcher'] = $plans['dispatcher'];
                 $period['status'] = $plans['driver_status'];
@@ -1400,10 +1468,16 @@ class PlanService extends BaseService
 
     public function driver_sumitnormal($param=[],$Authorization){
         $currentHour = date('H');
-        if ($currentHour < 12) {
+        if ($currentHour >= 4 && $currentHour < 8) {
+            $time = '早上';
+        } elseif ($currentHour >= 8 && $currentHour < 11) {
             $time = '上午';
-        } else {
+        } elseif ($currentHour >= 11 && $currentHour < 13) {
+            $time = '中午';
+        } elseif ($currentHour >= 13 && $currentHour < 18) {
             $time = '下午';
+        } else {
+            $time = '晚上';
         }
         try{
             Db::startTrans();
@@ -1422,10 +1496,10 @@ class PlanService extends BaseService
             if(empty($Plan)){
                 throw new \Exception('信息不存在');
             }
-            $trailer = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->find();
-            if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $Plan['product_name']){
-                return $this->error('货品名称与挂车现有货品不同，请联系调度员调整');
-            }
+            // $trailer = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->find();
+            // if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $Plan['product_name']){
+            //     return $this->error('货品名称与挂车现有货品不同，请联系调度员调整');
+            // }
             //  dump($param);
             // $last['period_id'] = $Plan['period_id'];
             // $last['status'] = 0;
@@ -1435,7 +1509,7 @@ class PlanService extends BaseService
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
             $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
             $newplan = Plan::where('driver_name',$Plan['driver_name'])->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
-            // dump($param['status']);
+            // dump($lastplan);die;
             // dump($param);
             if (isset($param['mileage'])) {
                 Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['start_mile'=>$param['mileage']]);
@@ -1506,7 +1580,7 @@ class PlanService extends BaseService
                 
                 // dump($Plan['status']);die;
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
-                if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1) {
+                if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1 ) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
                     $param['driver_status'] = 2;
                     Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);

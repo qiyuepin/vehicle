@@ -277,16 +277,22 @@ class InfoService extends BaseService
         try{
             Db::startTrans();
             foreach($param['ids'] as $key =>  $value){
-                $exit = Info::where('head_id',$value)->value('head_num');
+                $exit = Info::where('head_id',$value)->value('id');
                 if($exit){
-                    return $this->error('人员车辆匹配里面有"'.$exit.'"，无法删除');
+  
+                    $res = Info::destroy($exit);
+                    $delhead =  Carhead::destroy($value);
+
+                    if(!$delhead){
+                        throw new \Exception('删除失败');
+                    }
                 }
             }
-            // dump(Driver::whereIn('id',$param['ids'])->find());die;
-            $res = Carhead::whereIn('id',$param['ids'])->delete();
-            if(!$res){
-                throw new \Exception('删除违章失败');
-            }
+
+            // $res = Carhead::whereIn('id',$param['ids'])->delete();
+            // if(!$res){
+            //     throw new \Exception('删除失败');
+            // }
 
             Db::commit();
             return $this->success([],'删除成功');

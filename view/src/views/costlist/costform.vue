@@ -60,7 +60,7 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      <el-form-item v-if="formData.type_name === '其他'" prop="other_type" label="其他费用类别">
+                      <el-form-item v-if="formData.type_name === '其他费用'" prop="other_type" label="其他费用类别">
                         <el-input v-model="formData.other_type" clearable placeholder="请输入其他费用类别"></el-input>
                       </el-form-item>
                       <el-form-item label="费用金额">

@@ -31,12 +31,32 @@
                       <!-- <el-form-item label="车头" prop="head_num">
                           <el-input v-model="formData.head_num" clearable placeholder="请输入车头"></el-input>
                       </el-form-item> -->
-                      <el-form-item label="挂车" prop="trailer_num">
+                      <!-- <el-form-item label="挂车" prop="trailer_num">
                           <el-input v-model="formData.trailer_num" clearable placeholder="请输入挂车"></el-input>
-                      </el-form-item>
-                      <el-form-item label="驾驶员" prop="driver_name">
+                      </el-form-item> -->
+                      <!-- <el-form-item label="驾驶员" prop="driver_name">
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
+                      </el-form-item> -->
+                      <el-form-item label="挂车" prop="trailer_id">
+                          <el-select v-model="formData.trailer_id" filterable  placeholder="请选择挂车">
+                              <el-option
+                                  v-for="item in trailerlist"
+                                  :key="item.value"
+                                  :label="item.trailer_plate"
+                                  :value="item.id">
+                              </el-option>
+                          </el-select>
                       </el-form-item>
+                      <!-- <el-form-item label="驾驶员" prop="driver_id">
+                          <el-select v-model="formData.driver_id" filterable  placeholder="请选择驾驶员"  @change="driverChanged">
+                            <el-option
+                              v-for="item in driverlist"
+                              :key="item.value"
+                              :label="item.username"
+                              :value="item.id">
+                            </el-option>
+                          </el-select>
+                      </el-form-item> -->
                       <el-form-item label="费用周期" prop="period_id">
                           <el-input v-model="formData.period_id" clearable placeholder="请输入费用周期"></el-input>
                       </el-form-item>
@@ -50,10 +70,10 @@
                             <el-radio :label=2>卸车任务</el-radio>
                           </el-radio-group>
                       </el-form-item>
-                      <el-form-item label="货品名称" prop="product_name">
-                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
-                      </el-form-item>
                       <!-- <el-form-item label="货品名称" prop="product_name">
+                          <el-input v-model="formData.product_name" clearable placeholder="请输入货品名称"></el-input>
+                      </el-form-item> -->
+                      <el-form-item label="货品名称" prop="product_name">
                           <el-select v-model="formData.product_name" filterable  clearable placeholder="请选择货品名称">
                             <el-option
                               v-for="item in productlist"
@@ -62,7 +82,7 @@
                               :value="item.product_name">
                             </el-option>
                           </el-select>
-                      </el-form-item> -->
+                      </el-form-item>
                       <el-form-item label="货品数量" prop="product_quantity">
                           <el-input-number v-model="formData.product_quantity" clearable placeholder="请输入货品数量"></el-input-number>
                           <span>（ t ）</span>
@@ -155,7 +175,8 @@
 <script>
 
 import { addtemporary, edittemporary, gettemporaryinfo, getplaninfo } from '@/api/plan.js'
-import { getproduct, getcartrailerInfo } from '@/api/Info.js'
+import { getproduct, getcartrailerInfo, getcarlist } from '@/api/Info.js'
+import { getcost } from '@/api/cost.js'
 import UploadImage from '@/components/Upload/SingleImage'
 import { validPhone,validIDcard } from '@/utils/validate'
 
@@ -196,6 +217,8 @@ data() {
     drawerShow:false,
     map: null,
     productlist: [],
+    trailerlist:[],
+    driverlist:[],
     saveRules: {
 
       info_id: [{ required: true, trigger: 'blur'}],
@@ -230,6 +253,7 @@ data() {
 created() {
   this.getplaninfo()
   this.getproduct()
+  this.getcarlist()
 },
 destroyed () {
     if (this.map != null) {
@@ -237,6 +261,20 @@ destroyed () {
     }
   },
 methods: {
+  getcarlist() {
+    console.log(22)
+    getcarlist().then(response => {
+      console.log(response)
+        if(response !== undefined){
+          console.log(response.data)
+          this.driverlist = response.driver
+          // this.headlist = response.head
+          // this.escortlist = response.escort
+          this.trailerlist = response.trailer
+        }
+
+    })
+  },
   handlePlanTypeChange(value) {
     // value 为当前选中的 radio 的 label 值
     console.log('选中的任务类别：', value);
@@ -278,6 +316,30 @@ methods: {
           this.factorylist = response.factory
         }
     })
+  },
+  driverChanged(value){
+    console.log(this.formData.driver_id)
+    console.log(this.driverlist)
+    const selectedOption = this.driverlist.find(item => item.id === this.formData.driver_id);
+    const selectedinfo = this.driverlist.find(item => item.id === this.formData.driver_id);
+    if (selectedinfo) {
+
+        console.log('Selected id:', selectedinfo.id);
+        console.log('Selected username:', selectedinfo.username);
+        getcost({platform:"selectdriver",driver_name:selectedinfo.username}).then(response => {
+          if(response !== undefined){
+            if(response.data !== null){
+              console.log(response.data.period_id)
+              this.formData.period_id = response.data.period_id
+            }
+            
+            // this.infolist = response.data
+            // this.factorylist = response.factory
+          }
+      })
+    }
+    // console.log(this.selectedValue);
+    
   },
   infoChanged() {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);

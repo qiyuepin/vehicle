@@ -75,7 +75,7 @@
 
 import { addescort, editescort,getescortInfo } from '@/api/Info.js'
 import UploadImage from '@/components/Upload/SingleImage'
-import { validPhone,validIDCard } from '@/utils/validate'
+import { validPhonenumber,validIDCard } from '@/utils/validate'
 
 export default {
 name: "myForm",
@@ -86,7 +86,7 @@ data() {
 
 
   const validatePhone = (rule, value, callback) => {
-    if (value && !validPhone(value)) {
+    if (value && !validPhonenumber(value)) {
         callback(new Error('请输入正确的手机号'));
     } else {
         callback();

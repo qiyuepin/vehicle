@@ -507,7 +507,7 @@ export default {
     },
     //删除
     handleDelete(ids){
-      this.$confirm('您确定要删除该车头吗?', '温馨提示', {
+      this.$confirm('车头关联的‘人员/车辆管理’也会一并删除，您确定要删除吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
