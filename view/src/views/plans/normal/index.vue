@@ -22,7 +22,7 @@
           <el-form-item label="日期">
               <el-date-picker
                 v-model="query.date"
-                type="monthrange"
+                type="daterange"
                 range-separator="至"
                 start-placeholder="开始月份"
                 end-placeholder="结束月份">
@@ -246,7 +246,7 @@
                   width="200">
               <template slot-scope="scope">
                   <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
+                  <span style="margin-left: 10px" v-text="scope.row.update_time"></span>
               </template>
           </el-table-column>
           <el-table-column
@@ -450,6 +450,7 @@ methods: {
     this.query.page = 1
     this.query.keywords = ''
     this.query.status = ''
+    this.query.date = ''
     this.getnormal()
   },
   handleRegulation(raw) {

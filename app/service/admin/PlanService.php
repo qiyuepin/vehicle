@@ -1208,7 +1208,7 @@ class PlanService extends BaseService
             }
             // $Plan = Plan::where($where)->order(['id'=>'desc'])->find();
             
-            // dump($plans);die;
+            
             // $plans = $param;
             unset($plans['id']);
             unset($plans['create_time']);
@@ -1229,21 +1229,25 @@ class PlanService extends BaseService
             $plans['dispatcher'] = Admin::where('id',$userid)->value('username');
            
             $period['period_id'] = $plans['period_id'];
-            $period_id = $plans['period_id']?$plans['period_id'].'-'.$param['driver_name']:null;
-            if($period_id != null){
+            $period_id = $plans['period_id'];
+            // dump($period_id);die;
+            $currentYear = (int)date('Y');
+            $currentMonth = (int)date('m');
+            if($param['start_periodic'] == 1){
                 // $oldperiod = Plan::where('driver_name',$param['driver_name'])->where('period_id','like','%'.$plans['period_id'].'%')->count();
-                $currentYear = (int)date('Y');
-                $currentMonth = (int)date('m');
+                
                 // $oldperiod++;
                 // $count = $oldperiod<10?'0'.$oldperiod:$oldperiod;
                 // $period_id = $period_id.'-'.$count;
                 $countperiod = Plan::where('year',$currentYear)->where('month',$currentMonth)->count();
-                $maxperiod = Plan::where('year',$currentYear)->where('month',$currentMonth)->order('period_id', 'desc')->value('period_id');
+                $maxperiod = Plan::where('year',$currentYear)->where('month',date('m'))->order('period_id', 'desc')->value('period_id');
+                // dump($maxperiod);die;
                 if($maxperiod == null){
                     $period_id = date('Y').'-'.date('m').'-001';
                 }
                 else{
                     $lastmaxperiod = intval(substr($maxperiod, -3)) +1;
+                    
                     if($lastmaxperiod<10){
                         $period_num = '00'.$lastmaxperiod;
                     }
@@ -1267,14 +1271,14 @@ class PlanService extends BaseService
             $period['period_id_driver'] = $plans['period_id'];
             $period['driver_name'] = $plans['driver_name'];
             $period['trailer_num'] = $plans['trailer_num'];
-            $period['month'] = $plans['month'];
-            $period['year'] = $plans['year'];
+            $period['month'] = $currentMonth;
+            $period['year'] = $currentYear;
             // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
             $period['head_num'] = $plans['head_num'];
             // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
             
             $periodid = Db::name('admin_carplan_period')->where($period)->find();
-            // dump($periodid);die;
+            // dump($period);die;
             if($periodid == null && $plans['plan_type'] == 0 && $param['start_periodic'] == 1){
                 $period['initiator'] = $plans['initiator'];
                 $period['dispatcher'] = $plans['dispatcher'];
@@ -1288,6 +1292,9 @@ class PlanService extends BaseService
             // $r = $this->pushToSingleByCids();
             
             $plans['fixed'] = 1;
+            $plans['month'] = $currentMonth;
+            $plans['year'] = $currentYear;
+            $plans['update_time'] = date('Y-m-d H:i:s');
             $res = Plan::create($plans);
             if($plans['driver_status'] == 1){
                 $id = $res->id;

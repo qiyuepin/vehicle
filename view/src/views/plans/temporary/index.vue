@@ -19,6 +19,15 @@
                   <el-option label="异常" value="4"></el-option>
               </el-select>
           </el-form-item>
+          <el-form-item label="日期">
+              <el-date-picker
+                v-model="query.date"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始月份"
+                end-placeholder="结束月份">
+              </el-date-picker>
+          </el-form-item>
           <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
               <el-button type="warning" icon="el-icon-refresh-left" @click="handleReload">重置</el-button>
@@ -274,12 +283,14 @@ data() {
       page: 1,
       limit: 10,
       keywords: '',
-      status: ''
+      status: '',
+      date: ''
     },
     excelquery: {
       keywords: '',
       type: 'excel',
-      status: ''
+      status: '',
+      date: ''
     }
   }
 },
@@ -302,6 +313,7 @@ methods: {
     })
     this.excelquery.keywords = this.query.keywords
     this.excelquery.status = this.query.status
+    this.excelquery.date = this.query.date
     gettemporary(this.excelquery).then(response => {
         if(response !== undefined){
           console.log(response)
@@ -398,6 +410,7 @@ methods: {
     this.query.page = 1
     this.query.keywords = ''
     this.query.status = ''
+    this.query.date = ''
     this.gettemporary()
   },
   handleRegulation(raw) {
