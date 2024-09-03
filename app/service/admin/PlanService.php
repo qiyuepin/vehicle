@@ -1613,7 +1613,7 @@ class PlanService extends BaseService
             // if($trailer['trailer_status'] == 1 && $trailer['product_name'] != $Plan['product_name']){
             //     return $this->error('货品名称与挂车现有货品不同，请联系调度员调整');
             // }
-            //  dump($param);
+            //  dump($param);die;
             // $last['period_id'] = $Plan['period_id'];
             // $last['status'] = 0;
             $last['driver_status'] = 0;
@@ -1691,9 +1691,9 @@ class PlanService extends BaseService
                     Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name['id']]);
                 }
                 
-                // dump($Plan['status']);die;
+                // dump($lastplan);die;
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
-                if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1 ) {
+                if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1 && $lastplan['period_id'] == $Plan['period_id']) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
                     $param['driver_status'] = 2;
                     Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
@@ -1705,7 +1705,7 @@ class PlanService extends BaseService
                     // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
                     $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     
-                } else if ($param['status'] == 8 && $lastplan !== null && $lastplan['start_periodic'] != 1) {
+                } else if ($param['status'] == 8 && $lastplan !== null && $lastplan['start_periodic'] != 1 && $lastplan['period_id'] == $Plan['period_id']) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
                     $param['driver_status'] = 4;
                     Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
@@ -1717,17 +1717,19 @@ class PlanService extends BaseService
                     // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
                     $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     
-                } else if ($param['status'] == 8) {
+                } else if ($param['status'] == 8 && $lastplan['period_id'] == $Plan['period_id']) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 4
                     $param['driver_status'] = 1;
                     
                 } else if ($param['status'] == 0 && $Plan['status'] == 8) {
+
                     $param['driver_status'] = 4;
                     Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['status'=>2]);
                     if($lastplan !== null){//如果下一条数据存在
                         if($lastplan['start_periodic'] == 1){
                             Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
                         }
+                        // dump($lastplan['id']);die;
                         Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
                         $id = $lastplan['id'];
                         $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
@@ -1779,7 +1781,7 @@ class PlanService extends BaseService
                     // 【YB分类整理】问题描述20240726-2 68 by baolei end
 
                     
-                    if ($lastplan != null && $lastplan['start_periodic'] == 0) {
+                    if ($lastplan != null && $lastplan['start_periodic'] == 0 && $lastplan['period_id'] == $Plan['period_id']) {
                         $param['driver_status'] = 2;
                         // Db::name('admin_carplan_period')->where('period_id_driver',$lastplan['period_id'])->update(['status'=>1]);
                         Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
@@ -1806,10 +1808,10 @@ class PlanService extends BaseService
                     
                     // dump(999);die;
                 }
-                
-                $carhead_plate = isset($param['head_num'])?$param['head_num']:$firstPlan['head_num'];
-                $escort_name = isset($param['escort_name'])?$param['escort_name']:$firstPlan['escort_name'];
                 // dump($firstPlan);die;
+                $carhead_plate = isset($param['head_num'])?$param['head_num']:$Plan['head_num'];
+                $escort_name = isset($param['escort_name'])?$param['escort_name']:$Plan['escort_name'];
+                // dump($Plan);die;
                 if (in_array($param['status'], [1, 3, 5])) {
                     $driver['driver_status'] = 1;
                     $head['head_status'] = 3;
@@ -1839,7 +1841,7 @@ class PlanService extends BaseService
                 }else{
                     // $load_product_quantity = $Plan['load_product_quantity'];
                 }
-                // dump($param);die;
+                
                 
 
                 $trailerdata['product_name'] = $Plan['product_name'];
@@ -1865,7 +1867,7 @@ class PlanService extends BaseService
                     $trailer['trailer_status'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('trailer_status');
                 }
                 // $t = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata)->fetchsql();
-                // dump($head);die;
+                // dump($carhead_plate);die;
                 // return $this->success([],'提交成功'.$load_product_quantity.'+'.$param['load_product_quantity']);
                 Carhead::update($head,['carhead_plate'=>$carhead_plate]);
                 Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata);
@@ -1873,7 +1875,7 @@ class PlanService extends BaseService
                 Admin::update($driver,['username'=>$Plan['driver_name']]);
                 
             }
-            
+            // dump($param);die;
         
             $res = Plan::update($param,['id'=>$param['id']]);
 
