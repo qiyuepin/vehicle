@@ -433,7 +433,7 @@ export default {
   methods: {
     formatQuantity(row, column, cellValue) {
         const numberValue = parseFloat(cellValue);
-        return !isNaN(numberValue) ? numberValue.toFixed(2) : '';
+        return !isNaN(numberValue) ? (numberValue != 0 ? numberValue.toFixed(2) : ''): '';
     },
     hasPermission(permission) {
       return checkPermission(permission);
