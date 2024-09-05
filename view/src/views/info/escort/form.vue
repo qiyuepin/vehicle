@@ -135,7 +135,7 @@ data() {
       cert_back: '',
       // card_badirver_card_numck: '',
       cert_card_num: '',
-      employ_time: '',
+      employ_time: null,
       escort_status: ''
     },
   }

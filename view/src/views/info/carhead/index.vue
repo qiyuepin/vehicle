@@ -145,7 +145,8 @@
                     width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px" v-text="scope.row.regist_time"></span>
+                    <!-- <span style="margin-left: 10px" v-text="scope.row.regist_time"></span> -->
+                    <span style="margin-left: 10px"  v-text="scope.row.regist_time"></span>
                 </template>
             </el-table-column>
             <el-table-column

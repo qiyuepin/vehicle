@@ -132,8 +132,9 @@ class PlanService extends BaseService
                 $data[$key]['head_num'] = $head;
                 $data[$key]['trailer_num'] = $trailer['trailer_plate'];
                 $data[$key]['trailer_status'] = $trailer['trailer_status'];
+                $period_id_now = Plan::where('driver_name',$value['driver_name'])->where('driver_status',1)->value('period_id');
                 $period_id = Plan::where('driver_name',$value['driver_name'])->where('start_periodic',1)->where('plan_type',0)->order(['id'=>'desc'])->value('period_id');
-                $data[$key]['period_id'] = $period_id?$period_id:null;
+                $data[$key]['period_id'] = $period_id_now?$period_id_now:null;
             }
             $factory = Factory::where('status',2)->select();
             return $this->success(['data'=>$data,'factory'=>$factory]);
@@ -379,7 +380,13 @@ class PlanService extends BaseService
                     ->where('period_id', $param['period_id'])
                     ->order(['plan_order'=>'desc'])
                     ->find();
-            
+            $finishperiod = Db::name('admin_carplan_period')->where('period_id_driver',$param['period_id'])->find();
+            if($finishperiod['status'] == 2){
+                // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
+                return $this->error('该周期已经结束，请重新填写费用周期');
+            }
+            // $Plan正在进行中的任务
+            $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
             if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
@@ -979,9 +986,14 @@ class PlanService extends BaseService
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
             
             $id = Plan::where('id',$param['id'])->find();
-            $Plan = Plan::where('driver_name',$id['driver_name'])->where('start_periodic',0)->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
             
-            
+            $Planing = Plan::where('driver_name',$id['driver_name'])->where('driver_status',1)->find();
+            if($Planing['period_id'] != null){
+                $Plan = Plan::where('driver_name',$id['driver_name'])->where('period_id',$Planing['period_id'])->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
+            }else{
+                $Plan = Plan::where('driver_name',$id['driver_name'])->where('start_periodic',0)->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
+            }
+            // dump($Planing);die;
             if(isset($Plan)){
                 $driver_status['driver_status'] = 3;
                 $new['driver_status'] = 1;
@@ -1131,37 +1143,37 @@ class PlanService extends BaseService
             }
             // dump($param);die;
             if($param['start_periodic'] == '1' && $param['plan_type'] == 0){
-                if(empty($month_id)){
-                    $max = 1;
-                }else{
-                    $max = Plans::where('start_periodic',1)->where('month',$currentMonth)->count();
-                    $max= $max+1;
-                }
-                if($max<10){
-                    $id = '00'.$max;
-                }
-                else if($max>=10){
-                    $id = '0'.$max;
-                }
-                else if($max>=100){
-                    $id = $max;
-                }
+                // if(empty($month_id)){
+                //     $max = 1;
+                // }else{
+                //     $max = Plans::where('start_periodic',1)->where('month',$currentMonth)->count();
+                //     $max= $max+1;
+                // }
+                // if($max<10){
+                //     $id = '00'.$max;
+                // }
+                // else if($max>=10){
+                //     $id = '0'.$max;
+                // }
+                // else if($max>=100){
+                //     $id = $max;
+                // }
 
-                $period['period_id'] = $currentYear.'-'.$currentMonth.'-'.$id;
+                // $period['period_id'] = $currentYear.'-'.$currentMonth.'-'.$id;
                 $period['year']= $currentYear;
                 $period['month']= $currentMonth;
                 $period['initiator']= $initiator;
  
             }
             else if($param['plan_type'] == 0){
-                $period['period_id'] = $Plan['period_id'];
+                // $period['period_id'] = $Plan['period_id'];
             }
             else if($param['plan_type'] != 0){
-                $period['period_id'] = null;
+                // $period['period_id'] = null;
             }
             $period_id = Plan::where('driver_status',1)->order(['id'=>'desc'])->find();
             $param['platform'] = 'pc';
-            $param['period_id'] = $period_id['period_id'];
+            // $param['period_id'] = $period_id['period_id'];
             $param['year']= $currentYear;
             $param['month']= $currentMonth;
             $param['initiator']= $initiator;
@@ -1284,34 +1296,8 @@ class PlanService extends BaseService
                 $plans['head_num'] = $periodPlan['head_num'];
             }
             $exitPlan = Plan::where($where)->where('driver_status',1)->find();
-            // dump($param['period_id']);
-            // dump($exitPlan);
-            // dump($Plan);
-            $exitperiodPlan = Plan::where($where)->where('period_id',$param['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
-            if(!isset($exitPlan)){//如果上一个任务已完成，则现在的任务直接变为进行中
-                $plans['driver_status'] = 1;
-                
-            }
-            else if(isset($exitPlan) && $exitPlan['driver_status'] < 2){
-                if($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 5 && $param['start_periodic'] == 0 && $exitPlan['period_id'] == $param['period_id'] && !isset($exitperiodPlan)){//如果完成，更新下一个任务状态为进行中
-                    $plans['driver_status'] = 1;
-                    // Plan::update(['driver_status => 2'],['id'=>$param['id']]);
-                    Plan::where('id', $Plan['id'])->update(['driver_status' => 2]);
-                }elseif($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 8 && $exitPlan['period_id'] == $param['period_id'] && !isset($exitperiodPlan)){//如果完成，更新下一个任务状态为进行中
-                    $plans['driver_status'] = 1;
-                    Plan::where('id', $Plan['id'])->update(['driver_status' => 4]);
-                }else{
-                    $plans['driver_status'] = 0;
-                }
-                
-            }
-            else if(!isset($Plan)){
-                $plans['driver_status'] = 1;
-                // $param['status'] = 1;
-                
-            }else{
-                $plans['driver_status'] = 0;
-            }
+            
+            
             // $Plan = Plan::where($where)->order(['id'=>'desc'])->find();
             
             // dump($plans);die;
@@ -1334,17 +1320,20 @@ class PlanService extends BaseService
             // $initiator = Admin::where('id',$userid)->value('username');
             $plans['dispatcher'] = Admin::where('id',$userid)->value('username');
            
-            $period['period_id'] = $plans['period_id'];
-            $period_id = $plans['period_id'];
+            // $period['period_id'] = $plans['period_id'];
+            // $period_id = $plans['period_id'];
+            if($param['plan_type'] == 0){
+                $period_id_now = Plan::where('driver_name',$param['driver_name'])->where('driver_status',1)->value('period_id');
+                $period_id_exit= Db::name('admin_carplan_period')->where('status',1)->value('period_id_driver');
+                $period_id = $period_id_now?$period_id_now:($period_id_exit?$period_id_exit:'');
+            }else{
+                $period_id= null;
+            }
             // dump($period_id);die;
             $currentYear = (int)date('Y');
             $currentMonth = (int)date('m');
             if($param['start_periodic'] == 1){
-                // $oldperiod = Plan::where('driver_name',$param['driver_name'])->where('period_id','like','%'.$plans['period_id'].'%')->count();
-                
-                // $oldperiod++;
-                // $count = $oldperiod<10?'0'.$oldperiod:$oldperiod;
-                // $period_id = $period_id.'-'.$count;
+
                 $countperiod = Plan::where('year',$currentYear)->where('month',$currentMonth)->count();
                 $maxperiod = Plan::where('year',$currentYear)->where('month',date('m'))->order('period_id', 'desc')->value('period_id');
                 // dump($maxperiod);die;
@@ -1362,14 +1351,40 @@ class PlanService extends BaseService
                     }
                     $period_id = date('Y').'-'.date('m').'-'.$period_num;
                 }
-
-                // dump($maxperiod);
-
-                // dump($period_id);die;
-                // $countperiod++;
-                // $count = $countperiod<10?'0'.$countperiod:$countperiod;
-                // $period_id = $period_id.'-'.$count;
             }
+
+            $exitperiodPlan = Plan::where($where)->where('period_id',$period_id)->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
+            // $exitPlan当前进行中的任务  $exitperiodPlan是待接单列表里面同周期任务
+            if(!isset($exitperiodPlan) && !isset($exitPlan)){//如果不存在同周期任务，则现在的任务直接变为进行中
+                $plans['driver_status'] = 1;
+                
+            }
+            else if(isset($exitPlan) && $exitPlan['driver_status'] < 2){
+                // dump($Plan);
+                if($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 5 && $param['start_periodic'] == 0 && $exitPlan['period_id'] == $period_id && !isset($exitperiodPlan)){//如果完成，更新下一个任务状态为进行中
+                    $plans['driver_status'] = 1;
+                    // dump(33);
+                    Plan::where('id', $exitPlan['id'])->update(['driver_status' => 2]);
+                }elseif($exitPlan['driver_status'] == 1 && $exitPlan['status'] == 8 && $param['start_periodic'] == 0 && $exitPlan['period_id'] == $period_id && !isset($exitperiodPlan)){//如果完成，更新下一个任务状态为进行中
+                    $plans['driver_status'] = 1;
+                    // dump($exitPlan['id']);
+                    // dump(44);
+                    Plan::where('id', $exitPlan['id'])->update(['driver_status' => 4]);
+                }else{
+                    $plans['driver_status'] = 0;
+                }
+                
+            }
+            else if(!isset($Plan)){
+                // dump(99);
+                $plans['driver_status'] = 1;
+                // $param['status'] = 1;
+                
+            }else{
+                $plans['driver_status'] = 0;
+            }
+            // dump($period_id);
+            // dump($Plan);die;
             // dump($period_id);die;
             $plans['period_id'] = $period_id;
 
@@ -1660,6 +1675,7 @@ class PlanService extends BaseService
                 //     }
                 //     Info::where('id',$Plan['info_id'])->update(['head_num'=>$param['head_num'],'head_id'=>$exit_head_num['head_id']]);
                 // }
+                // dump($param['status']);
                 if (isset($param['trailer_num']) && $param['status'] == 1 && $Plan['plan_type'] == 0){
                     
                     $trailer_num = Info::where('id',$Plan['info_id'])->find();
@@ -1691,12 +1707,18 @@ class PlanService extends BaseService
                     Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name['id']]);
                 }
                 
-                // dump($lastplan);die;
+                $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
-                if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1 && $lastplan['period_id'] == $Plan['period_id']) {
+                // dump($lastplan['start_periodic']);
+                // dump($Plan['period_id']);die;
+                if ($param['status'] == 5 && $exitperiodPlan != null && $exitperiodPlan['period_id'] != null) {
+                    // dump(9999);
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
                     $param['driver_status'] = 2;
-                    Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
+                    
+                    $lastplan = $exitperiodPlan;
+                    Plan::where('id', $exitperiodPlan['id'])->update(['driver_status' => 1]);
+                    
                     $next = Plan::where('id', $lastplan['id'])->find();
                     
                     $id = $lastplan['id'];
@@ -1705,7 +1727,29 @@ class PlanService extends BaseService
                     // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
                     $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     
-                } else if ($param['status'] == 8 && $lastplan !== null && $lastplan['start_periodic'] != 1 && $lastplan['period_id'] == $Plan['period_id']) {
+                } else if ($param['status'] == 5 && $lastplan !== null && $lastplan['start_periodic'] != 1 && $lastplan['period_id'] == $Plan['period_id'] && $lastplan['period_id'] != null) {
+                    // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
+                    $param['driver_status'] = 2;
+                    
+                    Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
+                    
+                    $next = Plan::where('id', $lastplan['id'])->find();
+                    
+                    $id = $lastplan['id'];
+                    $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
+                    $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+                    // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
+                    $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
+                    
+                } else if ($param['status'] == 8 && $exitperiodPlan !== null && $lastplan['period_id'] != null){
+                    $param['driver_status'] = 4;
+                    Plan::where('id', $exitperiodPlan['id'])->update(['driver_status' => 1]);
+                    $next = Plan::where('id', $lastplan['id'])->find();
+                    
+                    $id = $exitperiodPlan['id'];
+                    $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
+                    $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+                } else if ($param['status'] == 8 && $lastplan !== null && $lastplan['start_periodic'] != 1 && $lastplan['period_id'] == $Plan['period_id'] && $lastplan['period_id'] != null) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 2，下一个任务的 driver_status 更新为 1
                     $param['driver_status'] = 4;
                     Plan::where('id', $lastplan['id'])->update(['driver_status' => 1]);
@@ -1714,8 +1758,9 @@ class PlanService extends BaseService
                     $id = $lastplan['id'];
                     $cid = Admin::where('username',$Plan['driver_name'])->value('user_cid');
                     $r = $this->pushToSingleByCids($id,$cid,$plantype,$planmsg);
+                    // dump($r);die;
                     // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory']);
-                    $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
+                    // $this->SDKsendSms($phone, $lastplan['driver_name'], $lastplan['load_factory'], $lastplan['unload_factory'],$SMSCODE,$time);
                     
                 } else if ($param['status'] == 8 && $lastplan['period_id'] == $Plan['period_id']) {
                     // 如果没有下一个任务，则将当前任务的 driver_status 更新为 4
@@ -1808,7 +1853,7 @@ class PlanService extends BaseService
                     
                     // dump(999);die;
                 }
-                // dump($firstPlan);die;
+                // dump($Plan);die;
                 $carhead_plate = isset($param['head_num'])?$param['head_num']:$Plan['head_num'];
                 $escort_name = isset($param['escort_name'])?$param['escort_name']:$Plan['escort_name'];
                 // dump($Plan);die;

@@ -24,9 +24,19 @@
                 v-model="query.date"
                 type="daterange"
                 range-separator="至"
-                start-placeholder="开始月份"
-                end-placeholder="结束月份">
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :default-time="['00:00:00', '23:59:59']"
+                @change="handleDateChange">
               </el-date-picker>
+              <!-- <el-date-picker
+              v-model="query.date"
+              type="datetimerange"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :default-time="['23:59:59']"
+              @change="handleDateChange"> -->
+            <!-- </el-date-picker> -->
           </el-form-item>
          
 
@@ -105,10 +115,7 @@
                 
                 <el-button  v-else-if="scope.row.driver_status === 4"  type="info"  size="mini" plain @click="handleDetail(scope.row)">异常</el-button>
                 <el-button  v-else-if="(scope.row.driver_status === 1 && scope.row.status === null) || scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">进行中</el-button>
-                  <!-- 【YB分类整理】问题描述20240726 No.53 顺序调整 by baolei start         -->
-<!--                <el-button  v-else-if="scope.row.status === 0"  type="success"  size="mini" plain @click="handleDetail(scope.row)">回库</el-button>-->
-<!--                <el-button  v-else-if="scope.row.status === 1"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 在途</el-button>-->
-                  <!-- 【YB分类整理】问题描述20240726 No.53 顺序调整 by baolei end         -->
+
                 <el-button  v-else-if="scope.row.status === 2"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货 </el-button>
                 <el-button  v-else-if="scope.row.status === 3"  type="primary"  size="mini" plain @click="handleDetail(scope.row)"> 装货完成 </el-button>
                 <el-button  v-else-if="scope.row.status === 4"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">卸货</el-button>
@@ -127,9 +134,7 @@
 
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
-                  <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei start        -->
-<!--                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>-->
-                  <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei end        -->
+ 
               </template>
           </el-table-column>
           <el-table-column
@@ -138,8 +143,7 @@
               align="center"
               width="110">
               <template slot-scope="scope">
-                  <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei start         -->
-<!--                <el-tag v-if="scope.row.fixed === 0" type="info">非固定</el-tag>-->
+
                   <el-tag v-if="scope.row.fixed === 0" type="info">临时</el-tag>
                   <!-- 【YB分类整理】问题描述20240726-2 No.77 顺序调整 by baolei end         -->
                 <el-tag v-else-if="scope.row.fixed === 1" type="success">固定</el-tag>
@@ -259,8 +263,10 @@
                   <el-button size="mini" type="primary" v-permission="'admin.info.editescort'"  @click="handleEdit(scope.row)">编辑</el-button>
 
                   <el-button v-if="scope.row.driver_status === 3 || scope.row.status === 9" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
+                  <el-button v-else-if="scope.row.driver_status === 2" size="mini" type="info" disabled>完成</el-button>
+                  <el-button v-else-if="scope.row.driver_status === 4" size="mini" type="info" disabled>异常</el-button>
                   <el-button v-else size="mini" type="danger" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">作废</el-button>
-
+                 
 
                   <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                       <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
@@ -311,6 +317,7 @@ import test from './test.vue'
 import { getArrByKey } from '@/utils'
 import { exportExcel } from '@/utils/export'
 
+
 export default {
 name: 'Admin',
 components: {
@@ -326,6 +333,7 @@ data() {
     loading: true,
     searchShow: false,
     total: 0,
+    querydate: [],
     query: {
       page: 1,
       limit: 10,
@@ -344,7 +352,38 @@ data() {
 created() {
   this.getnormal();
 },
+watch: {
+  querydate(newValue) {
+    this.handleDateChange();
+  }
+},
 methods: {
+  handleDateChange() {
+    if (this.query.date.length) {
+      console.log(this.query.date)
+      console.log(this.query.date[0])
+      const localDate = new Date(this.query.date[0]); // 从接口接收到的 UTC 时间
+      this.query.date[0] = localDate.toLocaleString(); // 显示给用户的本地时间
+      const localDateend = new Date(this.query.date[1]); // 从接口接收到的 UTC 时间
+      this.query.date[1] = localDateend.toLocaleString(); // 显示给用户的本地时间
+        const [startDate, endDate] = this.query.date;
+
+        // 将日期对象转换为本地时间
+        const localStartDate = new Date(startDate);
+        const localEndDate = new Date(endDate);
+
+        // 调整时区偏移
+        const offset = localStartDate.getTimezoneOffset() * 60000;
+
+        const correctedStartDate = new Date(localStartDate.getTime() - offset);
+        const correctedEndDate = new Date(localEndDate.getTime() - offset);
+        // this.query.date[0] = correctedStartDate.toISOString();
+        // this.query.date[1] = correctedEndDate.toISOString();
+        console.log(this.query)
+        console.log('Start Date:', correctedStartDate.toISOString());
+        console.log('End Date:', correctedEndDate.toISOString());
+    }
+  },
   hasPermission(permission) {
     return checkPermission(permission);
   },

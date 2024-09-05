@@ -158,7 +158,8 @@ class InfoService extends BaseService
             }
             unset($param['id']);
             // dump($param);
-            // dump($param);die;
+
+            
             $res = Carhead::create($param);
             $info['head_id'] = $res->id;
             $info['head_num'] = $res->carhead_plate;
@@ -578,8 +579,9 @@ class InfoService extends BaseService
         try{
             Db::startTrans();
 
-            // $param['escort_status'] = 0;
-            // dump($param);
+            if(isset($param['employ_time'])){
+                $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
+            }
             $res = Escort::create($param);
             // dump($res);
             if(!$res){
@@ -600,6 +602,9 @@ class InfoService extends BaseService
         // dump($param);
         try{
             Db::startTrans();
+            if(isset($param['employ_time'])){
+                $param['employ_time'] = $param['employ_time']!=''?$param['employ_time']:NULL;
+            }
             $Cartrailer = Escort::where('id',$param['id'])->find();
             if(empty($Cartrailer)){
                 throw new \Exception('信息不存在');

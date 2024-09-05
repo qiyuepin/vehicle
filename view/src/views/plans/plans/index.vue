@@ -313,8 +313,8 @@ methods: {
         }
         this.loading = false
     })
-    this.excelquery.keywords = this.excelquery.keywords
-    this.excelquery.status = this.excelquery.status
+    this.excelquery.keywords = this.query.keywords
+    this.excelquery.status = this.query.status
     getplans(this.excelquery).then(response => {
         if(response !== undefined){
           console.log(response)

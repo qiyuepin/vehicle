@@ -236,7 +236,7 @@ methods: {
   infoChanged() {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
-      // console.log(selectedinfo)
+      console.log(selectedinfo)
       this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;

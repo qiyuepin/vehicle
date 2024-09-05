@@ -199,8 +199,8 @@ data() {
       platform: 'pc',
       period_id: '',
       load_location: '',
-      unload_location: '',
-      period_id: ''
+      plan_type: 0,
+      unload_location: ''
     },
   }
 },
@@ -241,7 +241,7 @@ methods: {
   infoChanged() {
     const selectedinfo = this.infolist.find(item => item.id === this.formData.info_id);
     if (selectedinfo) {
-      // console.log(selectedinfo)
+      console.log(selectedinfo)
       this.formData.head_num = selectedinfo.head_num;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.driver_name = selectedinfo.driver_name;
@@ -307,7 +307,7 @@ methods: {
   getplansinfo(id){
     getplansinfo({id:id}).then(response=>{
         if(response !== undefined){
-          console.log('response.start_periodic---'+response.start_periodic)
+          console.log('response.start_periodic---'+response.period_id)
             this.title = '分配驾驶员'
             this.formData.id = response.id
             // this.formData.info_id = response.info_id
@@ -330,8 +330,8 @@ methods: {
             this.formData.load_location = response.load_location
             this.formData.unload_location = response.unload_location
             this.formData.initiator = response.initiator
-            this.formData.period_id = response.period_id
             this.formData.create_time = response.create_time
+            this.formData.plan_type = 0
             this.product_quantity = response.product_quantity
         }
     })

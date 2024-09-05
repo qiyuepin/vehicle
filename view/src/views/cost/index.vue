@@ -7,9 +7,19 @@
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
                   <el-option label="全部" value=""/>
-                  <el-option label="进行中" value="0"></el-option>
-                  <el-option label="已结束" value="1"></el-option>
+                  <el-option label="进行中" value="1"></el-option>
+                  <el-option label="已结束" value="2"></el-option>
               </el-select>
+          </el-form-item>
+          <el-form-item label="日期">
+            <el-date-picker
+              v-model="query.date"
+              type="monthrange"
+              range-separator="至"
+              start-placeholder="开始月份"
+              end-placeholder="结束月份"
+              @change="handleDateChange">
+            </el-date-picker>
           </el-form-item>
           <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
@@ -259,12 +269,14 @@ data() {
       limit: 10,
       platform: 'pc',
       keywords: '',
-      status: ''
+      status: '',
+      date: ''
     },
     excelquery: {
       keywords: '',
       platform: 'excelall',
-      status: ''
+      status: '',
+      date: ''
     }
   }
 },
@@ -273,6 +285,32 @@ created() {
   this.getexcel();
 },
 methods: {
+  handleDateChange() {
+    if (this.query.date.length) {
+      console.log(this.query.date)
+      console.log(this.query.date[0])
+      const localDate = new Date(this.query.date[0]); // 从接口接收到的 UTC 时间
+      this.query.date[0] = localDate.toLocaleString(); // 显示给用户的本地时间
+      const localDateend = new Date(this.query.date[1]); // 从接口接收到的 UTC 时间
+      this.query.date[1] = localDateend.toLocaleString(); // 显示给用户的本地时间
+        const [startDate, endDate] = this.query.date;
+
+        // 将日期对象转换为本地时间
+        const localStartDate = new Date(startDate);
+        const localEndDate = new Date(endDate);
+
+        // 调整时区偏移
+        const offset = localStartDate.getTimezoneOffset() * 60000;
+
+        const correctedStartDate = new Date(localStartDate.getTime() - offset);
+        const correctedEndDate = new Date(localEndDate.getTime() - offset);
+        // this.query.date[0] = correctedStartDate.toISOString();
+        // this.query.date[1] = correctedEndDate.toISOString();
+        console.log(this.query)
+        console.log('Start Date:', correctedStartDate.toISOString());
+        console.log('End Date:', correctedEndDate.toISOString());
+    }
+  },
   //查询列表
   getcost() {
     this.loading = true
@@ -286,6 +324,7 @@ methods: {
 
     this.excelquery.keywords = this.query.keywords
     this.excelquery.status = this.query.status
+    this.excelquery.date = this.query.date
     console.log(this.excelquery)
     getcost(this.excelquery).then(response => {
         if(response !== undefined){

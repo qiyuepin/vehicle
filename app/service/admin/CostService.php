@@ -42,7 +42,16 @@ class CostService extends BaseService
             if(isset($param['driver_name'])&&$param['driver_name'] !=''){
                 $where[] = ['driver_name','=',$param['driver_name']];
             }
-            // dump($param);die;
+
+            if(isset($param['date'])&&$param['date']){
+                list($year, $month, $day) = explode('/',$param['date'][0]);
+                list($year1, $month1, $day1) = explode('/',$param['date'][1]);
+
+                $where[] = ['year','=',$year];
+                $where[] = ['month','>=',$month];
+                $where[] = ['month','<=',$month1];
+            }
+            // dump($where);die;
             // dump($where);die;
             if(isset($param['platform'])&&$param['platform'] == "pc"){//电脑端
 
