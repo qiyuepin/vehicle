@@ -183,7 +183,7 @@ methods: {
             this.formData.phone2 = response.phone2
             this.formData.id_card = response.id_card
             this.formData.cert_card_num = response.cert_card_num
-            this.formData.employ_time = new Date(response.employ_time).toISOString().slice(0,10)
+            this.formData.employ_time = response.employ_time?new Date(response.employ_time).toISOString().slice(0,10):''
             this.formData.escort_status = response.escort_status
             this.formData.card_front = response.card_front
             this.$refs.Image_card_front.imgUrl = response.card_front

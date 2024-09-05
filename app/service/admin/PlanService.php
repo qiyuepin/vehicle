@@ -1635,7 +1635,13 @@ class PlanService extends BaseService
             $last['driver_name'] = $Plan['driver_name'];
             // $last['start_periodic'] = 1;
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
-            $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
+            $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
+            if($exitperiodPlan){
+                $lastplan =$exitperiodPlan;
+            }else{
+                $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
+            }
+            
             $newplan = Plan::where('driver_name',$Plan['driver_name'])->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
             // dump($lastplan);die;
             // dump($param);
@@ -1663,19 +1669,7 @@ class PlanService extends BaseService
                     $SMSCODE = 'SMS_472095114';
                 }
 
-                // 新增驾驶员修改挂车、押运员之后更新人员车辆匹配
-                // if (isset($param['head_num']) && $param['status'] == 1){
-                    
-                //     $head_num = Info::where('id',$Plan['info_id'])->value('head_num');
-                //     //输入的车头是否存在于人员车辆匹配中
-                //     $exit_head_num = Info::where('head_num',$param['head_num'])->find();
-                //     if($head_num != $param['head_num'] && $exit_head_num){
-                //         //将原有$param['head_num']的info信息置为空
-                //         Info::where('id',$exit_head_num['id'])->update(['head_num'=>null,'head_id'=>null]);
-                //     }
-                //     Info::where('id',$Plan['info_id'])->update(['head_num'=>$param['head_num'],'head_id'=>$exit_head_num['head_id']]);
-                // }
-                // dump($param['status']);
+
                 if (isset($param['trailer_num']) && $param['status'] == 1 && $Plan['plan_type'] == 0){
                     
                     $trailer_num = Info::where('id',$Plan['info_id'])->find();
@@ -1707,7 +1701,7 @@ class PlanService extends BaseService
                     Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name['id']]);
                 }
                 
-                $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
+                
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
                 // dump($lastplan['start_periodic']);
                 // dump($Plan['period_id']);die;
