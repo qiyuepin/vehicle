@@ -108,12 +108,13 @@ class PlanService extends BaseService
         }
     }
 
-    public function getplaninfo(){
+    public function getplaninfo($param=[]){
         // dump('111');die;
         try{
             // $data = Info::where('status','in','0,5,9')->select();
+            // $data = Info::where('driver_name','<>',null)->select();
             $data = Info::where('driver_name','<>',null)->select();
-            // dump($data);
+     
             foreach($data as $key => $value){
                 $head = Info::carhead($value['head_id']);
                 $trailer = Info::cartrailer($value['trailer_id']);
@@ -133,8 +134,9 @@ class PlanService extends BaseService
                 $data[$key]['trailer_num'] = $trailer['trailer_plate'];
                 $data[$key]['trailer_status'] = $trailer['trailer_status'];
                 $period_id_now = Plan::where('driver_name',$value['driver_name'])->where('driver_status',1)->value('period_id');
-                $period_id = Plan::where('driver_name',$value['driver_name'])->where('start_periodic',1)->where('plan_type',0)->order(['id'=>'desc'])->value('period_id');
-                $data[$key]['period_id'] = $period_id_now?$period_id_now:null;
+                // $period_id = Plan::where('driver_name',$value['driver_name'])->where('driver_status',1)->where('start_periodic',1)->where('plan_type',0)->order(['id'=>'desc'])->value('period_id');
+                $period_id = Db::name('admin_carplan_period')->where('driver_name',$value['driver_name'])->where('status',1)->value('period_id_driver');
+                $data[$key]['period_id'] = $period_id_now?$period_id_now:($period_id?$period_id:null);
             }
             $factory = Factory::where('status',2)->select();
             return $this->success(['data'=>$data,'factory'=>$factory]);
@@ -1324,7 +1326,7 @@ class PlanService extends BaseService
             // $period_id = $plans['period_id'];
             if($param['plan_type'] == 0){
                 $period_id_now = Plan::where('driver_name',$param['driver_name'])->where('driver_status',1)->value('period_id');
-                $period_id_exit= Db::name('admin_carplan_period')->where('status',1)->value('period_id_driver');
+                $period_id_exit= Db::name('admin_carplan_period')->where('driver_name',$param['driver_name'])->where('status',1)->value('period_id_driver');
                 $period_id = $period_id_now?$period_id_now:($period_id_exit?$period_id_exit:'');
             }else{
                 $period_id= null;
