@@ -1898,7 +1898,7 @@ class PlanService extends BaseService
                 }
                 
                 
-
+                // dump($Plan);die;
                 $trailerdata['product_name'] = $Plan['product_name'];
                 if ($param['status'] == 3) {
                     $trailerdata['trailer_status'] = 1;
@@ -1920,9 +1920,9 @@ class PlanService extends BaseService
                 } else {
                     // dump(99);die;
                     $trailer['trailer_status'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('trailer_status');
+                    $trailerdata['product_name'] = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_name');
                 }
-                // $t = Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata)->fetchsql();
-                // dump($carhead_plate);die;
+                // dump($trailerdata);die;
                 // return $this->success([],'提交成功'.$load_product_quantity.'+'.$param['load_product_quantity']);
                 Carhead::update($head,['carhead_plate'=>$carhead_plate]);
                 Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata);
