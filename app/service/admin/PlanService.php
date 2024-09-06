@@ -386,6 +386,9 @@ class PlanService extends BaseService
             if($finishperiod['status'] == 2){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期已经结束，请重新填写费用周期');
+            }else if($finishperiod['driver_name'] != $param['driver_name']){
+                // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
+                return $this->error('该周期不属于该驾驶员，请重新填写费用周期');
             }
             // $Plan正在进行中的任务
             $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
@@ -877,7 +880,14 @@ class PlanService extends BaseService
                     ->find();
             $currentYear = date('Y');
             $currentMonth = date('m');
-            
+            $finishperiod = Db::name('admin_carplan_period')->where('period_id_driver',$param['period_id'])->find();
+            if($finishperiod['status'] == 2){
+                // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
+                return $this->error('该周期已经结束，请重新填写费用周期');
+            }else if($finishperiod['driver_name'] != $param['driver_name']){
+                // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
+                return $this->error('该周期不属于该驾驶员，请重新填写费用周期');
+            }
             $periodPlan = Plan::where('driver_name', $param['driver_name'])
                     ->where('driver_status', 0)
                     ->where('period_id', $param['period_id'])
