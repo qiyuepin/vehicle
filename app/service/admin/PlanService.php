@@ -1632,6 +1632,9 @@ class PlanService extends BaseService
             }
             // dump($param['load_weight_inspection']);die;
             $Plan = Plan::where('id',$param['id'])->find();
+            if($Plan['driver_status'] != 1){
+                return $this->error('任务状态变更，请返回列表刷新');
+            }
             $firstPlan = Plan::where('period_id',$Plan['period_id'])->find();
             if(empty($Plan)){
                 throw new \Exception('信息不存在');
@@ -1647,7 +1650,8 @@ class PlanService extends BaseService
             $last['driver_name'] = $Plan['driver_name'];
             // $last['start_periodic'] = 1;
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
-            $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
+            $exitperiodPlan1 = Plan::where('driver_name', $Plan['driver_name'])->where('driver_status',1)->find();
+            $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_name', $Plan['driver_name'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
             if($exitperiodPlan){
                 $lastplan =$exitperiodPlan;
             }else{
