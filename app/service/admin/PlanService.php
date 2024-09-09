@@ -383,28 +383,28 @@ class PlanService extends BaseService
                     ->order(['plan_order'=>'desc'])
                     ->find();
             $finishperiod = Db::name('admin_carplan_period')->where('period_id_driver',$param['period_id'])->find();
-            if($finishperiod['status'] == 2){
+            if($finishperiod && $finishperiod['status'] == 2){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期已经结束，请重新填写费用周期');
-            }else if($finishperiod['driver_name'] != $param['driver_name']){
+            }else if($finishperiod && $finishperiod['driver_name'] != $param['driver_name']){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期不属于该驾驶员，请重新填写费用周期');
             }
             // $Plan正在进行中的任务
             $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
-            if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
+            if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && $param['period_id']!=null && $param['period_id']!='' && !isset($periodPlan)){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && $param['period_id']!=null && $param['period_id']!='' && !isset($periodPlan)){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id']){
+            else if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id'] && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id']){
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id'] && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
@@ -777,19 +777,19 @@ class PlanService extends BaseService
             $currentMonth = date('m');
             // dump($Plan['period_id']);
             // dump($periodPlan);die;
-            if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
+            if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan) && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan) && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id']){
+            else if($Plan && in_array($Plan['status'], [5, 8, 9]) && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id'] && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id']){
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1 && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['period_id'] == $param['period_id'] && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
@@ -894,19 +894,19 @@ class PlanService extends BaseService
                     ->order(['plan_order'=>'desc'])
                     ->find();
                     
-            if($Plan && in_array($Plan['status'], [5, 8, 9])  && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
+            if($Plan && in_array($Plan['status'], [5, 8, 9])  && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan) && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1  && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan)){
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1  && $Plan['period_id'] == $param['period_id'] && !isset($periodPlan) && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            elseif($Plan && in_array($Plan['status'], [5, 8, 9])  && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['plan_order']<$param['plan_order']){
+            elseif($Plan && in_array($Plan['status'], [5, 8, 9])  && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['plan_order']<$param['plan_order'] && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1  && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['plan_order']<$param['plan_order']){
+            else if($Plan && $Plan['status'] == 3 && $Plan['plan_type'] == 1  && $Plan['period_id'] == $param['period_id'] && isset($periodPlan) && $periodPlan['plan_order']<$param['plan_order'] && $param['period_id']!=null && $param['period_id']!=''){
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
@@ -1652,7 +1652,7 @@ class PlanService extends BaseService
             // $lastplan = Plan::where($last)->wherer('id','>',$param['id'])->order(['plan_order'=>'asc'])->find();//下一条任务信息
             $exitperiodPlan1 = Plan::where('driver_name', $Plan['driver_name'])->where('driver_status',1)->find();
             $exitperiodPlan = Plan::where('period_id', $Plan['period_id'])->where('driver_name', $Plan['driver_name'])->where('driver_status',0)->order(['plan_order'=>'desc'])->find();
-            if($exitperiodPlan){
+            if($exitperiodPlan && $Plan['period_id'] != null && $Plan['period_id'] != ''){
                 $lastplan =$exitperiodPlan;
             }else{
                 $lastplan = Plan::where($last)->where('id','<>',$param['id'])->order(['plan_order'=>'desc'])->find();//下一条非新周期任务信息
@@ -1810,7 +1810,7 @@ class PlanService extends BaseService
                     $param['driver_status'] = 2;
                     $test = Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->find();
                     // dump($lastplan['period_id']);die;
-                    // dump($test);die;
+                    // dump($lastplan);die;
                     Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['status'=>2]);
                     // dump($lastplan);die;
                     if($lastplan !== null){//如果下一条数据存在

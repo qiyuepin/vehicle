@@ -210,7 +210,11 @@
                   min-width="160">
               <template slot-scope="scope">
 
-                  <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button>
+                  <!-- <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button> -->
+                  <el-button v-if="scope.row.driver_status === 3 || scope.row.status === 9" size="mini" type="primary" v-permission="'admin.plans.edittemporary'"  @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button v-else-if="scope.row.driver_status === 2 || scope.row.driver_status === 4" size="mini" v-permission="'admin.plans.edittemporary'"  type="primary" disabled>编辑</el-button>
+                  <el-button v-else size="mini" type="primary" v-permission="'admin.plans.edittemporary'"  @click="handleEdit(scope.row)">编辑</el-button>
+
                   <el-button v-if="scope.row.driver_status === 3 || scope.row.status === 9" size="mini" type="info" disabled @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">已作废</el-button>
                   <!-- <el-button v-else size="mini" type="danger" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.driver_status)">作废</el-button> -->
                   <el-button v-else-if="scope.row.driver_status === 2" size="mini" type="info" disabled>完成</el-button>
