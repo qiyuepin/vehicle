@@ -386,7 +386,7 @@ class PlanService extends BaseService
             if($finishperiod && $finishperiod['status'] == 2){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期已经结束，请重新填写费用周期');
-            }else if($finishperiod && $finishperiod['driver_name'] != $param['driver_name']){
+            }else if($finishperiod && $finishperiod['driver_name'] != $param['driver_name'] && $param['period_id'] != '' && $param['period_id'] != null){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期不属于该驾驶员，请重新填写费用周期');
             }
@@ -884,7 +884,7 @@ class PlanService extends BaseService
             if($finishperiod['status'] == 2){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期已经结束，请重新填写费用周期');
-            }else if($finishperiod['driver_name'] != $param['driver_name'] && $finishperiod['driver_name'] != $param['driver_name']){
+            }else if($finishperiod['driver_name'] != $param['driver_name'] && $param['period_id'] != '' && $param['period_id'] != null){
                 // return $this->error(['msg' => '该周期已经结束，请重新填写周期']);
                 return $this->error('该周期不属于该驾驶员，请重新填写费用周期');
             }
