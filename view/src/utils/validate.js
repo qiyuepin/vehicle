@@ -89,7 +89,8 @@ export function validEmail(str) {
  * @returns {*|boolean}
  */
 export function validPassword(str) {
-  const reg = /^[a-zA-Z_0-9]{6,18}$/; //必须是6-18个字母和数字下划线
+  // const reg = /^[a-zA-Z_0-9]{6,18}$/; //必须是6-18个字母和数字下划线
+  const reg = /^.{6,18}$/;
   return reg.test(str);
 }
 

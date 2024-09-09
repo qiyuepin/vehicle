@@ -36,7 +36,7 @@
                           <el-input v-model="formData.driver_name" clearable placeholder="请输入驾驶员"></el-input>
                       </el-form-item>
                       <el-form-item label="费用周期" prop="period_id">
-                          <el-input v-model="formData.period_id" clearable placeholder="请输入费用周期"></el-input>
+                          <el-input v-model="formData.period_id" clearable placeholder="请输入费用周期" disabled></el-input>
                       </el-form-item>
                       <el-form-item label="trailer_status" prop="trailer_status" style="display: none;">
                           <el-input v-model="formData.trailer_status" clearable placeholder="请输入押运员"></el-input>

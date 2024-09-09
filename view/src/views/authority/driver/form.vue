@@ -71,9 +71,15 @@
                                 <el-radio v-model="formData.driver_status" :label="2">是</el-radio>
                                 <el-radio v-model="formData.driver_status" :label="0">否</el-radio>
                             </el-radio-group> -->
+                            <!-- <el-radio-group v-model="formData.driver_status">
+                              <el-radio label=2>是</el-radio>
+                              <el-radio label=0>否</el-radio>
+                            </el-radio-group> -->
                             <el-radio-group v-model="formData.driver_status">
-                              <el-radio v-model="formData.driver_status" label="2">是</el-radio>
-                              <el-radio v-model="formData.driver_status" label="0">否</el-radio>
+                              <!-- <el-radio label='2'>是</el-radio>
+                              <el-radio label='0'>否</el-radio> -->
+                              <el-radio :label="2">是</el-radio>
+                              <el-radio :label="0">否</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="身份证正面" prop="card_front">
@@ -253,7 +259,7 @@ export default {
     resetData(){
       this.formData.id = 0
       this.formData.username = ''
-      this.formData.driver_status = '0'
+      this.formData.driver_status = 0
       this.formData.phone = ''
       this.formData.phone2= ''
       this.formData.is_escort= ''
@@ -277,7 +283,7 @@ export default {
     getdriverInfo(id){
       getdriverInfo({id:id}).then(response=>{
           if(response !== undefined){
-            
+            console.log(response.driver_status)
               this.title = '编辑管理员'
               this.formData.id = response.id
               this.formData.username = response.username

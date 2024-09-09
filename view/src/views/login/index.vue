@@ -33,7 +33,7 @@
                         name="username"
                         type="text"
                         tabindex="1"
-                        autocomplete="on"
+                        autocomplete="off"
                 />
             </el-form-item>
 
@@ -50,7 +50,7 @@
                             placeholder="密码"
                             name="password"
                             tabindex="2"
-                            autocomplete="on"
+                            autocomplete="off"
                             @blur="capsTooltip = false"
                             @keyup.enter.native="handleLogin"
                     />
@@ -119,15 +119,15 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (!validPassword(value)) {
-        callback(new Error('登录密码必须是字母、数字、下划线组合，且长度6-18位'))
+        callback(new Error('登录密码长度6-18位'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -160,6 +160,13 @@ export default {
   // created() {
   //   this.getCaptcha()
   // },
+  created() {
+    // 恢复上次输入的值
+    const savedData = localStorage.getItem('loginForm');
+    if (savedData) {
+      this.loginForm = JSON.parse(savedData);
+    }
+  },
   mounted() {
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
@@ -194,6 +201,7 @@ export default {
       })
     },
     handleLogin() {
+      localStorage.setItem('loginForm', JSON.stringify(this.loginForm));
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
