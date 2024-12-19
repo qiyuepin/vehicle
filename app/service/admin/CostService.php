@@ -82,7 +82,8 @@ class CostService extends BaseService
                 }
             }
             else if(isset($param['platform'])&&$param['platform'] == "excelall"){//导出excel
-                $group = Db::name("admin_carplan_period")->where($where)->group('period_id_driver')->column('period_id_driver');
+                // dump($param);die;
+                $group = Db::name("admin_carplan_period")->whereIn('id',$param['ids'])->group('period_id_driver')->column('period_id_driver');
                 // dump($group);die;
                 // $where[] = ['status','=',$param['status']];
                 $data = Db::name("admin_cost")->where('period_id_driver','in',$group)->select()->toArray();
@@ -213,7 +214,22 @@ class CostService extends BaseService
                     }
             
                 }
+            }else if(isset($param['platform'])&&$param['platform'] == "excelall"){
+                $data = Db::name("admin_cost")->whereIn('id',$param['ids'])->order(['create_time'=>'desc'])
+                ->select()->toArray();
+                foreach ($data as $key => $value) {
+         
+                    $cost_img = explode(',', $value['cost_img']);
+
+                    foreach ($cost_img as $k => $val){
+
+                        $data[$key]['cost_imgs'][$k]['url'] = $val;
+                        $data[$key]['cost_imgs'][$k]['name'] = $k;
+                    }
+            
+                }
             }
+
 
             
             return $this->success($data);

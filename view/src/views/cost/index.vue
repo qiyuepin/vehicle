@@ -31,7 +31,7 @@
           <el-button type="success" v-permission="'admin.cost.addcost'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <!-- <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button> -->
-          <el-button @click="exportExcel" type="primary" size="mini">导出所有费用</el-button>
+          <el-button @click="exportExcelall" type="primary" size="mini">导出所有费用</el-button>
       </el-row>
       <el-table
               ref="multipleTable"
@@ -42,11 +42,11 @@
               style="width: 100%"
               v-loading="loading"
               @selection-change="handleSelectionChange">
-          <!-- <el-table-column
+          <el-table-column
                   type="selection"
                   width="40"
                   :selectable="isSelected">
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column
                   prop="id"
                   label="ID"
@@ -326,11 +326,11 @@ methods: {
     this.excelquery.status = this.query.status
     this.excelquery.date = this.query.date
     console.log(this.excelquery)
-    getcost(this.excelquery).then(response => {
-        if(response !== undefined){
-          this.excelData = response
-        }
-    })
+    // getcost(this.excelquery).then(response => {
+    //     if(response !== undefined){
+    //       this.excelData = response
+    //     }
+    // })
   },
   getexcel() {
 
@@ -407,8 +407,55 @@ methods: {
 
     // this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
   },
-  exportExcel () {
-    const data = this.excelData.map((item) => {
+  exportExcelall(){
+    console.log(this.multipleSelection)
+    // getcost({ type:'pc' }).then(response => {
+    //   console.log(ids)
+    //     if(response !== undefined){
+    //       console.log(response)
+    //       // this.exportExcel(response);
+    //     }
+    // })
+    // console.log(this.query)
+    // getcost(this.query).then(response => {
+    //     if(response !== undefined){
+    //         console.log(response)
+    //     }
+
+    // });
+    if (this.multipleSelection == null) {
+      this.$message({
+        type: 'error',
+        message: '未选择费用'
+      });
+    }else{
+      const ids = getArrByKey(this.multipleSelection,'id')
+      if (!ids || ids.length === 0) {
+        this.$message({
+          type: 'error',
+          message: '未选择费用'
+        });
+      } else {
+ 
+          this.handleExcel(ids)
+      }
+    }
+    
+    
+  },
+  handleExcel(ids){
+    console.log(ids)
+    getcost({ ids: ids, platform:'excelall' }).then(response => {
+      console.log(ids)
+        if(response !== undefined){
+          console.log(response)
+          this.exportExcel(response);
+        }
+    })
+  },
+  exportExcel (excelData) {
+    
+    const data = excelData.map((item) => {
       // 创建一个新的对象，包含原对象的所有键值对以及新的参数
       return {
         id: item.id,

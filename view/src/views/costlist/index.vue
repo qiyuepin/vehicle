@@ -31,7 +31,7 @@
           <el-button type="success" v-permission="'admin.cost.addcost'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'admin.cost.delcost'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-          <el-button @click="exportExcel" type="primary" size="mini">导出</el-button>
+          <el-button @click="exportExcelall" type="primary" size="mini">导出</el-button>
       </el-row>
       <el-table
               ref="multipleTable"
@@ -304,19 +304,51 @@ methods: {
         }
         this.loading = false
     })
-    getcostlist(this.excelquery).then(response => {
-        if(response !== undefined){
-          console.log(response);
-          this.excelData = response
-            // this.tableData = response.data
-            // this.total = response.total
-        }
+    // getcostlist(this.excelquery).then(response => {
+    //     if(response !== undefined){
+    //       console.log(response);
+    //       this.excelData = response
+    //         // this.tableData = response.data
+    //         // this.total = response.total
+    //     }
 
+    // })
+  },
+  exportExcelall(){
+
+    if (this.multipleSelection == null) {
+      this.$message({
+        type: 'error',
+        message: '未选择费用'
+      });
+    }else{
+      const ids = getArrByKey(this.multipleSelection,'id')
+      if (!ids || ids.length === 0) {
+        this.$message({
+          type: 'error',
+          message: '未选择费用'
+        });
+      } else {
+ 
+          this.handleExcel(ids)
+      }
+    }
+    
+    
+  },
+  handleExcel(ids){
+    console.log(ids)
+    getcostlist({ ids: ids, platform:'excelall' }).then(response => {
+      console.log(ids)
+        if(response !== undefined){
+          console.log(response)
+          this.exportExcel(response);
+        }
     })
   },
-  exportExcel() {
+  exportExcel(excelData) {
     console.log(this.excelData)
-    const data = this.excelData.map((item) => {
+    const data = excelData.map((item) => {
       // 创建一个新的对象，包含原对象的所有键值对以及新的参数
       return {
         id: item.id,
