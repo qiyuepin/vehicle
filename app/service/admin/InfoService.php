@@ -562,7 +562,6 @@ class InfoService extends BaseService
         try{
             $info = Escort::where('id',$param['id'])->find();
             
-        
    
             if(empty($info)){
                 return $this->error('信息不存在');
@@ -896,8 +895,9 @@ class InfoService extends BaseService
                 // $data['driver'][$key]['period_id'] = $period_id;
                 // dump($data['driver'][$key]['period_id']);
             }
-            
-            $data['escort'] = Escort::where('escort_status','in',[0,1])->field('id,name,escort_status')->select();
+            $drivers = Admin::where('type',2)->where('status',2)->field('id,username as name')->select();
+            $escort = Escort::where('escort_status','in',[0,1])->field('id,name,escort_status')->select();
+            $data['escort'] = $drivers->merge($escort);
             $data['head'] = Carhead::where('head_status','in',[0,1,2,3])->field('id,carhead_plate,head_status')->select();
             // $data['trailer'] = Cartrailer::where($trailer)->field('id,trailer_plate,trailer_status,product_name,product_quantity')->select();
             

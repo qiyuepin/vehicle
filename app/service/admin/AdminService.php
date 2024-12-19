@@ -107,13 +107,14 @@ class AdminService extends BaseService
             // dump($param);die;
             $param['type'] = 1;
             $param['sign'] = $param['autograph'];
-            $param['nickname'] = $param['username'];
+            // $param['nickname'] = $param['username'];
             unset($param['id']);
             $res = Admin::create($param);
             if(!$res){
                 throw new \Exception('新增管理员失败');
             }
             $uid = $res -> id;
+            // dump($uid);die;
             foreach($param['group'] as $group_id){
                 $res = AuthGroupAccess::create(['uid'=>$uid,'group_id'=>$group_id]);
                 if(!$res){

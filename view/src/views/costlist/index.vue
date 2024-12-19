@@ -126,7 +126,7 @@
 
           <el-table-column
                   prop="cost_img"
-                  label="费用照片1"
+                  label="费用照片2"
                   align="center"
                   width="150">
               <!-- <el-image
@@ -135,13 +135,38 @@
                       :preview-src-list="[scope.row.cost_img]"
                       slot-scope="scope">
               </el-image> -->
-              <template slot-scope="scope">
+              <!-- <template slot-scope="scope">
                 <el-image
                   style="width: 40px; height: 30px"
                   :src="scope.row.cost_img ? scope.row.cost_img : noImage"
                   :preview-src-list="[scope.row.cost_img ? scope.row.cost_img : noImage]">
                 </el-image>
-              </template>
+              </template> -->
+              <!-- <el-image
+                        style="width: 40px; height: 30px"
+                        :src="scope.row.driving_licenses[0].url"
+                        :preview-src-list="[scope.row.driving_licenses[0].url]"
+                        slot-scope="scope">
+                </el-image> -->
+                <template slot-scope="scope">
+                  <!-- <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.cost_imgs[0].url ? scope.row.cost_imgs[0].url : noImage"
+                    :preview-src-list="[scope.row.cost_imgs[0].url ? scope.row.cost_imgs[0].url : noImage]">
+                  </el-image> -->
+                  <div class="demo-image__preview">
+                    <!-- <el-image
+                        style="width: 100px; height: 100px"
+                        :src="driving_license[0]"
+                        :preview-src-list="driving_license">
+                    </el-image> -->
+                    <el-image 
+                        style="width: 30px; height: 30px"
+                        :src="scope.row.cost_imgs[0].url?scope.row.cost_imgs[0].url:noImage" 
+                        :preview-src-list="scope.row.cost_img?scope.row.cost_img:noImage">
+                    </el-image>
+                    </div>
+                </template>
           </el-table-column>
           <el-table-column
                   prop="cost_creater"
@@ -235,6 +260,7 @@ data() {
     typelist: [],
     excelData: [],
     noImage,
+    cost_img: [],
     query: {
       page: 1,
       limit: 10,

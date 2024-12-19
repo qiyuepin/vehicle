@@ -83,9 +83,11 @@ return [
         'admin/plan/getnormal',
         'admin/plan/addnormal',
         'admin/plan/editnormal',
+        'admin/plan/delnormal',
         'admin/plan/getnormalinfo',
         'admin/plan/gettemporary',
         'admin/plan/addtemporary',
+        'admin/plan/addriver_temporary',
         'admin/plan/edittemporary',
         'admin/plan/deltemporary',
         'admin/plan/gettemporaryinfo',
@@ -112,6 +114,11 @@ return [
         'admin/test/index',
         'admin/info/delcarhead',
         'admin/info/delinfo',
-        'admin/plan/getPlanCount'
+        'admin/plan/getPlanCount',
+        'admin/tank/getlist',
+        'admin/tank/getinfo',
+        'admin/tank/add',
+        'admin/tank/edit',
+        'admin/tank/del',
     ],//白名单
 ];

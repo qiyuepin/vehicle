@@ -38,7 +38,7 @@
           <el-button type="success" v-permission="'admin.plans.addtemporary'" size="mini" @click="handleAdd">新增</el-button>
           <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
           <el-button type="danger" v-permission="'admin.plans.deltemporary'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-          <el-button @click="exporttemporaryExcel" type="primary" size="mini">导出</el-button>
+          <el-button @click="handleExcelAll" type="primary" size="mini">导出</el-button>
           <!-- <el-button type="success"  size="mini" @click="handlemap">map</el-button> -->
       </el-row>
       <el-table
@@ -54,7 +54,7 @@
           <el-table-column
                   type="selection"
                   width="40"
-                  :selectable="isSelected">
+                  >
           </el-table-column>
           <!-- <el-table-column
                   prop="id"
@@ -252,7 +252,7 @@ import myForm from './form.vue'
 import detail from './detail.vue'
 import { getArrByKey } from '@/utils'
 // import FileSaver from "file-saver";
-// import XLSX from "xlsx";
+import XLSX from "xlsx";
 import { exportExcel } from '@/utils/export'
 
 export default {
@@ -318,6 +318,114 @@ methods: {
   hasPermission(permission) {
     return checkPermission(permission);
   },
+  handleExcel(ids){
+    
+    gettemporary({ ids: ids, type:'excel' }).then(response => {
+        if(response !== undefined){
+          console.log(response)
+            // this.excelData = response
+            this.exportnormalExcel (response)
+        }
+    })
+  },
+  handleExcelAll(){
+    console.log(this.multipleSelection)
+    if (this.multipleSelection == null) {
+      this.$message({
+        type: 'error',
+        message: '未选择任务'
+      });
+    }else{
+      const ids = getArrByKey(this.multipleSelection,'id')
+      if (!ids || ids.length === 0) {
+        this.$message({
+          type: 'error',
+          message: '未选择任务'
+        });
+      } else {
+ 
+          this.handleExcel(ids)
+      }
+    }
+    
+    
+  },
+  exportnormalExcel (excelData) {
+    // this.getnormal();
+    const data = excelData.map((item) => {
+      return {
+        id: item.id,
+        "状态": this.status(item.status,item.driver_status),
+        "任务类别": this.type(item.plan_type),
+        "车头": item.head_num,
+        "挂车": item.trailer_num,
+        "驾驶员": item.driver_name,
+        "押运员": item.escort_name,
+        "货品名称": item.product_name,
+        "货品数量": item.product_quantity,
+        "装货厂家": item.load_factory,
+        "装货厂家地址": item.load_address,
+        "卸货厂家": item.unload_factory,
+        "卸货厂家地址": item.unload_address,
+        "创建人": item.initiator,
+        "更新时间": item.update_time
+      };
+    });
+
+    // 使用 xlsx 库导出 Excel
+    this.exportExcelWithWrap(data, "装卸任务");
+  },
+  exportExcelWithWrap(data, fileName) {
+    const ws = XLSX.utils.json_to_sheet(data); // 将 JSON 数据转化为工作表
+
+    // 遍历每个单元格，处理备注列中的换行符
+    Object.keys(ws).forEach(cell => {
+      const cellObj = ws[cell];
+      
+      // 如果是备注列并且包含换行符，则设置换行
+      if (cellObj.v && typeof cellObj.v === 'string') {
+        if (!cellObj.s) cellObj.s = {};
+        cellObj.s.alignment = {
+          vertical: 'center', // 垂直居中
+          wrapText: true       // 启用自动换行
+        };
+      }
+    });
+
+    // 为备注列设置换行属性
+    const wscols = [
+      { wch: 5 }, // 设置列宽（可根据需要调整）
+      { wch: 8 }, // 设置列宽
+      { wch: 15 },
+      { wch: 8 }, // 设置列宽
+      { wch: 8 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 15 },
+      { wch: 10 },
+      { wch: 10 },
+      { wch: 30 },
+      { wch: 30 },
+      { wch: 30 },
+      { wch: 30 },
+      { wch: 10 },
+      { wch: 10 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 }
+    ];
+   
+    ws['!cols'] = wscols; // 设置列宽
+
+    // 创建工作簿
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // 将工作表添加到工作簿
+
+    // 导出 Excel 文件
+    XLSX.writeFile(wb, fileName + ".xlsx");
+  },
   //查询列表
   gettemporary() {
     this.loading = true
@@ -328,18 +436,18 @@ methods: {
         }
         this.loading = false
     })
-    this.excelquery.keywords = this.query.keywords
-    this.excelquery.status = this.query.status
-    this.excelquery.date = this.query.date
-    gettemporary(this.excelquery).then(response => {
-        if(response !== undefined){
-          console.log(response)
-            this.excelData = response
-        }
-    })
+    // this.excelquery.keywords = this.query.keywords
+    // this.excelquery.status = this.query.status
+    // this.excelquery.date = this.query.date
+    // gettemporary(this.excelquery).then(response => {
+    //     if(response !== undefined){
+    //       console.log(response)
+    //         this.excelData = response
+    //     }
+    // })
   },
   exporttemporaryExcel () {
-    this.gettemporary();
+    // this.gettemporary();
     const data = this.excelData.map((item) => {
       // 创建一个新的对象，包含原对象的所有键值对以及新的参数
       return {

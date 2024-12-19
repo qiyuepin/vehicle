@@ -7,13 +7,17 @@ use think\facade\Cache;
 use think\Model;
 use think\model\concern\SoftDelete;
 
-
-class Plans extends Model
+/**
+ * Tank
+ * created on 2024/12/16 17:24
+ * created by hl
+ */
+class Tank extends Model
 {
-    // 设置数据表（不含前缀）
     use SoftDelete;
     protected $deleteTime = 'delete_time';
-    protected $name = 'admin_carplans';
+    protected $name = 'admin_tank';
     protected $autoWriteTimestamp = 'datetime';
+
 
 }

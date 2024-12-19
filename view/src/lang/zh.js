@@ -40,7 +40,8 @@ export default {
     admin_info_info: '人员车辆匹配',
     admin_info_factory: '厂家管理',
     cost_index: '费用管理',
-    costlist_index: '费用列表'
+    costlist_index: '费用列表',
+    tank_index: '清洗罐'
   },
   navbar: {
     dashboard: '首页',

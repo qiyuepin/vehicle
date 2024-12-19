@@ -27,7 +27,7 @@
         <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
         <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
         <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
-        <el-button @click="exportplansExcel" type="primary" size="mini">导出</el-button>
+        <el-button @click="handleExcelAll" type="primary" size="mini">导出</el-button>
           <!-- <el-tooltip class="item" effect="dark" content="map" placement="top">
               <el-button type="success"  size="mini" @click="handlemap">map</el-button>
           </el-tooltip> -->
@@ -254,6 +254,7 @@ import detail from './detail.vue'
 import planDist from './dist.vue'
 import { getArrByKey } from '@/utils'
 import { exportExcel } from '@/utils/export'
+import XLSX from "xlsx";
 
 export default {
 name: 'plans',
@@ -315,12 +316,116 @@ methods: {
     })
     this.excelquery.keywords = this.query.keywords
     this.excelquery.status = this.query.status
-    getplans(this.excelquery).then(response => {
+    // getplans(this.excelquery).then(response => {
+    //     if(response !== undefined){
+    //       console.log(response)
+    //         this.excelData = response
+    //     }
+    // })
+  },
+  handleExcel(ids){
+    
+    getplans({ ids: ids, type:'excel' }).then(response => {
         if(response !== undefined){
           console.log(response)
-            this.excelData = response
+            // this.excelData = response
+            this.exportnormalExcel (response)
         }
     })
+  },
+  handleExcelAll(){
+    console.log(this.multipleSelection)
+    if (this.multipleSelection == null) {
+      this.$message({
+        type: 'error',
+        message: '未选择计划'
+      });
+    }else{
+      const ids = getArrByKey(this.multipleSelection,'id')
+      if (!ids || ids.length === 0) {
+        this.$message({
+          type: 'error',
+          message: '未选择计划'
+        });
+      } else {
+ 
+          this.handleExcel(ids)
+      }
+    }
+    
+    
+  },
+  exportnormalExcel (excelData) {
+    // this.getnormal();
+    const data = excelData.map((item) => {
+      return {
+        id: item.id,
+        "状态": this.status(item.status),
+        "始发任务": item.start_periodic==1?"是":"否",
+        "货品名称": item.product_name,
+        "货品数量": item.product_quantity,
+        "装货厂家": item.load_factory,
+        "装货厂家地址": item.load_address,
+        "卸货厂家": item.unload_factory,
+        "卸货厂家地址": item.unload_address,
+        "创建人": item.initiator,
+        "更新时间": item.update_time
+      };
+    });
+
+    // 使用 xlsx 库导出 Excel
+    this.exportExcelWithWrap(data, "运输计划");
+  },
+  exportExcelWithWrap(data, fileName) {
+    const ws = XLSX.utils.json_to_sheet(data); // 将 JSON 数据转化为工作表
+
+    // 遍历每个单元格，处理备注列中的换行符
+    Object.keys(ws).forEach(cell => {
+      const cellObj = ws[cell];
+      
+      // 如果是备注列并且包含换行符，则设置换行
+      if (cellObj.v && typeof cellObj.v === 'string') {
+        if (!cellObj.s) cellObj.s = {};
+        cellObj.s.alignment = {
+          vertical: 'center', // 垂直居中
+          wrapText: true       // 启用自动换行
+        };
+      }
+    });
+
+    // 为备注列设置换行属性
+    const wscols = [
+      { wch: 5 }, // 设置列宽（可根据需要调整）
+      { wch: 8 }, // 设置列宽
+      { wch: 10 },
+      { wch: 15 }, // 设置列宽
+      { wch: 8 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 10 },
+      { wch: 20 },
+      { wch: 10 },
+      { wch: 30 },
+      { wch: 30 },
+      { wch: 30 },
+      { wch: 30 },
+      { wch: 10 },
+      { wch: 10 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 }
+    ];
+   
+    ws['!cols'] = wscols; // 设置列宽
+
+    // 创建工作簿
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // 将工作表添加到工作簿
+
+    // 导出 Excel 文件
+    XLSX.writeFile(wb, fileName + ".xlsx");
   },
   exportplansExcel () {
     this.getplans();

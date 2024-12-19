@@ -82,6 +82,12 @@
               <el-descriptions-item><template slot="label">回库里程数</template>{{formData.back_mileage}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">创建人</template>{{formData.initiator}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">分配人</template>{{formData.dispatcher}}</el-descriptions-item>
+              <!-- <el-descriptions-item><template slot="label">备注</template>{{formData.remark}}</el-descriptions-item> -->
+              <el-descriptions-item label="备注">
+                <div style="white-space: pre-wrap; word-wrap: break-word;">
+                  {{ formData.remark }}
+                </div>
+              </el-descriptions-item>
               <el-descriptions-item><template slot="label">创建日期</template>{{formData.create_time}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">更新日期</template>{{formData.update_time}}</el-descriptions-item>
             </el-descriptions>
@@ -219,6 +225,7 @@ export default {
               this.formData.update_time = response.update_time
               this.formData.back_mileage_img = response.back_mileage_img
               this.formData.abnormal_remark = response.abnormal_remark
+              this.formData.remark = response.remark
               this.load_weight_inspection = response.load_weight_inspection!=null?response.load_weight_inspection.split(',').map(item => item.trim()):'';
               this.unload_weight_inspection = response.unload_weight_inspection!=null?response.unload_weight_inspection.split(',').map(item => item.trim()):'';
               console.log(this.load_weight_inspection)

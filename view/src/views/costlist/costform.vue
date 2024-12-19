@@ -68,8 +68,11 @@
                                     placeholder="请输入费用金额"></el-input>
                       </el-form-item>
 
-                      <el-form-item label="费用照片" prop="cost_img">
+                      <!-- <el-form-item label="费用照片" prop="cost_img">
                           <UploadImage ref="Image_cost_img" v-model="formData.cost_img"></UploadImage>
+                      </el-form-item> -->
+                      <el-form-item label="费用照片" prop="cost_img">
+                          <MultiImage ref="Image_cost_img" :images="formData.cost_img" v-model="formData.cost_img"></MultiImage>
                       </el-form-item>
                       <el-form-item label="备注">
                           <el-input v-model="formData.remark" clearable ></el-input>
@@ -79,7 +82,7 @@
           </el-form>
           <div class="demo-drawer__footer" style="position:fixed;top:15px;right:30px;">
               <el-button size="mini" @click="$refs.drawer.closeDrawer()">取 消</el-button>
-              <el-button size="mini" type="primary" @click="saveData()">确 定
+              <el-button size="mini" type="primary" @click="saveData()">确 定                                                                                                                                                                                                                                                                                                                                                            
               </el-button>
           </div>
       </div>
@@ -90,13 +93,15 @@
 
 import { addcost, editcost, getinfo, getperiod, getcosttype } from '@/api/cost.js'
 import UploadImage from '@/components/Upload/SingleImage'
+import MultiImage from '@/components/Upload/MultiImage'
 import { validPhone,validIDcard } from '@/utils/validate'
-import { getcarlist } from '@/api/Info.js'
+import { getcarlist } from '@/api/Info.js'                           
 
-export default {
+export default {                                           
 driver_name: "myForm",
 components: {
-  UploadImage
+  UploadImage,
+  MultiImage
 },
 data() {
 
@@ -135,7 +140,7 @@ data() {
       id: 0,
       driver_name: '',
       remark: '',
-      cost_img: '',
+      cost_img: [],
       period_id_driver: '',
       cost_money: '',
       head_num: '',
@@ -214,8 +219,9 @@ methods: {
     this.formData.type_name  = ''
     this.formData.remark = ''
     this.formData.cost_money = ''
-    this.formData.cost_img = ''
+    this.formData.cost_img = []
     this.formData.other_type = ''
+    this.$refs.Image_cost_img.uploadFileList = []
   },
   getinfo(id){
     getinfo({id:id}).then(response=>{
@@ -226,8 +232,8 @@ methods: {
             this.formData.remark = response.remark
             this.formData.period_id_driver = response.period_id_driver
             this.formData.cost_money = response.cost_money
-            this.formData.cost_img = response.cost_img
-            this.$refs.Image_cost_img.imgUrl = response.cost_img
+            // this.formData.cost_img = response.cost_img
+            // this.$refs.Image_cost_img.imgUrl = response.cost_img
             this.formData.year = response.year
             this.formData.month = response.month
             this.formData.escort_name = response.escort_name
@@ -235,6 +241,28 @@ methods: {
             this.formData.head_num = response.head_num
             this.formData.type_name = response.type_name
             this.formData.other_type = response.other_type
+            // if(response.cost_imgs[0].url !== '') {
+            //   console.log(response.cost_imgs)
+            //   this.formData.cost_img = response.cost_imgs
+            //   this.$refs.Image_cost_img.uploadFileList.push(...response.cost_imgs)
+            //   this.$refs.Image_cost_img.uploadFiles = this.$refs.Image_cost_img.uploadFileList.map(item => {
+            //     return item
+            //   });
+
+            //   this.$refs.Image_cost_img.imgUrl = response.cost_imgs
+            // }
+            if(response.cost_imgs[0].url !== '') {
+              console.log(response)
+              console.log(this.formData.cost_img)
+              this.formData.cost_img = response.cost_imgs
+              console.log(this.$refs.Image_cost_img.uploadFileList)
+              this.$refs.Image_cost_img.uploadFileList.push(...response.cost_imgs)
+              this.$refs.Image_cost_img.uploadFiles = this.$refs.Image_cost_img.uploadFileList.map(item => {
+                return item
+              });
+
+              this.$refs.Image_cost_img.imgUrl = response.cost_imgs
+            }
         }
     })
   },
@@ -252,10 +280,31 @@ methods: {
             this.formData.head_num = response.head_num
             this.formData.period_id_driver = response.period_id_driver
             this.formData.cost_img = ''
-            this.$refs.Image_cost_img.imgUrl = ''
+            // this.$refs.Image_cost_img.imgUrl = ''
+            // if(response.cost_img[0].url !== '') {
+            //   this.formData.cost_img = response.cost_img
+            //   this.$refs.Image_cost_img.uploadFileList.push(...response.cost_img)
+            //   this.$refs.Image_cost_img.uploadFiles = this.$refs.Image_cost_img.uploadFileList.map(item => {
+            //     return item
+            //   });
+
+            //   this.$refs.Image_cost_img.imgUrl = response.cost_img
+            // }
           //   this.formData.cost_money = response.cost_money
           //   this.formData.cost_img = response.cost_img
           //   this.$refs.Image_cost_img.imgUrl = response.cost_img
+            // if(response.cost_imgs[0].url !== '') {
+            //   console.log(response)
+            //   console.log(this.formData.cost_img)
+            //   this.formData.cost_img = response.cost_imgs
+            //   console.log(this.$refs.Image_cost_img.uploadFileList)
+            //   this.$refs.Image_cost_img.uploadFileList.push(...response.cost_imgs)
+            //   this.$refs.Image_cost_img.uploadFiles = this.$refs.Image_cost_img.uploadFileList.map(item => {
+            //     return item
+            //   });
+
+            //   this.$refs.Image_cost_img.imgUrl = response.cost_imgs
+            // }
 
         }
     })

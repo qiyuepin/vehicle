@@ -419,6 +419,9 @@ export default {
 
             //行驶证 start
             if(response.driving_licenses[0].url !== '') {
+              console.log(response)
+              console.log(this.formData.driving_license)
+              console.log(this.$refs.Image_driving_license.uploadFileList)
               this.formData.driving_license = response.driving_licenses
               this.$refs.Image_driving_license.uploadFileList.push(...response.driving_licenses)
               this.$refs.Image_driving_license.uploadFiles = this.$refs.Image_driving_license.uploadFileList.map(item => {

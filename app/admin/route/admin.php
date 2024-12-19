@@ -123,6 +123,16 @@ Route::group('/',function(){
         Route::get('getSessionList','Chat/getSessionList');//获取会话消息
     })->middleware(['adminAuth']);
 
+    ###清洗罐###
+    Route::group('tank',function(){
+        Route::get('gettank','Tank/gettank');//获取清洗罐
+        Route::get('getinfo','Tank/getinfo');//获取清洗罐
+        Route::post('add','Tank/add');//新增清洗罐
+        Route::post('edit','Tank/edit');//编辑清洗罐
+        Route::post('del','Tank/del');//删除清洗罐
+        Route::get('getlist','Tank/getlist');
+    })->middleware(['adminAuth']);
+
 
     Route::group('info',function(){
         Route::get('carhead','Info/carhead');//车头信息
@@ -180,6 +190,7 @@ Route::group('/',function(){
         Route::post('addtemporary','Plan/addtemporary');//创建押运员信息
         Route::post('edittemporary','Plan/edittemporary');//修改押运员信息
         Route::post('deltemporary','Plan/deltemporary');//删除押运员信息
+        Route::post('addriver_temporary','Plan/addriver_temporary');//删除押运员信息
         Route::get('getplaninfo','Plan/getplaninfo');//挂车信息
         Route::get('getplans','Plan/getplans');//全部任务
         Route::get('getplansinfo','Plan/getplansinfo');//任务详情

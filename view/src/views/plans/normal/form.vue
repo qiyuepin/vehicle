@@ -89,6 +89,10 @@
                           <el-input v-model="formData.plan_order" clearable></el-input>
                       </el-form-item>
 
+                      <el-form-item label="备注" prop="remark">
+                          <el-input type="textarea" v-model="formData.remark" clearable></el-input>
+                      </el-form-item>
+
 
                       <!-- <el-form-item label="新计费周期" prop="start_periodic">
                           <el-radio-group v-model="formData.start_periodic">
@@ -182,6 +186,7 @@ data() {
       period_id: '',
       trailer_status: '',
       platform: 'pc',
+      remark: '',
       plan_type: 0,
       plan_order: 0
     },
@@ -300,6 +305,7 @@ methods: {
     this.formData.end_periodic = ''
     this.formData.period_id = ''
     this.formData.trailer_status = ''
+    this.formData.remark = ''
     this.formData.plan_type = 0
     this.formData.plan_order = 0
   },
@@ -326,6 +332,7 @@ methods: {
             this.formData.trailer_status = response.trailer_status
             this.formData.plan_type = response.plan_type
             this.formData.plan_order = response.plan_order
+            this.formData.remark = response.remark
 
         }
     })

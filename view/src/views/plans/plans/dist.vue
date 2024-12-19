@@ -18,7 +18,7 @@
           </el-descriptions> -->
           <br>
 
-          <el-descriptions class="margin-top" :title="'计费周期 ' + formData.period_id" :column="2"  border>
+          <el-descriptions class="margin-top" :column="2"  border>
             <!-- <el-descriptions-item><template slot="label">计费周期</template>{{formData.period_id}}</el-descriptions-item> -->
 
 
@@ -197,7 +197,6 @@ data() {
       start_periodic: '',
       end_periodic: '',
       platform: 'pc',
-      period_id: '',
       load_location: '',
       plan_type: 0,
       unload_location: ''
@@ -323,7 +322,7 @@ methods: {
             this.formData.trailer_status = response.trailer_status
             this.formData.trailer_num = response.trailer_num
             this.formData.driver_name = response.driver_name
-            this.formData.period_id = response.period_id
+            // this.formData.period_id = response.period_id
             this.formData.platform = response.platform
             this.formData.start_periodic = response.start_periodic
             this.formData.end_periodic = response.end_periodic

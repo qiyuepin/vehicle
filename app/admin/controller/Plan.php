@@ -64,6 +64,12 @@ class Plan extends Base
         return $this->responseData($data);
        
     }
+    public function addriver_temporary(Request $request,PlanService $service){
+        $param = $request->param();
+        $authorization = $request->header('Authorization');
+        $data = $service -> addriver_temporary($param,$authorization);
+        return $this->responseData($data);
+    }
     public function addtemporary(Request $request,PlanService $service){
         $param = $request->param();
         $authorization = $request->header('Authorization');

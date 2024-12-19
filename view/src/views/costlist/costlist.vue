@@ -106,7 +106,7 @@
           
           <el-table-column
                   prop="cost_img"
-                  label="费用照片1"
+                  label="费用照片"
                   align="center"
                   width="150">
               <!-- <el-image
@@ -116,11 +116,30 @@
                       slot-scope="scope">
               </el-image> -->
               <template slot-scope="scope">
-                <el-image
+                <!-- <el-image
                   style="width: 40px; height: 30px"
                   :src="scope.row.cost_img ? scope.row.cost_img : './assets/no_images/none.png'"
                   :preview-src-list="[scope.row.cost_img ? scope.row.cost_img : './assets/no_images/none.png']">
-                </el-image>
+                </el-image> -->
+                <!-- <el-image
+                    style="width: 40px; height: 30px"
+                    :src="scope.row.cost_imgs[0].url ? scope.row.cost_imgs[0].url : noImage"
+                    :preview-src-list="[scope.row.cost_imgs[0].url ? scope.row.cost_imgs[0].url : noImage]">
+                  </el-image> -->
+
+                  <div class="demo-image__preview">
+
+                    <el-image 
+                        style="width: 100px; height: 100px"
+                        :src="scope.row.cost_imgs[0]?scope.row.cost_imgs[0]:noImage" 
+                        :preview-src-list="scope.row.cost_img">
+                    </el-image>
+                    <!-- <el-image
+                            style="width: 100px; height: 100px"
+                            :src="scope.row.cost_imgs[0]"
+                            :preview-src-list="scope.row.cost_imgs">
+                        </el-image> -->
+                    </div>
               </template>
           </el-table-column>
           <el-table-column
@@ -194,12 +213,14 @@
 
 import { getcostlist,delcost } from '@/api/cost.js'
 import costForm from './costform.vue'
+import MultiImage from '@/components/Upload/MultiImage'
 import { getArrByKey } from '@/utils'
 
 export default {
 name: '',
 components: {
-  costForm
+  costForm,
+  MultiImage
 },
 data() {
   return {

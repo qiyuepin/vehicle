@@ -179,12 +179,42 @@ class CostService extends BaseService
             //     ->fetchsql()->select();
             
             if(isset($param['platform'])&&$param['platform'] == "pc"){
+                // $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'desc'])
+                // ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'desc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
+                // dump($data);die;
+                foreach ($data['data'] as $key => $value) {
+         
+                    $cost_img = explode(',', $value['cost_img']);
+                    $data['data'][$key]['cost_img'] = $cost_img;
+                    // $driving_license = explode(',', $value['driving_license']);
+                    
+                    // $data['data'][$key]['cost_img']['url']= explode(',', $value['cost_img']);
+                    foreach ($cost_img as $k => $val){
+                        // dump($data);
+                        $data['data'][$key]['cost_imgs'][$k]['url'] = $val;
+                        $data['data'][$key]['cost_imgs'][$k]['name'] = $k;
+                    }
+            
+                }
+                // die;
             }else if(isset($param['platform'])&&$param['platform'] == "app"){
                 $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'desc'])
                 ->select()->toArray();
+                foreach ($data as $key => $value) {
+         
+                    $cost_img = explode(',', $value['cost_img']);
+
+                    foreach ($cost_img as $k => $val){
+
+                        $data[$key]['cost_imgs'][$k]['url'] = $val;
+                        $data[$key]['cost_imgs'][$k]['name'] = $k;
+                    }
+            
+                }
             }
+
             
             return $this->success($data);
         }catch (\Exception $exception){
@@ -201,7 +231,10 @@ class CostService extends BaseService
 
             // $token = $this->getValue('664461343744a');
             $userid = $this->getValue($Authorization);
-            
+            if (isset($param['cost_img']) && is_array($param['cost_img'])) {
+                $param['cost_img'] = implode(',', $param['cost_img']);
+            } else {
+            }
             // if(isset($param['cost_money']) && $param['cost_money']){
             //     $period_total = Db::name("admin_carplan_period")->where('period_id_driver',$param['period_id_driver'])->value('total');
             //     $period_total = $period_total + $param['cost_money'];
@@ -231,11 +264,27 @@ class CostService extends BaseService
                     return $this->error('不存在');
                 }else{
                     $info = $info->toArray();
+                    // dump($info);
+                    $cost_img = explode(',', $info['cost_img']);
+                    // dump($cost_img);die;
+                    // $info['cost_img'] = [];
+                    $cost_imgs = [];
+                    foreach ($cost_img as $key => $value) {
+                        // dump($key);
+                        // dump($value);
+                        // dump($cost_img);
+                        $cost_imgs[$key]['name'] = $key;
+                        $cost_imgs[$key]['url'] = $value;
+                    }
+                    // dump($cost_imgs);die;
+                    $info['cost_imgs'] = $cost_imgs;
                 }
             }
             else if(isset($param['period_id'])){//周期详情
                 // dump($param);die;
+                
                 $info = Db::name('admin_carplan_period')->where('id',$param['period_id'])->find();
+                
             }
             // dump($info);die;
             if(empty($info)){
@@ -286,6 +335,10 @@ class CostService extends BaseService
             $admin = Cost::where('id',$param['id'])->find();
             if(empty($admin)){
                 throw new \Exception('不存在');
+            }
+            if (isset($param['cost_img']) && is_array($param['cost_img'])) {
+                $param['cost_img'] = implode(',', $param['cost_img']);
+            } else {
             }
             $res = Cost::update($param,['id'=>$param['id']]);
             if(!$res){
