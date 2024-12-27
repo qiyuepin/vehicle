@@ -408,21 +408,7 @@ methods: {
     // this.$router.push({ path: '/driver/regulation', query: { id: raw[0] }});
   },
   exportExcelall(){
-    console.log(this.multipleSelection)
-    // getcost({ type:'pc' }).then(response => {
-    //   console.log(ids)
-    //     if(response !== undefined){
-    //       console.log(response)
-    //       // this.exportExcel(response);
-    //     }
-    // })
-    // console.log(this.query)
-    // getcost(this.query).then(response => {
-    //     if(response !== undefined){
-    //         console.log(response)
-    //     }
 
-    // });
     if (this.multipleSelection == null) {
       this.$message({
         type: 'error',
@@ -472,7 +458,9 @@ methods: {
         "费用照片": item.cost_img,
         "备注": item.remark,
         "始发里程": item.start_mile,
-        "回库里程": item.end_mile
+        "回库里程": item.end_mile,
+        "携带出车费": item.carrying_money,
+        "剩余出车费": item.remaining_money
       };
     });
 

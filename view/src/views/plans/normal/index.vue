@@ -445,14 +445,6 @@ methods: {
             this.exportnormalExcel (response)
         }
     })
-    // getnormal({ ids: ids, type:'excel'}).then(response => {
-    //     if(response !== undefined){
-    //         this.tableData = response.data
-    //         this.total = response.total
-    //     }
-    //     this.loading = false
-    // })
-    
   },
   handleExcelAll(){
     console.log(this.multipleSelection)

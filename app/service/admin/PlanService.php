@@ -165,7 +165,7 @@ class PlanService extends BaseService
             }
             // dump($param);
  
-            if(isset($param['start_periodic']) && $param['status'] != ''){
+            if(isset($param['start_periodic']) && $param['start_periodic'] != ''){
                 $where[] = ['start_periodic', '=',$param['start_periodic']];
 
 
@@ -1680,6 +1680,12 @@ class PlanService extends BaseService
             }
             if (isset($param['back_mileage'])) {
                 Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['end_mile'=>$param['back_mileage']]);
+            }
+            if (isset($param['carrying_money'])) {
+                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['carrying_money'=>$param['carrying_money']]);
+            }
+            if (isset($param['remaining_money'])) {
+                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['remaining_money'=>$param['remaining_money']]);
             }
 
             if (isset($param['status'])) {

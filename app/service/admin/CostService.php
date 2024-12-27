@@ -101,6 +101,8 @@ class CostService extends BaseService
                     // 获取当前 period_id_driver 对应的 start_mile 和 end_mile
                     $start_mile = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('start_mile');
                     $end_mile = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('end_mile');
+                    $carrying_money = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('carrying_money');
+                    $remaining_money = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('remaining_money');
 
                     // 判断是否需要新增数组元素
                     if ($key === 0 || $value['period_id_driver'] !== $data[$key - 1]['period_id_driver']) {
@@ -109,6 +111,8 @@ class CostService extends BaseService
                         $newValue['period_id_driver'] = $value['period_id_driver'];
                         $newValue['start_mile'] = $start_mile; // 添加 start_mile
                         $newValue['end_mile'] = $end_mile; // 添加 end_mile
+                        $newValue['carrying_money'] = $carrying_money; // 添加 carrying_money
+                        $newValue['remaining_money'] = $remaining_money; // 添加 remaining_money
                         $newData[] = $newValue; // 将新元素添加到新数组中
                         $newData[] = $value;
                     } else {

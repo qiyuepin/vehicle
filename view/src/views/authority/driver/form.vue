@@ -60,12 +60,12 @@
                         <el-form-item label="入职时间">
                           <el-input v-model="formData.employ_time" type="date" placeholder="选择日期" max="9999-12-31"></el-input>
                         </el-form-item>
-                        <el-form-item label="是否具有押运员资格证" >
+                        <!-- <el-form-item label="是否具有押运员资格证" >
                             <el-radio-group v-model="formData.is_escort">
                               <el-radio label="是">是</el-radio>
                               <el-radio label="否">否</el-radio>
                             </el-radio-group>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="是否离职">
                             <!-- <el-radio-group v-model="formData.driver_status">
                                 <el-radio v-model="formData.driver_status" :label="2">是</el-radio>
@@ -78,8 +78,9 @@
                             <el-radio-group v-model="formData.driver_status">
                               <!-- <el-radio label='2'>是</el-radio>
                               <el-radio label='0'>否</el-radio> -->
-                              <el-radio :label="2">是</el-radio>
-                              <el-radio :label="0">否</el-radio>
+                              <el-radio :label="2">离职</el-radio>
+                              <el-radio :label="1">出车</el-radio>
+                              <el-radio :label="0">空闲</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="身份证正面" prop="card_front">
