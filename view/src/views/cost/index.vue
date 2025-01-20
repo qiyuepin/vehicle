@@ -47,12 +47,13 @@
                   width="40"
                   :selectable="isSelected">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="id"
                   label="ID"
                   align="center"
                   width="80">
-          </el-table-column>
+          </el-table-column> -->
+        
           <!-- <el-table-column
                   prop="cost_status"
                   label="状态"
@@ -457,6 +458,7 @@ methods: {
           //【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
         "费用照片": item.cost_img,
         "备注": item.remark,
+        "携带柴油量": item.diesel_oil,
         "始发里程": item.start_mile,
         "回库里程": item.end_mile,
         "携带出车费": item.carrying_money,

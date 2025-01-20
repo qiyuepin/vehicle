@@ -128,12 +128,12 @@
                     <span style="margin-left: 10px" v-text="scope.row.employ_time"></span>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="is_escort"
                     label="是否具有押运员资格证"
                     align="center"
                     width="200">
-            </el-table-column>
+            </el-table-column> -->
             <!-- <el-table-column
                     prop="card_front"
                     label="身份证正面"

@@ -52,13 +52,13 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
-                      <el-form-item label="押运员" prop="escort_id">
-                          <el-select v-model="formData.escort_id" filterable  placeholder="请选择押运员">
+                      <el-form-item label="押运员" prop="escort_name">
+                          <el-select v-model="formData.escort_name" filterable  placeholder="请选择押运员">
                             <el-option
                               v-for="item in escortlist"
                               :key="item.value"
                               :label="item.name"
-                              :value="item.id">
+                              :value="item.name">
                             </el-option>
                           </el-select>
                       </el-form-item>
@@ -128,6 +128,7 @@ data() {
       driver_id: '',
       head_id: '',
       escort_id: '',
+      escort_name: '',
       trailer_id: '',
       status: ''
     },
@@ -174,7 +175,7 @@ methods: {
             this.title = '编辑'
             this.formData.id = response.id
             this.formData.driver_id = response.driver_name?response.driver_id:''
-
+            this.formData.escort_name = response.escort_name?response.escort_name:''
             this.formData.escort_id = response.escort_name?response.escort_id:''
             this.formData.head_id = response.head_id
             this.formData.trailer_id = response.trailer_id

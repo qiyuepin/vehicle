@@ -21,8 +21,8 @@
           </el-form-item>
           <el-form-item label="任务类别">
               <el-select v-model="query.start_periodic" placeholder="任务类别" clearable>
-                  <el-option label="始发任务" value="1"></el-option>
-                  <el-option label="非始发" value='0'></el-option>
+                  <el-option label="固定任务" value="1"></el-option>
+                  <el-option label="临时任务" value='0'></el-option>
               </el-select>
           </el-form-item>
           <el-form-item label="日期">
@@ -82,12 +82,7 @@
                   align="center"
                   width="80">
           </el-table-column> -->
-          <el-table-column
-                  prop="plan_order"
-                  label="排序"
-                  align="center"
-                  width="100">
-          </el-table-column>
+          
           <!-- <el-table-column
                   prop="escort_status"
                   label="状态"
@@ -263,6 +258,12 @@
               align="center"
               width="150"
               show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+                  prop="plan_order"
+                  label="排序"
+                  align="center"
+                  width="100">
           </el-table-column>
           <el-table-column
                   prop="update_time"

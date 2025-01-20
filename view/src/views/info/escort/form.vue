@@ -37,10 +37,13 @@
                           <el-input v-model="formData.cert_card_num" clearable
                                     placeholder="请输入从业资格证号"  maxLength='18'></el-input>
                       </el-form-item>
-                      <el-form-item label="是否离职" prop="escort_status">
+                      <el-form-item label="状态" prop="escort_status">
                           <el-radio-group v-model="formData.escort_status">
-                            <el-radio v-model="formData.escort_status" label="2">是</el-radio>
-                            <el-radio v-model="formData.escort_status" label="0">否</el-radio>
+                            <!-- <el-radio v-model="formData.escort_status" label="2">是</el-radio>
+                            <el-radio v-model="formData.escort_status" label="0">否</el-radio> -->
+                            <el-radio v-model="formData.escort_status" label="0">空闲</el-radio>
+                              <el-radio v-model="formData.escort_status" label="1">出车</el-radio>
+                              <el-radio v-model="formData.escort_status" label="2">离职</el-radio>
                           </el-radio-group>
                       </el-form-item>
                       <el-form-item label="入职时间">

@@ -49,14 +49,14 @@
                         <el-form-item label="身份证" prop="id_card_num">
                             <el-input v-model="formData.id_card_num" clearable placeholder="请输入身份证" maxLength='18'></el-input>
                         </el-form-item>
-                        <el-form-item label="驾驶证号" prop="dirver_card_num">
+                        <!-- <el-form-item label="驾驶证号" prop="dirver_card_num">
                             <el-input v-model="formData.dirver_card_num" clearable
                                       placeholder="请输入驾驶证号" maxLength='18'></el-input>
                         </el-form-item>
                         <el-form-item label="从业资格证号" prop="cert_card_num">
                             <el-input v-model="formData.cert_card_num" clearable
                                       placeholder="请输入从业资格证号" maxLength='18'></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="入职时间">
                           <el-input v-model="formData.employ_time" type="date" placeholder="选择日期" max="9999-12-31"></el-input>
                         </el-form-item>
@@ -66,7 +66,7 @@
                               <el-radio label="否">否</el-radio>
                             </el-radio-group>
                         </el-form-item> -->
-                        <el-form-item label="是否离职">
+                        <el-form-item label="状态">
                             <!-- <el-radio-group v-model="formData.driver_status">
                                 <el-radio v-model="formData.driver_status" :label="2">是</el-radio>
                                 <el-radio v-model="formData.driver_status" :label="0">否</el-radio>
@@ -78,9 +78,11 @@
                             <el-radio-group v-model="formData.driver_status">
                               <!-- <el-radio label='2'>是</el-radio>
                               <el-radio label='0'>否</el-radio> -->
-                              <el-radio :label="2">离职</el-radio>
-                              <el-radio :label="1">出车</el-radio>
+                              
+                              
                               <el-radio :label="0">空闲</el-radio>
+                              <el-radio :label="1">出车</el-radio>
+                              <el-radio :label="2">离职</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="身份证正面" prop="card_front">

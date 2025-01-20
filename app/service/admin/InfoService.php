@@ -679,10 +679,12 @@ class InfoService extends BaseService
                 // $data['data'][$key]['head_num'] = Carhead::where('id',$value['head_id'])->value('carhead_plate');
                 $data['data'][$key]['head_status'] = Carhead::where('id',$value['head_id'])->value('head_status');
                 // $data['data'][$key]['trailer_num'] = Cartrailer::where('id',$value['trailer_id'])->value('trailer_plate');
-                $data['data'][$key]['escort_name'] = Escort::where('id',$value['escort_id'])->value('name');
+                // $data['data'][$key]['escort_name'] = Escort::where('id',$value['escort_id'])->value('name');
                 // $data['data'][$key]['driver_name'] = Db::name('admin')->where('id',$value['driver_id'])->value('username');
                 // $data['data'][$key]['head_status'] = Carhead::where('id',$value['head_id'])->value('head_status');
                 $data['data'][$key]['trailer_status'] = Cartrailer::where('id',$value['trailer_id'])->value('trailer_status');
+                $data['data'][$key]['product_name'] = Cartrailer::where('id',$value['trailer_id'])->value('product_name');
+                $data['data'][$key]['product_quantity'] = Cartrailer::where('id',$value['trailer_id'])->value('product_quantity');
                 // dump($data['data'][$key]);die;
             }
                 
@@ -802,7 +804,7 @@ class InfoService extends BaseService
                     Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
                 }
                 // dump(Escort::where('id',$param['escort_id'])->value('escort_name'));die;
-                $param['escort_name'] = Escort::where('id',$param['escort_id'])->value('name');
+                // $param['escort_name'] = Escort::where('id',$param['escort_id'])->value('name');
                 // dump($param['escort_id']);die;
             }
             // dump($param);die;

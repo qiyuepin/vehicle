@@ -119,7 +119,19 @@
                 <!-- <span style="color: #13ce66;" v-else-if="scope.row.plan_type === 2" >卸货任务</span> -->
               </template>
           </el-table-column>
- 
+          <el-table-column
+                  prop="product_name"
+                  label="货品名称"
+                  align="center"
+                  width="200">
+          </el-table-column>
+          <el-table-column
+                  prop="product_quantity"
+                  label="货品数量"
+                  align="center"
+                  width="200"
+                  :formatter="formatQuantity">
+          </el-table-column>
           <el-table-column
                   prop="driver_name"
                   label="驾驶员"
@@ -226,6 +238,10 @@ created() {
   this.getinfolist();
 },
 methods: {
+  formatQuantity(row, column, cellValue) {
+      const numberValue = parseFloat(cellValue);
+      return !isNaN(numberValue) ? (numberValue != 0 ? numberValue.toFixed(2) : ''): '';
+  },
   hasPermission(permission) {
     return checkPermission(permission);
   },

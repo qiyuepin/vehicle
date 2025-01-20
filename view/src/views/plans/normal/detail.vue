@@ -88,6 +88,7 @@
                   {{ formData.remark }}
                 </div>
               </el-descriptions-item>
+              <el-descriptions-item><template slot="label">异常原因</template>{{formData.abnormal_remark}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">创建日期</template>{{formData.create_time}}</el-descriptions-item>
               <el-descriptions-item><template slot="label">更新日期</template>{{formData.update_time}}</el-descriptions-item>
             </el-descriptions>

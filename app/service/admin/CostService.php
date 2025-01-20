@@ -113,6 +113,7 @@ class CostService extends BaseService
                         $newValue['end_mile'] = $end_mile; // 添加 end_mile
                         $newValue['carrying_money'] = $carrying_money; // 添加 carrying_money
                         $newValue['remaining_money'] = $remaining_money; // 添加 remaining_money
+                        $newValue['diesel_oil'] = Db::name("admin_carplan_period")->where('period_id_driver', $value['period_id_driver'])->value('diesel_oil');
                         $newData[] = $newValue; // 将新元素添加到新数组中
                         $newData[] = $value;
                     } else {
@@ -186,7 +187,7 @@ class CostService extends BaseService
             if(isset($param['platform'])&&$param['platform'] == "pc"){
                 // $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'desc'])
                 // ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
-                $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'desc'])
+                $data = Db::name("admin_cost")->where($where)->order(['create_time'=>'asc'])
                 ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 // dump($data);die;
                 foreach ($data['data'] as $key => $value) {

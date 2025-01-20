@@ -50,12 +50,20 @@
                   width="40"
                   :selectable="isSelected">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
                   prop="id"
                   label="ID"
                   align="center"
                   width="80">
-          </el-table-column>
+          </el-table-column> -->
+          <el-table-column
+      label="ID"
+      align="center"
+      width="80">
+      <template #default="{ row, $index }">
+        <span>{{ $index + 1 }}</span>
+      </template>
+    </el-table-column>
           <el-table-column
                   prop="year"
                   label="年份"
@@ -126,7 +134,7 @@
 
           <el-table-column
                   prop="cost_img"
-                  label="费用照片2"
+                  label="费用照片"
                   align="center"
                   width="150">
               <!-- <el-image

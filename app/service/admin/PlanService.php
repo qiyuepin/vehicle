@@ -260,7 +260,8 @@ class PlanService extends BaseService
             
             $info = Plan::where('id',$plan['id'])->find();
             $info['trailer_material'] = Cartrailer::where('trailer_plate',$info['trailer_num'])->value('trailer_material');
-            // dump($info['period_id']);die;
+            $info['power_supply'] = Carhead::where('carhead_plate',$info['head_num'])->value('power_supply');
+            // dump($info);die;
             if(isset($param['platform']) && $param['platform'] == "app"){
                 $where['plan_id'] = $info['id'];
                 $where['period_id_driver'] = $info['period_id'];
@@ -466,14 +467,14 @@ class PlanService extends BaseService
             $currentMonth = date('m');
             // dump($currentYear);
             // dump($currentMonth);
-            if($Plan['driver_status'] > 1){
-                $param['driver_status'] = 1;
-            }
-            else{
-                $param['driver_status'] = 0;
-            }
-            $param['start_periodic'] = 0;
-            $param['plan_type'] = 0;
+            // if($Plan['driver_status'] > 1){
+            //     $param['driver_status'] = 1;
+            // }
+            // else{
+            //     $param['driver_status'] = 0;
+            // }
+            // $param['start_periodic'] = 0;
+            // $param['plan_type'] = 0;
             // $param['plan_id'] = null;
             $userInfo = Cache::get('userinfo');
             // $param['plan_type'] = $userInfo['username'];
@@ -716,7 +717,7 @@ class PlanService extends BaseService
             $param['driver_name'] = Admin::where('id',$userid)->value('username');
             if($param['plan_type'] == 2){
                 $param['product_name'] = $param['product_name'];
-                $param['load_product_quantity'] = $param['product_quantity'];
+                $param['unload_product_quantity'] = $param['product_quantity'];
                 $param['unload_factory'] = $param['load_factory'];
                 $param['unload_address'] = $param['load_address'];
                 $param['unload_wait_remark'] = $param['load_waiting_remark'];
@@ -726,6 +727,23 @@ class PlanService extends BaseService
                 $param['load_address'] = null;
                 $param['load_waiting_remark'] = null;
                 $param['load_weight_inspection'] = null;
+                $product_quantity = Cartrailer::where(['trailer_plate' => $param['trailer_num']])->value('product_quantity');
+                $quantity = $product_quantity - $param['product_quantity'];
+                $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : null;
+                $trailerdata['trailer_status'] = ($quantity > 0.3) ? 1 : 0;
+                $trailerdata['product_name'] = ($quantity > 0.3) ? $param['product_name'] : null;
+                Cartrailer::where('trailer_plate',$param['trailer_num'])->update($trailerdata);
+            }
+
+            else if($param['plan_type'] == 1){
+                $param['product_name'] = $param['product_name'];
+                $param['load_product_quantity'] = $param['product_quantity'];
+                $product_quantity = Cartrailer::where(['trailer_plate' => $param['trailer_num']])->value('product_quantity');
+                $quantity = $product_quantity + $param['product_quantity'];
+                $trailerdata['product_quantity'] =  $quantity;
+                $trailerdata['trailer_status'] = 1;
+                $trailerdata['product_name'] =  $param['product_name'];
+                Cartrailer::where('trailer_plate',$param['trailer_num'])->update($trailerdata);
             }
             // dump($param);die;
             $param['initiator'] = '驾驶员创建';
@@ -912,14 +930,14 @@ class PlanService extends BaseService
                 $param['driver_status'] = 1;
                 Plan::where('driver_name', $param['driver_name'])->where('driver_status', 1)->update(['driver_status'=>2]);
             }
-            else if($Plan){
+            else if($Plan && $Plan['id'] !=$param['id']){
                 $param['driver_status'] = 0;
             }
-            else{
+            else if($Plan && $Plan['id'] ==$param['id']){
                 $param['driver_status'] = 1;
             }
-
-            // dump($param);die;
+            // dump($Plan);die;
+            // dump($Plan);die;
             $param['month'] = $currentMonth;
             $param['year'] = $currentYear;
 
@@ -1082,19 +1100,19 @@ class PlanService extends BaseService
             // dump($param);
             if(isset($param['dist'])&&$param['dist']){
                 if($param['dist'] == 1){
-                    $data = Plans::where($where)->order(['create_time'=>'desc'])->select()->toArray();
+                    $data = Plans::where($where)->order(['status' => 'asc','create_time'=>'desc'])->select()->toArray();
                 }else{
 
-                    $data = Plan::where($where)->order(['driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])->select()->toArray();
+                    $data = Plan::where($where)->order(['status' => 'asc','driver_status' => 'asc', 'plan_order' => 'desc','id'=>'desc'])->select()->toArray();
 
                 }
             }else{
                 if(isset($param['type']) && $param['type'] == "excel"){
-                    $data = Plans::whereIn('id',$param['ids'])->order(['create_time'=>'desc'])
+                    $data = Plans::whereIn('id',$param['ids'])->order(['status' => 'asc','create_time'=>'desc'])
                     ->select()->toArray();
                 }
                 else{
-                    $data = Plans::where($where)->order(['create_time'=>'desc'])
+                    $data = Plans::where($where)->order(['status' => 'asc','create_time'=>'desc'])
                     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 }
                 // $data = Plans::where($where)->order(['create_time'=>'desc'])
@@ -1687,6 +1705,9 @@ class PlanService extends BaseService
             if (isset($param['remaining_money'])) {
                 Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['remaining_money'=>$param['remaining_money']]);
             }
+            if (isset($param['diesel_oil'])) {
+                Db::name('admin_carplan_period')->where('period_id_driver',$Plan['period_id'])->update(['diesel_oil'=>$param['diesel_oil']]);
+            }
 
             if (isset($param['status'])) {
                 if($lastplan['plan_type'] == 0){
@@ -1723,20 +1744,40 @@ class PlanService extends BaseService
                 if (isset($param['escort_name']) && $param['status'] == 1 && $Plan['plan_type'] == 0){
                     
                     $escort_name = Info::where('id',$Plan['info_id'])->find();
+                    
+                    $escort_name_before = Info::where('head_num',$param['head_num'])->find();
+                    if($escort_name_before){
+                        Escort::where('id',$escort_name_before['escort_id'])->update(['escort_status'=>0]);
+                    }
                     // dump($escort_name);
                     //输入的车头是否存在于人员车辆匹配中
                     $exit_escort_name = Info::where('escort_name',$param['escort_name'])->find();
-
+                    // dump($exit_escort_name);
                     if(($escort_name['escort_name'] != $param['escort_name']) && $exit_escort_name){
                         // dump($exit_escort_name);
                         //将原有$param['escort_name']的info信息置为空
                         Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
                     }
-                    $escort_name = Escort::where('name',$param['escort_name'])->find();
-                    // dump($Plan['info_id']);die;
-                    Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name['id']]);
+                    $escort_name_id = Escort::where('name',$param['escort_name'])->find();
+                    
+                    
+                    Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$escort_name_id['id']]);
+                    $exit_driver_name = Admin::where('username',$param['escort_name'])->find();
+                    $test = Info::where('driver_name',$param['escort_name'])->find();
+                    Info::where('driver_name',$param['escort_name'])->update(['driver_name'=>null,'driver_id'=>null]);
+                    // dump($exit_escort_name);
+                    // dump($exit_driver_name);
+                    // die;
+                    if(!$exit_escort_name && $exit_driver_name){
+                        // dump(8888888888);die;
+                        Info::where('driver_name',$param['escort_name'])->update(['driver_name'=>null,'driver_id'=>null]);
+                        Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$exit_driver_name['id']]);
+                        Admin::where('username',$param['escort_name'])->update(['driver_status'=>1]);
+                    }
+                    // dump($test);die;
+
                 }
-                
+                // die;
                 
                 $phone = Admin::where('username',$Plan['driver_name'])->value('phone');
                 // dump($lastplan['start_periodic']);
@@ -1891,18 +1932,22 @@ class PlanService extends BaseService
                     $driver['driver_status'] = 1;
                     $head['head_status'] = 3;
                     $escort['escort_status'] = 1;
+                    $driver['driver_status'] = 1;
                 } elseif ($param['status'] == 2 || $param['status'] == 4 || $param['status'] == 0) {
                     $driver['driver_status'] = ($param['status'] == 0) ? 0 : 1;
                     $head['head_status'] = ($param['status'] == 0) ? 0 : $param['status']/2;
                     $escort['escort_status'] = ($param['status'] == 0) ? 0 : 1;
+                    $driver['driver_status'] = ($param['status'] == 0) ? 0 : 1;
                 } elseif ($param['status'] == 8) {
                     $driver['driver_status'] = Admin::where(['username' => $Plan['driver_name']])->value('driver_status');
                     $head['head_status'] = 3;
                     $escort['escort_status'] = Escort::where(['name' => $escort_name])->value('escort_status');
+                    $driver['driver_status'] = Admin::where(['username' => $Plan['escort_name']])->value('driver_status');
                 } else {
                     $driver['driver_status'] = Admin::where(['username' => $Plan['driver_name']])->value('driver_status');
                     $head['head_status'] = Carhead::where(['carhead_plate' => $Plan['head_num']])->value('head_status');
                     $escort['escort_status'] = Escort::where(['name' => $escort_name])->value('escort_status');
+                    $driver['driver_status'] = Admin::where(['username' => $Plan['escort_name']])->value('driver_status');
                 }
  
                 $trailer['trailer_plate'] = $Plan['trailer_num'];
@@ -1925,7 +1970,7 @@ class PlanService extends BaseService
                     $trailerdata['product_quantity'] = $load_product_quantity;
                     $trailerdata['product_name'] = $Plan['product_name'];
                 } elseif ($param['status'] == 5 && $Plan['plan_type'] == 0) {
-                    
+
                     $product_quantity = Cartrailer::where(['trailer_plate' => $Plan['trailer_num']])->value('product_quantity');
                     $quantity = $product_quantity - $param['unload_product_quantity'];
                     $trailerdata['product_quantity'] = ($quantity > 0.3) ? $quantity : null;
@@ -1946,7 +1991,16 @@ class PlanService extends BaseService
                 // return $this->success([],'提交成功'.$load_product_quantity.'+'.$param['load_product_quantity']);
                 Carhead::update($head,['carhead_plate'=>$carhead_plate]);
                 Cartrailer::where('trailer_plate',$Plan['trailer_num'])->update($trailerdata);
-                Escort::update($escort,['name'=>$escort_name]);
+                $Escortname = Escort::where('name',$escort_name)->find();
+                $Drivername = Admin::where('username',$escort_name)->find();
+                // dump($driver);die;
+                if($Escortname){
+                    Escort::update($escort,['name'=>$escort_name]);
+                }
+                else if($Drivername){
+                    Admin::update($driver,['username'=>$escort_name]);
+                }
+                
                 Admin::update($driver,['username'=>$Plan['driver_name']]);
                 
             }
