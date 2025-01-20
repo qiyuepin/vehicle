@@ -119,7 +119,7 @@ class PlanService extends BaseService
                 $head = Info::carhead($value['head_id']);
                 $trailer = Info::cartrailer($value['trailer_id']);
                 $driver = Info::cardriver($value['driver_id']);
-                $escort = Info::carescort($value['escort_id']);
+                // $escort = Info::carescort($value['escort_id']);
                 $trailer_status = Info::cartrailer($value['trailer_status']);
                 // $info = $head.'-'.$trailer.'-'.$driver.'-'.$escort;
                 $test = Info::cartrailer($value['trailer_status']);
@@ -129,7 +129,7 @@ class PlanService extends BaseService
                 $info = $head.'-'.$driver;
                 $data[$key]['info'] = $info;
                 $data[$key]['driver_name'] = $driver;
-                $data[$key]['escort_name'] = $escort;
+                // $data[$key]['escort_name'] = $escort;
                 $data[$key]['head_num'] = $head;
                 $data[$key]['trailer_num'] = $trailer['trailer_plate'];
                 $data[$key]['trailer_status'] = $trailer['trailer_status'];
@@ -1424,6 +1424,7 @@ class PlanService extends BaseService
             $period['period_id_driver'] = $plans['period_id'];
             $period['driver_name'] = $plans['driver_name'];
             $period['trailer_num'] = $plans['trailer_num'];
+            $period['escort_name'] = $plans['escort_name'];
             $period['month'] = $currentMonth;
             $period['year'] = $currentYear;
             // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start

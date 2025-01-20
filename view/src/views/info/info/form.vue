@@ -53,7 +53,7 @@
                           </el-select>
                       </el-form-item>
                       <el-form-item label="押运员" prop="escort_name">
-                          <el-select v-model="formData.escort_name" filterable  placeholder="请选择押运员">
+                          <el-select v-model="formData.escort_name" filterable  placeholder="请选择押运员"  @change="escortChanged">
                             <el-option
                               v-for="item in escortlist"
                               :key="item.value"
@@ -62,6 +62,7 @@
                             </el-option>
                           </el-select>
                       </el-form-item>
+
                       <!-- 【YB分类整理】问题描述20240726 No.37 顺序调整 by baolei start         -->
 <!--                      <el-form-item label="挂车" prop="trailer_id">-->
 <!--                          <el-select v-model="formData.trailer_id" filterable  placeholder="请选择挂车">-->
@@ -193,6 +194,28 @@ methods: {
 
     })
     
+  },
+  escortChanged() {
+    console.log(999999999999999)
+    const selectedinfo = this.escortlist.find(item => item.name === this.formData.escort_name);
+    console.log(selectedinfo)
+    this.formData.escort_id = selectedinfo.id;
+    console.log(selectedinfo.id)
+    // if (selectedinfo) {
+    //   console.log(selectedinfo)
+    //   this.formData.head_num = selectedinfo.head_num;
+    //   this.formData.trailer_num = selectedinfo.trailer_num;
+    //   this.formData.driver_name = selectedinfo.driver_name;
+    //   this.formData.trailer_status = selectedinfo.trailer_status;
+    //   this.formData.escort_name = selectedinfo.escort_name;
+    // } else {
+    //   this.formData.head_num = '';
+    //   this.formData.trailer_num = '';
+    //   this.formData.driver_name = '';
+    //   this.formData.trailer_status = '';
+    //   this.formData.escort_name = '';
+    // }
+    // this.load_address = this.load_factory.factory;
   },
   saveData() {
     this.$confirm('您确定要提交吗？', '温馨提示')
