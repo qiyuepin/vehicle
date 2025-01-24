@@ -91,12 +91,6 @@ export default {
 }
 </script>
 <style lang="scss" >
-    .avatar-uploader-icon{
-      width: 20px!important;
-      height: 10px!important;
-      font-size: 18px!important;
-      line-height: 15px!important;
-    }
 
     .apk-uploader {
         margin: 0;
