@@ -43,7 +43,7 @@
                     prop="id"
                     label="ID"
                     align="center"
-                    width="80">
+                    width="60">
             </el-table-column>
           <!-- <el-table-column
                 label="id"
@@ -78,7 +78,7 @@
                   prop="head_num"
                   label="牵引车车牌号"
                   align="center"
-                  width="200">
+                  width="120">
           </el-table-column>
           <!-- <el-table-column
                   prop="head_status"
@@ -90,7 +90,7 @@
               prop="head_status"
               label="牵引车状态"
               align="center"
-              width="110">
+              width="100">
               <template slot-scope="scope">
                 
                 <span style="color: #67C23A;" v-if="scope.row.head_status === 0" >回库</span>
@@ -105,13 +105,13 @@
                   prop="trailer_num"
                   label="挂车车牌号"
                   align="center"
-                  width="200">
+                  width="110">
           </el-table-column>
           <el-table-column
               prop="trailer_status"
               label="挂车状态"
               align="center"
-              width="110">
+              width="90">
               <template slot-scope="scope">
                 
                 <span style="color: #67C23A;" v-if="scope.row.trailer_status === 0" >空车</span>
@@ -129,20 +129,20 @@
                   prop="product_quantity"
                   label="货品数量"
                   align="center"
-                  width="200"
+                  width="100"
                   :formatter="formatQuantity">
           </el-table-column>
           <el-table-column
                   prop="driver_name"
                   label="驾驶员"
                   align="center"
-                  width="200">
+                  width="110">
           </el-table-column>
           <el-table-column
                   prop="escort_name"
                   label="押运员"
                   align="center"
-                  width="200">
+                  width="110">
           </el-table-column>
  
           

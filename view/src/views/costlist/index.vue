@@ -57,19 +57,19 @@
                   width="80">
           </el-table-column> -->
           <el-table-column
-      label="ID"
-      align="center"
-      width="80">
-      <template #default="{ row, $index }">
-        <span>{{ $index + 1 }}</span>
-      </template>
-    </el-table-column>
-          <el-table-column
+            label="ID"
+            align="center"
+            width="80">
+            <template #default="{ row, $index }">
+              <span>{{ $index + 1 }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column
                   prop="year"
                   label="年份"
                   align="center"
                   width="80">
-          </el-table-column>
+          </el-table-column> -->
 
           <!-- <el-table-column
               prop="period_id_driver"
@@ -356,10 +356,10 @@ methods: {
   },
   exportExcel(excelData) {
     console.log(this.excelData)
-    const data = excelData.map((item) => {
+    const data = excelData.map((item, index) => {
       // 创建一个新的对象，包含原对象的所有键值对以及新的参数
       return {
-        id: item.id,
+        // id: index,
         "费用周期": item.period_id_driver,
         "费用类别": item.type_name,
         "其他类别": item.other_type,

@@ -1018,52 +1018,57 @@ class PlanService extends BaseService
             // dump(Driver::whereIn('id',$param['ids'])->find());die;
             
             $id = Plan::where('id',$param['id'])->find();
-            
-            $Planing = Plan::where('driver_name',$id['driver_name'])->where('driver_status',1)->find();
-            if($Planing['period_id'] != null){
-                $Plan = Plan::where('driver_name',$id['driver_name'])->where('period_id',$Planing['period_id'])->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
-            }else{
-                $Plan = Plan::where('driver_name',$id['driver_name'])->where('start_periodic',0)->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
-            }
-            // dump($Planing);die;
-            if(isset($Plan)){
-                $driver_status['driver_status'] = 3;
-                $new['driver_status'] = 1;
-                // Plan::where('id',$Plan['id'])->update($driver_status);
-                Plan::update($new,['id'=>$Plan['id']]);
-                $phone = Admin::where('username',$id['driver_name'])->value('phone');
-                $cid = Admin::where('username',$id['driver_name'])->value('user_cid');
-                if($Plan->plan_type == 0){
-                    $plantype = "常规任务";
-                    $planmsg = "从".$Plan->load_factory."出发到".$Plan->unload_factory;
-                    $SMSCODE = 'SMS_472080097';
-                }
-                else if($Plan->plan_type == 1){
-                    $plantype = "装货任务";
-                    $planmsg = "从".$Plan->load_factory."出发装货";
-                    $SMSCODE = 'SMS_472095114';
-                }
-                else if($Plan->plan_type == 2){
-                    $plantype = "卸货任务";
-                    $planmsg = "到".$Plan->unload_factory."卸货";
-                    $SMSCODE = 'SMS_472135128';
-                }
-                // dump($Plan['id']);
-                // dump($cid);
-                // dump($Plan['load_factory']);
-                // die;
-                // $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory']);
-                $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory'],$SMSCODE,$time);
-                $r = $this->pushToSingleByCids($Plan['id'],$cid,$plantype,$planmsg);
-                Db::commit();
-                $res = Plan::update($driver_status,['id'=>$param['id']]);
-                if($r['code'] == 0){
-                    return $this->success(['msg' => '成功']);
-                }
-            }
-            else{
-                // $driver_status['driver_status'] = 1;
+            if($id['driver_status'] == 0){
                 $driver_status['status'] = 9;
+                // Plan::where('id',$param['id'])->update($driver_status,['id'=>$param['id']]);
+            }else{
+
+                $Planing = Plan::where('driver_name',$id['driver_name'])->where('driver_status',1)->find();
+                if($Planing['period_id'] != null){
+                    $Plan = Plan::where('driver_name',$id['driver_name'])->where('period_id',$Planing['period_id'])->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
+                }else{
+                    $Plan = Plan::where('driver_name',$id['driver_name'])->where('start_periodic',0)->where('driver_status',0)->order(['plan_type'=>'desc'])->find();
+                }
+                // dump($Planing);die;
+                if(isset($Plan)){
+                    $driver_status['driver_status'] = 3;
+                    $new['driver_status'] = 1;
+                    // Plan::where('id',$Plan['id'])->update($driver_status);
+                    Plan::update($new,['id'=>$Plan['id']]);
+                    $phone = Admin::where('username',$id['driver_name'])->value('phone');
+                    $cid = Admin::where('username',$id['driver_name'])->value('user_cid');
+                    if($Plan->plan_type == 0){
+                        $plantype = "常规任务";
+                        $planmsg = "从".$Plan->load_factory."出发到".$Plan->unload_factory;
+                        $SMSCODE = 'SMS_472080097';
+                    }
+                    else if($Plan->plan_type == 1){
+                        $plantype = "装货任务";
+                        $planmsg = "从".$Plan->load_factory."出发装货";
+                        $SMSCODE = 'SMS_472095114';
+                    }
+                    else if($Plan->plan_type == 2){
+                        $plantype = "卸货任务";
+                        $planmsg = "到".$Plan->unload_factory."卸货";
+                        $SMSCODE = 'SMS_472135128';
+                    }
+                    // dump($Plan['id']);
+                    // dump($cid);
+                    // dump($Plan['load_factory']);
+                    // die;
+                    // $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory']);
+                    $this->SDKsendSms($phone, $id['driver_name'], $Plan['load_factory'], $Plan['unload_factory'],$SMSCODE,$time);
+                    $r = $this->pushToSingleByCids($Plan['id'],$cid,$plantype,$planmsg);
+                    Db::commit();
+                    $res = Plan::update($driver_status,['id'=>$param['id']]);
+                    if($r['code'] == 0){
+                        return $this->success(['msg' => '成功']);
+                    }
+                }
+                else{
+                    // $driver_status['driver_status'] = 1;
+                    $driver_status['status'] = 9;
+                }
             }
             // dump($Plan);die;
             // Carhead::where('carhead_plate',$id['head_num'])->update(['head_status'=>3]);
@@ -1773,6 +1778,7 @@ class PlanService extends BaseService
                         // dump(8888888888);die;
                         Info::where('driver_name',$param['escort_name'])->update(['driver_name'=>null,'driver_id'=>null]);
                         Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$exit_driver_name['id']]);
+                        // Info::where('id',$Plan['info_id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$exit_driver_name['id']]);
                         Admin::where('username',$param['escort_name'])->update(['driver_status'=>1]);
                     }
                     // dump($test);die;

@@ -33,10 +33,10 @@
                           <el-input v-model="formData.id_card" clearable placeholder="请输入正确的身份证号"  maxLength='18'></el-input>
                       </el-form-item>
 
-                      <el-form-item label="从业资格证号" prop="cert_card_num">
+                      <!-- <el-form-item label="从业资格证号" prop="cert_card_num">
                           <el-input v-model="formData.cert_card_num" clearable
                                     placeholder="请输入从业资格证号"  maxLength='18'></el-input>
-                      </el-form-item>
+                      </el-form-item> -->
                       <el-form-item label="状态" prop="escort_status">
                           <el-radio-group v-model="formData.escort_status">
                             <!-- <el-radio v-model="formData.escort_status" label="2">是</el-radio>

@@ -243,4 +243,27 @@ class Info extends Base
         $data = $service -> gettrailerkeepwarm($param);
         return $this->responseData($data);
     }
+
+    public function checkAndroidVersion(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> checkAndroidVersion($param);
+        return $this->responseData($data);
+    }
+
+    public function versionlist(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> versionlist($param);
+        return $this->responseData($data);
+    }
+    public function version(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> version($param);
+        return $this->responseData($data);
+    }
+
+    public function uploadVersion(Request $request,InfoService $service){
+        $param = $request->param();
+        $data = $service -> uploadVersion($param);
+        return $this->responseData($data);
+    }
 }

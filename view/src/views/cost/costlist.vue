@@ -44,12 +44,12 @@
                     align="center"
                     width="80">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="year"
                     label="年份"
                     align="center"
                     width="80">
-            </el-table-column>
+            </el-table-column> -->
             
             <!-- <el-table-column
                 prop="period_id_driver"

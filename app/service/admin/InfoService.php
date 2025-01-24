@@ -675,6 +675,7 @@ class InfoService extends BaseService
             //     ->paginate(['page' => $param['page'], 'list_rows' => $param['limit']])->toArray();
                 // dump($data['data']);die;carhead
             foreach($data['data'] as $key =>  $value){
+                // $data['data'][$key]['escort_name'] = $value['escort_name'];
                 // $posts = Carhead::with('heads')->where('id',$value['head_id'])->value('carhead_plate');
                 // $data['data'][$key]['head_num'] = Carhead::where('id',$value['head_id'])->value('carhead_plate');
                 $data['data'][$key]['head_status'] = Carhead::where('id',$value['head_id'])->value('head_status');
@@ -704,9 +705,9 @@ class InfoService extends BaseService
                 $info['driver_name']='';
             }
             $escort = Escort::where('id',$info['escort_id'])->value('status');
-            if(!$escort){
-                $info['escort_name']='';
-            }
+            // if(!$escort){
+            //     $info['escort_name']='';
+            // }
             if(empty($info)){
                 return $this->error('信息不存在');
             }
@@ -793,15 +794,29 @@ class InfoService extends BaseService
                 $param['trailer_num'] = Cartrailer::where('id',$param['trailer_id'])->value('trailer_plate');
 
             }
-            
-            if (isset($param['escort_id'])){
+            $exit_driver_name = Admin::where('username',$param['escort_name'])->find();
+            if (isset($param['escort_name'])){
                 
-             
+                $escort_name_id = Escort::where('name',$param['escort_name'])->find(); 
                 //输入的车头是否存在于人员车辆匹配中
-                $exit_escort_name = Info::where('escort_id',$param['escort_id'])->find();
-                if($info['escort_id'] != $param['escort_id'] && $exit_escort_name){
+                $exit_escort_name = Info::where('escort_name',$param['escort_name'])->find();
+                if(($info['escort_name'] != $param['escort_name']) && $escort_name_id){
                     //将原有$param['escort_name']的info信息置为空
                     Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
+                }
+                // if(!$escort_name_id && $exit_driver_name){
+                //     dump('5555');die;
+                // }
+                // else{
+                //     dump('99');die;
+                // }
+                if(!$escort_name_id && $exit_driver_name){
+                    $test =Info::where('driver_name',$param['escort_name'])->find();
+                    Info::where('id',$param['id'])->update(['escort_name'=>$param['escort_name'],'escort_id'=>$param['escort_id']]);
+                    Info::where('driver_name',$param['escort_name'])->update(['driver_name'=>null,'driver_id'=>null]);
+                    Info::where('escort_name',$param['escort_name'])->update(['escort_name'=>null,'escort_id'=>null]);
+                    
+
                 }
                 // dump(Escort::where('id',$param['escort_id'])->value('escort_name'));die;
                 // $param['escort_name'] = Escort::where('id',$param['escort_id'])->value('name');
@@ -818,6 +833,10 @@ class InfoService extends BaseService
                     Info::where('id',$exit_driver_name['id'])->update(['driver_name'=>null,'driver_id'=>null]);
                 }
                 $param['driver_name'] = Db::name('admin')->where('id',$param['driver_id'])->value('username');
+                $exit_escort_name = Info::where('escort_name',$param['driver_name'])->find();
+                if($exit_escort_name){
+                    Info::where('id',$exit_escort_name['id'])->update(['escort_name'=>null,'escort_id'=>null]);
+                }
             }
             // $param['driver_name'] = Db::name('admin')->where('id',$param['driver_id'])->value('username');
             // $param['head_num'] = Carhead::where('id',$param['head_id'])->value('carhead_plate');
@@ -1513,6 +1532,80 @@ class InfoService extends BaseService
         try{
             $data = Db::name("admin_trailer_keepwarm_master")->select()->toArray();
             return $this->success(['data'=>$data]);
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+
+    public function checkAndroidVersion($param=[]){
+        try{
+            $data = Db::name("admin_version")->where('type',$param['type'])->find();
+            if($data['new_version']>$data['now_version']){
+                $res = $data['href'];
+                return $this->success(['data'=>$res,'version'=>$data['new_version'],'msg'=>$data['msg']]);
+            }
+            else{
+                return $this->error('已经是最新版本了');
+            }
+            // dump($res);die;
+            
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    public function version($param=[]){
+        try{
+            $version = Db::name("admin_version")->where('id',$param['id'])->find();
+            // dump($version);die;
+            if(empty($version)){
+                return $this->error('信息不存在');
+            }
+            return $this->success($version);
+            
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    public function versionlist($param=[]){
+        try{
+            $data = Db::name("admin_version")->select()->toArray();
+            return $this->success(['data'=>$data]);
+            
+        }catch (\Exception $exception){
+            $this->recordLog($exception);
+            return $this->error();
+        }
+    }
+    public function uploadVersion($param=[]){
+        try{
+            // $data = Db::name("admin_version")->where('type',$param['type'])->find();
+            // if($data['new_version']>$data['now_version']){
+            //     $res = $data['href'];
+            //     return $this->success(['data'=>$res,'version'=>$data['new_version'],'msg'=>$data['msg']]);
+            // }
+            // else{
+            //     return $this->error('已经是最新版本了');
+            // }
+            $version = Db::name("admin_version")->where('id',$param['id'])->find();
+            if(empty($version)){
+                throw new \Exception('不存在');
+            }
+            $versiondata['new_version'] = $param['new_version'];
+            $versiondata['msg'] = $param['msg'];
+            $versiondata['href'] = $param['href'];
+            $versiondata['name'] = $param['name'];
+            // $versiondata['href'] = $param['href']['url'];
+            // $versiondata['name'] = $param['href']['name'];
+      
+            $res = Db::name("admin_version")->where('id',$param['id'])->update($versiondata);
+            if(!$res){
+                throw new \Exception('失败');
+            }
+            return $this->success([],'编辑成功');
+            
         }catch (\Exception $exception){
             $this->recordLog($exception);
             return $this->error();
