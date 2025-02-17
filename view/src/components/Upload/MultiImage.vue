@@ -176,8 +176,8 @@ export default {
 
     .avatar-uploader .avatar-box {
         display: inline-block;
-        height: 101px;
-        width: 101px;
+        height: 101px!important;
+        width: 101px!important;
         position: relative;
         border: 1px dashed #d9d9d9;
         margin-right: 10px;
