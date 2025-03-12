@@ -107,7 +107,7 @@ class AdminService extends BaseService
             // dump($param);die;
             $param['type'] = 1;
             $param['sign'] = $param['autograph'];
-            // $param['nickname'] = $param['username'];
+            $param['nickname'] = $param['username'];
             unset($param['id']);
             $res = Admin::create($param);
             if(!$res){
@@ -121,6 +121,7 @@ class AdminService extends BaseService
                     throw new \Exception('新增关联表失败');
                 }
             }
+
             Db::commit();
             return $this->success([],'新增成功');
         }catch (\Exception $exception){
