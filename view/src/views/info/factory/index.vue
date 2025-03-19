@@ -100,7 +100,7 @@
                     align="center"
                     min-width="150">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="primary"   @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="primary" v-permission="'admin.info.editfactory'"  @click="handleEdit(scope.row)">编辑</el-button>
                     <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
                         <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
                     </el-tooltip>

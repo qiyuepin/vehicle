@@ -32,8 +32,12 @@ class UserService extends BaseService
         
         try{
           
-            $data = Cache::get('adminInfo:'.$id);
-            if(empty($data)){
+            
+            if (Cache::has('adminInfo:'.$id)) {
+                $data = Cache::get('adminInfo:'.$id);
+               
+            }
+            else{
                 $data = Admin::where('id',$id)->field(['id','username','nickname','phone','email','avatar','sign','word'])->find();
                 // dump($data);die;
                 $data = $data->toArray();

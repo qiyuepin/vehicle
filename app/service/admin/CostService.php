@@ -225,7 +225,7 @@ class CostService extends BaseService
                 foreach ($data as $key => $value) {
          
                     $cost_img = explode(',', $value['cost_img']);
-
+                    // $data[$key]['cost_id'] = $key+1;
                     foreach ($cost_img as $k => $val){
 
                         $data[$key]['cost_imgs'][$k]['url'] = $val;

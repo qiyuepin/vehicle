@@ -2236,7 +2236,9 @@ class PlanService extends BaseService
     public function pushToSingleByCids($id,$cid,$plantype,$planmsg){
         
         $payloadData = array(
-            "plan_id" => $id
+            "plan_id" => $id,
+            "plan_type" => $plantype,
+            "plan_msg" => $plantype.':'.$planmsg
             // 可以添加更多的键值对
         );
         $payload = json_encode($payloadData);

@@ -4,13 +4,6 @@
           <el-form-item label="关键字">
               <el-input v-model="query.keywords" placeholder="货品名|厂家名称" clearable></el-input>
           </el-form-item>
-          <!-- <el-form-item label="任务类别">
-              <el-select v-model="query.plan_type" placeholder="选择类别" clearable>
-                  <el-option label="运输任务" value="0"></el-option>
-                  <el-option label="装货任务" value="1"></el-option>
-                  <el-option label="卸货任务" value="2"></el-option>
-              </el-select>
-          </el-form-item> -->
           <el-form-item label="状态">
               <el-select v-model="query.status" placeholder="选择状态" clearable>
                   <el-option label="未完成" value="0"></el-option>
@@ -24,13 +17,10 @@
       </el-form>
       <el-row style="margin-bottom: 10px;">
         <el-button type="warning" size="mini"  @click="handleReload">刷新</el-button>
-        <el-button type="success" v-permission="'auth.admin.adddriver'" size="mini" @click="handleAdd">新增</el-button>
+        <el-button type="success" v-permission="'admin.plans.addplan'" size="mini" @click="handleAdd">新增</el-button>
         <el-button type="primary" size="mini" @click="searchShow = !searchShow">搜索</el-button>
-        <el-button type="danger" v-permission="'auth.admin.delete'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
+        <el-button type="danger" v-permission="'admin.plans.delplan'" :disabled="buttonDisabled" @click="handleDeleteAll" size="mini">删除</el-button>
         <el-button @click="handleExcelAll" type="primary" size="mini">导出</el-button>
-          <!-- <el-tooltip class="item" effect="dark" content="map" placement="top">
-              <el-button type="success"  size="mini" @click="handlemap">map</el-button>
-          </el-tooltip> -->
       </el-row>
       <el-table
               ref="multipleTable"
@@ -47,12 +37,7 @@
                   width="40"
                   :selectable="isSelected">
           </el-table-column>
-          <!-- <el-table-column
-                  prop="id"
-                  label="ID"
-                  align="center"
-                  width="80">
-          </el-table-column> -->
+
           <el-table-column
               prop="escort_status"
               label="状态"
@@ -61,63 +46,18 @@
               <template slot-scope="scope">
                 <span style="color: #909399;" v-if="scope.row.status === 0" >未完成</span>
                 <span style="color: #13ce66;" v-else-if="scope.row.status === 1" >已完成</span>
-                <!-- <el-button  v-if="scope.row.status === 0"  type="primary"  size="mini" plain @click="handleDetail(scope.row)">未完成</el-button>
-                <el-button  v-else-if="scope.row.status === 1"  type="success"  size="mini" plain @click="handleDetail(scope.row)"> 已完成</el-button> -->
               </template>
           </el-table-column>
-<!--
-          <el-table-column
-              prop="plan_type"
-              label="任务类别"
-              align="center"
-              width="110">
-              <template slot-scope="scope">
-
-                <span style="color: #409EFF;" v-if="scope.row.plan_type === 0" >运输任务</span>
-                <span style="color: #E6A23C;" v-else-if="scope.row.plan_type === 1" >装货任务</span>
-                <span style="color: #F56C6C;" v-else-if="scope.row.plan_type === 2" >卸货任务</span>
-              </template>
-          </el-table-column> -->
-
           <el-table-column
               prop="start_periodic"
               label="始发任务"
               align="center"
               width="110">
               <template slot-scope="scope">
-
                 <i class="el-icon-share" v-if="scope.row.plan_type !== 0" style="display: none;"></i>
                 <i class="el-icon-success" v-else-if="scope.row.start_periodic === 1" style="color: #42d885;font-size: 20px;" ></i>
-                <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei start         -->
-<!--                <i class="el-icon-remove" v-else-if="scope.row.start_periodic === 0" style="color: #ffc833;font-size: 20px;" ></i>-->
-                  <!-- 【YB分类整理】问题描述20240726 No.46 顺序调整 by baolei end         -->
               </template>
           </el-table-column>
-
-          <!-- <el-table-column
-                  prop="head_num"
-                  label="车头"
-                  align="center"
-                  width="120">
-          </el-table-column>
-          <el-table-column
-                  prop="trailer_num"
-                  label="挂车"
-                  align="center"
-                  width="120">
-          </el-table-column>
-          <el-table-column
-                  prop="driver_name"
-                  label="驾驶员"
-                  align="center"
-                  width="150">
-          </el-table-column>
-          <el-table-column
-                  prop="escort_name"
-                  label="押运员"
-                  align="center"
-                  width="150">
-          </el-table-column> -->
           <el-table-column
                   prop="product_name"
                   label="货品名称"
@@ -137,7 +77,6 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-          <!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei start         -->
           <el-table-column
               prop="unload_factory"
               label="卸货厂家"
@@ -145,7 +84,6 @@
               width="200"
               show-overflow-tooltip>
           </el-table-column>
-          <!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei end         -->
           <el-table-column
                   prop="load_address"
                   label="装货厂家地址"
@@ -153,15 +91,6 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-<!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei start         -->
-<!--          <el-table-column-->
-<!--                  prop="unload_factory"-->
-<!--                  label="卸货厂家"-->
-<!--                  align="center"-->
-<!--                  width="200"-->
-<!--                  show-overflow-tooltip>-->
-<!--          </el-table-column>-->
-<!-- 【YB分类整理】问题描述20240726-2 No.76 顺序调整 by baolei end         -->
           <el-table-column
                   prop="unload_address"
                   label="卸货厂家地址"
@@ -169,9 +98,6 @@
                   width="200"
                   show-overflow-tooltip>
           </el-table-column>
-
-
-
           <el-table-column
                   prop="update_time"
                   label="更新时间"
@@ -182,7 +108,6 @@
                   <span style="margin-left: 10px" v-text="scope.row.create_time"></span>
               </template>
           </el-table-column>
-
           <el-table-column
                   v-if="hasPermission('admin.plans.addplan')"
                   fixed="right"
@@ -192,40 +117,11 @@
               <template slot-scope="scope">
                   <el-button size="mini" type="danger" v-if="scope.row.status==0" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)">分配</el-button>
                   <el-button size="mini" type="danger" v-if="scope.row.status==1" v-permission="'admin.plans.distplan'"  @click="handleDist(scope.row)" disabled>分配</el-button>
-                  <!-- <el-tooltip class="item" effect="dark" content="编辑" placement="top"> -->
-<!--                  <el-button size="mini" type="primary" v-if="scope.row.status==0" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)">编辑</el-button>-->
-<!--                  <el-button size="mini" type="primary" v-if="scope.row.status==1" v-permission="'admin.plans.editplan'"  @click="handleEdit(scope.row)" disabled>编辑</el-button>-->
-
-                  <!-- <el-button size="mini" type="success" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button> -->
                   <el-button size="mini" type="info" plain v-if="scope.row.status==0" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">未完成</el-button>
-
                   <el-button size="mini" type="success" plain v-if="scope.row.status==1" v-permission="'admin.plans.editplan'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">已完成</el-button>
-
-                  <!-- </el-tooltip> -->
-                  <!-- <el-tooltip class="item" effect="dark" content="分配" placement="top">
-                      <el-button size="mini" type="warning" v-permission="'admin.plans.editplan'"  @click="handleDist(scope.row)">分配</el-button>
-                  </el-tooltip> -->
-
-                  <!-- <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" content="启用" placement="top">
-                      <el-button size="mini" type="success" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">启用</el-button>
-                  </el-tooltip>
-                  <el-tooltip v-if="scope.row.status==2" class="item" effect="dark" content="禁用" placement="top">
-                      <el-button size="mini" type="warning" v-permission="'auth.admin.change'" :disabled="isHandle(scope.row)" @click="handleStatus(scope.$index,scope.row.id,scope.row.status)">禁用</el-button>
-                  </el-tooltip> -->
-                  <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                      <el-button size="mini" type="danger"  v-permission="'auth.admin.delete'" :disabled="isHandle(scope.row)" icon="el-icon-delete"
-                                 circle @click="handleDelete([scope.row.id])"></el-button>
-                  </el-tooltip> -->
-                  <!-- <el-tooltip class="item" effect="dark" content="违章信息" placement="top">
-                      <el-button size="mini" type="danger" v-permission="'admin.driver.regulation'"  icon="el-icon-warning-outline" circle @click="handleRegulation([scope.row.id])"></el-button>
-                  </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="事故信息" placement="top">
-                      <el-button size="mini" type="danger" v-permission="'admin.driver.accident'" icon="el-icon-warning" circle @click="handleAccident([scope.row.id])"></el-button>
-                  </el-tooltip> -->
               </template>
           </el-table-column>
       </el-table>
-      <!--分页-->
       <div class="pagination-container">
           <el-pagination
                   @size-change="handleSizeChange"
@@ -238,15 +134,12 @@
                   :total="total">
           </el-pagination>
       </div>
-      <!--表单-->
       <myForm ref="myAttr" @updateRow="handleReload"/>
       <detail ref="myAttrdetail" @updateRow="handleReload"/>
       <planDist ref="myAttrDist" @updateRow="handleReload"/>
   </div>
 </template>
-
 <script>
-
 import { getplans, delplan, getplansinfo, editplan, addhisplan } from '@/api/plan.js'
 import checkPermission from '@/utils/checkpermission.js'
 import myForm from './form.vue'
@@ -304,7 +197,6 @@ methods: {
   hasPermission(permission) {
     return checkPermission(permission);
   },
-  //查询列表
   getplans() {
     this.loading = true
     getplans(this.query).then(response => {
@@ -316,19 +208,13 @@ methods: {
     })
     this.excelquery.keywords = this.query.keywords
     this.excelquery.status = this.query.status
-    // getplans(this.excelquery).then(response => {
-    //     if(response !== undefined){
-    //       console.log(response)
-    //         this.excelData = response
-    //     }
-    // })
+
   },
   handleExcel(ids){
     
     getplans({ ids: ids, type:'excel' }).then(response => {
         if(response !== undefined){
           console.log(response)
-            // this.excelData = response
             this.exportnormalExcel (response)
         }
     })
@@ -352,11 +238,8 @@ methods: {
           this.handleExcel(ids)
       }
     }
-    
-    
   },
   exportnormalExcel (excelData) {
-    // this.getnormal();
     const data = excelData.map((item) => {
       return {
         id: item.id,
@@ -373,32 +256,26 @@ methods: {
       };
     });
 
-    // 使用 xlsx 库导出 Excel
     this.exportExcelWithWrap(data, "运输计划");
   },
   exportExcelWithWrap(data, fileName) {
-    const ws = XLSX.utils.json_to_sheet(data); // 将 JSON 数据转化为工作表
-
-    // 遍历每个单元格，处理备注列中的换行符
+    const ws = XLSX.utils.json_to_sheet(data); 
     Object.keys(ws).forEach(cell => {
       const cellObj = ws[cell];
-      
-      // 如果是备注列并且包含换行符，则设置换行
+
       if (cellObj.v && typeof cellObj.v === 'string') {
         if (!cellObj.s) cellObj.s = {};
         cellObj.s.alignment = {
-          vertical: 'center', // 垂直居中
-          wrapText: true       // 启用自动换行
+          vertical: 'center', 
+          wrapText: true  
         };
       }
     });
-
-    // 为备注列设置换行属性
     const wscols = [
-      { wch: 5 }, // 设置列宽（可根据需要调整）
-      { wch: 8 }, // 设置列宽
+      { wch: 5 }, 
+      { wch: 8 }, 
       { wch: 10 },
-      { wch: 15 }, // 设置列宽
+      { wch: 15 }, 
       { wch: 8 },
       { wch: 25 },
       { wch: 30 },
@@ -417,20 +294,15 @@ methods: {
       { wch: 15 },
       { wch: 15 }
     ];
-   
-    ws['!cols'] = wscols; // 设置列宽
-
-    // 创建工作簿
+    ws['!cols'] = wscols; 
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // 将工作表添加到工作簿
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); 
 
-    // 导出 Excel 文件
     XLSX.writeFile(wb, fileName + ".xlsx");
   },
   exportplansExcel () {
     this.getplans();
     const data = this.excelData.map((item) => {
-      // 创建一个新的对象，包含原对象的所有键值对以及新的参数
       return {
         id: item.id,
         "状态": this.status(item.status),
@@ -457,12 +329,12 @@ methods: {
     }
 
   },
-  //搜索
+
   handleSearch() {
     this.query.page = 1
     this.getplans()
   },
-  //刷新重置
+
   handleReload() {
     this.query.page = 1
     this.query.keywords = ''

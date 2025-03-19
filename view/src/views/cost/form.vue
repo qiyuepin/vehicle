@@ -85,7 +85,6 @@ components: {
 },
 data() {
 
-
   const validatePhone = (rule, value, callback) => {
     if (!validPhone(value)) {
       callback(new Error('请输入正确的手机号'))
@@ -122,24 +121,21 @@ data() {
       cost_money: '',
       trailer_num: '',
       year: '',
-      type_name: '', //【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei
-        // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
-        head_num:''
-        // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
+      type_name: '', 
+      head_num:''
+      
     },
   }
 },
 created() {
   this.getcarlist()
   this.getcosttype()
-  // this.getperiod(this.driver)
 },
 methods: {
   getcosttype() {
     getcosttype().then(response => {
         if(response !== undefined){
           console.log(response)
-          // this.infolist = response.data
           this.typelist = response
         }
     })
@@ -165,14 +161,12 @@ methods: {
   driverChanged() {
     const selectedinfo = this.driverlist.find(item => item.id === this.formData.driver_id);
     if (selectedinfo) {
-      // console.log(selectedinfo)
       this.formData.period_id_driver = selectedinfo.period_id;
       this.formData.driver_name = selectedinfo.username;
       console.log(selectedinfo.username)
       this.getperiod(selectedinfo.username)
       console.log(this.formData)
     } else {
-
     }
 
   },
@@ -183,15 +177,9 @@ methods: {
       this.formData.period_id_driver = selectedinfo.period_id_driver;
       this.formData.trailer_num = selectedinfo.trailer_num;
       this.formData.year = selectedinfo.year;
-      // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei start
         this.formData.head_num = selectedinfo.head_num;
-        // 【YB分类整理】问题描述20240726-2 No.82 顺序调整 by baolei end
-      console.log(this.formData)
-
     } else {
-
     }
-    // this.load_address = this.load_factory.factory;
   },
   handleClose() {
     this.dialog = false
